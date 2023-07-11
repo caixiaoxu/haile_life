@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_action_bar_h">44dp</dimen>
+
+    <dimen name="login_input_h">44dp</dimen>
+    <dimen name="login_input_mt">20dp</dimen>
+
+    <dimen name="common_btn_h">44dp</dimen>
+    <dimen name="common_dialog_w">311dp</dimen>
+
+    <dimen name="font_14">14sp</dimen>
+    <dimen name="font_16">16sp</dimen>
+    <dimen name="font_18">18sp</dimen>
+    <dimen name="font_20">20sp</dimen>
+    <dimen name="font_22">22sp</dimen>
+    <dimen name="font_24">24sp</dimen>
+
+    <dimen name="item_height">54dp</dimen>
+
+    <dimen name="switch_default_w">52dp</dimen>
+    <dimen name="switch_default_h">26dp</dimen>
+    <dimen name="switch_default_offset">2dp</dimen>
+
+    <dimen name="dimen_2">2dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
+    <dimen name="dimen_56">56dp</dimen>
+</resources>

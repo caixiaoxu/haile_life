@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.OrderSubmitViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.order.OrderSubmitActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_order_submit_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:title="@string/submit_order" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="12dp"
+            app:divider="@drawable/divide_size8"
+            app:showDividers="middle">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_sffffff_r8"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:visibility="@{null != vm.reserveTime?View.VISIBLE:View.GONE}">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_14_black_65"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="16dp"
+                    android:text="@{vm.shopDeviceVal}"
+                    tools:text="10号洗衣机\n浙大紫荆港校区蓝田学园\n生公寓3区1号楼" />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_marginHorizontal="3dp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_14_black_85"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="8dp"
+                    android:text="@{vm.reserveTimeVal}"
+                    tools:text="请在 今天10:00 到店使用" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_order_submit_good"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_sffffff_r8"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                app:divider="@color/dividing_line_color_efefef"
+                app:showDividers="middle">
+
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_order_good_discounts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="12dp"
+                    android:orientation="vertical"
+                    app:divider="@drawable/divide_size8"
+                    app:itemLayout="@layout/item_order_submit_good_item"
+                    app:showDividers="middle" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom|end"
+                    android:orientation="horizontal"
+                    android:paddingVertical="12dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_12_black_85"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{@string/actually_paid+" ¥ "}' />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_22_black_85"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/money"
+                        android:text="@{vm.tradePreview.realPrice}"
+                        tools:text="0.00" />
+                </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <include
+                android:id="@+id/include_order_submit_pay_way"
+                layout="@layout/layout_pay_way"
+                app:isDryer="@{vm.isDryer()}"
+                app:isZero="@{vm.tradePreview.isZero()?1:2}" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="98dp"
+            android:background="@color/white"
+            android:paddingTop="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_20_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/money"
+                android:text='@{@string/unit_money + " "+ vm.tradePreview.realPrice}'
+                app:layout_constraintBottom_toBottomOf="@id/btn_order_submit_pay"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_order_submit_pay"
+                tools:text="￥ 5.00" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/btn_order_submit_pay"
+                android:layout_width="132dp"
+                android:layout_height="46dp"
+                android:layout_marginEnd="16dp"
+                android:background="@{vm.isDryer()?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
+                android:onClick="@{vm::requestPrePay}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_16_white_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@mipmap/icon_small_arrow_right"
+                android:drawablePadding="4dp"
+                android:drawableTint="@color/white"
+                android:gravity="center"
+                android:text="@string/go_pay"
+                app:layout_constraintBottom_toBottomOf="@id/btn_order_submit_pay"
+                app:layout_constraintEnd_toEndOf="@id/btn_order_submit_pay"
+                app:layout_constraintStart_toStartOf="@id/btn_order_submit_pay"
+                app:layout_constraintTop_toTopOf="@id/btn_order_submit_pay" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

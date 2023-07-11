@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/page_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context=".ui.activity.order.OrderPaySuccessActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_pay_success_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@string/result_fellback"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/icon_success_main"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/pay_success"
+            style="@style/Font_18_333333"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_pay_success_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            style="@style/Font_24_black_85"
+            tools:text="¥ 4.00"
+            android:fontFamily="@font/money"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_pay_success_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="46dp"
+            style="@style/Font_12_666666"/>
+
+        <com.lsy.framelib.ui.weight.SingleTapButton
+            android:id="@+id/btn_pay_success"
+            style="@style/CommonMatchBtnStyle1"
+            android:layout_width="220dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/finish"/>
+    </LinearLayout>
+</layout>

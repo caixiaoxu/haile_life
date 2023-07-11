@@ -1,0 +1,171 @@
+<resources>
+    <string name="app_name">海乐生活</string>
+    <string name="account">用户名</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
+    <string name="submit">提交</string>
+    <string name="save">保存</string>
+    <string name="sure">确定</string>
+    <string name="cancel">取消</string>
+    <string name="i_know">知道了</string>
+    <string name="more">更多</string>
+    <string name="view_more">查看更多</string>
+    <string name="device">设备</string>
+    <string name="num">数量</string>
+    <string name="idle">空闲</string>
+    <string name="distance">距离</string>
+    <string name="you">您</string>
+    <string name="selected">选好了</string>
+    <string name="minute">分钟</string>
+    <string name="finish">完成</string>
+    <string name="copy_success">复制成功</string>
+    <string name="am">上午</string>
+    <string name="pm">下午</string>
+
+    <string name="login_title">登录海乐生活</string>
+    <string name="bind_phone_title">绑定手机号</string>
+    <string name="phone_number">手机号码</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="login_agreement">我已阅读并同意《隐私权政策》</string>
+    <string name="code">验证码</string>
+    <string name="getCode">获取验证码</string>
+    <string name="send_again">再次发送</string>
+    <string name="phone_empty">请先输入手机号</string>
+    <string name="password_empty">请先输入密码</string>
+    <string name="code_empty">请先输入验证码</string>
+    <string name="password_err">密码必须包含6-12位大小写字母和数字</string>
+    <string name="agreement_err">请阅读并同意协议</string>
+    <string name="other_login_title">使用以下方式进行账户注册/登录</string>
+
+    <string name="phone_prefix">中国（+86）</string>
+    <string name="password_hint">请输入新密码（6-12位数字或字母）</string>
+    <string name="password_again_hint">请再次输入新密码</string>
+
+    <string name="main_tab_home">首页</string>
+    <string name="main_tab_store">商城</string>
+    <string name="main_tab_order">订单</string>
+    <string name="main_tab_mine">我的</string>
+
+    <string name="home_category_wash">洗烘</string>
+    <string name="home_category_hair">吹风</string>
+    <string name="home_category_drinking">饮水</string>
+    <string name="home_category_shower">淋浴</string>
+    <string name="home_category_dry_cleaning">干洗</string>
+    <string name="home_category_cloth_recyce">旧衣回收</string>
+    <string name="home_category_cloth_lease">时装租赁</string>
+    <string name="home_category_cloth_care">衣物护理</string>
+    <string name="home_category_cloth_manager">衣物管家</string>
+    <string name="home_category_student_entrepreneurship">学生创业</string>
+    <string name="nearby_stores">附近门店</string>
+    <string name="nearby_stores_desc">体验洗衣先生的专业洗护</string>
+    <string name="home_guide">自助洗烘指南</string>
+    <string name="home_guide_desc">遇到问题来这里快速解决</string>
+    <string name="can_appointment">可预约</string>
+    <string name="can_not_appointment">不可预约</string>
+    <string name="in_operation">营业中</string>
+    <string name="stop_of_business">暂停营业</string>
+    <string name="wallet_balance">钱包余额</string>
+    <string name="mine_starfish">我的海星</string>
+    <string name="discount">优惠折扣</string>
+    <string name="mine_order">我的订单</string>
+    <string name="check_all_order">查看全部订单</string>
+    <string name="unpaid">未支付</string>
+    <string name="running">进行中</string>
+    <string name="finished">已完成</string>
+    <string name="refund">退款</string>
+    <string name="mine_wallet">我的钱包</string>
+    <string name="fun_service">功能服务</string>
+    <string name="discount_coupon">优惠券</string>
+    <string name="go_recharge">去充值</string>
+    <string name="scan_order_wash_hint">温馨提示：请勿将宠物用品、鞋类、易损衣物放入洗衣机清洗。</string>
+    <string name="scan_order_dryer_hint">温馨提示：烘干前请检查衣物是不遗留易燃易爆物品。</string>
+    <string name="scan_order_shoes_hint">温馨提示：请勿将宠物用品、易损衣物放入洗鞋机清洗。</string>
+    <string name="select_category_model">请选择设备类型</string>
+    <string name="select_work_model">请选择%1$s模式</string>
+    <string name="select_work_time">请选择%1$s时长</string>
+    <string name="select_work_device">请选择%1$s设备</string>
+    <string name="please_select">请选择</string>
+    <string name="appoint_submit_prompt">温馨提示：\n1、预约时间超时10分钟未使用，则订单自动失效， 不退款。\n2、预约单生效前10分钟取消，系统自动退款。预约单生效不足\n10分钟取消，不退款。</string>
+    <string name="queue_num">排队人数</string>
+    <string name="appoint_use_time">预计使用时间</string>
+    <string name="appoint_device_queue_use_time">%1$s排队%2$d人，预计使用时间</string>
+
+    <string name="refund_record">退款记录</string>
+    <string name="recharge_record">充值记录</string>
+
+    <string name="next_step">下一步</string>
+    <string name="scan_order_tips_hint">温馨提示</string>
+    <string name="no_prompt">不再提示</string>
+    <string name="submit_order">提交订单</string>
+    <string name="go_pay">去支付</string>
+    <string name="good_discount">分摊优惠</string>
+    <string name="actually_paid">小记</string>
+    <string name="order_discount_coupon">优惠红包</string>
+    <string name="limited_time_offer">限时特惠</string>
+    <string name="starfish">海星</string>
+    <string name="available_coupon_num">未选红包，最多%1$d张可用 ></string>
+    <string name="order_discount_coupon_selector">选择优惠红包</string>
+    <string name="select_model_of_pay">选择支付方式</string>
+    <string name="balance">余额</string>
+    <string name="alipay">支付宝</string>
+    <string name="wechat">微信</string>
+    <string name="result_fellback">结果反馈</string>
+    <string name="pay_success">支付成功</string>
+    <string name="pay_success_hint">设备将在稍后为您启动，预计将在今日%1$s左右完成%2$s完成后会通过消息通知到您，请及时取走衣物</string>
+    <string name="appoint_pay_success_hint">请在%1$s到具体店铺使用%2$s</string>
+
+    <string name="appointment_order">预约订单</string>
+    <string name="order_detail">订单详情</string>
+    <string name="copy_order_no">复制订单号</string>
+    <string name="total_price">总金额</string>
+    <string name="discount_price">已优惠</string>
+    <string name="need_pay">需支付</string>
+    <string name="order_time">下单时间</string>
+    <string name="pay_now">立即支付</string>
+    <string name="cancel_order">取消订单</string>
+    <string name="contact_shop">联系商家</string>
+    <string name="predict_finish_time">预计完成时间</string>
+    <string name="order_submit_used_time_prompt">请在 %1$s 到店使用</string>
+
+    <string name="shop_detail">门店详情</string>
+    <string name="business_time">营业时间</string>
+    <string name="starfish_recharge">海星充值</string>
+    <string name="appointment_device">预约设备</string>
+    <string name="recharge_starfish">充值海星</string>
+    <string name="reward_starfish">赠送海星</string>
+
+    <string name="recharge">充值</string>
+    <string name="recharge_agreement">去支付即代表您同意《海星购买协议》</string>
+    <string name="reward_num">送%1$s海星</string>
+    <string name="recharge_shop_title">附近可充值门店</string>
+
+    <string name="pay_code_error">该付款码无效</string>
+    <string name="empty_permission">需要授权才能继续操作</string>
+
+    <string-array name="scan_order_wash_confirm">
+        <item>请确认当前洗衣机舱门已经锁好</item>
+        <item>请确认所有衣物都已放入洗衣机</item>
+        <item>没有将易损衣物、奢饰品放入洗衣机</item>
+    </string-array>
+    <string-array name="scan_order_dryer_confirm">
+        <item>请确认当前烘干机舱门已经锁好</item>
+        <item>请确认所有衣物都已放入烘干机</item>
+        <item>没有将易损衣物、奢饰品放入烘干机</item>
+    </string-array>
+    <string-array name="scan_order_shoes_confirm">
+        <item>请确认当前洗鞋机舱门已经锁好</item>
+        <item>请确认所有鞋子都已放入洗鞋机</item>
+        <item>没有将易损衣物、奢饰品放入烘干机</item>
+    </string-array>
+    <string-array name="discount_coupon_type">
+        <item></item>
+        <item>满减券</item>
+        <item></item>
+        <item>折扣券</item>
+        <item>体验券</item>
+    </string-array>
+
+    <string name="unit_discount">折</string>
+    <string name="unit_money">¥</string>
+    <string name="unit_yuan">元</string>
+</resources>

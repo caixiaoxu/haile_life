@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.yunshang.haile_life.data.DeviceCategory" />
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.TradePreviewGoodItem" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="12dp"
+        app:divider="@drawable/divide_size10"
+        app:showDividers="middle">
+
+        <include
+            android:id="@+id/include_order_submit_good_info"
+            layout="@layout/item_order_submit_good_item"
+            app:title="@{item.goodsItemName}"
+            app:icon="@{item.getCategoryIcon}"
+            app:value="@{item.getOriginAmountStr}"
+            app:type="@{DeviceCategory.canShowDeviceCategory(item.goodsCategoryCode)?1:0}" />
+
+        <include
+            android:id="@+id/include_order_submit_good_discount"
+            layout="@layout/item_order_submit_good_item"
+            app:title="@{@string/good_discount}"
+            app:value="@{item.getDiscountAmountStr}"
+            app:type="@{2}" />
+
+        <include
+            android:id="@+id/include_order_submit_good_actually_paid"
+            layout="@layout/item_order_submit_good_item"
+            app:title="@{@string/actually_paid}"
+            app:value="@{item.getRealAmountStr}"
+            app:type="@{2}" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

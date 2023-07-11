@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.BindPhoneViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.activity.login.LoginActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_bind_phone_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rightModel="text" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bind_phone_title"
+            style="@style/Font_20_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/bind_phone_title"
+            app:layout_constraintTop_toBottomOf="@id/bar_bind_phone_title" />
+
+        <com.yunshang.haile_manager_android.ui.view.PhoneEditText
+            android:id="@+id/et_bind_phone_account"
+            style="@style/Font_16_black_85_45"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="38dp"
+            android:background="@color/transparent"
+            android:hint="@string/phone_number"
+            android:text="@={vm.phone}"
+            app:layout_constraintEnd_toEndOf="@id/tv_bind_phone_title"
+            app:layout_constraintStart_toStartOf="@id/tv_bind_phone_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_bind_phone_title" />
+
+        <View
+            style="@style/DividingStyle"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/et_bind_phone_account"
+            app:layout_constraintEnd_toEndOf="@id/et_bind_phone_account"
+            app:layout_constraintStart_toStartOf="@id/et_bind_phone_account" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_bind_phone_code"
+            style="@style/Font_16_black_85_45"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/transparent"
+            android:hint="@string/code"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:text="@={vm.code}"
+            app:layout_constraintEnd_toEndOf="@id/tv_bind_phone_title"
+            app:layout_constraintStart_toStartOf="@id/tv_bind_phone_title"
+            app:layout_constraintTop_toBottomOf="@id/et_bind_phone_account" />
+
+        <com.lsy.framelib.ui.weight.SingleTapButton
+            android:id="@+id/tv_bind_phone_getcode"
+            style="@style/Font_14_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:enabled="@{vm.canSendCode}"
+            android:gravity="center"
+            android:onClick="@{vm::sendCode}"
+            android:text="@string/getCode"
+            app:layout_constraintBottom_toBottomOf="@id/et_bind_phone_code"
+            app:layout_constraintEnd_toEndOf="@id/et_bind_phone_code"
+            app:layout_constraintTop_toTopOf="@id/et_bind_phone_code" />
+
+        <View
+            android:id="@+id/view_bind_phone_code_dividing"
+            style="@style/DividingStyle"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/et_bind_phone_code"
+            app:layout_constraintEnd_toEndOf="@id/et_bind_phone_code"
+            app:layout_constraintStart_toStartOf="@id/et_bind_phone_code" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_bind_phone_login"
+            style="@style/CommonMatchBtnStyle1"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="72dp"
+            android:enabled="@{vm.canSubmit}"
+            android:onClick="@{vm::bindPhone}"
+            android:text="@string/sure"
+            app:layout_constraintTop_toBottomOf="@id/et_bind_phone_code"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:id="@+id/ll_bind_phone_agreement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/btn_bind_phone_login"
+            app:layout_constraintStart_toStartOf="@id/btn_bind_phone_login"
+            app:layout_constraintTop_toBottomOf="@id/btn_bind_phone_login">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                android:button="@null"
+                android:checked="@={vm.isAgree}"
+                android:drawableStart="@drawable/selector_login_agreement"
+                android:gravity="center_vertical" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_bind_phone_agreement"
+                style="@style/Font_14_black_65"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="已阅读并同意《隐私协议》" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

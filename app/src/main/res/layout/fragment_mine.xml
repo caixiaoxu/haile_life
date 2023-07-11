@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.MineViewModel" />
+
+        <variable
+            name="shared"
+            type="com.yunshang.haile_life.business.vm.SharedViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/mine_bg">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_mine_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:background="@color/transparent"
+            android:src="@mipmap/icon_mine_setting"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.yunshang.haile_life.ui.view.CircleImageView
+            android:id="@+id/iv_mine_head"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="14dp"
+            android:src="@mipmap/icon_default_head"
+            app:imgUrl="@{shared.userInfo.avatar}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ib_mine_setting"
+            app:strokeColor="@color/white"
+            app:strokeWidth="1dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_mine_name"
+            style="@style/Font_18_333333_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@{shared.userInfo.nickname}"
+            app:layout_constraintBottom_toTopOf="@id/tv_mine_phone"
+            app:layout_constraintStart_toEndOf="@id/iv_mine_head"
+            app:layout_constraintTop_toTopOf="@id/iv_mine_head"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="奇怪的id1947" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_mine_phone"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/icon_small_phone"
+            android:drawablePadding="2dp"
+            android:text="@{shared.userInfo.formatPhone}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_mine_head"
+            app:layout_constraintStart_toStartOf="@id/tv_mine_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_mine_name"
+            tools:text="188****8888" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_mine_balance"
+            style="@style/Font_18_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/money"
+            android:text="@{vm.balance}"
+            app:layout_constraintEnd_toEndOf="@id/tv_mine_balance_title"
+            app:layout_constraintStart_toStartOf="@id/tv_mine_balance_title"
+            app:layout_constraintTop_toBottomOf="@id/iv_mine_head"
+            tools:text="200" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_mine_balance_title"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wallet_balance"
+            app:layout_constraintEnd_toStartOf="@id/tv_mine_haixin_title"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_mine_balance" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_mine_haixin"
+            style="@style/Font_18_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/money"
+            android:text="@{vm.starfishTotal}"
+            app:layout_constraintEnd_toEndOf="@id/tv_mine_haixin_title"
+            app:layout_constraintStart_toStartOf="@id/tv_mine_haixin_title"
+            app:layout_constraintTop_toTopOf="@id/tv_mine_balance"
+            tools:text="200" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_mine_haixin_title"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mine_starfish"
+            app:layout_constraintEnd_toStartOf="@id/tv_mine_discounts_title"
+            app:layout_constraintStart_toEndOf="@id/tv_mine_balance_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_mine_haixin" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_mine_discounts"
+            style="@style/Font_18_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/money"
+            android:text="@{vm.couponTotal}"
+            app:layout_constraintEnd_toEndOf="@id/tv_mine_discounts_title"
+            app:layout_constraintStart_toStartOf="@id/tv_mine_discounts_title"
+            app:layout_constraintTop_toTopOf="@id/tv_mine_balance"
+            tools:text="200" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_mine_discounts_title"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/discount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_mine_haixin_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_mine_discounts" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_mine_recharge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_mine_recharge"
+            app:layout_constraintTop_toBottomOf="@id/tv_mine_balance_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/Font_13_5c430a_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="35dp"
+            android:background="@drawable/shape_ffdd68_ffd530_r14"
+            android:drawableEnd="@mipmap/icon_small_arrow_right"
+            android:drawableTint="@color/color_5c430a"
+            android:paddingHorizontal="12dp"
+            android:text="@string/go_recharge"
+            app:layout_constraintEnd_toEndOf="@id/iv_mine_recharge"
+            app:layout_constraintTop_toTopOf="@id/iv_mine_recharge" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_mine_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:background="@drawable/shape_sffffff_r8"
+            android:paddingTop="12dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/iv_mine_recharge">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_mine_order_title"
+                style="@style/Font_14_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/mine_order"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_12_black_45"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:drawableEnd="@mipmap/icon_arrow_right"
+                android:text="@string/check_all_order"
+                app:layout_constraintBottom_toBottomOf="@id/tv_mine_order_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_mine_order_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_mine_order_unpaid"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:drawableTop="@mipmap/icon_order_unpaid"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text='@{@string/unpaid + " " + vm.waitPay}'
+                app:layout_constraintEnd_toStartOf="@id/tv_mine_order_running"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_mine_order_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_mine_order_running"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/icon_order_running"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text='@{@string/running + " " + vm.running}'
+                app:layout_constraintEnd_toStartOf="@id/tv_mine_order_finished"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/tv_mine_order_unpaid"
+                app:layout_constraintTop_toTopOf="@id/tv_mine_order_unpaid" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_mine_order_finished"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/icon_order_finished"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text='@{@string/finished+ " " +vm.finish}'
+                app:layout_constraintEnd_toStartOf="@id/tv_mine_order_refund"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/tv_mine_order_running"
+                app:layout_constraintTop_toTopOf="@id/tv_mine_order_unpaid" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_mine_order_refund"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/icon_order_refund"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text='@{@string/refund + " " + vm.refund}'
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/tv_mine_order_finished"
+                app:layout_constraintTop_toTopOf="@id/tv_mine_order_unpaid" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_sffffff_r8"
+            android:paddingTop="12dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/cl_mine_order">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_fun_service_title"
+                style="@style/Font_14_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/mine_order"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_fun_service_wallet_balance"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:drawableTop="@mipmap/icon_fun_service_wallet"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text="@string/mine_wallet"
+                app:layout_constraintEnd_toStartOf="@id/tv_fun_service_wallet_haixin"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_fun_service_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_fun_service_wallet_haixin"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/icon_fun_service_haixin"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text="@string/mine_starfish"
+                app:layout_constraintEnd_toStartOf="@id/tv_fun_service_wallet_discounts"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/tv_fun_service_wallet_balance"
+                app:layout_constraintTop_toTopOf="@id/tv_fun_service_wallet_balance" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_fun_service_wallet_discounts"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:drawableTop="@mipmap/icon_fun_service_discount"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text="@string/discount_coupon"
+                app:layout_constraintEnd_toStartOf="@id/tv_fun_service_empty"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/tv_fun_service_wallet_haixin"
+                app:layout_constraintTop_toTopOf="@id/tv_fun_service_wallet_balance" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_fun_service_empty"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/tv_fun_service_wallet_discounts"
+                app:layout_constraintTop_toTopOf="@id/tv_fun_service_wallet_balance" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

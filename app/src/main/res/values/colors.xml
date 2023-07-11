@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="colorPrimary">#04CEE5</color>
+    <color name="colorPrimaryBg">#2604CEE5</color>
+    <color name="secondColorPrimary">#04D1E5</color>
+    <color name="secondColorPrimaryBg">#2604D1E5</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="action_title">#333333</color>
+
+    <color name="page_bg">#F7F7F7</color>
+    <color name="dividing_line_color">#E3E3E3</color>
+    <color name="dividing_line_color_efefef">#EFEFEF</color>
+
+    <color name="color_err">#FC7F6F</color>
+    <color name="color_err_second">#26FC7F6F</color>
+
+    <color name="home_top">#D0EDFD</color>
+    <color name="hint_color">#FF3B30</color>
+    <color name="color_pink">#FC7F6F</color>
+    <color name="color_green">#30C19A</color>
+    <color name="second_color_green">#2630C19A</color>
+
+    <color name="color_appoint">#FF630E</color>
+    <color name="color_appoint_bg">#26FF630E</color>
+    <color name="bg_gray">#082E3D3E</color>
+    <color name="bg_wathet">#F4FFFF</color>
+    <color name="color_black_85">#D8000000</color>
+    <color name="color_black_65">#A6000000</color>
+    <color name="color_black_45">#72000000</color>
+    <color name="color_black_25">#40000000</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_5c430a">#5C430A</color>
+    <color name="color_e5fafc">#E5FAFC</color>
+    <color name="color_cccccc">#CCCCCC</color>
+    <color name="color_ffefe6">#FFEFE6</color>
+    <color name="color_ff630e">#FF630E</color>
+    <color name="color_10d0e6">#10D0E6</color>
+    <color name="color_f5f5f5">#f5f5f5</color>
+    <color name="color_04d7e5">#04D7E5</color>
+    <color name="color_22d6e8">#22D6E8</color>
+</resources>

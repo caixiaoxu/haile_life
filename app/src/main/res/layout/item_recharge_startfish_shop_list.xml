@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.RechargeShopListItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/bg_recharge_shop_list_item"
+        android:padding="12dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_recharge_starfish_shop_name"
+            style="@style/Font_16_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.shopName}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="浙大1号店铺" />
+
+        <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:id="@+id/btn_recharge_starfish_record"
+            style="@style/font_12_04d1e5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/shape_s04d1e5_r10"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="2dp"
+            android:text="@string/recharge_record"
+            app:layout_constraintBottom_toBottomOf="@id/tv_recharge_starfish_shop_name"
+            app:layout_constraintStart_toEndOf="@id/tv_recharge_starfish_shop_name"
+            app:layout_constraintTop_toTopOf="@id/tv_recharge_starfish_shop_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_recharge_starfish_shop_total"
+            style="@style/Font_28_04d7e5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/money"
+            android:text='@{item.totalAmount + ""}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_recharge_starfish_shop_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rv_recharge_starfish_reach"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="充值海星"
+            android:text="@{item.getReachVal}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_recharge_starfish_shop_total" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rv_recharge_starfish_reward"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            tools:text="赠送海星"
+            android:text="@{item.getRewardVal}"
+            app:layout_constraintStart_toEndOf="@id/rv_recharge_starfish_reach"
+            app:layout_constraintTop_toTopOf="@id/rv_recharge_starfish_reach" />
+
+        <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:id="@+id/btn_recharge_starfish"
+            style="@style/CommonMatchBtnStyle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:text="@string/go_recharge"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_recharge_starfish_reach" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

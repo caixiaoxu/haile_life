@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.business.vm.HomeCategory" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Font_12_black_85"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        app:drawTop="@{item.icon}"
+        app:tRes="@{item.name}"
+        tools:drawableTop="@mipmap/icon_home_wash"
+        tools:text="洗烘" />
+</layout>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.yunshang.haile_life.R"/>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.TradePreviewParticipate" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_r8"
+        android:paddingVertical="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_coupon_value"
+            style="@style/Font_16_ff630e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/money"
+            android:gravity="center"
+            android:minWidth="80dp"
+            android:paddingHorizontal="8dp"
+            android:text="@{item.promotionDetail.discountCouponValue}"
+            app:layout_constraintBottom_toTopOf="@id/tv_discount_coupon_limit"
+            app:layout_constraintEnd_toEndOf="@id/tv_discount_coupon_limit"
+            app:layout_constraintEnd_toStartOf="@id/tv_discount_coupon_desc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="100.00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_coupon_limit"
+            style="@style/Font_10_black_85"
+            android:layout_width="52dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{item.promotionDetail.limitDesc}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_discount_coupon_value"
+            app:layout_constraintStart_toStartOf="@id/tv_discount_coupon_value"
+            app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_value"
+            tools:text="满0.01可用" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_coupon_title"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.promotionDetail.discountCouponTitle}"
+            app:layout_constraintBottom_toTopOf="@id/tv_discount_coupon_desc"
+            app:layout_constraintEnd_toEndOf="@id/tv_discount_coupon_desc"
+            app:layout_constraintStart_toStartOf="@id/tv_discount_coupon_desc"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="现金抵用券" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_coupon_desc"
+            style="@style/Font_12_black_45"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="60dp"
+            android:text="@{item.promotionDetail.dealLineDateStr}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_discount_coupon_value"
+            app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_title"
+            tools:text="现有2张，本单限1张，2023/03/15到期" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/cb_discount_coupon_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:drawStart="@{item.isCheck?R.mipmap.icon_cyan_checked:R.mipmap.icon_uncheck}"
+            android:layout_marginEnd="16dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.HomeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_home_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_bg"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="108dp">
+
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_home_category_big"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:itemLayout="@layout/item_home_category_big" />
+
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_home_category_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:itemLayout="@layout/item_home_category_small" />
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner_home_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="127dp"
+                    android:layout_marginTop="18dp"
+                    android:visibility="gone" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_home_cur_task"
+                    android:layout_width="match_parent"
+                    android:layout_height="84dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:paddingStart="12dp"
+                    android:visibility="@{null == vm.lastMessage?View.GONE:View.VISIBLE}">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_home_cur_task_title"
+                        style="@style/Font_12_colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/scan_order_tips_hint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_home_cur_task_hint"
+                        style="@style/Font_16_black_85_bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:text='@{vm.lastMessage.title}'
+                        app:layout_constraintBottom_toTopOf="@id/tv_home_cur_task_predict"
+                        app:layout_constraintEnd_toStartOf="@id/btn_home_cur_task_close"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_home_cur_task_title"
+                        tools:text="您有1笔订单正在进行中" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_home_cur_task_predict"
+                        style="@style/Font_12_black_45"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="@{vm.lastMessage.messageContent()}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="预计17:05完成洗衣" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/ib_home_cur_task_close"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_margin="8dp"
+                        android:background="@color/transparent"
+                        android:src="@mipmap/icon_small_close"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.lsy.framelib.ui.weight.SingleTapButton
+                        android:id="@+id/btn_home_cur_task_close"
+                        style="@style/Font_12_FFFFFF"
+                        android:layout_width="66dp"
+                        android:layout_height="27dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="18dp"
+                        android:background="@drawable/shape_04cee5_04dbe5_r14"
+                        android:text="@string/i_know"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape_sffffff_r8">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_near_by_shop_more"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_home_near_stores_title"
+                            style="@style/Font_18_black_85_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/nearby_stores"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_home_near_stores_desc"
+                            style="@style/Font_12_black_45"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/nearby_stores_desc"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_home_near_stores_title" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_12_black_45"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@mipmap/icon_arrow_right"
+                            android:gravity="center"
+                            android:text="@string/more"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_home_near_stores_title"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tv_home_near_stores_title" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/view_near_store_dividing1"
+                        style="@style/DividingStyle"
+                        android:layout_marginHorizontal="16dp"
+                        app:layout_constraintTop_toTopOf="@id/cl_near_by_shop"
+                        tools:ignore="MissingConstraints" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_near_by_shop"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/cl_near_by_shop_more">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_home_near_stores_name"
+                            style="@style/Font_14_black_85_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.nearStoreEntity.name}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="浙大博士楼店" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_home_near_stores_distance"
+                            style="@style/Font_12_black_45"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@mipmap/icon_location_anchor"
+                            android:drawablePadding="4dp"
+                            android:gravity="center"
+                            android:text="@{vm.nearStoreEntity.formatDistance}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_home_near_stores_name"
+                            tools:text="距您 534m" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_home_near_stores_appoint"
+                            style="@style/Font_10_FF630E"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:background="@drawable/shape_s26ff630e_r4"
+                            android:paddingHorizontal="4dp"
+                            android:paddingVertical="2dp"
+                            android:text="@{vm.nearStoreEntity.appointStateVal}"
+                            app:layout_constraintEnd_toStartOf="@id/tv_home_near_stores_status"
+                            app:layout_constraintTop_toTopOf="@id/tv_home_near_stores_status"
+                            tools:text="可预约" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_home_near_stores_status"
+                            style="@style/Font_10_04cee5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_s2604cee5_r4"
+                            android:paddingHorizontal="4dp"
+                            android:paddingVertical="2dp"
+                            android:text="@{vm.nearStoreEntity.stateVal}"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_home_near_stores_name"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tv_home_near_stores_name"
+                            tools:text="营业中" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/view_near_store_dividing2"
+                        style="@style/DividingStyle"
+                        android:layout_marginHorizontal="16dp"
+                        app:layout_constraintBottom_toBottomOf="@id/cl_near_by_shop"
+                        tools:ignore="MissingConstraints" />
+
+                    <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                        android:id="@+id/ll_home_near_stores_devices"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/shape_sffffff_r8"
+                        android:backgroundTint="@color/bg_gray"
+                        android:orientation="vertical"
+                        android:paddingVertical="4dp"
+                        app:itemLayout="@layout/item_home_near_stores"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cl_near_by_shop">
+
+                        <include
+                            layout="@layout/item_home_near_stores"
+                            app:isTitle="@{true}"
+                            app:name="@{@string/device}"
+                            app:num="@{@string/num}"
+                            app:status="@{@string/idle}" />
+                    </com.yunshang.haile_life.ui.view.CustomChildListLinearLayout>
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_near_stores"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:visibility="gone"
+                        app:constraint_referenced_ids="cl_near_by_shop,ll_home_near_stores_devices,view_near_store_dividing1,view_near_store_dividing2" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_near_device"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:visibility="gone"
+                        app:constraint_referenced_ids="ll_home_near_stores_devices,view_near_store_dividing2" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:backgroundTint="@color/bg_wathet"
+                    android:padding="16dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_home_guide_main"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="6dp"
+                        android:src="@mipmap/iv_home_guide"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/iv_home_guide_title"
+                        style="@style/Font_16_black_85"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/home_guide"
+                        app:layout_constraintBottom_toTopOf="@id/iv_home_guide_desc"
+                        app:layout_constraintEnd_toStartOf="@id/iv_home_guide_arrow"
+                        app:layout_constraintStart_toEndOf="@id/iv_home_guide_main"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="自助洗烘指南" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/iv_home_guide_desc"
+                        style="@style/Font_16_black_45"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/home_guide_desc"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/iv_home_guide_title"
+                        app:layout_constraintTop_toBottomOf="@id/iv_home_guide_title"
+                        tools:text="遇到问题来这里快速解决" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_home_guide_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/icon_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_goods_recommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape_sffffff_r8">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:src="@mipmap/icon_goods_recommend"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/ib_goods_recommend_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:padding="8dp"
+                        android:src="@mipmap/icon_small_close"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                        android:id="@+id/ll_goods_recommend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        app:itemLayout="@layout/item_home_goods_recommend"
+                        app:layout_constraintTop_toBottomOf="@id/ib_goods_recommend_close" />
+
+                    <View
+                        android:id="@+id/view_goods_recommend_more"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        app:layout_constraintTop_toBottomOf="@id/ll_goods_recommend" />
+
+                    <View
+                        style="@style/DividingStyle"
+                        app:layout_constraintTop_toTopOf="@id/view_goods_recommend_more"
+                        tools:ignore="MissingConstraints" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_12_black_25"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@mipmap/icon_small_arrow_right"
+                        android:gravity="center"
+                        android:text="@string/view_more"
+                        app:layout_constraintBottom_toBottomOf="@id/view_goods_recommend_more"
+                        app:layout_constraintEnd_toEndOf="@id/view_goods_recommend_more"
+                        app:layout_constraintStart_toStartOf="@id/view_goods_recommend_more"
+                        app:layout_constraintTop_toTopOf="@id/view_goods_recommend_more" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_beer_and_skittles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:src="@mipmap/icon_home_beer_and_skittles"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/ib_beer_and_skittles_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:padding="8dp"
+                        android:src="@mipmap/icon_small_close"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_beer_and_skittles_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/ib_beer_and_skittles_close" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_student_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/shape_sffffff_r8">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:src="@mipmap/icon_home_student_area"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/ib_student_area_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:padding="8dp"
+                        android:src="@mipmap/icon_small_close"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_student_area_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/ib_student_area_close" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:id="@+id/bg_home_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="-10dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_home_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_home_title"
+            android:layout_width="122dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="47dp"
+            android:src="@mipmap/icon_home_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

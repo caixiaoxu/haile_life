@@ -1,0 +1,331 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.HaileLife" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/colorPrimary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/transparent</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowBackground">@color/page_bg</item>
+    </style>
+
+    <style name="CommonMatchBtnStyle" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/common_btn_h</item>
+        <item name="android:textSize">@dimen/font_16</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CommonMatchBtnStyle1" parent="CommonMatchBtnStyle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/selector_login_btn</item>
+    </style>
+
+    <style name="CommonMatchBtnStyle2" parent="CommonMatchBtnStyle">
+        <item name="android:textColor">@color/color_black_85</item>
+        <item name="android:background">@drawable/shape_s979797_r23</item>
+    </style>
+
+    <style name="BottomSheetStyleWrapper" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="CommonBottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyleWrapper</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="DividingStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/dividing_line_color_efefef</item>
+    </style>
+
+    <style name="MainTab">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawablePadding">2dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Font_10_333333">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_10_04cee5">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Font_10_FF630E">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/color_appoint</item>
+    </style>
+
+    <style name="font_10_fc7f6f">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/color_err</item>
+    </style>
+
+    <style name="Font_10_black_65">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/color_black_65</item>
+    </style>
+
+    <style name="Font_10_black_85">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_12_10d0e6">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_10d0e6</item>
+    </style>
+
+    <style name="font_12_04d1e5">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/secondColorPrimary</item>
+    </style>
+
+    <style name="Font_12_black_85">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_12_black_65">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_black_65</item>
+    </style>
+
+    <style name="Font_12_colorPrimary">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+
+    </style>
+
+    <style name="Font_12_FFFFFF">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Font_12_black_25">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_black_25</item>
+    </style>
+
+    <style name="Font_12_black_45">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_black_45</item>
+    </style>
+
+    <style name="Font_12_666666">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#666666</item>
+    </style>
+
+    <style name="Font_13_333333">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
+
+    <style name="Font_13_5c430a">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/color_5c430a</item>
+    </style>
+
+    <style name="Font_13_5c430a_bold" parent="Font_13_5c430a">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Font_14_ffffff">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Font_14_ff630e">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_ff630e</item>
+    </style>
+
+    <style name="Font_14_black_85">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_14_black_85_45" parent="Font_14_black_85">
+        <item name="android:textColorHint">@color/color_black_45</item>
+    </style>
+
+    <style name="Font_14_black_85_bold" parent="Font_14_black_85">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Font_14_333333">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+
+    <style name="Font_14_666666">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#666666</item>
+    </style>
+
+    <style name="Font_14_black_65">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_black_65</item>
+    </style>
+
+    <style name="Font_14_black_85_65">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+        <item name="android:textColorHint">@color/color_black_65</item>
+    </style>
+
+    <style name="font_14_04cee5">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="font_14_04cee5_bold" parent="font_14_04cee5">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="font_14_04D1E5">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/secondColorPrimary</item>
+    </style>
+
+    <style name="Font_14_black_45">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_black_45</item>
+    </style>
+
+    <style name="Font_16_black_45">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/color_black_45</item>
+    </style>
+
+    <style name="Font_16_black_65">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/color_black_65</item>
+    </style>
+
+    <style name="Font_16_black_85">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_16_black_85_bold" parent="Font_16_black_85">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Font_16_black_85_45" parent="Font_16_black_85">
+        <item name="android:textColorHint">@color/color_black_45</item>
+    </style>
+
+    <style name="Font_16_common_txt_bold" parent="Font_16_black_85">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Font_16_white">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Font_16_white_bold" parent="Font_16_white">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Font_16_04cee5">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Font_16_ff630e">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/color_ff630e</item>
+    </style>
+
+    <style name="Font_18_04cee5">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Font_18_black_85">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_18_black_85_bold" parent="Font_18_black_85">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Font_18_333333">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
+
+    <style name="Font_18_333333_bold" parent="Font_18_333333">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Font_20_black_85">
+        <item name="android:textSize">@dimen/font_20</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_20_black_85_bold" parent="Font_20_black_85">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Font_22_black_85">
+        <item name="android:textSize">@dimen/font_22</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_24_black_85">
+        <item name="android:textSize">@dimen/font_24</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_26_04cee5">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Font_28_04d7e5">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/color_04d7e5</item>
+    </style>
+
+    <style name="Font_32_333333">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_32_ff630e">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/color_ff630e</item>
+    </style>
+
+    <style name="Input_14_black_85_45">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+        <item name="android:textColorHint">@color/color_black_45</item>
+    </style>
+</resources>

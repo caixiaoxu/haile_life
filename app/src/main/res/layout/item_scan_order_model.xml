@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_scan_order">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="modelTitle"
+            type="java.lang.String" />
+
+        <variable
+            name="desc"
+            type="java.lang.String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_scan_order_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_scan_order_item_title"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{modelTitle}"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="请选择洗衣模式" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow_scan_order_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:flow_horizontalBias="0"
+            app:flow_horizontalGap="12dp"
+            app:flow_horizontalStyle="packed"
+            app:flow_verticalGap="12dp"
+            app:flow_wrapMode="chain"
+            app:layout_constraintTop_toBottomOf="@id/tv_scan_order_item_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_65"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/shape_scccccc_circle"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@{desc}"
+            android:visibility="@{(null == desc || 0 == desc.length())?View.GONE:View.VISIBLE}"
+            app:layout_constraintTop_toBottomOf="@id/flow_scan_order_item"
+            tools:text="标准洗 适用羽绒服棉袄等衣物的洗涤" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

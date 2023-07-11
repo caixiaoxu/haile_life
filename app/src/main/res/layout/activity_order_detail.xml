@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.yunshang.haile_life.utils.string.StringUtils" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.OrderDetailViewModel" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:divider="@drawable/divide_size8"
+        app:showDividers="middle"
+        tools:context=".ui.activity.order.OrderDetailActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_order_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@string/order_detail" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:divider="@drawable/divide_size8"
+                app:showDividers="middle">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    app:divider="@drawable/divide_size8"
+                    app:showDividers="middle">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_20_black_85_bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.orderDetail.getOrderStatusTitle}"
+                        tools:text="洗衣中" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_14_black_85"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.orderDetail.getOrderDetailFinishTimePrompt}"
+                        tools:text="预计完成时间 下午16点47" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/shape_sffffff_r8">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_14_black_85_bold"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@{vm.orderDetail.orderNo}"
+                        tools:text="NOWNR124823840293849" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_order_detail_copy_order_no"
+                        style="@style/font_14_04D1E5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:onClick="@{v->StringUtils.copyToShear(vm.orderDetail.orderNo)}"
+                        android:paddingHorizontal="14dp"
+                        android:text="@string/copy_order_no" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_14_black_85"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:padding="12dp"
+                    android:text="@{vm.orderDetail.getGoodInfo}"
+                    tools:text="浙大紫荆港校区蓝田学园\n生公寓3区1号楼\n10号洗衣机" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_16_black_85"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.orderDetail.getOrderDeviceModel}"
+                        tools:text="标准洗" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_14_black_85"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:text="@{vm.orderDetail.getOrderDeviceUnit}"
+                        tools:text="30分钟" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_14_ff630e"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.orderDetail.getOrderDeviceOriginPrice}"
+                        tools:text="¥5" />
+                </LinearLayout>
+
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_order_detail_discount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:visibility="gone"
+                    app:divider="@drawable/divide_size8"
+                    app:itemLayout="@layout/item_title_value_lr"
+                    app:showDividers="middle" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:divider="@drawable/divide_size8"
+                    app:showDividers="middle">
+
+                    <include
+                        android:id="@+id/include_order_detail_total_price"
+                        layout="@layout/item_title_value"
+                        app:title='@{@string/total_price +"："}'
+                        app:value="@{StringUtils.formatAmountStrOfStr(vm.orderDetail.originPrice)}" />
+
+                    <include
+                        android:id="@+id/include_order_detail_discount_price"
+                        layout="@layout/item_title_value"
+                        android:visibility="@{0 == vm.orderDetail.getOrderDiscountTotalPrice().length()?View.GONE:View.VISIBLE}"
+                        app:title='@{@string/discount_price +"："}'
+                        app:value="@{vm.orderDetail.getOrderDiscountTotalPrice}" />
+
+                    <include
+                        android:id="@+id/include_order_detail_need_price"
+                        layout="@layout/item_title_value"
+                        app:title='@{@string/need_pay +"："}'
+                        app:value="@{StringUtils.formatAmountStrOfStr(vm.orderDetail.payAmount)}" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:divider="@drawable/divide_size8"
+                    app:showDividers="middle">
+
+                    <include
+                        android:id="@+id/include_order_detail_time"
+                        layout="@layout/item_title_value"
+                        app:title='@{@string/order_time +"："}'
+                        app:value="@{vm.orderDetail.createTime}" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:background="@color/white"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:visibility="@{vm.showBottom?View.VISIBLE:View.GONE}"
+            app:divider="@drawable/divide_size8"
+            app:showDividers="middle">
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_order_detail_contact"
+                style="@style/Font_14_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_s979797_r23"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/contact_shop"
+                android:visibility="@{vm.showContactShop?View.VISIBLE:View.GONE}" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_order_detail_cancel"
+                style="@style/Font_14_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_s979797_r23"
+                android:onClick="@{vm::cancelOrder}"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/cancel_order"
+                android:visibility="@{vm.showCancelOrder?View.VISIBLE:View.GONE}" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_order_detail_pay"
+                style="@style/Font_14_ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_s04d1e5_r23"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/pay_now"
+                android:visibility="@{vm.showPayOrder?View.VISIBLE:View.GONE}" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

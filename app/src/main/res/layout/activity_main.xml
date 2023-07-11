@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.MainActivity">
+
+        <FrameLayout
+            android:id="@+id/fl_main_controller"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/view_main_bottom"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view_main_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:checkedButton="@={vm.checkId}"
+            android:orientation="horizontal"
+            android:paddingTop="7dp"
+            app:layout_constraintTop_toTopOf="@id/view_main_bottom">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_main_tab_home"
+                style="@style/MainTab"
+                android:drawableTop="@drawable/selector_main_home"
+                android:text="@string/main_tab_home" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_main_tab_store"
+                style="@style/MainTab"
+                android:drawableTop="@drawable/selector_main_store"
+                android:text="@string/main_tab_store" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_main_tab_scan"
+                style="@style/MainTab"
+                android:enabled="false"
+                android:drawableTop="@drawable/selector_main_store" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_main_tab_order"
+                style="@style/MainTab"
+                android:drawableTop="@drawable/selector_main_order"
+                android:text="@string/main_tab_order" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_main_tab_mine"
+                style="@style/MainTab"
+                android:drawableTop="@drawable/selector_main_mine"
+                android:text="@string/main_tab_mine" />
+        </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_main_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:src="@mipmap/icon_main_scan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_main_bottom" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

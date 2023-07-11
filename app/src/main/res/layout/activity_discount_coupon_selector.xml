@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.DiscountCouponSelectorViewModel" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:divider="@drawable/divide_size12"
+        app:showDividers="middle"
+        tools:context=".ui.activity.marketing.DiscountCouponSelectorActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_discount_coupon_selector_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:title="@string/order_discount_coupon_selector" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_discount_coupon_selector_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingHorizontal="16dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="98dp"
+            android:background="@color/white"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_discount_coupon_selector_price"
+                style="@style/Font_20_black_85"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/money"
+                android:text='@{@string/unit_money +" "+ vm.tradePreview.discountPrice}'
+                app:layout_constraintBottom_toTopOf="@id/tv_discount_coupon_selector_desc"
+                app:layout_constraintEnd_toStartOf="@id/btn_discount_coupon_selector_sure"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_discount_coupon_selector_sure"
+                app:layout_constraintVertical_chainStyle="spread"
+                tools:text="￥ 5.00" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_discount_coupon_selector_desc"
+                style="@style/Font_12_black_65"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="已选择预计减免"
+                android:visibility="@{0 == vm.tradePreview.discountPrice.length()?View.GONE:View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="@id/btn_discount_coupon_selector_sure"
+                app:layout_constraintEnd_toEndOf="@id/tv_discount_coupon_selector_price"
+                app:layout_constraintStart_toStartOf="@id/tv_discount_coupon_selector_price"
+                app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_selector_price" />
+
+            <com.lsy.framelib.ui.weight.SingleTapButton
+                android:id="@+id/btn_discount_coupon_selector_sure"
+                style="@style/Font_16_white_bold"
+                android:layout_width="81dp"
+                android:layout_height="46dp"
+                android:background="@drawable/shape_s04d1e5_r23"
+                android:stateListAnimator="@null"
+                android:text="@string/sure"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.RechargeStarfishViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.shop.RechargeStarfishActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_recharge_starfish_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:title="@string/recharge" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/include_recharge_starfish_mine"
+                    layout="@layout/item_title_value_lr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="20dp"
+                    app:title="@{@string/mine_starfish}"
+                    app:value='@{vm.shopStarfishTotal.totalAmount +""}' />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_marginHorizontal="16dp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_recharge_starfish_describe"
+                    style="@style/Font_12_black_65"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text='@{1 +@string/unit_yuan + "=" + vm.shopStarfishList.exchangeRate + @string/starfish}'
+                    tools:text="1元=100海星" />
+
+                <GridLayout
+                    android:id="@+id/gl_recharge_starfish_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:columnCount="3" />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_height="8dp" />
+
+                <include
+                    android:id="@+id/include_recharge_starfish_pay_way"
+                    layout="@layout/layout_pay_way"
+                    app:isDryer="@{false}"
+                    app:isZero="@{0}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/font_14_04D1E5"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@color/secondColorPrimaryBg"
+            android:drawableStart="@mipmap/icon_cyan_checked"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:text="@string/recharge_agreement" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="98dp"
+            android:background="@color/white"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_recharge_starfish_price"
+                style="@style/Font_20_black_85"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/money"
+                android:text='@{@string/unit_money +" "+ vm.selectGoodsItem.price}'
+                app:layout_constraintBottom_toTopOf="@id/tv_recharge_starfish_desc"
+                app:layout_constraintEnd_toStartOf="@id/btn_recharge_starfish_pay"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_recharge_starfish_pay"
+                app:layout_constraintVertical_chainStyle="spread"
+                tools:text="￥ 5.00" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_recharge_starfish_desc"
+                style="@style/Font_12_black_65"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text='@{vm.selectGoodsItem.reach + @string/starfish +"+"+ vm.selectGoodsItem.reward + @string/starfish}'
+                app:layout_constraintBottom_toBottomOf="@id/btn_recharge_starfish_pay"
+                app:layout_constraintEnd_toEndOf="@id/tv_recharge_starfish_price"
+                app:layout_constraintStart_toStartOf="@id/tv_recharge_starfish_price"
+                app:layout_constraintTop_toBottomOf="@id/tv_recharge_starfish_price"
+                tools:text="5000海星+100海星" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/btn_recharge_starfish_pay"
+                android:layout_width="132dp"
+                android:layout_height="46dp"
+                android:onClick="@{vm::requestRecharge}"
+                android:background="@drawable/shape_s04d1e5_r23"
+                android:enabled="@{null!=vm.shopStarfishList}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_16_white_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@mipmap/icon_small_arrow_right"
+                android:drawablePadding="4dp"
+                android:drawableTint="@color/white"
+                android:gravity="center"
+                android:text="@string/go_pay"
+                app:layout_constraintBottom_toBottomOf="@id/btn_recharge_starfish_pay"
+                app:layout_constraintEnd_toEndOf="@id/btn_recharge_starfish_pay"
+                app:layout_constraintStart_toStartOf="@id/btn_recharge_starfish_pay"
+                app:layout_constraintTop_toTopOf="@id/btn_recharge_starfish_pay" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

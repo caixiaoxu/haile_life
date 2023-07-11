@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="32dp"
+    tools:context="com.yunshang.haile_manager_android.ui.view.dialog.CommonDialog">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_common_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:textColor="@color/color_black_85"
+        android:textSize="@dimen/font_16"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tv_common_dialog_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="标题" />
+
+    <TextView
+        android:id="@+id/tv_common_dialog_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:textColor="@color/color_black_85"
+        android:textSize="@dimen/font_14"
+        app:layout_constraintBottom_toTopOf="@id/gl_btns_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_btns_start"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/common_btn_h" />
+
+    <com.lsy.framelib.ui.weight.SingleTapButton
+        android:id="@+id/btn_common_dialog_no"
+        style="@style/CommonMatchBtnStyle2"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="8dp"
+        android:text="不同意"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_common_dialog_yes"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.lsy.framelib.ui.weight.SingleTapButton
+        android:id="@+id/btn_common_dialog_yes"
+        style="@style/CommonMatchBtnStyle1"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="8dp"
+        android:text="同意"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_common_dialog_no" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

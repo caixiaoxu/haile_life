@@ -1,0 +1,24 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // 用于下载banner
+        maven { url "https://s01.oss.sonatype.org/content/groups/public" }
+        // 用于下载MagicIndicator
+        maven { url 'https://jitpack.io' }
+    }
+}
+rootProject.name = "HaileLife"
+include ':app'
+include ":CoreLibModules"
+project(':CoreLibModules').projectDir = new File('../CoreLibModules/')
+include ':CoreLibModules:framelib'
+

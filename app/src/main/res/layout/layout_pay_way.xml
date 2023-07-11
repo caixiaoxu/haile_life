@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isDryer"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="isZero"
+            type="java.lang.Integer" />
+    </data>
+
+    <RadioGroup
+        android:id="@+id/rg_order_submit_pay_way"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_r8"
+        android:orientation="vertical"
+        android:paddingVertical="4dp"
+        tools:showIn="@layout/activity_order_submit">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_16_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:text="@string/select_model_of_pay" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_order_submit_balance_pay_way"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/transparent"
+            android:button="@null"
+            android:drawableStart="@mipmap/icon_pay_account_way"
+            android:drawableEnd="@{isDryer?@drawable/selector_orange_check:@drawable/selector_cyan_check}"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:text="@string/balance"
+            android:visibility="@{2 == isZero?View.GONE:View.VISIBLE}" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_order_submit_alipay_pay_way"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/transparent"
+            android:button="@null"
+            android:drawableStart="@mipmap/icon_pay_alipay_way"
+            android:drawableEnd="@{isDryer?@drawable/selector_orange_check:@drawable/selector_cyan_check}"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:text="@string/alipay"
+            android:visibility="@{1 == isZero?View.GONE:View.VISIBLE}" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_order_submit_wechat_pay_way"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/transparent"
+            android:button="@null"
+            android:drawableStart="@mipmap/icon_pay_wechat_way"
+            android:drawableEnd="@{isDryer?@drawable/selector_orange_check:@drawable/selector_cyan_check}"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:text="@string/wechat"
+            android:visibility="@{1 == isZero?View.GONE:View.VISIBLE}" />
+
+    </RadioGroup>
+</layout>

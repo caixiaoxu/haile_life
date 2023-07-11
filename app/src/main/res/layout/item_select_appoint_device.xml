@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.AppointDevice" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_r8"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_select_appoint_device_name"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.goodsName}"
+            app:layout_constraintEnd_toStartOf="@id/tv_select_appoint_device_queue_num"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1号洗衣机" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_select_appoint_device_queue_num"
+            style="@style/Font_14_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{item.queueNumVal}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_select_appoint_device_name"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="排队人数 10" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_select_appoint_shop_name"
+            style="@style/Font_12_black_45"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@{item.shopName}"
+            app:layout_constraintTop_toBottomOf="@id/tv_select_appoint_device_name"
+            tools:text="1号洗衣机" />
+
+        <View
+            style="@style/DividingStyle"
+            android:layout_marginHorizontal="4dp"
+            app:layout_constraintTop_toTopOf="@id/tv_select_appoint_use_time"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_select_appoint_use_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@{item.usedTimeVal}"
+            style="@style/Font_14_black_85"
+            tools:text="预计使用时间：今天10:00"
+            app:layout_constraintTop_toBottomOf="@id/tv_select_appoint_shop_name"
+            android:paddingVertical="8dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

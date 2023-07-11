@@ -1,0 +1,47 @@
+package com.yunshang.haile_life.business.apiService
+
+import com.lsy.framelib.network.response.ResponseList
+import com.lsy.framelib.network.response.ResponseWrapper
+import com.yunshang.haile_life.data.entities.*
+import okhttp3.RequestBody
+import retrofit2.http.*
+
+/**
+ * Title :
+ * Author: Lsy
+ * Date: 2023/3/17 16:35
+ * Version: 1
+ * Description:
+ * History:
+ * <author> <time> <version> <desc>
+ * 作者姓名 修改时间 版本号 描述
+ */
+interface ShopService {
+
+    @POST("/shop/nearShop")
+    suspend fun requestNearStores(@Body body: RequestBody): ResponseWrapper<ResponseList<NearStoreEntity>>
+
+    @GET("/shop/shopDevice")
+    suspend fun requestShopDevice(@Query("id") id: Int): ResponseWrapper<MutableList<StoreDeviceEntity>>
+
+    @GET("/shop/shopDetail")
+    suspend fun requestShopDetail(@Query("id") id: Int): ResponseWrapper<ShopDetailEntity>
+
+    @POST("/tokenCoin/shop/goods")
+    suspend fun requestShopRechargeList(@Body body: RequestBody): ResponseWrapper<ShopStarfishListEntity>
+
+    @POST("/tokenCoin/user/list")
+    suspend fun requestRechargeShopList(@Body body: RequestBody): ResponseWrapper<RechargeShopListEntity>
+
+    @POST("/tokenCoin/user/logList")
+    suspend fun requestRechargeDetailList(@Body body: RequestBody): ResponseWrapper<ResponseList<RechargeStarfishDetailEntity>>
+
+    @POST("/appointment/goodsCategory/list")
+    suspend fun requestAppointCategoryList(@Body body: RequestBody): ResponseWrapper<AppointCategoryListEntity>
+
+    @POST("/appointment/spec/list")
+    suspend fun requestAppointSpecList(@Body body: RequestBody): ResponseWrapper<AppointSpecListEntity>
+
+    @POST("/appointment/item/list")
+    suspend fun requestAppointDeviceList(@Body body: RequestBody): ResponseWrapper<AppointDeviceListEntity>
+}

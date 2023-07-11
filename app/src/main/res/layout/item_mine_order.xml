@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.OrderEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_r8"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_item_mine_order_time"
+            style="@style/Font_12_black_85"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.createTime}"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_mine_order_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2022-11-25 11:11:25" />
+
+        <com.yunshang.haile_life.ui.view.MultiTypeTextView
+            android:id="@+id/tv_item_mine_order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@mipmap/icon_arrow_right"
+            android:text="@{item.stateDesc}"
+            android:textSize="12sp"
+            app:bgResIds="@{item.multiTypeBgRes}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_item_mine_order_time"
+            app:layout_constraintTop_toTopOf="@id/tv_item_mine_order_time"
+            app:txtColors="@{item.multiTypeTxtColors}"
+            app:type="@{item.multiType}"
+            tools:text="已完成" />
+
+        <View
+            style="@style/DividingStyle"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_mine_order_time"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_item_mine_order_device_name"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.getOrderDeviceName}"
+            app:layout_constraintStart_toEndOf="@id/tv_item_mine_order_price_unit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_item_mine_order_price"
+            tools:text="海尔15KG洗衣机" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_item_mine_order_device_model"
+            style="@style/Font_12_black_65"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text='@{item.getOrderDeviceModel + " x1"}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_mine_order_device_name"
+            tools:text="大物洗 x1" />
+
+        <com.yunshang.haile_life.ui.view.AmountTextView
+            android:id="@+id/tv_item_mine_order_price_unit"
+            style="@style/Font_18_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{@string/unit_money +" "}'
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_item_mine_order_price"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_mine_order_price"
+            tools:text="¥ " />
+
+        <com.yunshang.haile_life.ui.view.AmountTextView
+            android:id="@+id/tv_item_mine_order_price"
+            style="@style/Font_20_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@{item.realPrice}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_mine_order_time"
+            tools:text="5.00" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

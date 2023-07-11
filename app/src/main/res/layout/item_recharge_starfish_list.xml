@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.Reward" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="106dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/ll_recharge_starfish_item"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/shape_sf5f5f5_r8" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_recharge_starfish_price"
+            style="@style/Font_22_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/money"
+            android:text='@{@string/unit_money +" "+ item.price}'
+            app:layout_constraintBottom_toTopOf="@id/tv_recharge_starfish_reward"
+            app:layout_constraintEnd_toEndOf="@id/ll_recharge_starfish_item"
+            app:layout_constraintStart_toStartOf="@id/ll_recharge_starfish_item"
+            app:layout_constraintTop_toTopOf="@id/ll_recharge_starfish_item"
+            tools:text="¥ 100" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_recharge_starfish_reward"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/money"
+            android:text="@{@string/reward_num(item.reward)}"
+            app:layout_constraintBottom_toBottomOf="@id/ll_recharge_starfish_item"
+            app:layout_constraintEnd_toEndOf="@id/ll_recharge_starfish_item"
+            app:layout_constraintStart_toStartOf="@id/ll_recharge_starfish_item"
+            app:layout_constraintTop_toBottomOf="@id/tv_recharge_starfish_price"
+            tools:text="送1000海星" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_recharge_starfish_recommend"
+            android:layout_width="30dp"
+            android:layout_height="18dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@mipmap/icon_recharge_starfish_recommend"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.NearStoreEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_r8"
+        android:paddingVertical="12dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_near_by_shop_name"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.name}"
+            app:layout_constraintEnd_toStartOf="@id/rv_near_by_device_status"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="浙大博士楼" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rv_near_by_device_status"
+            style="@style/Font_14_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_near_by_shop_name"
+            app:layout_constraintEnd_toStartOf="@id/rv_near_by_device_num"
+            app:layout_constraintStart_toEndOf="@id/tv_near_by_shop_name"
+            app:layout_constraintTop_toTopOf="@id/tv_near_by_shop_name"
+            android:text="@string/idle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rv_near_by_device_num"
+            style="@style/font_14_04cee5_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@mipmap/icon_arrow_right"
+            android:drawablePadding="4dp"
+            android:text='@{item.idleCount+""}'
+            app:layout_constraintBottom_toBottomOf="@id/tv_near_by_shop_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_near_by_shop_name"
+            tools:text="10" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_near_by_shop_distance"
+            style="@style/Font_12_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text='@{item.formatDistance() +" | "}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_near_by_shop_name"
+            tools:text="距您 534m" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_near_by_shop_address"
+            style="@style/Font_12_black_85"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.address}"
+            tools:text="I 浙大紫金港路具体多少号"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_near_by_shop_distance"
+            app:layout_constraintTop_toTopOf="@id/tv_near_by_shop_distance" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:divider="@drawable/divide_size4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_near_by_shop_distance"
+            app:showDividers="middle">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/tv_near_by_shop_startfinsh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_near_by_shop_starfish"
+                android:visibility="@{item.rechargeFlag?View.VISIBLE:View.GONE}" />
+
+            <com.yunshang.haile_life.ui.view.MultiTypeTextView
+                android:id="@+id/tv_near_by_shop_appoint"
+                style="@style/Font_10_FF630E"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:text="@string/can_appointment"
+                android:visibility="@{1 == item.appointmentState?View.VISIBLE:View.GONE}"
+                app:bgResIds="@{item.multiTypeBgRes}"
+                app:txtColors="@{item.multiTypeTxtColors}"
+                app:type="@{0}"
+                tools:background="@drawable/shape_s26ff630e_r4" />
+
+            <com.yunshang.haile_life.ui.view.MultiTypeTextView
+                android:id="@+id/tv_near_by_shop_business"
+                style="@style/Font_10_04cee5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:text="@string/in_operation"
+                app:bgResIds="@{item.multiTypeBgRes}"
+                app:txtColors="@{item.multiTypeTxtColors}"
+                app:type="@{1}"
+                tools:background="@drawable/shape_s2604cee5_r4" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
