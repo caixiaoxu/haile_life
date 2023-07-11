@@ -32,14 +32,16 @@ class MainActivity :
         put(R.id.rb_main_tab_home, HomeFragment())
         put(R.id.rb_main_tab_store, StoreFragment())
         put(R.id.rb_main_tab_scan, HomeFragment())
-        put(R.id.rb_main_tab_order, OrderFragment())
+        put(R.id.rb_main_tab_order, OrderFragment().apply {
+            arguments = IntentParams.OrderListParams.pack(true)
+        })
         put(R.id.rb_main_tab_mine, MineFragment())
     }
 
     // 扫码相机启动器
     private val scanCodeLauncher = registerForActivityResult(ScanContract()) { result ->
         result.contents?.let {
-            val code = StringUtils.getPayCode(it) ?:if (StringUtils.isImeiCode(it)) it else null
+            val code = StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
             code?.let { code ->
                 startActivity(Intent(this@MainActivity, ScanOrderActivity::class.java).apply {
                     putExtras(IntentParams.ScanOrderParams.pack(code))

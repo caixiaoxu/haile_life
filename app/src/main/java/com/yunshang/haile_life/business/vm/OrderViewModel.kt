@@ -23,7 +23,7 @@ import kotlinx.coroutines.withContext
 class OrderViewModel : BaseViewModel() {
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
-    var curOrderStatus: MutableLiveData<Int?> = MutableLiveData(null)
+    var curOrderStatus: MutableLiveData<Int?> = MutableLiveData()
 
     // 订单状态 ，100：待支付；500：进行中；1000：已完成；2000：退款中；2099：已退款
     val orderStatus: MutableLiveData<List<IndicatorEntity<Int?>>> = MutableLiveData(

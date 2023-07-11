@@ -9,6 +9,7 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.MineViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.FragmentMineBinding
+import com.yunshang.haile_life.ui.activity.order.OrderListActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishShopListActivity
 
@@ -54,10 +55,34 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
                 putExtras(IntentParams.NearByShopParams.pack(true))
             })
         }
+
+        mBinding.clMineOrder.setOnClickListener {
+            goOrderList()
+        }
+        mBinding.tvMineOrderUnpaid.setOnClickListener {
+            goOrderList(100)
+        }
+        mBinding.tvMineOrderRunning.setOnClickListener {
+            goOrderList(500)
+        }
+        mBinding.tvMineOrderFinished.setOnClickListener {
+            goOrderList(1000)
+        }
+        mBinding.tvMineOrderRefund.setOnClickListener {
+            goOrderList(2099)
+        }
     }
 
     private fun goRechargeStarfishShopList() {
         startActivity(Intent(requireContext(), RechargeStarfishShopListActivity::class.java))
+    }
+
+    private fun goOrderList(status: Int? = null) {
+        startActivity(
+            Intent(requireContext(), OrderListActivity::class.java).apply {
+                putExtras(IntentParams.OrderListParams.pack(status = status))
+            }
+        )
     }
 
     override fun initData() {

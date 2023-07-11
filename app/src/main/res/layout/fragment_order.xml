@@ -24,7 +24,6 @@
             android:id="@+id/bar_mine_order_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
-            app:canBack="false"
             android:background="@color/white"
             app:rightModel="text"
             app:title="@string/mine_order" />

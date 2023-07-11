@@ -2,6 +2,7 @@ package com.yunshang.haile_life.ui.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -95,21 +96,41 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
                     }
                 }
             }
+            // 初始化选中状态
+            mViewModel.curOrderStatus.value?.let { status ->
+                when (status) {
+                    100 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(1)
+                    500 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(2)
+                    1000 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(3)
+                    2099 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(4)
+                }
+            }
         }
 
-        LiveDataBus.with(BusEvents.ORDER_SUBMIT_STATUS)?.observe(this){
+        LiveDataBus.with(BusEvents.ORDER_SUBMIT_STATUS)?.observe(this) {
             mBinding.rvMineOrderList.requestRefresh()
         }
 
-        LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this){
+        LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
             mBinding.rvMineOrderList.requestRefresh()
         }
     }
 
     override fun initView() {
+        val isMain = arguments?.let { IntentParams.OrderListParams.parseIsMain(it) } != false
+        if (isMain) {
+            (mBinding.viewOrderPadding.layoutParams as ViewGroup.LayoutParams).height =
+                StatusBarUtils.getStatusBarHeight()
+        } else {
+            mBinding.viewOrderPadding.visibility = View.GONE
+        }
+        mBinding.barMineOrderTitle.getBackBtn().visibility =
+            if (!isMain) View.VISIBLE else View.GONE
+        mBinding.barMineOrderTitle.getBackBtn().setOnClickListener {
+            activity?.finish()
+        }
+
         //设置顶部距离
-        (mBinding.viewOrderPadding.layoutParams as ViewGroup.LayoutParams).height =
-            StatusBarUtils.getStatusBarHeight()
         mBinding.barMineOrderTitle.getRightBtn().run {
             setText(R.string.appointment_order)
             setOnClickListener {
@@ -142,6 +163,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
     }
 
     override fun initData() {
+        mViewModel.curOrderStatus.value =
+            arguments?.let { IntentParams.OrderListParams.parseStatus(it) }
     }
-
 }

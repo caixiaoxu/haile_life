@@ -206,6 +206,27 @@ object IntentParams {
             intent.getBooleanExtra(IsRechargeShop, false)
     }
 
+    object OrderListParams {
+        private const val IsMain = "isMain"
+        private const val Status = "status"
+
+        /**
+         * 包装参数
+         */
+        fun pack(isMain: Boolean = false, status: Int? = null): Bundle =
+            Bundle().apply {
+                putBoolean(IsMain, isMain)
+                status?.let {
+                    putInt(Status, status)
+                }
+            }
+
+        fun parseIsMain(bundle: Bundle): Boolean = bundle.getBoolean(IsMain, false)
+        fun parseStatus(bundle: Bundle): Int? = bundle.getInt(Status, -1).let {
+            if (-1 == it) null else it
+        }
+    }
+
     object DiscountCouponSelectorParams {
         private const val SelectCoupon = "SelectCoupon"
 
