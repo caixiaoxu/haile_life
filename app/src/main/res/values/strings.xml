@@ -89,6 +89,7 @@
     <string name="queue_num">排队人数</string>
     <string name="appoint_use_time">预计使用时间</string>
     <string name="appoint_device_queue_use_time">%1$s排队%2$d人，预计使用时间</string>
+    <string name="appoint_order_detail_prompt">温馨提示：\n1、到店后可用微信/支付宝扫码解锁设备。\n2、因自身原因超时未使用的订单将无法退款。</string>
 
     <string name="refund_record">退款记录</string>
     <string name="recharge_record">充值记录</string>
@@ -113,6 +114,9 @@
     <string name="pay_success">支付成功</string>
     <string name="pay_success_hint">设备将在稍后为您启动，预计将在今日%1$s左右完成%2$s完成后会通过消息通知到您，请及时取走衣物</string>
     <string name="appoint_pay_success_hint">请在%1$s到具体店铺使用%2$s</string>
+    <string name="appoint_time">预约时间</string>
+    <string name="over_time_prompt">距预约时间超过%1$d分钟，取消后付款金额原路退回您的账户，已使用的优惠券等权益不返还，确认取消？</string>
+    <string name="cancel_order_prompt">您确定要取消订单吗？</string>
 
     <string name="appointment_order">预约订单</string>
     <string name="order_detail">订单详情</string>
@@ -126,6 +130,9 @@
     <string name="contact_shop">联系商家</string>
     <string name="predict_finish_time">预计完成时间</string>
     <string name="order_submit_used_time_prompt">请在 %1$s 到店使用</string>
+    <string name="no_use_appoint_order">不使用预约单</string>
+    <string name="use_appoint_order">使用预约单</string>
+    <string name="appoint_order_use_start_prompt">已放入衣物，启动设备</string>
 
     <string name="shop_detail">门店详情</string>
     <string name="business_time">营业时间</string>

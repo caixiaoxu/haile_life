@@ -74,8 +74,7 @@
                 <include
                     android:id="@+id/include_recharge_starfish_pay_way"
                     layout="@layout/layout_pay_way"
-                    app:isDryer="@{false}"
-                    app:isZero="@{0}" />
+                    app:isDryer="@{false}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

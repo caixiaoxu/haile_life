@@ -20,6 +20,7 @@ import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.databinding.FragmentOrderBinding
 import com.yunshang.haile_life.databinding.ItemMineOrderBinding
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
+import com.yunshang.haile_life.ui.activity.order.OrderListActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -46,9 +47,10 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
         CommonRecyclerAdapter<ItemMineOrderBinding, OrderEntity>(
             R.layout.item_mine_order, BR.item
         ) { mItemBinding, _, item ->
+            mItemBinding?.isAppoint = mViewModel.isAppoint
             mItemBinding?.root?.setOnClickListener {
                 startActivity(Intent(requireContext(), OrderDetailActivity::class.java).apply {
-                    putExtras(IntentParams.OrderParams.pack(item.orderNo))
+                    putExtras(IntentParams.OrderParams.pack(item.orderNo, mViewModel.isAppoint))
                 })
             }
         }
@@ -61,48 +63,61 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
         mViewModel.curOrderStatus.observe(this) {
             mBinding.rvMineOrderList.requestRefresh()
         }
-        mViewModel.orderStatus.observe(this) { list ->
-            mBinding.indicatorMineOrderStatus.navigator = CommonNavigator(requireContext()).apply {
-                adapter = object : CommonNavigatorAdapter() {
-                    override fun getCount(): Int = list.size
 
-                    override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
-                        return SimplePagerTitleView(context).apply {
-                            normalColor =
-                                ContextCompat.getColor(requireContext(), R.color.color_black_65)
-                            selectedColor =
-                                ContextCompat.getColor(requireContext(), R.color.color_black_85)
-                            list[index].run {
-                                text = title
-                                setOnClickListener {
-                                    mViewModel.curOrderStatus.value = value
-                                    onPageSelected(index)
-                                    notifyDataSetChanged()
+        if (!mViewModel.isAppoint) {
+            mViewModel.orderStatus.observe(this) { list ->
+                mBinding.indicatorMineOrderStatus.navigator =
+                    CommonNavigator(requireContext()).apply {
+                        adapter = object : CommonNavigatorAdapter() {
+                            override fun getCount(): Int = list.size
+
+                            override fun getTitleView(
+                                context: Context?,
+                                index: Int
+                            ): IPagerTitleView {
+                                return SimplePagerTitleView(context).apply {
+                                    normalColor =
+                                        ContextCompat.getColor(
+                                            requireContext(),
+                                            R.color.color_black_65
+                                        )
+                                    selectedColor =
+                                        ContextCompat.getColor(
+                                            requireContext(),
+                                            R.color.color_black_85
+                                        )
+                                    list[index].run {
+                                        text = title
+                                        setOnClickListener {
+                                            mViewModel.curOrderStatus.value = value
+                                            onPageSelected(index)
+                                            notifyDataSetChanged()
+                                        }
+                                    }
+                                }
+                            }
+
+                            override fun getIndicator(context: Context?): IPagerIndicator {
+                                return LinePagerIndicator(context).apply {
+                                    mode = LinePagerIndicator.MODE_WRAP_CONTENT
+                                    setColors(
+                                        ContextCompat.getColor(
+                                            requireContext(),
+                                            R.color.colorPrimary
+                                        )
+                                    )
                                 }
                             }
                         }
                     }
-
-                    override fun getIndicator(context: Context?): IPagerIndicator {
-                        return LinePagerIndicator(context).apply {
-                            mode = LinePagerIndicator.MODE_WRAP_CONTENT
-                            setColors(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.colorPrimary
-                                )
-                            )
-                        }
+                // 初始化选中状态
+                mViewModel.curOrderStatus.value?.let { status ->
+                    when (status) {
+                        100 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(1)
+                        500 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(2)
+                        1000 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(3)
+                        2099 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(4)
                     }
-                }
-            }
-            // 初始化选中状态
-            mViewModel.curOrderStatus.value?.let { status ->
-                when (status) {
-                    100 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(1)
-                    500 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(2)
-                    1000 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(3)
-                    2099 -> mBinding.indicatorMineOrderStatus.navigator.onPageSelected(4)
                 }
             }
         }
@@ -114,6 +129,14 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
             mBinding.rvMineOrderList.requestRefresh()
         }
+
+        LiveDataBus.with(BusEvents.ORDER_CANCEL_STATUS)?.observe(this) {
+            mBinding.rvMineOrderList.requestRefresh()
+        }
+    }
+
+    override fun initArguments() {
+        mViewModel.isAppoint = IntentParams.OrderListParams.parseIsAppoint(arguments)
     }
 
     override fun initView() {
@@ -130,13 +153,24 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
             activity?.finish()
         }
 
-        //设置顶部距离
-        mBinding.barMineOrderTitle.getRightBtn().run {
-            setText(R.string.appointment_order)
-            setOnClickListener {
-                // 跳转预约订单
+        mBinding.barMineOrderTitle.setTitle(if (mViewModel.isAppoint) R.string.appointment_order else R.string.mine_order)
+
+        if (!mViewModel.isAppoint) {
+            mBinding.barMineOrderTitle.getRightBtn().run {
+                setText(R.string.appointment_order)
+                setOnClickListener {
+                    // 跳转预约订单
+                    startActivity(
+                        Intent(requireContext(), OrderListActivity::class.java).apply {
+                            putExtras(IntentParams.OrderListParams.pack(isAppoint = true))
+                        }
+                    )
+                }
             }
         }
+
+        mBinding.indicatorMineOrderStatus.visibility =
+            if (mViewModel.isAppoint) View.GONE else View.VISIBLE
 
         mBinding.rvMineOrderList.layoutManager = LinearLayoutManager(requireContext())
         ResourcesCompat.getDrawable(resources, R.drawable.divide_size8, null)?.let {

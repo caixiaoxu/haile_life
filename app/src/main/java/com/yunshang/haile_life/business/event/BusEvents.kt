@@ -24,6 +24,12 @@ object BusEvents {
     // 订单提交
     const val ORDER_SUBMIT_STATUS = "order_submit_status"
 
+    // 订单取消
+    const val ORDER_CANCEL_STATUS = "order_cancel_status"
+
+    // 预约单使用
+    const val APPOINT_ORDER_USE_STATUS = "appoint_order_use_status"
+
     // 充值成功
     const val RECHARGE_SUCCESS_STATUS = "recharge_success_status"
 }

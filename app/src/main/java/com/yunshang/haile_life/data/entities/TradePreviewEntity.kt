@@ -5,7 +5,7 @@ import android.text.style.AbsoluteSizeSpan
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.data.DeviceCategory
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.utils.DateTimeUtils
 
 /**

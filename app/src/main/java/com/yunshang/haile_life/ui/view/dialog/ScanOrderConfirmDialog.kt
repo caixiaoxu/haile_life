@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.data.DeviceCategory
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.DialogScanOrderConfirmBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderConfirmItemBinding

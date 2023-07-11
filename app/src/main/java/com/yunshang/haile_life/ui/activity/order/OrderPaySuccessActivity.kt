@@ -7,7 +7,7 @@ import com.lsy.framelib.ui.base.activity.BaseBindingActivity
 import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.OrderService
-import com.yunshang.haile_life.data.DeviceCategory
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.databinding.ActivityOrderPaySuccessBinding

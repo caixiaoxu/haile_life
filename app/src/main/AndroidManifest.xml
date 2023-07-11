@@ -35,6 +35,9 @@
         android:theme="@style/Theme.HaileLife"
         tools:targetApi="31">
         <activity
+            android:name=".AppointmentOrderDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.order.OrderListActivity"
             android:exported="false" />
         <activity

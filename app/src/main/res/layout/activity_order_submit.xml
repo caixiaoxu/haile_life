@@ -109,8 +109,7 @@
             <include
                 android:id="@+id/include_order_submit_pay_way"
                 layout="@layout/layout_pay_way"
-                app:isDryer="@{vm.isDryer()}"
-                app:isZero="@{vm.tradePreview.isZero()?1:2}" />
+                app:isDryer="@{vm.isDryer()}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.constraintlayout.widget.ConstraintLayout

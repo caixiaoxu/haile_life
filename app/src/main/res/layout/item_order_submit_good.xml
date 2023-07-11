@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.yunshang.haile_life.data.DeviceCategory" />
+        <import type="com.yunshang.haile_life.data.agruments.DeviceCategory" />
 
         <variable
             name="item"

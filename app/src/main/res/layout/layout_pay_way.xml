@@ -9,10 +9,6 @@
         <variable
             name="isDryer"
             type="java.lang.Boolean" />
-
-        <variable
-            name="isZero"
-            type="java.lang.Integer" />
     </data>
 
     <RadioGroup
@@ -44,8 +40,7 @@
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"
-            android:text="@string/balance"
-            android:visibility="@{2 == isZero?View.GONE:View.VISIBLE}" />
+            android:text="@string/balance" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_order_submit_alipay_pay_way"
@@ -59,8 +54,7 @@
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"
-            android:text="@string/alipay"
-            android:visibility="@{1 == isZero?View.GONE:View.VISIBLE}" />
+            android:text="@string/alipay" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_order_submit_wechat_pay_way"
@@ -74,8 +68,6 @@
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"
-            android:text="@string/wechat"
-            android:visibility="@{1 == isZero?View.GONE:View.VISIBLE}" />
-
+            android:text="@string/wechat"/>
     </RadioGroup>
 </layout>

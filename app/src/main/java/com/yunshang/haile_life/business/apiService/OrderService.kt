@@ -45,6 +45,12 @@ interface OrderService {
     @POST("/trade/cancel")
     suspend fun cancelOrder(@Body body: RequestBody): ResponseWrapper<Any>
 
+    @POST("/appointment/cancel")
+    suspend fun cancelAppointOrder(@Body body: RequestBody): ResponseWrapper<Any>
+
     @GET("/trade/getTradeOrderStateCountList")
     suspend fun requestOrderCountOfStatus(): ResponseWrapper<MutableList<OrderCountOfStatusEntity>>
+
+    @POST("/appointment/using")
+    suspend fun useAppointOrder(@Body body: RequestBody): ResponseWrapper<MutableList<Any>>
 }

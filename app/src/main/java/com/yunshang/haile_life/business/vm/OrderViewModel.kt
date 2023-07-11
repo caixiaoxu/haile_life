@@ -23,6 +23,8 @@ import kotlinx.coroutines.withContext
 class OrderViewModel : BaseViewModel() {
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
+    var isAppoint: Boolean = false
+
     var curOrderStatus: MutableLiveData<Int?> = MutableLiveData()
 
     // 订单状态 ，100：待支付；500：进行中；1000：已完成；2000：退款中；2099：已退款
@@ -42,15 +44,21 @@ class OrderViewModel : BaseViewModel() {
         pageSize: Int,
         callBack: (responseList: ResponseList<out OrderEntity>?) -> Unit
     ) {
+        val params = hashMapOf(
+            "page" to page,
+            "pageSize" to pageSize,
+            "orderState" to curOrderStatus.value
+        )
+
+        if (isAppoint) {
+            params["orderType"] = 300
+        }
+
         launch({
             ApiRepository.dealApiResult(
                 mOrderRepo.requestOrderList(
                     ApiRepository.createRequestBody(
-                        hashMapOf(
-                            "page" to page,
-                            "pageSize" to pageSize,
-                            "orderState" to curOrderStatus.value
-                        )
+                        params
                     )
                 )
             )?.let {

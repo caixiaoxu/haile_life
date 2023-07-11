@@ -29,12 +29,20 @@ abstract class BaseBusinessFragment<T : ViewDataBinding, VM : BaseViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initArguments()
         initView()
         initEvent()
         vId?.let {
             mBinding.setVariable(it, mViewModel)
         }
         initData()
+    }
+
+    /**
+     * 初始化参数
+     */
+    open fun initArguments() {
+
     }
 
     /**

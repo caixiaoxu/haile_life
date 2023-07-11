@@ -16,6 +16,7 @@ import com.yunshang.haile_life.utils.NumberUtils
 import java.io.UnsupportedEncodingException
 import java.text.DecimalFormat
 import java.util.regex.Pattern
+import kotlin.math.abs
 
 
 /**
@@ -267,7 +268,9 @@ object StringUtils {
      */
     @JvmStatic
     fun formatAmountStr(amount: Double): String {
-        return (if (amount >= 0) "¥" else "-¥") + if (0 == (amount * 100).toInt() % 100) amount.toInt()
-        else String.format("%.2f", amount)
+        return (if (amount >= 0) "¥" else "-¥") + abs(amount).let {
+            if (0 == (it * 100).toInt() % 100) it.toInt()
+            else String.format("%.2f", it)
+        }
     }
 }

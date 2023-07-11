@@ -209,20 +209,23 @@ object IntentParams {
     object OrderListParams {
         private const val IsMain = "isMain"
         private const val Status = "status"
+        private const val IsAppoint = "isAppoint"
 
         /**
          * 包装参数
          */
-        fun pack(isMain: Boolean = false, status: Int? = null): Bundle =
+        fun pack(isMain: Boolean = false, status: Int? = null, isAppoint: Boolean = false): Bundle =
             Bundle().apply {
                 putBoolean(IsMain, isMain)
                 status?.let {
                     putInt(Status, status)
                 }
+                putBoolean(IsAppoint, isAppoint)
             }
 
-        fun parseIsMain(bundle: Bundle): Boolean = bundle.getBoolean(IsMain, false)
-        fun parseStatus(bundle: Bundle): Int? = bundle.getInt(Status, -1).let {
+        fun parseIsMain(bundle: Bundle?): Boolean = bundle?.getBoolean(IsMain, false) ?: false
+        fun parseIsAppoint(bundle: Bundle?): Boolean = bundle?.getBoolean(IsAppoint, false) ?: false
+        fun parseStatus(bundle: Bundle?): Int? = bundle?.getInt(Status, -1).let {
             if (-1 == it) null else it
         }
     }
@@ -279,15 +282,22 @@ object IntentParams {
 
     object OrderParams {
         private const val OrderNo = "orderNo"
+        private const val IsAppoint = "isAppoint"
+        private const val FormScan = "formScan"
 
         /**
          * 包装参数
          */
-        fun pack(orderNo: String): Bundle =
+        fun pack(orderNo: String, isAppoint: Boolean = false, formScan: Boolean = false): Bundle =
             Bundle().apply {
                 putString(OrderNo, orderNo)
+                putBoolean(IsAppoint, isAppoint)
+                putBoolean(FormScan, formScan)
             }
 
         fun parseOrderNo(intent: Intent): String? = intent.getStringExtra(OrderNo)
+
+        fun parseIsAppoint(intent: Intent): Boolean = intent.getBooleanExtra(IsAppoint, false)
+        fun parseFormScan(intent: Intent): Boolean = intent.getBooleanExtra(FormScan, false)
     }
 }

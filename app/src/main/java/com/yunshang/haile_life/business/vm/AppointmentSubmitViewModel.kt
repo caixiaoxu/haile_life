@@ -12,7 +12,7 @@ import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.ShopService
-import com.yunshang.haile_life.data.DeviceCategory
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.AppointCategory
 import com.yunshang.haile_life.data.entities.AppointDevice
 import com.yunshang.haile_life.data.entities.AppointSpec

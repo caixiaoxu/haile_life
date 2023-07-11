@@ -15,7 +15,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.ScanOrderViewModel
-import com.yunshang.haile_life.data.DeviceCategory
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.ExtAttrBean
 import com.yunshang.haile_life.data.model.SPRepository
@@ -35,7 +35,14 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
         super.initEvent()
         mViewModel.goodsAppointment.observe(this) {
             if (!it.orderNo.isNullOrEmpty()) {
-                // TODO 跳转预约详情界面
+                // 预约详情界面
+                startActivity(
+                    Intent(
+                        this@ScanOrderActivity,
+                        OrderDetailActivity::class.java
+                    ).apply {
+                        putExtras(IntentParams.OrderParams.pack(it.orderNo, true, true))
+                    })
             }
         }
         mViewModel.deviceConfigs.observe(this) { configs ->
@@ -135,6 +142,10 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
         }
 
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
+            finish()
+        }
+
+        LiveDataBus.with(BusEvents.APPOINT_ORDER_USE_STATUS)?.observe(this) {
             finish()
         }
     }

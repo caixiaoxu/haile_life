@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="com.yunshang.haile_life.data.agruments.OrderStatus" />
+
+        <variable
+            name="isAppoint"
+            type="java.lang.Boolean" />
+
         <variable
             name="item"
             type="com.yunshang.haile_life.data.entities.OrderEntity" />
@@ -33,14 +39,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableEnd="@mipmap/icon_arrow_right"
-            android:text="@{item.stateDesc}"
+            android:text="@{isAppoint?OrderStatus.getAppointStateName(item.appointmentState):item.stateDesc}"
             android:textSize="12sp"
             app:bgResIds="@{item.multiTypeBgRes}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_item_mine_order_time"
             app:layout_constraintTop_toTopOf="@id/tv_item_mine_order_time"
             app:txtColors="@{item.multiTypeTxtColors}"
-            app:type="@{item.multiType}"
+            app:type="@{item.getMultiType(isAppoint)}"
             tools:text="已完成" />
 
         <View

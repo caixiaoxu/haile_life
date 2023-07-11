@@ -7,7 +7,7 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.MarketingService
 import com.yunshang.haile_life.business.apiService.MessageService
 import com.yunshang.haile_life.business.apiService.ShopService
-import com.yunshang.haile_life.data.DeviceCategory
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.ADEntity
 import com.yunshang.haile_life.data.entities.MessageEntity
 import com.yunshang.haile_life.data.entities.NearStoreEntity

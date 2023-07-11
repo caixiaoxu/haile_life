@@ -1,7 +1,7 @@
 package com.yunshang.haile_life.data.entities
 
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.data.DeviceCategory
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 
 /**
  * Title :

@@ -30,6 +30,12 @@ class OrderDetailViewModel : BaseViewModel() {
 
     var orderNo: String? = null
 
+    var isAppoint: Boolean = false
+
+    var formScan: Boolean = false
+
+    val changeUseModel: MutableLiveData<Boolean> = MutableLiveData(false)
+
     //支付方式 1001-余额 103--支付宝app支付 203--微信app支付
     var payMethod: Int = -1
 
@@ -43,19 +49,31 @@ class OrderDetailViewModel : BaseViewModel() {
 
     val showContactShop: LiveData<Boolean> = orderDetail.map {
         it?.let { detail ->
-            detail.buyerPhone.isNotEmpty() && 100 != detail.state
+            if (formScan)
+                false
+            else
+                detail.buyerPhone.isNotEmpty()
         } ?: false
     }
 
     val showCancelOrder: LiveData<Boolean> = orderDetail.map {
         it?.let { detail ->
-            100 == detail.state || 500 == detail.state
+            if (formScan) {
+                false
+            } else {
+                if (isAppoint) 0 == detail.appointmentState || 1 == detail.appointmentState
+                else 100 == detail.state || 500 == detail.state
+            }
         } ?: false
     }
 
     val showPayOrder: LiveData<Boolean> = orderDetail.map {
         it?.let { detail ->
-            100 == detail.state
+            if (formScan) {
+                false
+            } else {
+                if (isAppoint) 0 == detail.appointmentState else 100 == detail.state
+            }
         } ?: false
     }
 
@@ -70,10 +88,13 @@ class OrderDetailViewModel : BaseViewModel() {
         addSource(showPayOrder) {
             value = checkShowAnyBtn()
         }
+        addSource(changeUseModel) {
+            value = checkShowAnyBtn()
+        }
     }
 
     private fun checkShowAnyBtn() =
-        (true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value)
+        ((formScan || true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && false == changeUseModel.value)
 
     fun requestOrderDetailAsync() {
         if (orderNo.isNullOrEmpty()) return
@@ -86,20 +107,20 @@ class OrderDetailViewModel : BaseViewModel() {
         }
     }
 
-    fun cancelOrder(v: View) {
+    fun cancelOrder() {
         if (orderNo.isNullOrEmpty()) return
+
+        val body = ApiRepository.createRequestBody(
+            hashMapOf(
+                "orderNo" to orderNo
+            )
+        )
         launch({
             ApiRepository.dealApiResult(
-                mOrderRepo.cancelOrder(
-                    ApiRepository.createRequestBody(
-                        hashMapOf(
-                            "orderNo" to orderNo
-                        )
-                    )
-                )
-            )?.let {
-                requestOrderDetail()
-            }
+                if (isAppoint) mOrderRepo.cancelAppointOrder(body) else mOrderRepo.cancelOrder(body)
+            )
+            LiveDataBus.post(BusEvents.ORDER_CANCEL_STATUS, true)
+            requestOrderDetail()
         })
     }
 
@@ -175,5 +196,23 @@ class OrderDetailViewModel : BaseViewModel() {
             LiveDataBus.post(BusEvents.PAY_SUCCESS_STATUS, true)
             requestOrderDetail()
         }
+    }
+
+
+    fun useAppointOrder(v: View) {
+        if (orderNo.isNullOrEmpty()) return
+
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.useAppointOrder(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "orderNo" to orderNo
+                        )
+                    )
+                )
+            )
+            LiveDataBus.post(BusEvents.APPOINT_ORDER_USE_STATUS, true)
+        })
     }
 }

@@ -1,24 +1,18 @@
 package com.yunshang.haile_life.ui.view.dialog
 
 import android.app.Dialog
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.data.DeviceCategory
-import com.yunshang.haile_life.data.model.SPRepository
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.databinding.DialogOrderPayBinding
-import com.yunshang.haile_life.databinding.DialogScanOrderConfirmBinding
-import com.yunshang.haile_life.databinding.ItemScanOrderConfirmItemBinding
 
 /**
  * Title :

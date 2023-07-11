@@ -1,4 +1,4 @@
-package com.yunshang.haile_life.data
+package com.yunshang.haile_life.data.agruments
 
 import androidx.annotation.StringDef
 
@@ -64,3 +64,17 @@ object DeviceCategory {
     fun canShowDeviceCategory(categoryCode: String): Boolean =
         categoryCode in arrayOf(Washing, Shoes, Dryer, Hair)
 }
+
+object OrderStatus {
+    @JvmStatic
+    fun getAppointStateName(code: Int): String = when (code) {
+        0 -> "待支付"
+        1 -> "待生效"
+        2 -> "已生效"
+        3 -> "已失效"
+        4 -> "已取消"
+        else -> ""
+    }
+}
+
+

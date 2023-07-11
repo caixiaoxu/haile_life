@@ -18,7 +18,9 @@ import com.yunshang.haile_life.data.entities.WxPrePayEntity
 import com.yunshang.haile_life.databinding.ActivityOrderDetailBinding
 import com.yunshang.haile_life.databinding.ItemTitleValueLrBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.OrderPayDialog
+import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
@@ -50,18 +52,23 @@ class OrderDetailActivity :
     override fun initIntent() {
         super.initIntent()
         mViewModel.orderNo = IntentParams.OrderParams.parseOrderNo(intent)
+        mViewModel.isAppoint = IntentParams.OrderParams.parseIsAppoint(intent)
+        mViewModel.formScan = IntentParams.OrderParams.parseFormScan(intent)
     }
 
     override fun initEvent() {
         super.initEvent()
-        mViewModel.orderDetail.observe(this) {
-            it?.let { detail ->
-                mBinding.llOrderDetailDiscount.buildChild<ItemTitleValueLrBinding, PromotionParticipation>(
-                    detail.promotionParticipationList
-                ) { _, childBinding, data ->
-                    childBinding.title = data.promotionProductName
-                    childBinding.value =
-                        StringUtils.formatAmountStrOfStr(data.discountPrice)
+
+        if (!mViewModel.formScan) {
+            mViewModel.orderDetail.observe(this) {
+                it?.let { detail ->
+                    mBinding.llOrderDetailDiscount.buildChild<ItemTitleValueLrBinding, PromotionParticipation>(
+                        detail.promotionParticipationList
+                    ) { _, childBinding, data ->
+                        childBinding.title = data.promotionProductName
+                        childBinding.value =
+                            "-${StringUtils.formatAmountStrOfStr(data.discountPrice)}"
+                    }
                 }
             }
         }
@@ -89,6 +96,9 @@ class OrderDetailActivity :
         LiveDataBus.with(BusEvents.WXPAY_STATUS)?.observe(this) {
             mViewModel.requestAsyncPayAsync()
         }
+        LiveDataBus.with(BusEvents.APPOINT_ORDER_USE_STATUS)?.observe(this) {
+            finish()
+        }
     }
 
     override fun initView() {
@@ -115,6 +125,36 @@ class OrderDetailActivity :
                     mViewModel.requestPrePay()
                 }.build().show(supportFragmentManager)
             }
+        }
+
+        mBinding.tvOrderDetailCancel.setOnClickListener {
+            mViewModel.orderDetail.value?.let { detail ->
+                val overTime =
+                    DateTimeUtils.formatDateFromString(detail.appointmentUsageTime)?.let {
+                        (System.currentTimeMillis() - it.time) / 1000 / 60
+                    } ?: -1
+
+                CommonDialog.Builder(
+                    if (mViewModel.isAppoint && overTime > 0)
+                        com.lsy.framelib.utils.StringUtils.getString(
+                            R.string.over_time_prompt, overTime
+                        )
+                    else com.lsy.framelib.utils.StringUtils.getString(R.string.cancel_order_prompt)
+                ).apply {
+                    title = "提示"
+                    setNegativeButton("确认取消") {
+                        mViewModel.cancelOrder()
+                    }
+                    positiveTxt = "再想想"
+                }.build().show(supportFragmentManager)
+            }
+        }
+
+        mBinding.tvOrderDetailAppointNoUse.setOnClickListener {
+            finish()
+        }
+        mBinding.tvOrderDetailAppointUse.setOnClickListener {
+            mViewModel.changeUseModel.value = true
         }
     }
 

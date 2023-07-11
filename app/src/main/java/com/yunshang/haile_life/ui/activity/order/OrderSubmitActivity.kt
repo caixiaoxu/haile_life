@@ -220,11 +220,13 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
         window.statusBarColor = Color.WHITE
 
         mBinding.includeOrderSubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
-            mViewModel.payMethod = when (checkedId) {
-                R.id.rb_order_submit_balance_pay_way -> 1001
-                R.id.rb_order_submit_alipay_pay_way -> 103
-                R.id.rb_order_submit_wechat_pay_way -> 203
-                else -> -1
+            mViewModel.tradePreview.value?.let {
+                mViewModel.payMethod = if (it.isZero()) 1001 else when (checkedId) {
+                    R.id.rb_order_submit_balance_pay_way -> 1001
+                    R.id.rb_order_submit_alipay_pay_way -> 103
+                    R.id.rb_order_submit_wechat_pay_way -> 203
+                    else -> -1
+                }
             }
         }
     }

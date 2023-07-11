@@ -9,7 +9,7 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.MarketingService
-import com.yunshang.haile_life.data.DeviceCategory
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.string.StringUtils
@@ -116,29 +116,29 @@ class ScanOrderViewModel : BaseViewModel() {
                             )
                         )
                     )
-                    if (appointment?.orderNo.isNullOrEmpty()) {
+                    if (!appointment?.orderNo.isNullOrEmpty()) {
+                        goodsAppointment.postValue(appointment)
+                    }
+
+                    ApiRepository.dealApiResult(
+                        mDeviceRepo.requestDeviceDetailItem(scan.goodsId)
+                    )?.let {
+                        deviceConfigs.postValue(it)
+                    }
+                    if (scan.shopId > 0) {
                         ApiRepository.dealApiResult(
-                            mDeviceRepo.requestDeviceDetailItem(scan.goodsId)
-                        )?.let {
-                            deviceConfigs.postValue(it)
-                        }
-                        if (scan.shopId > 0){
-                            ApiRepository.dealApiResult(
-                                mMarketingRepo.requestShopUmpList(
-                                    ApiRepository.createRequestBody(
-                                        hashMapOf(
-                                            "shopId" to scan.shopId
-                                        )
+                            mMarketingRepo.requestShopUmpList(
+                                ApiRepository.createRequestBody(
+                                    hashMapOf(
+                                        "shopId" to scan.shopId
                                     )
                                 )
-                            )?.let {
-                                it.items.find { item -> item.promotionProduct == 5 }?.let { ump ->
-                                    promotionInfoOfShopConfigs.postValue(ump.promotionInfoOfShop)
-                                }
+                            )
+                        )?.let {
+                            it.items.find { item -> item.promotionProduct == 5 }?.let { ump ->
+                                promotionInfoOfShopConfigs.postValue(ump.promotionInfoOfShop)
                             }
                         }
-                    } else {
-                        goodsAppointment.postValue(appointment)
                     }
                 }
         })
