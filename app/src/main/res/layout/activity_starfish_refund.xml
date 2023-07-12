@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.StarfishRefundViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context=".ui.activity.shop.StarfishRefundActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_starfish_refund_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@string/starfish_refund" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_32_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/money"
+            android:text='@{vm.totalAmount+""}'
+            tools:text="2000.00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/refund_total_amount" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/shape_sffffff_r8"
+            android:orientation="vertical"
+            android:paddingHorizontal="12dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_starfish_refund_account_title"
+                style="@style/Font_16_black_85"
+                android:layout_width="80dp"
+                android:layout_height="54dp"
+                android:gravity="center_vertical"
+                android:text="@string/alipay_account"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/et_starfish_refund_account" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_starfish_refund_account"
+                style="@style/Font_16_black_85_45"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_marginStart="12dp"
+                android:background="@color/transparent"
+                android:hint="@string/alipay_account_hint"
+                android:text="@={vm.transAccount}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_starfish_refund_account_title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_starfish_refund_name_title"
+                style="@style/Font_16_black_85"
+                android:layout_width="80dp"
+                android:layout_height="54dp"
+                android:gravity="center_vertical"
+                android:text="@string/name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_starfish_refund_account_title" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_starfish_refund_name"
+                style="@style/Font_16_black_85_45"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_marginStart="12dp"
+                android:background="@color/transparent"
+                android:hint="@string/alipay_name_hint"
+                android:text="@={vm.transRealName}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_starfish_refund_name_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_starfish_refund_account_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.lsy.framelib.ui.weight.SingleTapButton
+            style="@style/CommonMatchBtnStyle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:onClick="@{vm::submitRefundApply}"
+            android:layout_marginTop="24dp"
+            android:text="@string/apply_refund" />
+    </LinearLayout>
+</layout>

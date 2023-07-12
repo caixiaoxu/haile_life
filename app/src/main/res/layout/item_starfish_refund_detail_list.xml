@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.UserTokenCoinRefundItemRecordDTO" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_starfish_refund_detail_shop_name"
+            style="@style/Font_16_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.shopName}"
+            app:layout_constraintEnd_toStartOf="@id/tv_starfish_refund_detail_amount"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="海乐1号店" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_starfish_refund_detail_amount"
+            style="@style/Font_16_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{@string/unit_money + " " + item.refundPrice}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_starfish_refund_detail_shop_name"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="¥ 30.00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_starfish_refund_detail_reach"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/recharge_starfish+item.principalAmount}"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_starfish_refund_detail_shop_name"
+            tools:text="充值海星30000" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_starfish_refund_detail_reward"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{@string/reward_starfish+item.presentAmount}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_starfish_refund_detail_reach"
+            tools:text="赠送海星1000备份" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

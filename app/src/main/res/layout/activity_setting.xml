@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.SettingViewModel" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:divider="@drawable/divide_size8"
+        app:showDividers="middle"
+        tools:context=".ui.activity.personal.SettingActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_setting_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:title="@string/system_setting" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_setting_personal_info"
+            style="@style/Font_16_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@color/white"
+            android:drawableEnd="@mipmap/icon_small_arrow_right"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:text="@string/personal_info" />
+
+        <LinearLayout
+            android:id="@+id/ll_setting_version"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_16_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/app_name" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_setting_new_version"
+                android:layout_width="56dp"
+                android:layout_height="18dp"
+                style="@style/Font_10_white"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginStart="8dp"
+                android:text="@string/new_version"
+                android:background="@drawable/shape_sff3b30_r8"
+                android:layout_gravity="center_vertical"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_setting_cur_version"
+                style="@style/Font_16_black_45"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                tools:text="版本 1.0.4" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_setting_close_account"
+            style="@style/Font_16_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@color/white"
+            android:drawableEnd="@mipmap/icon_small_arrow_right"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:text="@string/close_account" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_setting_logout"
+            style="@style/Font_16_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/logout" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

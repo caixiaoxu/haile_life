@@ -67,47 +67,53 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
         window.statusBarColor = Color.WHITE
         mBinding.includeIndicatorList.barIndicatorListTitle.setTitle(if (mViewModel.isRechargeShop) R.string.recharge_shop_title else R.string.nearby_stores)
 
-        mBinding.includeIndicatorList.indicatorIndicatorListStatus.navigator =
-            CommonNavigator(this).apply {
-                adapter = object : CommonNavigatorAdapter() {
-                    override fun getCount(): Int = mViewModel.mNearByShopIndicators.size
+        if (mViewModel.isRechargeShop) {
+            mBinding.includeIndicatorList.indicatorIndicatorListStatus.visibility = View.GONE
+        } else {
+            mBinding.includeIndicatorList.indicatorIndicatorListStatus.navigator =
+                CommonNavigator(this).apply {
+                    adapter = object : CommonNavigatorAdapter() {
+                        override fun getCount(): Int = mViewModel.mNearByShopIndicators.size
 
-                    override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
-                        return SimplePagerTitleView(context).apply {
-                            normalColor =
-                                ContextCompat.getColor(
-                                    this@NearByShopActivity,
-                                    R.color.color_black_65
-                                )
-                            selectedColor =
-                                ContextCompat.getColor(
-                                    this@NearByShopActivity,
-                                    R.color.color_black_85
-                                )
-                            mViewModel.mNearByShopIndicators[index].run {
-                                text = title
-                                setOnClickListener {
-                                    mViewModel.curCategoryCode.value = value
-                                    onPageSelected(index)
-                                    notifyDataSetChanged()
+                        override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
+                            return SimplePagerTitleView(context).apply {
+                                normalColor =
+                                    ContextCompat.getColor(
+                                        this@NearByShopActivity,
+                                        R.color.color_black_65
+                                    )
+                                selectedColor =
+                                    ContextCompat.getColor(
+                                        this@NearByShopActivity,
+                                        R.color.color_black_85
+                                    )
+                                mViewModel.mNearByShopIndicators[index].run {
+                                    text = title
+                                    setOnClickListener {
+                                        mViewModel.curCategoryCode.value = value
+                                        onPageSelected(index)
+                                        notifyDataSetChanged()
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    override fun getIndicator(context: Context?): IPagerIndicator {
-                        return LinePagerIndicator(context).apply {
-                            mode = LinePagerIndicator.MODE_WRAP_CONTENT
-                            setColors(
-                                ContextCompat.getColor(
-                                    this@NearByShopActivity,
-                                    R.color.colorPrimary
+                        override fun getIndicator(context: Context?): IPagerIndicator {
+                            return LinePagerIndicator(context).apply {
+                                mode = LinePagerIndicator.MODE_WRAP_CONTENT
+                                setColors(
+                                    ContextCompat.getColor(
+                                        this@NearByShopActivity,
+                                        R.color.colorPrimary
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
-            }
+
+            mBinding.includeIndicatorList.indicatorIndicatorListStatus.visibility = View.VISIBLE
+        }
 
         mBinding.includeIndicatorList.rvIndicatorListList.layoutManager = LinearLayoutManager(this)
         ResourcesCompat.getDrawable(resources, R.drawable.divide_size8, null)?.let {

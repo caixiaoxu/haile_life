@@ -36,8 +36,7 @@
             android:layout_weight="1"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:visibility="@{vm.changeUseModel?View.GONE:View.VISIBLE}"
-            tools:visibility="gone">
+            android:visibility="@{vm.changeUseModel?View.GONE:View.VISIBLE}">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -231,8 +230,7 @@
             android:paddingTop="12dp"
             android:visibility="@{vm.showBottom?View.VISIBLE:View.GONE}"
             app:divider="@drawable/divide_size8"
-            app:showDividers="middle"
-            tools:visibility="gone">
+            app:showDividers="middle">
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_contact"
@@ -300,6 +298,7 @@
             android:paddingHorizontal="68dp"
             android:paddingTop="36dp"
             android:paddingBottom="32dp"
+            tools:visibility="gone"
             android:visibility="@{vm.changeUseModel?View.VISIBLE:View.GONE}">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -311,7 +310,7 @@
                 style="@style/Font_14_black_85_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="请开启舱门，放入衣物" />
+                android:text="@string/appoint_order_use_prompt" />
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_appoint_use_start"

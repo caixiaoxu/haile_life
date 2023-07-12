@@ -3,9 +3,11 @@ package com.yunshang.haile_life.ui.activity.shop
 import android.graphics.Color
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lsy.framelib.network.response.ResponseList
+import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.RechargeStarfishDetailListViewModel
@@ -41,6 +43,10 @@ class RechargeStarfishDetailListActivity :
 
     override fun initView() {
         window.statusBarColor = Color.WHITE
+        mBinding.includeTitleRefreshList.barTitleRefreshListTitle.setTitle(R.string.starfish_detail)
+        mBinding.includeTitleRefreshList.rvTitleRefreshList.setPadding(
+            0, DimensionUtils.dip2px(this, 20f), 0, 0
+        )
         mBinding.includeTitleRefreshList.rvTitleRefreshList.layoutManager =
             LinearLayoutManager(this)
         mBinding.includeTitleRefreshList.rvTitleRefreshList.adapter = mAdapter

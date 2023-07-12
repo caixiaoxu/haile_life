@@ -68,6 +68,14 @@ class RechargeStarfishShopListActivity :
         mBinding.includeTitleList.barTitleListTitle
         mBinding.includeTitleList.barTitleListTitle.getRightBtn().run {
             setText(R.string.refund_record)
+            setOnClickListener {
+                startActivity(
+                    Intent(
+                        this@RechargeStarfishShopListActivity,
+                        StarfishRefundRecordActivity::class.java
+                    )
+                )
+            }
         }
 
         mBinding.includeTitleList.rvTitleListList.layoutManager = LinearLayoutManager(this)

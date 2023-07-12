@@ -85,7 +85,7 @@
             android:layout_marginTop="8dp"
             app:divider="@drawable/divide_size4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_near_by_shop_distance"
+            app:layout_constraintTop_toBottomOf="@id/tv_near_by_shop_address"
             app:showDividers="middle">
 
             <androidx.appcompat.widget.AppCompatImageView

@@ -93,6 +93,22 @@
 
     <string name="refund_record">退款记录</string>
     <string name="recharge_record">充值记录</string>
+    <string name="refund_list_prompt">退款后充值海星和赠送海星都会清零</string>
+    <string name="apply_refund">申请退款</string>
+    <string name="apply_time">申请时间</string>
+    <string name="refund_detail">退款详情</string>
+
+    <string name="system_setting">系统设置</string>
+    <string name="personal_info">个人资料</string>
+    <string name="close_account">注销账户</string>
+    <string name="logout">退出登录</string>
+    <string name="version">版本</string>
+    <string name="new_version">新版本</string>
+    <string name="update_content">更新内容</string>
+    <string name="update_version_title">新版本%1$s主要更新内容</string>
+    <string name="click_update">点击升级</string>
+    <string name="in_prepare">准备中</string>
+    <string name="err_save_file">文件保存失败</string>
 
     <string name="next_step">下一步</string>
     <string name="scan_order_tips_hint">温馨提示</string>
@@ -117,6 +133,8 @@
     <string name="appoint_time">预约时间</string>
     <string name="over_time_prompt">距预约时间超过%1$d分钟，取消后付款金额原路退回您的账户，已使用的优惠券等权益不返还，确认取消？</string>
     <string name="cancel_order_prompt">您确定要取消订单吗？</string>
+    <string name="user_account">用户账号</string>
+    <string name="order_no">订单编号</string>
 
     <string name="appointment_order">预约订单</string>
     <string name="order_detail">订单详情</string>
@@ -132,19 +150,32 @@
     <string name="order_submit_used_time_prompt">请在 %1$s 到店使用</string>
     <string name="no_use_appoint_order">不使用预约单</string>
     <string name="use_appoint_order">使用预约单</string>
+    <string name="appoint_order_use_prompt">请开启舱门，放入衣物</string>
     <string name="appoint_order_use_start_prompt">已放入衣物，启动设备</string>
 
     <string name="shop_detail">门店详情</string>
     <string name="business_time">营业时间</string>
     <string name="starfish_recharge">海星充值</string>
+    <string name="starfish_detail">海星明细</string>
     <string name="appointment_device">预约设备</string>
     <string name="recharge_starfish">充值海星</string>
     <string name="reward_starfish">赠送海星</string>
+    <string name="refund_amount">退款金额</string>
+    <string name="starfish_refund">海星退款</string>
+    <string name="refund_total_amount">退款总金额</string>
+    <string name="wechat_account">微信账号</string>
+    <string name="alipay_account">支付宝账号</string>
+    <string name="name">姓名</string>
+    <string name="wechat_account_hint">请输入微信账号</string>
+    <string name="alipay_account_hint">请输入支付宝账号</string>
+    <string name="wechat_name_hint">请填写微信账号认证的姓名</string>
+    <string name="alipay_name_hint">请填写支付宝账号认证的姓名</string>
 
     <string name="recharge">充值</string>
     <string name="recharge_agreement">去支付即代表您同意《海星购买协议》</string>
     <string name="reward_num">送%1$s海星</string>
     <string name="recharge_shop_title">附近可充值门店</string>
+    <string name="total">合计</string>
 
     <string name="pay_code_error">该付款码无效</string>
     <string name="empty_permission">需要授权才能继续操作</string>

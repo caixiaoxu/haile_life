@@ -10,6 +10,8 @@ import com.yunshang.haile_life.business.vm.MineViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.FragmentMineBinding
 import com.yunshang.haile_life.ui.activity.order.OrderListActivity
+import com.yunshang.haile_life.ui.activity.personal.SettingActivity
+import com.yunshang.haile_life.ui.activity.personal.WalletBalanceActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishShopListActivity
 
@@ -38,6 +40,20 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
         mBinding.ibMineSetting.layoutParams.let {
             (it as ConstraintLayout.LayoutParams).topMargin =
                 StatusBarUtils.getStatusBarHeight() + DimensionUtils.dip2px(requireContext(), 20f)
+        }
+
+        mBinding.ibMineSetting.setOnClickListener {
+            startActivity(Intent(requireContext(), SettingActivity::class.java))
+        }
+
+        mBinding.tvMineBalance.setOnClickListener {
+            goWalletBalance()
+        }
+        mBinding.tvMineBalanceTitle.setOnClickListener {
+            goWalletBalance()
+        }
+        mBinding.tvFunServiceWalletBalance.setOnClickListener {
+            goWalletBalance()
         }
 
         mBinding.tvMineHaixin.setOnClickListener {
@@ -70,6 +86,14 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
         }
         mBinding.tvMineOrderRefund.setOnClickListener {
             goOrderList(2099)
+        }
+    }
+
+    private fun goWalletBalance() {
+        mViewModel.balance.value?.let {
+            startActivity(Intent(requireContext(), WalletBalanceActivity::class.java).apply {
+                putExtras(IntentParams.WalletBalanceParams.pack(it))
+            })
         }
     }
 

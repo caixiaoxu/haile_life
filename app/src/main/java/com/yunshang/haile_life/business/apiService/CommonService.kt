@@ -1,6 +1,7 @@
 package com.yunshang.haile_life.business.apiService
 
 import com.lsy.framelib.network.response.ResponseWrapper
+import com.yunshang.haile_life.data.entities.AppVersionEntity
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -18,4 +19,11 @@ interface CommonService {
     @Multipart
     @POST("/common/upload")
     suspend fun updateLoadFile(@Part file: MultipartBody.Part): ResponseWrapper<String>
+
+
+    @GET("/common/appVersion")
+    suspend fun appVersion(
+        @Query("currentVersion") currentVersion: String,
+        @Query("appType") appType: Int = 2
+    ): ResponseWrapper<AppVersionEntity>
 }

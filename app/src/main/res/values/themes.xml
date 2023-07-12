@@ -72,6 +72,11 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="Font_10_white">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="Font_10_FF630E">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/color_appoint</item>
@@ -107,6 +112,11 @@
         <item name="android:textColor">@color/color_black_85</item>
     </style>
 
+    <style name="Font_12_333333">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
+
     <style name="Font_12_black_65">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/color_black_65</item>
@@ -115,7 +125,11 @@
     <style name="Font_12_colorPrimary">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 
+    <style name="Font_12_ff630e">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_ff630e</item>
     </style>
 
     <style name="Font_12_FFFFFF">
@@ -298,9 +312,17 @@
         <item name="android:textColor">@color/color_black_85</item>
     </style>
 
+    <style name="Font_22_black_85_bold" parent="Font_22_black_85">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Font_24_black_85">
         <item name="android:textSize">@dimen/font_24</item>
         <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_24_black_85_bold" parent="Font_24_black_85">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Font_26_04cee5">
@@ -315,12 +337,23 @@
 
     <style name="Font_32_333333">
         <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
+
+    <style name="Font_32_black_85">
+        <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/color_black_85</item>
     </style>
 
     <style name="Font_32_ff630e">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/color_ff630e</item>
+    </style>
+
+
+    <style name="Font_52_black_85">
+        <item name="android:textSize">52sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
     </style>
 
     <style name="Input_14_black_85_45">

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.StarfishRefundRecordEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_recharge_starfish_refund_name"
+            style="@style/Font_14_333333"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{item.getRefundAmountVal}'
+            app:layout_constraintBottom_toTopOf="@id/tv_recharge_starfish_refund_time"
+            app:layout_constraintEnd_toStartOf="@id/tv_recharge_starfish_refund_reach"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="退款金额：60.00元" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_recharge_starfish_refund_time"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{@string/apply_time + "：" + item.createTime}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_recharge_starfish_refund_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_recharge_starfish_refund_name"
+            tools:text="申请时间：2022/1/11 07:15" />
+
+        <com.yunshang.haile_life.ui.view.MultiTypeTextView
+            android:id="@+id/tv_recharge_starfish_refund_reach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.stateDesc}"
+            android:textSize="14sp"
+            app:bgResIds="@{item.multiTypeBgRes}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_recharge_starfish_refund_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:txtColors="@{item.multiTypeTxtColors}"
+            app:type="@{item.multiType}"
+            tools:text="充值海星" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -3,7 +3,6 @@ package com.yunshang.haile_life.utils.string
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.text.ParcelableSpan
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.Spanned
@@ -171,7 +170,8 @@ object StringUtils {
         }
     }
 
-    private val PayCodeH5 = "^(https://h5.haier\\-ioc.com/scan\\?N=\\S*)$"
+    private val PayCodeH5 = "^(https://h5.haier-ioc.com/scan\\?N=\\S*)$"
+    private val RefundCode = "^(https://h5.haier-ioc.com/scan\\?refundId=\\S*)$"
     private val HaiLiCode1 = "^((http|https)://(uhome.haier.net|app.mrhi.cn)" +
             "/download/app/washcall/index.html\\?devid=\\S*)"
     private val HaiLiCode2 =
@@ -194,6 +194,16 @@ object StringUtils {
         } else {
             null
         }
+    } catch (e: java.lang.Exception) {
+        e.printStackTrace()
+        null
+    }
+
+    fun refundCode(codeStr: String): String? = try {
+        if (codeStr.matches(Regex(RefundCode))) {
+            codeStr.split("\\?refundId=".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()[1]
+        } else null
     } catch (e: java.lang.Exception) {
         e.printStackTrace()
         null

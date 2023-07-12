@@ -44,4 +44,16 @@ interface ShopService {
 
     @POST("/appointment/item/list")
     suspend fun requestAppointDeviceList(@Body body: RequestBody): ResponseWrapper<AppointDeviceListEntity>
+
+    @POST("/starfish/refundList")
+    suspend fun requestStarfishRefundList(@Body body: RequestBody): ResponseWrapper<ResponseList<StarfishRefundRecordEntity>>
+
+    @POST("/starfish/applyRefundList")
+    suspend fun requestStarfishRefundApplyList(@Body body: RequestBody): ResponseWrapper<MutableList<StarfishRefundApplyEntity>>
+
+    @POST("/starfish/applyRefund")
+    suspend fun submitRefundApply(@Body body: RequestBody): ResponseWrapper<Any>
+
+    @GET("/starfish/refundDetail")
+    suspend fun requestRefundDetail(@Query("id") id: Int): ResponseWrapper<StarfishRefundDetailEntity>
 }

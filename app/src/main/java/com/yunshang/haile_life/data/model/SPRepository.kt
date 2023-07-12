@@ -26,6 +26,8 @@ object SPRepository {
 
     private const val SP_USER_TOKEN = "sp_user_token"
 
+    private const val SP_CHECK_UPDATE_TIME = "sp_check_update_time"
+
     private val sp: SPUtils by lazy { SPUtils.getInstance(SP_NAME) }
 
     /**
@@ -36,11 +38,11 @@ object SPRepository {
         set(value) = sp.put(SP_SCAN_ORDER_CONFIG_NO_PROMPT, value)
 
     /**
-     * 判断是否同意了隐私协议
+     * 判断检测更新时间
      */
-    var isAgreeAgreement: Boolean
-        get() = sp.getBoolean(SP_AGREE_AGREEMENT, false)
-        set(value) = sp.put(SP_AGREE_AGREEMENT, value)
+    var checkUpdateTime: Long
+        get() = sp.getLong(SP_CHECK_UPDATE_TIME, 0L)
+        set(value) = sp.put(SP_CHECK_UPDATE_TIME, value)
 
     /**
      * 判断是否已登录

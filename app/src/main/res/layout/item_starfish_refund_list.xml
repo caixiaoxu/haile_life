@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.StarfishRefundApplyEntity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_r8"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="12dp">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_starfish_refund_list"
+            style="@style/Font_14_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:background="@color/transparent"
+            android:checked="@{item.isCheck}"
+            android:drawableEnd="@drawable/selector_orange_check"
+            android:paddingVertical="12dp"
+            android:text="@{item.shopName}"
+            tools:text="1号门店" />
+
+        <View style="@style/DividingStyle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text='@{@string/recharge_starfish + " " +item.principalAmount}'
+            tools:text="充值海星 10000" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_333333"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text='@{@string/reward_starfish + " " +item.presentAmount}'
+            tools:text="赠送海星 5000" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text='@{@string/refund_amount + " " +item.getAmountVal + @string/unit_yuan}'
+            tools:text="退款金额：60.00元" />
+    </LinearLayout>
+</layout>

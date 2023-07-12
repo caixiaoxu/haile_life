@@ -32,4 +32,7 @@ object BusEvents {
 
     // 充值成功
     const val RECHARGE_SUCCESS_STATUS = "recharge_success_status"
+
+    // 退款成功
+    const val STARFISH_REFUND_STATUS = "starfish_refund_status"
 }

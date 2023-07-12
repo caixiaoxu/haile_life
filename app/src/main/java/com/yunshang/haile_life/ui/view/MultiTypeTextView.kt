@@ -52,7 +52,7 @@ class MultiTypeTextView @JvmOverloads constructor(
             setBackgroundResource(bgResIds[min(type, bgResIds.size)])
         }
         if (txtColors.isNotEmpty()) {
-            setTextColor(txtColors[min(type, bgResIds.size)])
+            setTextColor(txtColors[min(type, txtColors.size)])
         }
     }
 }

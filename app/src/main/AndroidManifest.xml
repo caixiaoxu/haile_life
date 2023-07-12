@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <queries>
         <package android:name="com.tencent.mm" />
@@ -35,7 +36,22 @@
         android:theme="@style/Theme.HaileLife"
         tools:targetApi="31">
         <activity
-            android:name=".AppointmentOrderDetailActivity"
+            android:name=".ui.activity.personal.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.personal.WalletBalanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.shop.StarfishRefundDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.shop.StarfishRefundActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.shop.StarfishRefundListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.shop.StarfishRefundRecordActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.order.OrderListActivity"
@@ -115,6 +131,16 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
         <meta-data
             android:name="TencentMapSDK"

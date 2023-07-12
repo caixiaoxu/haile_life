@@ -266,6 +266,51 @@ object IntentParams {
         fun parseShopId(intent: Intent): Int = intent.getIntExtra(ShopId, -1)
     }
 
+    object StarfishRefundParams {
+        private const val ShopIdList = "shopIdList"
+        private const val TotalAmount = "totalAmount"
+
+        /**
+         * 包装参数
+         */
+        fun pack(shopIdList: IntArray, totalAmount: Double): Bundle =
+            Bundle().apply {
+                putIntArray(ShopIdList, shopIdList)
+                putDouble(TotalAmount, totalAmount)
+            }
+
+        fun parseShopIdList(intent: Intent): IntArray? = intent.getIntArrayExtra(ShopIdList)
+        fun parseTotalAmount(intent: Intent): Double = intent.getDoubleExtra(TotalAmount, 0.0)
+    }
+
+    object StarfishRefundDetailParams {
+        private const val RefundId = "refundId"
+
+        /**
+         * 包装参数
+         */
+        fun pack(refundId: Int): Bundle =
+            Bundle().apply {
+                putInt(RefundId, refundId)
+            }
+
+        fun parseRefundId(intent: Intent): Int = intent.getIntExtra(RefundId, -1)
+    }
+
+    object WalletBalanceParams {
+        private const val Balance = "balance"
+
+        /**
+         * 包装参数
+         */
+        fun pack(balance: String): Bundle =
+            Bundle().apply {
+                putString(Balance, balance)
+            }
+
+        fun parseBalance(intent: Intent): String? = intent.getStringExtra(Balance)
+    }
+
     object RechargeStarfishDetailListParams {
         private const val ShopId = "shopId"
 

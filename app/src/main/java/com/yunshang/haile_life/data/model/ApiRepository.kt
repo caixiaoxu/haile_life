@@ -3,11 +3,21 @@ package com.yunshang.haile_life.data.model
 import android.os.Handler
 import android.os.Looper
 import com.lsy.framelib.network.ApiService
+import com.lsy.framelib.network.DefaultOkHttpClient
 import com.lsy.framelib.network.exception.CommonCustomException
+import com.lsy.framelib.network.interceptors.OkHttpBodyLogInterceptor
+import com.lsy.framelib.network.interceptors.ProgressInterceptor
+import com.lsy.framelib.network.interceptors.ResponseInterceptor
 import com.lsy.framelib.network.response.ResponseWrapper
+import com.lsy.framelib.utils.FileUtils
+import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.BuildConfig
+import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.apiService.DownloadService
 import com.yunshang.haile_life.utils.ActivityManagerUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -34,6 +44,21 @@ object ApiRepository {
         return ApiService.get(BuildConfig.BASE_URL, service)
     }
 
+    fun downloadClient(progressInterceptor: (curSize: Long, totalSize: Long, isDone: Boolean) -> Unit): DownloadService {
+        return ApiService.get(
+            BuildConfig.BASE_URL, DownloadService::class.java, DefaultOkHttpClient()
+                .setInterceptors(
+                    arrayOf(
+                        OkHttpBodyLogInterceptor().getInterceptor(),
+                        ResponseInterceptor().getInterceptor()
+                    )
+                ).setNetworkInterceptors(
+                    arrayOf(
+                        ProgressInterceptor(progressInterceptor)
+                    )
+                ).getClient()
+        )
+    }
 
     /**
      * 生成请求body
@@ -76,4 +101,33 @@ object ApiRepository {
         }
         return response.data
     }
+
+    suspend fun downloadFile(url: String, fileName: String, callback: OnDownloadProgressListener) {
+        val file = FileUtils.saveDownLoadFile(downloadClient() { curSize, totalSize, isDone ->
+            mHandler.post {
+                callback.onProgress(curSize, totalSize)
+            }
+        }.downLoadFile(url).byteStream(), fileName)
+
+        withContext(Dispatchers.Main) {
+            file?.let {
+                callback.onSuccess(it)
+            } ?: callback.onFailure(
+                CommonCustomException(
+                    -1,
+                    StringUtils.getString(R.string.err_save_file)
+                )
+            )
+        }
+    }
+}
+interface OnDownloadProgressListener {
+    /**
+     * 百分比，完成100
+     */
+    fun onProgress(curSize: Long, totalSize: Long)
+
+    fun onSuccess(file: File)
+
+    fun onFailure(e: Throwable)
 }

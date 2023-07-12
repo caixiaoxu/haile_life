@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.yunshang.haile_life.utils.string.StringUtils" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.StarfishRefundDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.shop.StarfishRefundDetailActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_starfish_refund_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@string/refund_detail" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_20_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            android:text="@{vm.refundDetail.stateDesc}"
+            tools:text="退款失败" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@{vm.refundDetail.remark}"
+            tools:text="失败原因具体字段显示位置" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_sffffff_r8">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_14_black_85_bold"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@{vm.refundDetail.serviceTelephone}"
+                tools:text="15555555555" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_refund_detail_contact"
+                style="@style/font_14_04D1E5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="14dp"
+                android:text="@string/contact_shop" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_starfish_refund_detail_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_sffffff_r8"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            app:divider="@drawable/divder_efefef"
+            app:showDividers="middle">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|end"
+                android:orientation="horizontal"
+                android:paddingTop="12dp"
+                android:paddingBottom="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_12_black_85"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/total + @string/unit_money}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_22_black_85_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{vm.refundDetail.refundPrice +""}' />
+            </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/shape_sffffff_r8"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
+            app:divider="@drawable/divide_size8"
+            app:showDividers="middle">
+
+            <include
+                android:id="@+id/include_refund_detail_account"
+                layout="@layout/item_title_value"
+                app:title='@{vm.refundDetail.refundAccountTitle +"："}'
+                app:value="@{vm.refundDetail.transAccount}" />
+
+            <include
+                android:id="@+id/include_refund_detail_name"
+                layout="@layout/item_title_value"
+                app:title='@{@string/name +"："}'
+                app:value="@{vm.refundDetail.transRealName}" />
+
+            <include
+                android:id="@+id/include_refund_detail_user_account"
+                layout="@layout/item_title_value"
+                app:title='@{@string/user_account +"："}'
+                app:value="@{vm.refundDetail.account}" />
+
+            <include
+                android:id="@+id/include_refund_detail_order_no"
+                layout="@layout/item_title_value"
+                app:title='@{@string/order_no +"："}'
+                app:value="@{vm.refundDetail.refundNo}" />
+
+            <include
+                android:id="@+id/include_refund_detail_apply_time"
+                layout="@layout/item_title_value"
+                app:title='@{@string/apply_time +"："}'
+                app:value="@{vm.refundDetail.createTime}" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </LinearLayout>
+</layout>

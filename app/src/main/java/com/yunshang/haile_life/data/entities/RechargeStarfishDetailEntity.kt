@@ -29,7 +29,8 @@ data class RechargeStarfishDetailEntity(
     val shopId: Int,
     val subType: Int,
     val type: Int,
-    val userId: Int
+    val userId: Int,
+    val typeDesc: String,
 ) {
     private val moneyUnit: String
         get() = if (100 == type) "+" else "-"
