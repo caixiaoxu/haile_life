@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.yunshang.haile_life.R" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.DiscountCouponEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <com.yunshang.haile_life.ui.view.MultiTypeTextView
+            android:id="@+id/tv_discount_coupon_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/money"
+            android:text="@{item.promotion.discountCouponValue}"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/gl_discount_coupon_begin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:txtColors="@{item.multiTypeTxtColors}"
+            app:type="@{item.multiType}"
+            tools:text="5" />
+
+        <com.yunshang.haile_life.ui.view.MultiTypeTextView
+            android:id="@+id/tv_discount_coupon_cut_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="2dp"
+            android:text="@{item.cutOffVal()}"
+            android:textSize="10sp"
+            app:bgResIds="@{item.multiTypeBgRes}"
+            app:layout_constraintEnd_toEndOf="@id/gl_discount_coupon_begin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_amount"
+            app:txtColors="@{item.multiTypeTxtColors}"
+            app:type="@{item.multiType}"
+            tools:text="3天后到期" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_discount_coupon_begin"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="78dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_coupon_name"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="16dp"
+            android:text="@{item.promotion.discountCouponTitle}"
+            app:layout_constraintEnd_toEndOf="@id/gl_discount_coupon_end"
+            app:layout_constraintStart_toStartOf="@id/gl_discount_coupon_begin"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="满减券" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_coupon_limit"
+            style="@style/Font_12_black_45"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{item.promotion.limitDesc}"
+            app:layout_constraintEnd_toEndOf="@id/tv_discount_coupon_name"
+            app:layout_constraintStart_toStartOf="@id/tv_discount_coupon_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_name"
+            tools:text="满10可用" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_coupon_indate"
+            style="@style/Font_12_black_45"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{item.indateVal}"
+            app:layout_constraintEnd_toEndOf="@id/tv_discount_coupon_name"
+            app:layout_constraintStart_toStartOf="@id/tv_discount_coupon_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_limit"
+            tools:text="2022/05/07-2023/12/0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_coupon_rule_title"
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawableEnd="@mipmap/icon_small_arrow_right"
+            android:text="@string/use_rule"
+            app:layout_constraintStart_toStartOf="@id/tv_discount_coupon_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_indate" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_coupon_rule"
+            style="@style/Font_12_black_45"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{item.promotion.useRuleVal}"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/tv_discount_coupon_name"
+            app:layout_constraintStart_toStartOf="@id/tv_discount_coupon_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_rule_title"
+            tools:text="具体使用规则描述字段信息排列 到此换行" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="16dp"
+            app:layout_constraintEnd_toEndOf="@id/tv_discount_coupon_name"
+            app:layout_constraintStart_toStartOf="@id/tv_discount_coupon_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_rule" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_discount_coupon_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.71532845" />
+
+        <com.lsy.framelib.ui.weight.SingleTapButton
+            android:id="@+id/btn_discount_coupon_use"
+            style="@style/Font_12_FFFFFF"
+            android:layout_width="69dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/selector_login_btn"
+            android:text="@string/go_use"
+            android:visibility="@{1 == item.state?View.VISIBLE:View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl_discount_coupon_end"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:visibility="@{1 != item.state?View.VISIBLE:View.GONE}"
+            app:imgRes="@{30 == item.state?R.mipmap.icon_coupon_used:R.mipmap.icon_coupon_expire}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl_discount_coupon_end"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.yunshang.haile_life.ui.view.DividerView
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layerType="software"
+            app:dashGap="10dp"
+            app:dashLength="10dp"
+            app:dashThickness="1dp"
+            app:divider_line_color="#E3E3E3"
+            app:divider_orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/iv_discount_coupon_yuan2"
+            app:layout_constraintStart_toStartOf="@id/gl_discount_coupon_end"
+            app:layout_constraintTop_toBottomOf="@id/iv_discount_coupon_yuan1" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_discount_coupon_yuan1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="-8dp"
+            android:background="@drawable/shape_discount_coupon_item_bg"
+            app:layout_constraintEnd_toEndOf="@id/gl_discount_coupon_end"
+            app:layout_constraintStart_toStartOf="@id/gl_discount_coupon_end"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_discount_coupon_yuan2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginBottom="-8dp"
+            android:background="@drawable/shape_discount_coupon_item_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_discount_coupon_end"
+            app:layout_constraintStart_toStartOf="@id/gl_discount_coupon_end" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -10,6 +10,7 @@ import com.yunshang.haile_life.business.vm.MineViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.FragmentMineBinding
 import com.yunshang.haile_life.ui.activity.order.OrderListActivity
+import com.yunshang.haile_life.ui.activity.personal.DiscountCouponActivity
 import com.yunshang.haile_life.ui.activity.personal.SettingActivity
 import com.yunshang.haile_life.ui.activity.personal.WalletBalanceActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
@@ -66,6 +67,16 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
             goRechargeStarfishShopList()
         }
 
+        mBinding.tvMineDiscounts.setOnClickListener {
+            goDiscountCouponList()
+        }
+        mBinding.tvMineDiscountsTitle.setOnClickListener {
+            goDiscountCouponList()
+        }
+        mBinding.tvFunServiceWalletDiscounts.setOnClickListener {
+            goDiscountCouponList()
+        }
+
         mBinding.ivMineRecharge.setOnClickListener {
             startActivity(Intent(requireContext(), NearByShopActivity::class.java).apply {
                 putExtras(IntentParams.NearByShopParams.pack(true))
@@ -99,6 +110,10 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
 
     private fun goRechargeStarfishShopList() {
         startActivity(Intent(requireContext(), RechargeStarfishShopListActivity::class.java))
+    }
+
+    private fun goDiscountCouponList() {
+        startActivity(Intent(requireContext(), DiscountCouponActivity::class.java))
     }
 
     private fun goOrderList(status: Int? = null) {

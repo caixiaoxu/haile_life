@@ -103,7 +103,7 @@ object ViewBindingAdapter {
         }
     }
 
-    @BindingAdapter("bgResIds", "txtColors", "type")
+    @BindingAdapter("bgResIds", "txtColors", "type", requireAll = false)
     @JvmStatic
     fun MultiTypeTextView.setBgResIds(bgs: IntArray?, colors: IntArray?, type: Int?) {
         bgs?.let {

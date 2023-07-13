@@ -34,15 +34,15 @@ class SettingViewModel: BaseViewModel() {
     }
 
     fun checkVersion(context: Context) {
-//        launch({
-//            ApiRepository.dealApiResult(mCommonRepo.appVersion(AppPackageUtils.getVersionName(context)))
-//                ?.let {
-//                    appVersionInfo.postValue(it)
-//                }
-//        })
-
-        val json = "{\"id\":40,\"name\":\"海乐管家\",\"versionCode\":\"1.2.7\",\"versionName\":\"1.2.7\",\"versionMin\":\"1.2.7\",\"updateUrl\":\"https://static.haier-ioc.com/soft/mms/mms_v1.2.7.apk\",\"updateLog\":\"1、新增公告功能\\n2、新增收益统计\",\"createTime\":\"2023-07-05 10:10:26\",\"needUpdate\":true,\"forceUpdate\":false}"
-        appVersionInfo.value = GsonUtils.json2Class(json,AppVersionEntity::class.java)
+        launch({
+            ApiRepository.dealApiResult(mCommonRepo.appVersion(AppPackageUtils.getVersionName(context)))
+                ?.let {
+                    appVersionInfo.postValue(it)
+                }
+        })
+//
+//        val json = "{\"id\":40,\"name\":\"海乐管家\",\"versionCode\":\"1.2.7\",\"versionName\":\"1.2.7\",\"versionMin\":\"1.2.7\",\"updateUrl\":\"https://static.haier-ioc.com/soft/mms/mms_v1.2.7.apk\",\"updateLog\":\"1、新增公告功能\\n2、新增收益统计\",\"createTime\":\"2023-07-05 10:10:26\",\"needUpdate\":true,\"forceUpdate\":false}"
+//        appVersionInfo.value = GsonUtils.json2Class(json,AppVersionEntity::class.java)
     }
 
     fun logout(v: View) {

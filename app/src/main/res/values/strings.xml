@@ -109,6 +109,7 @@
     <string name="click_update">点击升级</string>
     <string name="in_prepare">准备中</string>
     <string name="err_save_file">文件保存失败</string>
+    <string name="use_rule">使用规则</string>
 
     <string name="next_step">下一步</string>
     <string name="scan_order_tips_hint">温馨提示</string>
@@ -135,6 +136,10 @@
     <string name="cancel_order_prompt">您确定要取消订单吗？</string>
     <string name="user_account">用户账号</string>
     <string name="order_no">订单编号</string>
+    <string name="go_use">去使用</string>
+    <string name="cutoff_prompt">%1$d天后到期</string>
+    <string name="used">已使用</string>
+    <string name="expired">已过期</string>
 
     <string name="appointment_order">预约订单</string>
     <string name="order_detail">订单详情</string>

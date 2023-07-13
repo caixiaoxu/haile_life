@@ -80,6 +80,20 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         TencentLocationManager.setUserAgreePrivacy(true)
         super.onCreate(savedInstanceState)
+        changeDefaultPage(IntentParams.MainParams.parseDefaultPage(intent))
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let {
+            changeDefaultPage(IntentParams.MainParams.parseDefaultPage(intent))
+        }
+    }
+
+    private fun changeDefaultPage(parseDefaultPage: Int) {
+        if (0 == parseDefaultPage){
+            mViewModel.checkId.value = R.id.rb_main_tab_home
+        }
     }
 
     override fun isFullScreen(): Boolean = true

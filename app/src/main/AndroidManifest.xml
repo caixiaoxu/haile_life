@@ -36,6 +36,9 @@
         android:theme="@style/Theme.HaileLife"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.personal.DiscountCouponActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.personal.SettingActivity"
             android:exported="false" />
         <activity

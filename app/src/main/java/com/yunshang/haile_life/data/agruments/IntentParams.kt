@@ -17,6 +17,21 @@ import com.yunshang.haile_life.data.entities.TradePreviewParticipate
  * 作者姓名 修改时间 版本号 描述
  */
 object IntentParams {
+
+    object MainParams {
+        private const val DefaultPage = "defaultPage"
+
+        /**
+         * 包装参数
+         */
+        fun pack(defaultPage: Int): Bundle =
+            Bundle().apply {
+                putInt(DefaultPage, defaultPage)
+            }
+
+        fun parseDefaultPage(intent: Intent): Int = intent.getIntExtra(DefaultPage, -1)
+    }
+
     object IdParams {
         private const val Id = "id"
 
