@@ -52,7 +52,7 @@ class DiscountCouponActivity :
             }
             mItemBinding?.btnDiscountCouponUse?.setOnClickListener {
                 startActivity(Intent(this@DiscountCouponActivity, MainActivity::class.java).apply {
-                    putExtras(IntentParams.MainParams.pack(0))
+                    putExtras(IntentParams.DefaultPageParams.pack(0))
                 })
             }
         }

@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lsy.framelib.utils.DimensionUtils
+import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StatusBarUtils
 import com.youth.banner.indicator.CircleIndicator
 import com.yunshang.haile_life.BR
@@ -20,6 +21,7 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.GoodsRecommend
 import com.yunshang.haile_life.business.vm.HomeCategory
 import com.yunshang.haile_life.business.vm.HomeViewModel
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.databinding.*
@@ -27,7 +29,9 @@ import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.ShopDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
+import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
+import com.yunshang.haile_life.web.WebViewActivity
 
 
 /**
@@ -95,6 +99,24 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 mBinding.bannerHomeBanner.addBannerLifecycleObserver(this)
                     .setIndicator(CircleIndicator(requireContext()))
                     .setAdapter(ImageAdapter(ad.images, { it.imageUrl }) { data, pos ->
+                        when (data.linkType) {
+                            3 -> startActivity(
+                                Intent(
+                                    requireContext(),
+                                    WebViewActivity::class.java
+                                ).apply {
+                                    putExtras(
+                                        IntentParams.WebViewParams.pack(
+                                            data.linkUrl
+                                        )
+                                    )
+                                })
+                            5 ->
+                                SchemeURLHelper.parseSchemeURL(
+                                    requireContext(),
+                                    data.linkUrl
+                                )
+                        }
                     })
                 mBinding.bannerHomeBanner.visibility = View.VISIBLE
             }
@@ -148,6 +170,28 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             }
         ) { _, childBinding, data ->
             childBinding.item = data
+            childBinding.root.setOnClickListener {
+                when (data.icon) {
+                    R.mipmap.icon_home_wash ->
+                        startActivity(
+                            Intent(
+                                requireContext(),
+                                NearByShopActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.DefaultPageParams.pack(1))
+                            })
+
+                    R.mipmap.icon_home_hair ->
+                        startActivity(
+                            Intent(
+                                requireContext(),
+                                NearByShopActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.DefaultPageParams.pack(2))
+                            })
+                    else -> SToast.showToast(requireContext(), "敬请期待")
+                }
+            }
         }
 
         // 分类2(小图)
@@ -161,6 +205,9 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             }
         ) { _, childBinding, data ->
             childBinding.item = data
+            childBinding.root.setOnClickListener {
+                SToast.showToast(requireContext(), "敬请期待")
+            }
         }
 
         // 附近门店 更多
@@ -169,7 +216,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
         // 附近门店
         mBinding.clNearByShop.setOnClickListener {
-            mViewModel.nearStoreEntity.value?.let {nearStore->
+            mViewModel.nearStoreEntity.value?.let { nearStore ->
                 startActivity(Intent(
                     requireContext(),
                     ShopDetailActivity::class.java
@@ -184,6 +231,20 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
         mBinding.btnHomeCurTaskClose.setOnClickListener {
             mBinding.clHomeCurTask.visibility = View.GONE
+        }
+
+        mBinding.clHomeGuideMain.setOnClickListener {
+            startActivity(
+                Intent(
+                    requireContext(),
+                    WebViewActivity::class.java
+                ).apply {
+                    putExtras(
+                        IntentParams.WebViewParams.pack(
+                            Constants.guide,
+                        )
+                    )
+                })
         }
         // 好物推荐
         mBinding.ibGoodsRecommendClose.setOnClickListener {

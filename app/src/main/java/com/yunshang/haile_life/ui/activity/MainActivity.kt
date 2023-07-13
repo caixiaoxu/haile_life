@@ -80,13 +80,13 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         TencentLocationManager.setUserAgreePrivacy(true)
         super.onCreate(savedInstanceState)
-        changeDefaultPage(IntentParams.MainParams.parseDefaultPage(intent))
+        changeDefaultPage(IntentParams.DefaultPageParams.parseDefaultPage(intent))
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent?.let {
-            changeDefaultPage(IntentParams.MainParams.parseDefaultPage(intent))
+            changeDefaultPage(IntentParams.DefaultPageParams.parseDefaultPage(intent))
         }
     }
 

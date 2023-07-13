@@ -25,7 +25,7 @@ data class ADImage(
     val id: Int,
     val imageSize: String,
     val imageUrl: String,
-    val linkType: Int,
+    val linkType: Int, // 0: "无", 3: "app内H5", 4: "app外H5", 5: "app原生路径", 6: "app外唤醒"
     val linkUrl: String,
     val name: String,
     val rate: Int,

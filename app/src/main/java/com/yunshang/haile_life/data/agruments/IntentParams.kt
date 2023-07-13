@@ -18,7 +18,7 @@ import com.yunshang.haile_life.data.entities.TradePreviewParticipate
  */
 object IntentParams {
 
-    object MainParams {
+    object DefaultPageParams {
         private const val DefaultPage = "defaultPage"
 
         /**
@@ -29,7 +29,7 @@ object IntentParams {
                 putInt(DefaultPage, defaultPage)
             }
 
-        fun parseDefaultPage(intent: Intent): Int = intent.getIntExtra(DefaultPage, -1)
+        fun parseDefaultPage(intent: Intent): Int = intent.getIntExtra(DefaultPage, 0)
     }
 
     object IdParams {
@@ -207,7 +207,7 @@ object IntentParams {
     }
 
     object NearByShopParams {
-        private const val IsRechargeShop = "isRechargeShop"
+        const val IsRechargeShop = "isRechargeShop"
 
         /**
          * 包装参数
@@ -359,5 +359,35 @@ object IntentParams {
 
         fun parseIsAppoint(intent: Intent): Boolean = intent.getBooleanExtra(IsAppoint, false)
         fun parseFormScan(intent: Intent): Boolean = intent.getBooleanExtra(FormScan, false)
+    }
+
+
+    object WebViewParams {
+        private const val Url = "url"
+        private const val NeedFilter = "needFilter"
+        private const val Title = "title"
+        private const val AutoWebTitle = "autoWebTitle"
+
+        /**
+         * 包装参数
+         */
+        fun pack(
+            url: String,
+            needFilter: Boolean = false,
+            title: String? = null,
+            autoWebTitle: Boolean = true
+        ): Bundle = Bundle().apply {
+            putString(Url, url)
+            putBoolean(NeedFilter, needFilter)
+            title?.let {
+                putString(Title, title)
+            }
+            putBoolean(AutoWebTitle, autoWebTitle)
+        }
+
+        fun parseUrl(intent: Intent): String? = intent.getStringExtra(Url)
+        fun parseNeedFilter(intent: Intent): Boolean = intent.getBooleanExtra(NeedFilter, false)
+        fun parseTitle(intent: Intent): String? = intent.getStringExtra(NeedFilter)
+        fun parseAutoWebTitle(intent: Intent): Boolean = intent.getBooleanExtra(AutoWebTitle, true)
     }
 }

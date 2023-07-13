@@ -76,6 +76,9 @@ object ThirdLibs {
     const val alipay = "com.alipay.sdk:alipaysdk-android:15.8.14"
     // 微信
     const val wechat = "com.tencent.mm.opensdk:wechat-sdk-android:6.8.24"
+
+    // jsbridge
+    const val jsBridge = "com.github.lzyzsd:jsbridge:2.0.0"
 }
 
 object TestLibs {

@@ -1,6 +1,7 @@
 package com.yunshang.haile_life
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,6 +10,7 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivitySplashBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
+import timber.log.Timber
 
 class SplashActivity : BaseActivity() {
     private val delayTime = 1000L
@@ -22,7 +24,23 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mSplashBinding.root)
+//        parseURL()
         initView()
+    }
+
+    /**
+     * 处理跳转链接
+     */
+    private fun parseURL() {
+        val intent = intent
+        val action = intent.action
+        if (Intent.ACTION_VIEW == action) {
+            val uri: Uri? = intent.data
+            if (uri != null) {
+                Timber.i("path:${uri.path}")
+                Timber.i("isRechargeShop:${uri.getQueryParameter("isRechargeShop")}")
+            }
+        }
     }
 
     private fun initView() {
@@ -41,7 +59,6 @@ class SplashActivity : BaseActivity() {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             }
             finish()
-
         }, delayTime)
     }
 }

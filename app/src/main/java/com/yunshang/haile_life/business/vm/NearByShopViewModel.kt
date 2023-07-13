@@ -24,11 +24,13 @@ import kotlinx.coroutines.withContext
 class NearByShopViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
 
-    var isRechargeShop:Boolean = false
+    var isRechargeShop: Boolean = false
 
     var location: Location? = null
 
-    var curCategoryCode: MutableLiveData<String> = MutableLiveData("")
+    val curCategoryCode: MutableLiveData<String> by lazy {
+        MutableLiveData()
+    }
 
     val mNearByShopIndicators = arrayListOf(
         IndicatorEntity("全部", 0, ""),
@@ -46,7 +48,7 @@ class NearByShopViewModel : BaseViewModel() {
         pageSize: Int,
         callBack: (responseList: ResponseList<out NearStoreEntity>?) -> Unit
     ) {
-        if (null == location) return
+        if (null == curCategoryCode.value || null == location) return
 
         launch({
             ApiRepository.dealApiResult(
