@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.CloseAccountViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context=".ui.activity.personal.CloseAccountActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_close_account_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@string/close_account" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="147dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="34dp"
+            android:src="@mipmap/icon_home_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_24_black_85_bold"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="@string/close_account_prompt" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/shape_sffffff_r8">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_close_acount_info1"
+                style="@style/Font_16_black_85_bold"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:drawableStart="@mipmap/icon_close_account_info1"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:text="@string/close_account_infos1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_close_acount_info2"
+                style="@style/Font_16_black_85_bold"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:drawableStart="@mipmap/icon_close_account_info2"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:text="@string/close_account_infos2"
+                app:layout_constraintTop_toBottomOf="@id/tv_close_acount_info1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_close_acount_info3"
+                style="@style/Font_16_black_85_bold"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:drawableStart="@mipmap/icon_close_account_info3"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:text="@string/close_account_infos3"
+                app:layout_constraintTop_toBottomOf="@id/tv_close_acount_info2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_close_acount_info4"
+                style="@style/Font_16_black_85_bold"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:drawableStart="@mipmap/icon_close_account_info4"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:text="@string/close_account_infos4"
+                app:layout_constraintTop_toBottomOf="@id/tv_close_acount_info3" />
+
+            <View
+                style="@style/DividingStyle"
+                android:layout_marginStart="52dp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_close_acount_info1"
+                tools:ignore="MissingConstraints" />
+
+            <View
+                style="@style/DividingStyle"
+                android:layout_marginStart="52dp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_close_acount_info2"
+                tools:ignore="MissingConstraints" />
+
+            <View
+                style="@style/DividingStyle"
+                android:layout_marginStart="52dp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_close_acount_info3"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_25"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/close_account_prompt2" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:background="@color/white"
+            android:paddingTop="10dp">
+
+            <com.lsy.framelib.ui.weight.SingleTapButton
+                style="@style/CommonMatchBtnStyle1"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginHorizontal="24dp"
+                android:onClick="@{vm::closeAccount}"
+                android:text="@string/sure_close" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>

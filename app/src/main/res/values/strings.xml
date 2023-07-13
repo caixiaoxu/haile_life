@@ -195,6 +195,13 @@
 
     <string name="pay_code_error">该付款码无效</string>
     <string name="empty_permission">需要授权才能继续操作</string>
+    <string name="close_account_prompt">以下信息将被清空 且无法找回</string>
+    <string name="close_account_infos1">身份、账号信息</string>
+    <string name="close_account_infos2">交易信息</string>
+    <string name="close_account_infos3">个人隐私信息</string>
+    <string name="close_account_infos4">红包、海星等</string>
+    <string name="close_account_prompt2">请先确保所有交易已完结且无纠纷，账号删除后的历史交易可能产生的资金退回权益等将视作自动放弃。</string>
+    <string name="sure_close">确认注销</string>
 
     <string-array name="scan_order_wash_confirm">
         <item>请确认当前洗衣机舱门已经锁好</item>

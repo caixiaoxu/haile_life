@@ -27,6 +27,12 @@ interface LoginUserService {
     suspend fun login(@Body body: RequestBody): ResponseWrapper<LoginEntity>
 
     /**
+     * 注销接口
+     */
+    @POST("/login/userLayout")
+    suspend fun closeAccount(@Body body: RequestBody): ResponseWrapper<Any>
+
+    /**
      * 验证码接口
      */
     @POST("/login/getCode")

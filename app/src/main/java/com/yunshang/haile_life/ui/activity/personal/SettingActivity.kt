@@ -50,6 +50,10 @@ class SettingActivity : BaseBusinessActivity<ActivitySettingBinding, SettingView
 
         mBinding.tvSettingCurVersion.text =
             "${StringUtils.getString(R.string.version)} ${AppPackageUtils.getVersionName(this)}"
+
+        mBinding.tvSettingCloseAccount.setOnClickListener {
+            startActivity(Intent(this@SettingActivity, CloseAccountActivity::class.java))
+        }
     }
 
 

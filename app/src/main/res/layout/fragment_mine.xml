@@ -35,6 +35,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="14dp"
+            android:scaleType="centerCrop"
             android:src="@mipmap/icon_default_head"
             app:imgUrl="@{shared.userInfo.avatar}"
             app:layout_constraintStart_toStartOf="parent"
