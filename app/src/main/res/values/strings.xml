@@ -25,6 +25,7 @@
     <string name="login_title">登录海乐生活</string>
     <string name="bind_phone_title">绑定手机号</string>
     <string name="phone_number">手机号码</string>
+    <string name="phone">手机号</string>
     <string name="forget_password">忘记密码</string>
     <string name="login_agreement">我已阅读并同意《隐私权政策》</string>
     <string name="code">验证码</string>
@@ -45,6 +46,12 @@
     <string name="main_tab_store">商城</string>
     <string name="main_tab_order">订单</string>
     <string name="main_tab_mine">我的</string>
+
+    <string name="for_take">拍照</string>
+    <string name="for_album">相册</string>
+    <string name="update_success">修改成功</string>
+    <string name="update_failure">修改失败</string>
+    <string name="upload_failure">上传失败</string>
 
     <string name="home_category_wash">洗烘</string>
     <string name="home_category_hair">吹风</string>
@@ -100,6 +107,10 @@
 
     <string name="system_setting">系统设置</string>
     <string name="personal_info">个人资料</string>
+    <string name="mine_head_image">我的头像</string>
+    <string name="nickname">昵称</string>
+    <string name="nickname_update">昵称修改</string>
+    <string name="nickname_hint">请输入昵称</string>
     <string name="close_account">注销账户</string>
     <string name="logout">退出登录</string>
     <string name="version">版本</string>

@@ -79,4 +79,10 @@ interface LoginUserService {
      */
     @POST("/login/authorizationLogin")
     suspend fun thirdLogin(@Body body: RequestBody): ResponseWrapper<ThirdLoginEntity>
+
+    /**
+     * 修改用户信息接口
+     */
+    @POST("/account/updateUserInfo")
+    suspend fun updateUserInfo(@Body body: RequestBody): ResponseWrapper<Any>
 }

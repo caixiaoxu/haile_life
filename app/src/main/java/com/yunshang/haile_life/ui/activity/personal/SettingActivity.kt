@@ -30,7 +30,7 @@ class SettingActivity : BaseBusinessActivity<ActivitySettingBinding, SettingView
         mViewModel.appVersionInfo.observe(this) { version ->
             if (version.needUpdate || version.forceUpdate) {
                 mBinding.tvSettingNewVersion.visibility = View.VISIBLE
-                mBinding.llSettingVersion.setOnClickListener{
+                mBinding.llSettingVersion.setOnClickListener {
                     showUpdateDialog(version)
                 }
             } else mBinding.tvSettingNewVersion.visibility = View.GONE
@@ -43,6 +43,10 @@ class SettingActivity : BaseBusinessActivity<ActivitySettingBinding, SettingView
 
     override fun initView() {
         window.statusBarColor = Color.WHITE
+
+        mBinding.tvSettingPersonalInfo.setOnClickListener {
+            startActivity(Intent(this@SettingActivity, PersonalInfoActivity::class.java))
+        }
 
         mBinding.tvSettingCurVersion.text =
             "${StringUtils.getString(R.string.version)} ${AppPackageUtils.getVersionName(this)}"

@@ -41,4 +41,7 @@
             <enum name="vertical" value="1"/>
         </attr>
     </declare-styleable>
+    <declare-styleable name="MaxHeightScrollView">
+        <attr name="maxHeight" />
+    </declare-styleable>
 </resources>

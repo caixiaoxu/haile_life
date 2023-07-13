@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/shape_colorprimary_bottom_stroke_dividing_efefef" android:state_checked="true" />
+    <item android:drawable="@drawable/shape_bottom_stroke_dividing_efefef" android:state_checked="false" />
+    <item android:drawable="@drawable/shape_bottom_stroke_dividing_efefef" />
+</selector>
