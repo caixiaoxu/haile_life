@@ -113,7 +113,9 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             } else {
                 mBinding.bannerHomeBanner.addBannerLifecycleObserver(this)
                     .setIndicator(CircleIndicator(requireContext()))
-                    .setAdapter(ImageAdapter(ad.images, { it.imageUrl }) { data, pos ->
+                    .setAdapter(ImageAdapter(
+                        ad.images.sortedBy { item -> item.sortValue },
+                        { it.imageUrl }) { data, _ ->
                         SchemeURLHelper.parseSchemeURL(
                             requireContext(),
                             data.linkUrl,

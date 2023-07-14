@@ -83,7 +83,7 @@ object SchemeURLHelper {
      * @param link
      * alipays://platformapi/startapp?appId=20170713077xxxxx&page=x/yz&query=xx%3dxx
      * weixin://platformapi/startapp?appId=20170713077xxxxx&page=x/yz&scene=xx%3dxx
-     * android://com.yunshang.haile_life/shop.NearByShopActivity?isRechargeShop=false
+     * android://com.yunshang.haile_life/NearByShop?isRechargeShop=true
      */
     private fun parseScheme(link: String): Int {
         val schemeEnd = link.indexOf("://")
