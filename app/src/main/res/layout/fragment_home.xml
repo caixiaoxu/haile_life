@@ -337,6 +337,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:visibility="gone"
                     android:background="@drawable/shape_sffffff_r8">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -362,6 +363,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
+                        android:weightSum="4"
                         app:itemLayout="@layout/item_home_goods_recommend"
                         app:layout_constraintTop_toBottomOf="@id/ib_goods_recommend_close" />
 
@@ -372,11 +374,13 @@
                         app:layout_constraintTop_toBottomOf="@id/ll_goods_recommend" />
 
                     <View
+                        android:id="@+id/view_goods_recommend_split"
                         style="@style/DividingStyle"
                         app:layout_constraintTop_toTopOf="@id/view_goods_recommend_more"
                         tools:ignore="MissingConstraints" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_goods_recommend_more"
                         style="@style/Font_12_black_25"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -387,6 +391,12 @@
                         app:layout_constraintEnd_toEndOf="@id/view_goods_recommend_more"
                         app:layout_constraintStart_toStartOf="@id/view_goods_recommend_more"
                         app:layout_constraintTop_toTopOf="@id/view_goods_recommend_more" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_goods_recommend_more"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:constraint_referenced_ids="view_goods_recommend_more,view_goods_recommend_split,tv_goods_recommend_more" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -431,7 +441,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="20dp"
                     android:background="@drawable/shape_sffffff_r8">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -461,6 +470,10 @@
                         app:layout_constraintTop_toBottomOf="@id/ib_student_area_close" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+                
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

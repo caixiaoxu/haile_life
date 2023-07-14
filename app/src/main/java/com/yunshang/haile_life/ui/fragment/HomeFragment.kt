@@ -18,11 +18,11 @@ import com.lsy.framelib.utils.StatusBarUtils
 import com.youth.banner.indicator.CircleIndicator
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.business.vm.GoodsRecommend
 import com.yunshang.haile_life.business.vm.HomeCategory
 import com.yunshang.haile_life.business.vm.HomeViewModel
 import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.ADImage
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
@@ -30,7 +30,6 @@ import com.yunshang.haile_life.ui.activity.shop.ShopDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
-import com.yunshang.haile_life.utils.thrid.WeChatHelper
 import com.yunshang.haile_life.web.WebViewActivity
 
 
@@ -87,11 +86,26 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
     }
 
+    private val mStudentAdapter by lazy {
+        CommonRecyclerAdapter<ItemHomeStudentRecommendBinding, ADImage>(
+            R.layout.item_home_student_recommend,
+            BR.item
+        ) { mItemBinding, _, item ->
+            mItemBinding?.root?.setOnClickListener {
+                SchemeURLHelper.parseSchemeURL(
+                    requireContext(),
+                    item.linkUrl
+                )
+            }
+        }
+    }
+
     override fun layoutId(): Int = R.layout.fragment_home
 
     override fun initEvent() {
         super.initEvent()
 
+        // banner
         mViewModel.adEntity.observe(this) { ad ->
             if (ad.images.isEmpty()) {
                 mBinding.bannerHomeBanner.visibility = View.GONE
@@ -121,6 +135,53 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 mBinding.bannerHomeBanner.visibility = View.VISIBLE
             }
         }
+        // 商城
+        mViewModel.storeAdEntity.observe(this) { ad ->
+            ad.images.firstOrNull()?.let { img ->
+                mBinding.groupGoodsRecommendMore.visibility = View.VISIBLE
+                mBinding.viewGoodsRecommendMore.setOnClickListener {
+                    SchemeURLHelper.parseSchemeURL(
+                        requireContext(),
+                        img.linkUrl
+                    )
+                }
+            } ?: run { mBinding.groupGoodsRecommendMore.visibility = View.GONE }
+        }
+        // 好物推荐
+        mViewModel.goodsRecommendAdEntity.observe(this) {
+            if (it.images.isEmpty()) {
+                mBinding.clGoodsRecommend.visibility = View.GONE
+            } else {
+                mBinding.clGoodsRecommend.visibility = View.VISIBLE
+                val mH = DimensionUtils.dip2px(requireContext(), 4f)
+                mBinding.llGoodsRecommend.buildChild<ItemHomeGoodsRecommendBinding, ADImage>(
+                    it.images.sortedBy { item->item.sortValue },
+                    LinearLayoutCompat.LayoutParams(0, LinearLayoutCompat.LayoutParams.WRAP_CONTENT)
+                        .apply {
+                            weight = 1f
+                            setMargins(mH, 0, mH, 0)
+                        }
+                ) { _, childBinding, data ->
+                    childBinding.item = data
+                    childBinding.root.setOnClickListener {
+                        SchemeURLHelper.parseSchemeURL(
+                            requireContext(),
+                            data.linkUrl
+                        )
+                    }
+                }
+            }
+        }
+        // 学生专区
+        mViewModel.studentRecommendAdEntity.observe(this){
+            if (it.images.isEmpty()) {
+                mBinding.clStudentArea.visibility = View.GONE
+            } else {
+                mBinding.clStudentArea.visibility = View.VISIBLE
+                mStudentAdapter.refreshList(it.images.sortedBy { item->item.sortValue }.toMutableList(),true)
+            }
+        }
+
         mViewModel.nearStoreEntity.observe(this) {
             mBinding.groupNearStores.visibility = View.VISIBLE
             mViewModel.requestStoreDevices()
@@ -233,6 +294,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             mBinding.clHomeCurTask.visibility = View.GONE
         }
 
+        // 指南
         mBinding.clHomeGuideMain.setOnClickListener {
             startActivity(
                 Intent(
@@ -246,25 +308,10 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                     )
                 })
         }
+
         // 好物推荐
         mBinding.ibGoodsRecommendClose.setOnClickListener {
             mBinding.clGoodsRecommend.visibility = View.GONE
-        }
-        val mH = DimensionUtils.dip2px(requireContext(), 4f)
-        mBinding.llGoodsRecommend.buildChild<ItemHomeGoodsRecommendBinding, GoodsRecommend>(
-            mViewModel.goodsRecommendList,
-            LinearLayoutCompat.LayoutParams(0, LinearLayoutCompat.LayoutParams.WRAP_CONTENT).apply {
-                weight = 1f
-                setMargins(mH, 0, mH, 0)
-            }
-        ) { _, childBinding, data ->
-            childBinding.item = data
-            childBinding.root.setOnClickListener {
-                WeChatHelper.openWeChatMiniProgram("{scene: ${data.id}}")
-            }
-        }
-        mBinding.viewGoodsRecommendMore.setOnClickListener {
-            WeChatHelper.openWeChatMiniProgram()
         }
 
         // 吃喝玩乐（隐藏）
@@ -295,18 +342,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 outRect.bottom = space
             }
         })
-
-        CommonRecyclerAdapter<ItemHomeStudentRecommendBinding, GoodsRecommend>(
-            R.layout.item_home_student_recommend,
-            BR.item
-        ) { mItemBinding, _, item ->
-            mItemBinding?.root?.setOnClickListener {
-                WeChatHelper.openWeChatMiniProgram("{scene: ${item.id}}")
-            }
-        }.let { adapter ->
-            mBinding.rvStudentAreaList.adapter = adapter
-            adapter.refreshList(mViewModel.studentRecommendList, true)
-        }
+        mBinding.rvStudentAreaList.adapter = mStudentAdapter
     }
 
     override fun initData() {

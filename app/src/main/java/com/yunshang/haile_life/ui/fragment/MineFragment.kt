@@ -77,7 +77,7 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
             goDiscountCouponList()
         }
 
-        mBinding.ivMineRecharge.setOnClickListener {
+        mBinding.btnMineRecharge.setOnClickListener {
             startActivity(Intent(requireContext(), NearByShopActivity::class.java).apply {
                 putExtras(IntentParams.NearByShopParams.pack(true))
             })

@@ -59,6 +59,18 @@ class HomeViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
+    val storeAdEntity: MutableLiveData<ADEntity> by lazy {
+        MutableLiveData()
+    }
+
+    val goodsRecommendAdEntity: MutableLiveData<ADEntity> by lazy {
+        MutableLiveData()
+    }
+
+    val studentRecommendAdEntity: MutableLiveData<ADEntity> by lazy {
+        MutableLiveData()
+    }
+
     val nearStoreEntity: MutableLiveData<NearStoreEntity> by lazy {
         MutableLiveData()
     }
@@ -67,86 +79,13 @@ class HomeViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    val goodsRecommendList = arrayListOf(
-        GoodsRecommend(
-            "1650698183995617282",
-            "https://static.haier-ioc.com/images/dashboard/hw_1.png",
-            "潮流服饰"
-        ),
-        GoodsRecommend(
-            "1650698249267376130",
-            "https://static.haier-ioc.com/images/dashboard/hw_2.png",
-            "电子数码"
-        ),
-        GoodsRecommend(
-            "1650698340661260290",
-            "https://static.haier-ioc.com/images/dashboard/hw_3.png",
-            "日常洗护"
-        ),
-        GoodsRecommend(
-            "1650732225545695233",
-            "https://static.haier-ioc.com/images/dashboard/hw_4.png",
-            "生活用品"
-        ),
-    )
-
-    val studentRecommendList = arrayListOf(
-        GoodsRecommend(
-            "1650701908705341442",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_7.jpg",
-            "MR.CLEARE懒人洗鞋泡泡粉"
-        ),
-        GoodsRecommend(
-            "1650699343200579585",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_2.jpg",
-            "卡蛙小方盒除湿机KW-CS01"
-        ),
-        GoodsRecommend(
-            "1650699135309901826",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_3.jpg",
-            "卡蛙X台风桌面摇头风扇"
-        ),
-        GoodsRecommend(
-            "1650699132633935874",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_4.jpeg",
-            "快乐小鸡Mini隐形眼镜清洗盒"
-        ),
-        GoodsRecommend(
-            "1650700433019170818",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_5.jpg",
-            "云裳澜锦轻薄透气男防晒服"
-        ),
-        GoodsRecommend(
-            "1650701906624966658",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_6.jpg",
-            "lassdear氨基酸去屑洗发水"
-        ),
-        GoodsRecommend(
-            "1650699132633935874",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_8.jpg",
-            "快乐小鸡Mini隐形眼镜清洗盒"
-        ),
-        GoodsRecommend(
-            "1650702088745840642",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_9.jpg",
-            "MR.CLEARE去渍剂套装"
-        ),
-        GoodsRecommend(
-            "1650699137432219649",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_1.jpg",
-            "颈部按摩器"
-        ),
-        GoodsRecommend(
-            "1650699144579313666",
-            "https://static.haier-ioc.com/images/dashboard/goods/good_10.jpg",
-            "Nuby颈部按摩器"
-        ),
-    )
-
     fun requestData() {
         launch({
             requestHomeMsg()
             requestAD()
+            requestGoodsRecommendAD()
+            requestStoreAD()
+            requestStudentRecommendAD()
         })
     }
 
@@ -193,7 +132,57 @@ class HomeViewModel : BaseViewModel() {
         )?.let {
             adEntity.postValue(it)
         }
+    }
 
+    /**
+     * 商城广告位
+     */
+    private suspend fun requestStoreAD() {
+        ApiRepository.dealApiResult(
+            mMarketingRepo.requestAD(
+                ApiRepository.createRequestBody(
+                    hashMapOf(
+                        "slotKey" to "mini_store"
+                    )
+                )
+            )
+        )?.let {
+            storeAdEntity.postValue(it)
+        }
+    }
+
+    /**
+     * 好物推荐广告位
+     */
+    private suspend fun requestGoodsRecommendAD() {
+        ApiRepository.dealApiResult(
+            mMarketingRepo.requestAD(
+                ApiRepository.createRequestBody(
+                    hashMapOf(
+                        "slotKey" to "mini_goods_recommend"
+                    )
+                )
+            )
+        )?.let {
+            goodsRecommendAdEntity.postValue(it)
+        }
+    }
+
+    /**
+     * 学生专区广告位
+     */
+    private suspend fun requestStudentRecommendAD() {
+        ApiRepository.dealApiResult(
+            mMarketingRepo.requestAD(
+                ApiRepository.createRequestBody(
+                    hashMapOf(
+                        "slotKey" to "mini_student_recommend"
+                    )
+                )
+            )
+        )?.let {
+            studentRecommendAdEntity.postValue(it)
+        }
     }
 
     /**
@@ -243,10 +232,4 @@ data class HomeCategory(
     val icon: Int,
     val name: Int,
     val hasTag: MutableLiveData<Boolean>? = null
-)
-
-data class GoodsRecommend(
-    val id: String,
-    val icon: String,
-    val name: String,
 )

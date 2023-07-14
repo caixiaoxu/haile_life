@@ -10,12 +10,14 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.LoginViewModel
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.ActivityLoginBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.utils.ViewUtils
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
+import com.yunshang.haile_life.web.WebViewActivity
 import timber.log.Timber
 
 class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>(
@@ -56,8 +58,18 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
 
         // 协议内容
         ViewUtils.initAgreementToTextView(mBinding.tvLoginAgreement) {
-            // TODO 跳转隐私协议
-            SToast.showToast(this@LoginActivity, "隐私协议")
+            // 跳转隐私协议
+            startActivity(
+                Intent(
+                    this@LoginActivity,
+                    WebViewActivity::class.java
+                ).apply {
+                    putExtras(
+                        IntentParams.WebViewParams.pack(
+                            Constants.agreement,
+                        )
+                    )
+                })
         }
 
         mBinding.ivLoginAlipay.setOnClickListener {

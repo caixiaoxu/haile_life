@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.yunshang.haile_life.business.vm.GoodsRecommend" />
+            type="com.yunshang.haile_life.data.entities.ADImage" />
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:imgUrl="@{item.icon}" />
+            app:imgUrl="@{item.imageUrl}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/Font_13_333333"

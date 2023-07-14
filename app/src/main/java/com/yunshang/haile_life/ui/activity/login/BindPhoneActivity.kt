@@ -1,5 +1,6 @@
 package com.yunshang.haile_life.ui.activity.login
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import com.lsy.framelib.async.LiveDataBus
@@ -9,11 +10,13 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.BindPhoneViewModel
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.ActivityBindPhoneBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.utils.ViewUtils
+import com.yunshang.haile_life.web.WebViewActivity
 
 class BindPhoneActivity : BaseBusinessActivity<ActivityBindPhoneBinding, BindPhoneViewModel>(
     BindPhoneViewModel::class.java, BR.vm
@@ -57,8 +60,18 @@ class BindPhoneActivity : BaseBusinessActivity<ActivityBindPhoneBinding, BindPho
         window.statusBarColor = Color.WHITE
         // 协议内容
         ViewUtils.initAgreementToTextView(mBinding.tvBindPhoneAgreement) {
-            // TODO 跳转隐私协议
-            SToast.showToast(this@BindPhoneActivity, "隐私协议")
+            // 跳转隐私协议
+            startActivity(
+                Intent(
+                    this@BindPhoneActivity,
+                    WebViewActivity::class.java
+                ).apply {
+                    putExtras(
+                        IntentParams.WebViewParams.pack(
+                            Constants.agreement,
+                        )
+                    )
+                })
         }
     }
 

@@ -27,6 +27,7 @@ import com.yunshang.haile_life.ui.fragment.OrderFragment
 import com.yunshang.haile_life.ui.fragment.StoreFragment
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
+import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
 import timber.log.Timber
 import java.io.File
@@ -59,9 +60,13 @@ class MainActivity :
                 })
             } ?: run {
                 StringUtils.refundCode(it)?.let {
-                    startActivity(Intent(this@MainActivity, StarfishRefundListActivity::class.java).apply {
-                        putExtras(IntentParams.ScanOrderParams.pack(it))
-                    })
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            StarfishRefundListActivity::class.java
+                        ).apply {
+                            putExtras(IntentParams.ScanOrderParams.pack(it))
+                        })
                 } ?: SToast.showToast(this, R.string.pay_code_error)
             }
         }
@@ -91,7 +96,7 @@ class MainActivity :
     }
 
     private fun changeDefaultPage(parseDefaultPage: Int) {
-        if (0 == parseDefaultPage){
+        if (0 == parseDefaultPage) {
             mViewModel.checkId.value = R.id.rb_main_tab_home
         }
     }
@@ -103,20 +108,30 @@ class MainActivity :
     override fun initEvent() {
         super.initEvent()
         mViewModel.checkId.observe(this) {
-            if (it != R.id.rb_main_tab_scan) {
+            if (it != R.id.rb_main_tab_scan && it != R.id.rb_main_tab_store) {
                 showChildFragment(it)
+            }
+        }
+        mViewModel.storeAdEntity.observe(this) { ad ->
+            mBinding.viewMainStore.setOnClickListener {
+                ad.images.firstOrNull()?.let { image ->
+                    SchemeURLHelper.parseSchemeURL(
+                        this@MainActivity,
+                        image.linkUrl
+                    )
+                }
             }
         }
     }
 
     override fun initView() {
-    }
-
-    override fun initData() {
         mBinding.ivMainScan.setOnClickListener {
             scanCodeLauncher.launch(scanOptions)
         }
+    }
 
+    override fun initData() {
+        mViewModel.requestData()
         checkUpdate()
     }
 

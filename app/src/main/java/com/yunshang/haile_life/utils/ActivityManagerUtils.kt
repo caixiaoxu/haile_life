@@ -3,7 +3,9 @@ package com.yunshang.haile_life.utils
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import com.lsy.framelib.data.constants.Constants
 import com.yunshang.haile_life.data.model.SPRepository
+import com.yunshang.haile_life.ui.activity.login.LoginActivity
 
 /**
  * Title :
@@ -34,14 +36,14 @@ object ActivityManagerUtils {
     fun clearLoginInfoGoLogin() {
         // 清空登录信息
         SPRepository.cleaLoginUserInfo()
-        // TODO 跳转登录界面
-//        Constants.APP_CONTEXT.startActivity(
-//            Intent(
-//                Constants.APP_CONTEXT,
-//                LoginActivity::class.java
-//            ).apply {
-//                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            }
-//        )
+        // 跳转登录界面
+        Constants.APP_CONTEXT.startActivity(
+            Intent(
+                Constants.APP_CONTEXT,
+                LoginActivity::class.java
+            ).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+        )
     }
 }

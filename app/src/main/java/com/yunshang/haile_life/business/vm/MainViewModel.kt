@@ -6,6 +6,8 @@ import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.AppPackageUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.CommonService
+import com.yunshang.haile_life.business.apiService.MarketingService
+import com.yunshang.haile_life.data.entities.ADEntity
 import com.yunshang.haile_life.data.entities.AppVersionEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
@@ -24,9 +26,30 @@ import kotlinx.coroutines.withContext
  */
 class MainViewModel : BaseViewModel() {
     private val mCommonRepo = ApiRepository.apiClient(CommonService::class.java)
+    private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
 
     //选择的id
     val checkId: MutableLiveData<Int> = MutableLiveData(R.id.rb_main_tab_home)
+
+    val storeAdEntity: MutableLiveData<ADEntity> by lazy {
+        MutableLiveData()
+    }
+
+    fun requestData() {
+        launch({
+            ApiRepository.dealApiResult(
+                mMarketingRepo.requestAD(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "slotKey" to "mini_store"
+                        )
+                    )
+                )
+            )?.let {
+                storeAdEntity.postValue(it)
+            }
+        })
+    }
 
     fun checkVersion(context: Context, callBack: (appVersion: AppVersionEntity) -> Unit) {
         launch({

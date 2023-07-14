@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.MainViewModel" />
@@ -52,8 +53,8 @@
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/rb_main_tab_scan"
                 style="@style/MainTab"
-                android:enabled="false"
-                android:drawableTop="@drawable/selector_main_store" />
+                android:drawableTop="@drawable/selector_main_store"
+                android:enabled="false" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/rb_main_tab_order"
@@ -68,14 +69,43 @@
                 android:text="@string/main_tab_mine" />
         </RadioGroup>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_main_scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:src="@mipmap/icon_main_scan"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:weightSum="5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/view_main_bottom" />
+            app:layout_constraintTop_toTopOf="@id/view_main_bottom">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:id="@+id/view_main_store"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_main_scan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:src="@mipmap/icon_main_scan" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
