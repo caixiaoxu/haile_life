@@ -387,7 +387,7 @@ object IntentParams {
 
         fun parseUrl(intent: Intent): String? = intent.getStringExtra(Url)
         fun parseNeedFilter(intent: Intent): Boolean = intent.getBooleanExtra(NeedFilter, false)
-        fun parseTitle(intent: Intent): String? = intent.getStringExtra(NeedFilter)
+        fun parseTitle(intent: Intent): String? = intent.getStringExtra(Title)
         fun parseAutoWebTitle(intent: Intent): Boolean = intent.getBooleanExtra(AutoWebTitle, true)
     }
 }
