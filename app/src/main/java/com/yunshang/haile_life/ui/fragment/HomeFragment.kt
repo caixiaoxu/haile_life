@@ -94,7 +94,8 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             mItemBinding?.root?.setOnClickListener {
                 SchemeURLHelper.parseSchemeURL(
                     requireContext(),
-                    item.linkUrl
+                    item.linkUrl,
+                    item.linkType
                 )
             }
         }
@@ -113,24 +114,11 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 mBinding.bannerHomeBanner.addBannerLifecycleObserver(this)
                     .setIndicator(CircleIndicator(requireContext()))
                     .setAdapter(ImageAdapter(ad.images, { it.imageUrl }) { data, pos ->
-                        when (data.linkType) {
-                            3 -> startActivity(
-                                Intent(
-                                    requireContext(),
-                                    WebViewActivity::class.java
-                                ).apply {
-                                    putExtras(
-                                        IntentParams.WebViewParams.pack(
-                                            data.linkUrl
-                                        )
-                                    )
-                                })
-                            5 ->
-                                SchemeURLHelper.parseSchemeURL(
-                                    requireContext(),
-                                    data.linkUrl
-                                )
-                        }
+                        SchemeURLHelper.parseSchemeURL(
+                            requireContext(),
+                            data.linkUrl,
+                            data.linkType
+                        )
                     })
                 mBinding.bannerHomeBanner.visibility = View.VISIBLE
             }
@@ -142,7 +130,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 mBinding.viewGoodsRecommendMore.setOnClickListener {
                     SchemeURLHelper.parseSchemeURL(
                         requireContext(),
-                        img.linkUrl
+                        img.linkUrl, img.linkType
                     )
                 }
             } ?: run { mBinding.groupGoodsRecommendMore.visibility = View.GONE }
@@ -155,7 +143,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 mBinding.clGoodsRecommend.visibility = View.VISIBLE
                 val mH = DimensionUtils.dip2px(requireContext(), 4f)
                 mBinding.llGoodsRecommend.buildChild<ItemHomeGoodsRecommendBinding, ADImage>(
-                    it.images.sortedBy { item->item.sortValue },
+                    it.images.sortedBy { item -> item.sortValue },
                     LinearLayoutCompat.LayoutParams(0, LinearLayoutCompat.LayoutParams.WRAP_CONTENT)
                         .apply {
                             weight = 1f
@@ -166,19 +154,21 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                     childBinding.root.setOnClickListener {
                         SchemeURLHelper.parseSchemeURL(
                             requireContext(),
-                            data.linkUrl
+                            data.linkUrl,
+                            data.linkType
                         )
                     }
                 }
             }
         }
         // 学生专区
-        mViewModel.studentRecommendAdEntity.observe(this){
+        mViewModel.studentRecommendAdEntity.observe(this) {
             if (it.images.isEmpty()) {
                 mBinding.clStudentArea.visibility = View.GONE
             } else {
                 mBinding.clStudentArea.visibility = View.VISIBLE
-                mStudentAdapter.refreshList(it.images.sortedBy { item->item.sortValue }.toMutableList(),true)
+                mStudentAdapter.refreshList(it.images.sortedBy { item -> item.sortValue }
+                    .toMutableList(), true)
             }
         }
 

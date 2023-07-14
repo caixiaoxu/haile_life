@@ -54,7 +54,7 @@ class MainActivity :
         result.contents?.let {
             Timber.i("二维码：$it")
             val code = StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
-            code?.let { code ->
+            code?.let {
                 startActivity(Intent(this@MainActivity, ScanOrderActivity::class.java).apply {
                     putExtras(IntentParams.ScanOrderParams.pack(code))
                 })
@@ -117,7 +117,8 @@ class MainActivity :
                 ad.images.firstOrNull()?.let { image ->
                     SchemeURLHelper.parseSchemeURL(
                         this@MainActivity,
-                        image.linkUrl
+                        image.linkUrl,
+                        image.linkType
                     )
                 }
             }

@@ -3,7 +3,9 @@ package com.yunshang.haile_life.utils.scheme
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
+import com.yunshang.haile_life.web.WebViewActivity
 
 /**
  * Title :
@@ -20,27 +22,44 @@ object SchemeURLHelper {
         "NearByShop" to NearByShopParser()
     )
 
-    fun parseSchemeURL(context: Context, link: String) {
-        when (parseScheme(link)) {
-            1 -> {
-                parsePath(context, link, "platformapi") { _, _, params ->
-                    params?.let {
-                        parseParam(params, "appId")?.let { appId ->
-                            val page = parseParam(params, "page")
-                            val scene = parseParam(params, "scene")
-                            WeChatHelper.openWeChatMiniProgram(page, scene, appId)
-                        }
-                    }
-                    null
-                }
-            }
-            2 -> context.startActivity(
+    /**
+     * 解析scheme url
+     * @param context
+     * @param link 广告位链接
+     * @param linkType 0: "无", 3: "app内H5", 4: "app外H5", 5: "app原生路径", 6: "app外唤醒"
+     */
+    fun parseSchemeURL(context: Context, link: String, linkType: Int) {
+        when (linkType) {
+            3 -> context.startActivity(
                 Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(link)
+                    context,
+                    WebViewActivity::class.java
+                ).apply {
+                    putExtras(
+                        IntentParams.WebViewParams.pack(link)
+                    )
+                })
+            else -> when (parseScheme(link)) {
+                1 -> {
+                    parsePath(context, link, "platformapi") { _, _, params ->
+                        params?.let {
+                            parseParam(params, "appId")?.let { appId ->
+                                val page = parseParam(params, "page")
+                                val scene = parseParam(params, "scene")
+                                WeChatHelper.openWeChatMiniProgram(page, scene, appId)
+                            }
+                        }
+                        null
+                    }
+                }
+                2 -> context.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(link)
+                    )
                 )
-            )
-            else -> formatSchemeURLToIntent(context, link)?.let { context.startActivity(it) }
+                else -> formatSchemeURLToIntent(context, link)?.let { context.startActivity(it) }
+            }
         }
     }
 
