@@ -50,11 +50,7 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
             it?.let { detail ->
 
                 mBinding.llShopDetailDevices.buildChild<ItemHomeNearStoresBinding, StoreDeviceEntity>(
-                    detail.shopDeviceDetailList.filter { item ->
-                        DeviceCategory.canShowDeviceCategory(
-                            item.categoryCode
-                        )
-                    },
+                    detail.shopDeviceDetailList,
                     LinearLayoutCompat.LayoutParams(
                         LinearLayoutCompat.LayoutParams.MATCH_PARENT,
                         DimensionUtils.dip2px(this@ShopDetailActivity, 34f)

@@ -199,6 +199,9 @@ object StringUtils {
         null
     }
 
+    /**
+     * 是否是退款码
+     */
     fun refundCode(codeStr: String): String? = try {
         if (codeStr.matches(Regex(RefundCode))) {
             codeStr.split("\\?refundId=".toRegex()).dropLastWhile { it.isEmpty() }

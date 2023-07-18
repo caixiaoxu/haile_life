@@ -25,7 +25,7 @@ import kotlinx.coroutines.withContext
  * <author> <time> <version> <desc>
  * 作者姓名 修改时间 版本号 描述
  */
-class SettingViewModel: BaseViewModel() {
+class SettingViewModel : BaseViewModel() {
     private val mCommonRepo = ApiRepository.apiClient(CommonService::class.java)
     private val mLoginRepo = ApiRepository.apiClient(LoginUserService::class.java)
 
@@ -35,7 +35,13 @@ class SettingViewModel: BaseViewModel() {
 
     fun checkVersion(context: Context) {
         launch({
-            ApiRepository.dealApiResult(mCommonRepo.appVersion(AppPackageUtils.getVersionName(context)))
+            ApiRepository.dealApiResult(
+                mCommonRepo.appVersion(
+                    AppPackageUtils.getVersionName(
+                        context
+                    )
+                )
+            )
                 ?.let {
                     appVersionInfo.postValue(it)
                 }

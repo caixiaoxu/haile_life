@@ -116,8 +116,8 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
                 1 -> mBinding.includeIndicatorList.indicatorIndicatorListStatus.navigator.onPageSelected(
                     1
                 )
-                2 -> mBinding.includeIndicatorList.indicatorIndicatorListStatus.navigator.onPageSelected(
-                    2
+                4 -> mBinding.includeIndicatorList.indicatorIndicatorListStatus.navigator.onPageSelected(
+                    4
                 )
             }
             mBinding.includeIndicatorList.indicatorIndicatorListStatus.visibility = View.VISIBLE
@@ -151,7 +151,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
         if (!mViewModel.isRechargeShop) {
             when (IntentParams.DefaultPageParams.parseDefaultPage(intent)) {
                 1 -> mViewModel.curCategoryCode.value = mViewModel.mNearByShopIndicators[1].value
-                2 -> mViewModel.curCategoryCode.value = mViewModel.mNearByShopIndicators[2].value
+                4 -> mViewModel.curCategoryCode.value = mViewModel.mNearByShopIndicators[4].value
                 else -> mViewModel.curCategoryCode.value = mViewModel.mNearByShopIndicators[0].value
             }
         } else {

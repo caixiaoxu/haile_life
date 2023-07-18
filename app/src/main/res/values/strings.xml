@@ -96,7 +96,7 @@
     <string name="queue_num">排队人数</string>
     <string name="appoint_use_time">预计使用时间</string>
     <string name="appoint_device_queue_use_time">%1$s排队%2$d人，预计使用时间</string>
-    <string name="appoint_order_detail_prompt">温馨提示：\n1、到店后可用微信/支付宝扫码解锁设备。\n2、因自身原因超时未使用的订单将无法退款。</string>
+    <string name="appoint_order_detail_prompt">温馨提示：\n1、到店后可用微信/支付宝/海乐生活APP扫码解锁设备。\n2、因自身原因超时未使用的订单将无法退款。</string>
 
     <string name="refund_record">退款记录</string>
     <string name="recharge_record">充值记录</string>

@@ -116,7 +116,7 @@
                 android:src="@mipmap/icon_near_by_shop_starfish"
                 android:visibility="@{vm.shopDetail.rechargeFlag?View.VISIBLE:View.GONE}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_shop_detail_distance" />
+                app:layout_constraintTop_toBottomOf="@id/tv_shop_detail_address" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View

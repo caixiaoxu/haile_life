@@ -89,6 +89,7 @@
             style="@style/Font_16_black_85_bold"
             android:layout_width="match_parent"
             android:layout_height="54dp"
+            android:onClick="@{vm::logout}"
             android:background="@color/white"
             android:gravity="center"
             android:paddingHorizontal="16dp"

@@ -240,7 +240,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                                 requireContext(),
                                 NearByShopActivity::class.java
                             ).apply {
-                                putExtras(IntentParams.DefaultPageParams.pack(2))
+                                putExtras(IntentParams.DefaultPageParams.pack(4))
                             })
                     else -> SToast.showToast(requireContext(), "敬请期待")
                 }

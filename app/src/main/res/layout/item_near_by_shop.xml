@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text='@{item.formatDistance() +" | "}'
+            android:text='@{item.formatDistance()}'
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_near_by_shop_name"
             tools:text="距您 534m" />
@@ -73,7 +73,7 @@
             style="@style/Font_12_black_85"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{item.address}"
+            android:text="@{item.getAddressVal}"
             tools:text="I 浙大紫金港路具体多少号"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_near_by_shop_distance"

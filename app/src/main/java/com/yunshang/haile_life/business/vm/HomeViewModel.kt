@@ -221,8 +221,7 @@ class HomeViewModel : BaseViewModel() {
             ApiRepository.dealApiResult(
                 mShopRepo.requestShopDevice(nearStoreEntity.value!!.id)
             )?.let {
-                storeDevices.postValue(it.filter { item -> DeviceCategory.canShowDeviceCategory(item.categoryCode) }
-                    .toMutableList())
+                storeDevices.postValue(it)
             }
         })
     }

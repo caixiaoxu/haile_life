@@ -30,19 +30,17 @@ data class ShopDetailEntity(
 ) : IMultiTypeEntity {
 
     fun formatDistance(): String =
-        "${StringUtils.getString(R.string.distance)}" +
-                "${StringUtils.getString(R.string.you)} " +
-                "${
-                    if (distance >= 1000) String.format(
-                        "%.2fkm",
-                        distance / 1000
-                    ) else String.format("%.2fm", distance)
-                }"
+        "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +
+                if (distance >= 1000) String.format(
+                    "%.2fkm", distance / 1000
+                ) else String.format(
+                    "%.2fm", distance
+                ) + if (getAddressVal().isNotEmpty()) " | " else ""
 
     fun getBusinessTimeVal(): String =
         "${StringUtils.getString(R.string.business_time)} ${workTime.ifEmpty { "全天24小时" }}"
 
-    fun getAddressVal(): String = if (distance >= 0) " | " else "" + area + address
+    fun getAddressVal(): String = "$area$address"
     override fun getMultiType(): Int = 0
 
     override fun getMultiTypeBgRes(): IntArray = intArrayOf(

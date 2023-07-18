@@ -33,7 +33,7 @@ class BindPhoneViewModel : LoginInfoViewModel() {
         if (authCode.isNullOrBlank() || -1 == loginType) return
         launch({
             requestBindPhone()?.let {
-                if (!it.accountBindFlag || it.code.isNotEmpty()) {
+                if (it.accountBindFlag || it.code.isNotEmpty()) {
                     jump.postValue(1)
                 } else {
                     bindPhoneSuccess.postValue(it)
@@ -42,7 +42,7 @@ class BindPhoneViewModel : LoginInfoViewModel() {
         })
     }
 
-    fun requestBindPhoneAsync(){
+    fun requestBindPhoneAsync() {
         launch({
             requestBindPhone(true)?.let { e ->
                 bindPhoneSuccess.postValue(e)
