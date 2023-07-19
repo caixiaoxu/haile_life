@@ -360,6 +360,10 @@
         <item name="android:textColor">@color/color_ff630e</item>
     </style>
 
+    <style name="Font_36_black_85">
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
 
     <style name="Font_52_black_85">
         <item name="android:textSize">52sp</item>

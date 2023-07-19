@@ -73,12 +73,11 @@
             app:layout_constraintStart_toStartOf="@id/tv_login_title"
             app:layout_constraintTop_toBottomOf="@id/et_login_account" />
 
-        <com.lsy.framelib.ui.weight.SingleTapButton
+        <com.lsy.framelib.ui.weight.SingleTapTextView
             android:id="@+id/tv_login_getcode"
             style="@style/Font_14_black_45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
             android:enabled="@{vm.canSendCode}"
             android:gravity="center"
             android:onClick="@{vm::sendCode}"

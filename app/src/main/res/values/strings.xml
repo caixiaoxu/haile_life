@@ -134,7 +134,11 @@
     <string name="starfish">海星</string>
     <string name="available_coupon_num">未选红包，最多%1$d张可用 ></string>
     <string name="order_discount_coupon_selector">选择优惠红包</string>
+    <string name="order_pay_time_remaining">支付剩余时间</string>
     <string name="select_model_of_pay">选择支付方式</string>
+    <string name="model_of_pay">支付方式</string>
+    <string name="cashier_desk">收银台</string>
+    <string name="balance_pay">余额支付</string>
     <string name="balance">余额</string>
     <string name="alipay">支付宝</string>
     <string name="wechat">微信</string>
@@ -202,6 +206,7 @@
     <string name="close_account_infos4">红包、海星等</string>
     <string name="close_account_prompt2">请先确保所有交易已完结且无纠纷，账号删除后的历史交易可能产生的资金退回权益等将视作自动放弃。</string>
     <string name="sure_close">确认注销</string>
+    <string name="sure_pay">确认支付</string>
 
     <string-array name="scan_order_wash_confirm">
         <item>请确认当前洗衣机舱门已经锁好</item>

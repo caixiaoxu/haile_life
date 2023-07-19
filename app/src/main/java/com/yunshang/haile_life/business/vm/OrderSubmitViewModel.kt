@@ -5,7 +5,6 @@ import android.text.SpannableString
 import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -15,12 +14,13 @@ import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.DimensionUtils
-import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.apiService.CapitalService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.BalanceEntity
 import com.yunshang.haile_life.data.entities.TradePreviewEntity
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -40,6 +40,7 @@ import java.util.*
  * 作者姓名 修改时间 版本号 描述
  */
 class OrderSubmitViewModel : BaseViewModel() {
+    private val mCapitalRepo = ApiRepository.apiClient(CapitalService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
     val goods: MutableLiveData<MutableList<IntentParams.OrderSubmitParams.OrderSubmitGood>> =
@@ -54,6 +55,10 @@ class OrderSubmitViewModel : BaseViewModel() {
     }
 
     val shopAddress: MutableLiveData<String> by lazy {
+        MutableLiveData()
+    }
+
+    val balance: MutableLiveData<BalanceEntity> by lazy {
         MutableLiveData()
     }
 
@@ -169,16 +174,19 @@ class OrderSubmitViewModel : BaseViewModel() {
             )?.let {
                 tradePreview.postValue(it)
             }
+
+            ApiRepository.dealApiResult(
+                mCapitalRepo.requestBalance(
+                    ApiRepository.createRequestBody("")
+                )
+            )?.let {
+                balance.postValue(it)
+            }
         })
     }
 
-    fun requestPrePay(view: View) {
+    fun requestPrePay() {
         if (goods.value.isNullOrEmpty()) return
-
-        if (-1 == payMethod) {
-            SToast.showToast(view.context, "请选择支付方式")
-            return
-        }
 
         launch({
             ApiRepository.dealApiResult(

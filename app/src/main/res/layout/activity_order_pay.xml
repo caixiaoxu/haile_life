@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.OrderPayViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.order.OrderPayActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_order_pay_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@string/cashier_desk" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_14_black_85_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/order_pay_time_remaining"
+                tools:text="支付剩余时间" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_order_pay_time_remaining"
+                style="@style/Font_14_black_85_bold"
+                android:layout_width="46dp"
+                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
+                android:text="@{vm.remainingVal}"
+                tools:text="10:30" />
+        </LinearLayout>
+
+        <com.yunshang.haile_life.ui.view.AmountTextView
+            android:id="@+id/tv_order_pay_price"
+            style="@style/Font_36_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            tools:text="¥4.00" />
+
+        <RadioGroup
+            android:id="@+id/rg_order_pay_Way"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_16_black_85_bold"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/shape_sffffff_rt8"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="4dp"
+                android:text="@string/select_model_of_pay" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_order_alipay_pay_way"
+                style="@style/Font_14_black_85_bold"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:button="@null"
+                android:drawableStart="@mipmap/icon_pay_alipay_way"
+                android:drawableEnd="@drawable/selector_cyan_check"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp"
+                android:text="@string/alipay" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_order_wechat_pay_way"
+                style="@style/Font_14_black_85_bold"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/shape_sffffff_rb8"
+                android:button="@null"
+                android:drawableStart="@mipmap/icon_pay_wechat_way"
+                android:drawableEnd="@drawable/selector_cyan_check"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingBottom="4dp"
+                android:text="@string/wechat" />
+
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_order_balance_pay_way"
+                style="@style/Font_14_black_85_bold"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_sffffff_r8"
+                android:button="@null"
+                android:drawableStart="@mipmap/icon_pay_account_way"
+                android:drawableEnd="@drawable/selector_cyan_check"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:text="@string/balance" />
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:background="@color/white"
+            android:paddingTop="10dp">
+
+            <com.lsy.framelib.ui.weight.SingleTapButton
+                android:id="@+id/btn_order_pay"
+                style="@style/CommonMatchBtnStyle1"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginHorizontal="24dp"
+                android:text="@string/sure_pay" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>

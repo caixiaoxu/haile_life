@@ -36,13 +36,6 @@ class OrderDetailViewModel : BaseViewModel() {
 
     val changeUseModel: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    //支付方式 1001-余额 103--支付宝app支付 203--微信app支付
-    var payMethod: Int = -1
-
-    val prepayParam: MutableLiveData<String> by lazy {
-        MutableLiveData()
-    }
-
     val orderDetail: MutableLiveData<OrderEntity> by lazy {
         MutableLiveData()
     }
@@ -123,81 +116,6 @@ class OrderDetailViewModel : BaseViewModel() {
             requestOrderDetail()
         })
     }
-
-    fun requestPrePay() {
-        if (-1 == payMethod) return
-        if (orderNo.isNullOrEmpty()) return
-
-        launch({
-            ApiRepository.dealApiResult(
-                mOrderRepo.prePay(
-                    ApiRepository.createRequestBody(
-                        hashMapOf(
-                            "orderNo" to orderNo,
-                            "payMethod" to payMethod
-                        )
-                    )
-                )
-            )?.let { prePay ->
-                if (1001 == payMethod) {
-                    ApiRepository.dealApiResult(
-                        mOrderRepo.balancePay(
-                            ApiRepository.createRequestBody(
-                                hashMapOf(
-                                    "prepayParam" to prePay.prepayParam
-                                )
-                            )
-                        )
-                    )?.let {
-                        requestAsyncPay()
-                    }
-                } else {
-                    prepayParam.postValue(prePay.prepayParam)
-                }
-            }
-        })
-    }
-
-    fun alipay(activity: Activity, prepayParam: String) {
-        launch({
-            val resultStatus: String? = AlipayHelper.requestPay(activity, prepayParam).resultStatus
-            //用户取消不去请求接口查询支付状态
-            if (TextUtils.equals(resultStatus, "6001")) {
-                return@launch
-            }
-
-            if (orderNo.isNullOrEmpty() || -1 == payMethod) {
-                return@launch
-            }
-            requestAsyncPay()
-        })
-    }
-
-    fun requestAsyncPayAsync() {
-        if (orderNo.isNullOrEmpty() || -1 == payMethod) {
-            return
-        }
-        launch({
-            requestAsyncPay()
-        })
-    }
-
-    private suspend fun requestAsyncPay() {
-        ApiRepository.dealApiResult(
-            mOrderRepo.asyncPay(
-                ApiRepository.createRequestBody(
-                    hashMapOf(
-                        "orderNo" to orderNo,
-                        "payMethod" to payMethod
-                    )
-                )
-            )
-        )?.let {
-            LiveDataBus.post(BusEvents.PAY_SUCCESS_STATUS, true)
-            requestOrderDetail()
-        }
-    }
-
 
     fun useAppointOrder(v: View) {
         if (orderNo.isNullOrEmpty()) return

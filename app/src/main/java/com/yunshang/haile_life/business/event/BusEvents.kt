@@ -21,6 +21,9 @@ object BusEvents {
     // 订单支付
     const val PAY_SUCCESS_STATUS = "pay_success_status"
 
+    // 订单支付超时
+    const val PAY_OVERTIME_STATUS = "pay_overtime_status"
+
     // 订单提交
     const val ORDER_SUBMIT_STATUS = "order_submit_status"
 

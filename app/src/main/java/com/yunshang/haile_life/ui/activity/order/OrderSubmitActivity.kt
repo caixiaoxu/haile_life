@@ -2,14 +2,19 @@ package com.yunshang.haile_life.ui.activity.order
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
+import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.BR
@@ -24,6 +29,8 @@ import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
+import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
+import com.yunshang.haile_life.utils.string.RoundBackgroundColorSpan
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, OrderSubmitViewModel>(
@@ -176,6 +183,21 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
             }
         }
 
+        mViewModel.balance.observe(this) {
+            try {
+                mViewModel.tradePreview.value?.realPrice?.toDouble()?.let { price ->
+                    if (it.amount.toDouble() < price) {
+                        mBinding.includeOrderSubmitPayWay.rbOrderSubmitBalancePayWay.text =
+                            com.yunshang.haile_life.utils.string.StringUtils.formatBalancePayStyleStr(
+                                this@OrderSubmitActivity
+                            )
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
         mViewModel.prepayParam.observe(this) {
             it?.let {
                 if (103 == mViewModel.payMethod) {
@@ -228,6 +250,23 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                     else -> -1
                 }
             }
+        }
+        mBinding.btnOrderSubmitPay.setOnClickListener {
+            if (-1 == mViewModel.payMethod) {
+                SToast.showToast(this@OrderSubmitActivity, "请选择支付方式")
+                return@setOnClickListener
+            }
+
+            if (1001 == mViewModel.payMethod) {
+                if (null != mViewModel.tradePreview.value && null != mViewModel.balance.value) {
+                    BalancePaySureDialog(
+                        mViewModel.balance.value!!.amount,
+                        mViewModel.tradePreview.value!!.realPrice
+                    ) {
+                        mViewModel.requestPrePay()
+                    }.show(supportFragmentManager)
+                }
+            } else mViewModel.requestPrePay()
         }
     }
 

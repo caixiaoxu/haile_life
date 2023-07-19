@@ -136,7 +136,6 @@
                 android:layout_height="46dp"
                 android:layout_marginEnd="16dp"
                 android:background="@{vm.isDryer()?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
-                android:onClick="@{vm::requestPrePay}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

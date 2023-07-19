@@ -129,6 +129,9 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
             mBinding.rvMineOrderList.requestRefresh()
         }
+        LiveDataBus.with(BusEvents.PAY_OVERTIME_STATUS)?.observe(this) {
+            mBinding.rvMineOrderList.requestRefresh()
+        }
 
         LiveDataBus.with(BusEvents.ORDER_CANCEL_STATUS)?.observe(this) {
             mBinding.rvMineOrderList.requestRefresh()

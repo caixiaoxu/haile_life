@@ -126,7 +126,6 @@
                 android:id="@+id/btn_recharge_starfish_pay"
                 android:layout_width="132dp"
                 android:layout_height="46dp"
-                android:onClick="@{vm::requestRecharge}"
                 android:background="@drawable/shape_s04d1e5_r23"
                 android:enabled="@{null!=vm.shopStarfishList}"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -3,10 +3,13 @@ package com.yunshang.haile_life.utils.string
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
+import android.text.style.StyleSpan
+import androidx.core.content.ContextCompat
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
@@ -285,5 +288,36 @@ object StringUtils {
             if (0 == (it * 100).toInt() % 100) it.toInt()
             else String.format("%.2f", it)
         }
+    }
+
+    /**
+     * 余额不足样式
+     */
+    fun formatBalancePayStyleStr(context: Context) = "余额  余额不足".let { content ->
+        formatMultiStyleStr(
+            content,
+            arrayOf(
+                AbsoluteSizeSpan(
+                    DimensionUtils.sp2px(
+                        10f,
+                        context
+                    )
+                ),
+                StyleSpan(Typeface.NORMAL),
+                RoundBackgroundColorSpan(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_appoint_bg
+                    ),
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_ff630e
+                    ),
+                    DimensionUtils.dip2px(context, 4f)
+                        .toFloat()
+                )
+            ),
+            3, content.length
+        )
     }
 }

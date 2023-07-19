@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.yunshang.haile_life.data.agruments.TypeStatus" />
+
         <variable
             name="item"
             type="com.yunshang.haile_life.data.entities.RechargeStarfishDetailEntity" />
@@ -22,7 +24,7 @@
             style="@style/Font_14_333333"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{item.typeDesc}"
+            android:text="@{TypeStatus.subTypeStatus(item.subType)}"
             app:layout_constraintBottom_toTopOf="@id/tv_recharge_starfish_detail_time"
             app:layout_constraintEnd_toStartOf="@id/tv_recharge_starfish_detail_reach"
             app:layout_constraintHorizontal_chainStyle="spread_inside"

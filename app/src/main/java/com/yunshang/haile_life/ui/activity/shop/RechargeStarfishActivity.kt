@@ -2,9 +2,6 @@ package com.yunshang.haile_life.ui.activity.shop
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Typeface
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +11,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
+import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
@@ -25,7 +23,7 @@ import com.yunshang.haile_life.databinding.ActivityRechargeStarfishBinding
 import com.yunshang.haile_life.databinding.ItemRechargeStarfishListBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.order.OrderPaySuccessActivity
-import com.yunshang.haile_life.utils.string.RoundBackgroundColorSpan
+import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.utils.string.StringUtils
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
@@ -139,33 +137,7 @@ class RechargeStarfishActivity :
                 mViewModel.selectGoodsItem.value?.price?.toDouble()?.let { price ->
                     if (it.amount.toDouble() < price) {
                         mBinding.includeRechargeStarfishPayWay.rbOrderSubmitBalancePayWay.text =
-                            "余额  余额不足".let { content ->
-                                StringUtils.formatMultiStyleStr(
-                                    content,
-                                    arrayOf(
-                                        AbsoluteSizeSpan(
-                                            DimensionUtils.sp2px(
-                                                10f,
-                                                this@RechargeStarfishActivity
-                                            )
-                                        ),
-                                        StyleSpan(Typeface.NORMAL),
-                                        RoundBackgroundColorSpan(
-                                            ContextCompat.getColor(
-                                                this@RechargeStarfishActivity,
-                                                R.color.color_appoint_bg
-                                            ),
-                                            ContextCompat.getColor(
-                                                this@RechargeStarfishActivity,
-                                                R.color.color_ff630e
-                                            ),
-                                            DimensionUtils.dip2px(this@RechargeStarfishActivity, 4f)
-                                                .toFloat()
-                                        )
-                                    ),
-                                    3, content.length
-                                )
-                            }
+                            StringUtils.formatBalancePayStyleStr(this@RechargeStarfishActivity)
                     }
                 }
             } catch (e: Exception) {
@@ -207,6 +179,27 @@ class RechargeStarfishActivity :
                 R.id.rb_order_submit_wechat_pay_way -> 203
                 else -> -1
             }
+        }
+        mBinding.btnRechargeStarfishPay.setOnClickListener {
+            if (null == mViewModel.selectGoodsItem.value) {
+                SToast.showToast(this@RechargeStarfishActivity, "请选择充值金额")
+                return@setOnClickListener
+            }
+            if (-1 == mViewModel.payMethod) {
+                SToast.showToast(this@RechargeStarfishActivity, "请选择支付方式")
+                return@setOnClickListener
+            }
+
+            if (1001 == mViewModel.payMethod) {
+                if (null != mViewModel.balance.value) {
+                    BalancePaySureDialog(
+                        mViewModel.balance.value!!.amount,
+                        mViewModel.selectGoodsItem.value!!.price
+                    ) {
+                        mViewModel.requestRecharge()
+                    }.show(supportFragmentManager)
+                }
+            } else mViewModel.requestRecharge()
         }
     }
 

@@ -96,15 +96,7 @@ class RechargeStarfishViewModel : BaseViewModel() {
         })
     }
 
-    fun requestRecharge(view: View) {
-        if (null == selectGoodsItem.value) {
-            SToast.showToast(view.context, "请选择充值金额")
-            return
-        }
-        if (-1 == payMethod) {
-            SToast.showToast(view.context, "请选择支付方式")
-            return
-        }
+    fun requestRecharge() {
         if (null == shopStarfishList.value) return
 
         launch({

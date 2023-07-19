@@ -361,6 +361,25 @@ object IntentParams {
         fun parseFormScan(intent: Intent): Boolean = intent.getBooleanExtra(FormScan, false)
     }
 
+    object OrderPayParams {
+        private const val TimeRemaining = "timeRemaining"
+        private const val Price = "price"
+
+        /**
+         * 包装参数
+         */
+        fun pack(orderNo: String, timeRemaining: String, price: String): Bundle =
+            Bundle().apply {
+                putAll(OrderParams.pack(orderNo))
+                putString(TimeRemaining, timeRemaining)
+                putString(Price, price)
+            }
+
+        fun parseOrderNo(intent: Intent): String? = OrderParams.parseOrderNo(intent)
+
+        fun parseTimeRemaining(intent: Intent): String? = intent.getStringExtra(TimeRemaining)
+        fun parsePrice(intent: Intent): String? = intent.getStringExtra(Price)
+    }
 
     object WebViewParams {
         private const val Url = "url"

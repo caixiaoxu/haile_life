@@ -73,31 +73,16 @@ class OrderDetailActivity :
             }
         }
 
-        mViewModel.prepayParam.observe(this) {
-            it?.let {
-                if (103 == mViewModel.payMethod) {
-                    mViewModel.alipay(this@OrderDetailActivity, it)
-                } else if (203 == mViewModel.payMethod) {
-                    GsonUtils.json2Class(it, WxPrePayEntity::class.java)?.let { wxPrePayBean ->
-                        WeChatHelper.openWeChatPay(
-                            wxPrePayBean.appId,
-                            wxPrePayBean.partnerId,
-                            wxPrePayBean.prepayId,
-                            wxPrePayBean.nonceStr,
-                            wxPrePayBean.timeStamp,
-                            wxPrePayBean.paySign
-
-                        )
-                    }
-                }
-            }
-        }
-
-        LiveDataBus.with(BusEvents.WXPAY_STATUS)?.observe(this) {
-            mViewModel.requestAsyncPayAsync()
-        }
         LiveDataBus.with(BusEvents.APPOINT_ORDER_USE_STATUS)?.observe(this) {
             finish()
+        }
+
+        LiveDataBus.with(BusEvents.PAY_OVERTIME_STATUS)?.observe(this) {
+            mViewModel.requestOrderDetailAsync()
+        }
+
+        LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
+            mViewModel.requestOrderDetailAsync()
         }
     }
 
@@ -107,23 +92,15 @@ class OrderDetailActivity :
         }
         mBinding.tvOrderDetailPay.setOnClickListener {
             mViewModel.orderDetail.value?.let { detail ->
-                OrderPayDialog.Builder(
-                    detail.orderItemList.firstOrNull()?.categoryCode ?: "",
-                    try {
-                        0.0 == detail.realPrice.toDouble()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        false
-                    }
-                ) { type ->
-                    mViewModel.payMethod = when (type) {
-                        0 -> 1001
-                        1 -> 103
-                        2 -> 203
-                        else -> -1
-                    }
-                    mViewModel.requestPrePay()
-                }.build().show(supportFragmentManager)
+                startActivity(Intent(this@OrderDetailActivity, OrderPayActivity::class.java).apply {
+                    putExtras(
+                        IntentParams.OrderPayParams.pack(
+                            detail.orderNo,
+                            detail.invalidTime,
+                            detail.realPrice
+                        )
+                    )
+                })
             }
         }
 
