@@ -2,7 +2,7 @@ package com.yunshang.haile_life.business.vm
 
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.Button
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.lsy.framelib.ui.base.BaseViewModel
@@ -90,7 +90,7 @@ open class LoginInfoViewModel : BaseViewModel() {
                 )
             )
             viewModelScope.launch(Dispatchers.Main) {
-                countDownTimer(view as Button)
+                countDownTimer(view as TextView)
             }
         })
     }
@@ -98,7 +98,7 @@ open class LoginInfoViewModel : BaseViewModel() {
     /**
      * 验证码倒计时
      */
-    private fun countDownTimer(btn: Button) {
+    private fun countDownTimer(btn: TextView) {
         btn.isEnabled = false
         var num = 60
         if (null == timer) {

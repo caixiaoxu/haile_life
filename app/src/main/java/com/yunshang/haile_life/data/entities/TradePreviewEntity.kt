@@ -74,13 +74,15 @@ data class TradePreviewPromotion(
     val options: List<TradePreviewParticipate>,
     val originPrice: String,
     val participateList: List<TradePreviewParticipate>,
-    val promotionProduct: Int,//1-限时特惠，2-商家优惠券，3-折扣卡，4-平台优惠券
+    val promotionProduct: Int,//1-限时特惠，2-商家优惠券，3-折扣卡，4-平台优惠券，5-海星折扣
     val realPrice: String,
     val used: Boolean
 ) {
     fun getDiscountTitle(): String = StringUtils.getString(
         when (promotionProduct) {
             1 -> R.string.limited_time_offer
+            2-> R.string.shop_coupon
+            4-> R.string.platform_coupon
             5 -> R.string.starfish
             else -> R.string.order_discount_coupon
         }

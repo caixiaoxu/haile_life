@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import com.lsy.framelib.async.LiveDataBus
-import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
@@ -59,7 +58,10 @@ class BindPhoneActivity : BaseBusinessActivity<ActivityBindPhoneBinding, BindPho
     override fun initView() {
         window.statusBarColor = Color.WHITE
         // 协议内容
-        ViewUtils.initAgreementToTextView(mBinding.tvBindPhoneAgreement) {
+        val content = resources.getString(R.string.login_agreement)
+        val end = content.length
+        val start = end - 7
+        ViewUtils.initAgreementToTextView(mBinding.tvBindPhoneAgreement, content, start, end) {
             // 跳转隐私协议
             startActivity(
                 Intent(

@@ -32,21 +32,24 @@ object ViewUtils {
     /**
      * 给textView设置spannable
      */
-    fun initAgreementToTextView(textView: TextView, onClick: OnClickListener) {
+    fun initAgreementToTextView(
+        textView: TextView,
+        content: String,
+        start: Int,
+        end: Int,
+        onClick: OnClickListener
+    ) {
         textView.movementMethod = LinkMovementMethod.getInstance()
         textView.highlightColor = Color.TRANSPARENT
         textView.text =
-            SpannableString(textView.context.resources.getString(R.string.login_agreement)).apply {
+            SpannableString(content).apply {
                 setSpan(
                     ForegroundColorSpan(
                         ContextCompat.getColor(
                             textView.context,
                             R.color.colorPrimary
                         )
-                    ),
-                    length-7,
-                    length,
-                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+                    ), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE
                 )
                 setSpan(
                     object : ClickableSpan() {
@@ -58,9 +61,7 @@ object ViewUtils {
                             //去掉下划线
                             ds.isUnderlineText = false
                         }
-                    }, length-7,
-                    length,
-                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+                    }, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE
                 )
             }
     }

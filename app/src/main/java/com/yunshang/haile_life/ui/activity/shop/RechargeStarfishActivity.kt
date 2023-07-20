@@ -17,6 +17,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.RechargeStarfishViewModel
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.WxPrePayEntity
 import com.yunshang.haile_life.databinding.ActivityRechargeStarfishBinding
@@ -24,8 +25,10 @@ import com.yunshang.haile_life.databinding.ItemRechargeStarfishListBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.order.OrderPaySuccessActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
+import com.yunshang.haile_life.utils.ViewUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
+import com.yunshang.haile_life.web.WebViewActivity
 
 class RechargeStarfishActivity :
     BaseBusinessActivity<ActivityRechargeStarfishBinding, RechargeStarfishViewModel>(
@@ -170,6 +173,29 @@ class RechargeStarfishActivity :
             ResourcesCompat.getFont(context, R.font.money)?.let {
                 typeface = it
             }
+        }
+
+        val content = resources.getString(R.string.recharge_agreement)
+        val end = content.length
+        val start = end - 8
+        ViewUtils.initAgreementToTextView(
+            mBinding.tvRechargeStarfishAgreement,
+            content,
+            start,
+            end
+        ) {
+            // 跳转隐私协议
+            startActivity(
+                Intent(
+                    this@RechargeStarfishActivity,
+                    WebViewActivity::class.java
+                ).apply {
+                    putExtras(
+                        IntentParams.WebViewParams.pack(
+                            Constants.agreement,
+                        )
+                    )
+                })
         }
 
         mBinding.includeRechargeStarfishPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->

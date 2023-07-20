@@ -79,6 +79,7 @@
         </androidx.core.widget.NestedScrollView>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_recharge_starfish_agreement"
             style="@style/font_14_04D1E5"
             android:layout_width="match_parent"
             android:layout_height="32dp"

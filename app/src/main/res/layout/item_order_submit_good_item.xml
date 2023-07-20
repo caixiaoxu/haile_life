@@ -29,12 +29,8 @@
             type="java.lang.Boolean" />
 
         <variable
-            name="canCancel"
+            name="endDraw"
             type="java.lang.Integer" />
-
-        <variable
-            name="isDryer"
-            type="java.lang.Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,7 +68,7 @@
             android:fontFamily="@font/money"
             android:gravity="center"
             android:text="@{value}"
-            app:drawEnd="@{0 == canCancel?0:1 == canCancel?isDryer?R.mipmap.icon_orange_checked:R.mipmap.icon_cyan_checked:R.mipmap.icon_uncheck}"
+            app:drawEnd="@{endDraw}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_order_submit_good_title"

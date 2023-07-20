@@ -2,15 +2,11 @@ package com.yunshang.haile_life.ui.activity.order
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Typeface
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
@@ -30,7 +26,6 @@ import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
-import com.yunshang.haile_life.utils.string.RoundBackgroundColorSpan
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, OrderSubmitViewModel>(
@@ -41,8 +36,12 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
     private val startDiscountCouponSelect =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                mViewModel.selectParticipate?.removeAll { item -> 2 == item.promotionProduct || 4 == item.promotionProduct }
                 it.data?.let { intent ->
+                    mViewModel.selectParticipate?.removeAll { item ->
+                        IntentParams.DiscountCouponSelectorParams.parsePromotionProduct(
+                            intent
+                        ) == item.promotionProduct
+                    }
                     IntentParams.DiscountCouponSelectorParams.parseSelectCoupon(
                         intent
                     )?.let { list ->
@@ -121,7 +120,6 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                         childBinding.type = 4
                         childBinding.icon = promotion.getDiscountIcon()
                         childBinding.title = promotion.getDiscountTitle()
-                        childBinding.canCancel = 0
                         childBinding.value =
                             com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
                                 promotion.discountPrice
@@ -130,6 +128,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                         if ((2 == promotion.promotionProduct || 4 == promotion.promotionProduct)) {
                             if (!promotion.used) {
                                 childBinding.noSelect = true
+                                childBinding.endDraw = 0
                                 val pH = DimensionUtils.dip2px(this@OrderSubmitActivity, 8f)
                                 childBinding.tvOrderSubmitGoodValue.setPadding(pH, 0, pH, 0)
                                 (childBinding.tvOrderSubmitGoodValue.layoutParams as ConstraintLayout.LayoutParams).run {
@@ -139,6 +138,8 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                     R.string.available_coupon_num,
                                     promotion.options.filter { item -> item.available }.size
                                 )
+                            } else {
+                                childBinding.endDraw = R.mipmap.icon_small_arrow_right
                             }
                             childBinding.tvOrderSubmitGoodValue.setOnClickListener {
                                 startDiscountCouponSelect.launch(
@@ -149,15 +150,20 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                         putExtras(intent)
                                         putExtras(
                                             IntentParams.DiscountCouponSelectorParams.pack(
-                                                promotion.participateList
+                                                promotion.participateList,
+                                                promotion.promotionProduct
                                             )
                                         )
                                     }
                                 )
                             }
                         } else if (5 == promotion.promotionProduct) {
-                            childBinding.isDryer = mViewModel.isDryer.value ?: false
-                            childBinding.canCancel = if (promotion.used) 1 else -1
+                            childBinding.endDraw =
+                                if (promotion.used) {
+                                    if (mViewModel.isDryer.value == true)
+                                        R.mipmap.icon_orange_checked
+                                    else R.mipmap.icon_cyan_checked
+                                } else R.mipmap.icon_uncheck
                             childBinding.tvOrderSubmitGoodValue.setOnClickListener {
                                 if (promotion.used) {
                                     mViewModel.selectParticipate?.removeAll { item -> 5 == item.promotionProduct }
@@ -168,6 +174,8 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                 }
                                 mViewModel.requestData()
                             }
+                        } else {
+                            childBinding.endDraw = 0
                         }
 
                         mBinding.llOrderGoodDiscounts.addView(

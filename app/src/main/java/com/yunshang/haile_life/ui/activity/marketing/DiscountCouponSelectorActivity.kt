@@ -45,6 +45,8 @@ class DiscountCouponSelectorActivity :
     override fun initIntent() {
         super.initIntent()
         mViewModel.goods = IntentParams.OrderSubmitParams.parseGoods(intent) ?: mutableListOf()
+        mViewModel.promotionProduct =
+            IntentParams.DiscountCouponSelectorParams.parsePromotionProduct(intent)
         mViewModel.selectParticipate =
             IntentParams.DiscountCouponSelectorParams.parseSelectCoupon(intent)
     }
@@ -54,7 +56,7 @@ class DiscountCouponSelectorActivity :
         mViewModel.tradePreview.observe(this) {
             it?.let { trade ->
                 // 已选优惠
-                trade.promotionList.find { item -> 2 == item.promotionProduct || 4 == item.promotionProduct }
+                trade.promotionList.find { item -> mViewModel.promotionProduct == item.promotionProduct }
                     ?.let { promotion ->
                         mViewModel.selectParticipate =
                             mutableListOf<TradePreviewParticipate>().apply {
@@ -97,7 +99,12 @@ class DiscountCouponSelectorActivity :
         mBinding.btnDiscountCouponSelectorSure.setOnClickListener {
             setResult(RESULT_OK, Intent().apply {
                 mViewModel.selectParticipate?.let { list ->
-                    putExtras(IntentParams.DiscountCouponSelectorParams.pack(list))
+                    putExtras(
+                        IntentParams.DiscountCouponSelectorParams.pack(
+                            list,
+                            mViewModel.promotionProduct
+                        )
+                    )
                 }
             })
             finish()

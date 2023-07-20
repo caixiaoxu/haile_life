@@ -12,7 +12,7 @@ package com.yunshang.haile_life.data
  */
 object Constants {
     //洗烘指南
-    val guide = "https://h5.haier-ioc.com/#/pages/private/newGuide"
+    val guide = "https://h5.haier-ioc.com/#/pages/private/appGuide"
 
     //隐私政策
     val agreement = "https://h5.haier-ioc.com/#/pages/private/userappPrivate"

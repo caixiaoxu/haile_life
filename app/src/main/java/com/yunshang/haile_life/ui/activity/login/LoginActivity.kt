@@ -57,7 +57,10 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
         }
 
         // 协议内容
-        ViewUtils.initAgreementToTextView(mBinding.tvLoginAgreement) {
+        val content = resources.getString(R.string.login_agreement)
+        val end = content.length
+        val start = end - 7
+        ViewUtils.initAgreementToTextView(mBinding.tvLoginAgreement, content, start, end) {
             // 跳转隐私协议
             startActivity(
                 Intent(

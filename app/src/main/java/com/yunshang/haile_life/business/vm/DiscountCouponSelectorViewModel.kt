@@ -28,6 +28,8 @@ class DiscountCouponSelectorViewModel : BaseViewModel() {
 
     var appointmentTime: Long = -1L
 
+    var promotionProduct: Int = -1
+
     var selectParticipate: MutableList<TradePreviewParticipate>? = null
 
     val tradePreview: MutableLiveData<TradePreviewEntity> by lazy {

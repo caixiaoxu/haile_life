@@ -130,7 +130,9 @@
     <string name="good_discount">分摊优惠</string>
     <string name="actually_paid">小记</string>
     <string name="order_discount_coupon">优惠红包</string>
-    <string name="limited_time_offer">限时特惠</string>
+    <string name="limited_time_offer">限时优惠</string>
+    <string name="shop_coupon">商家优惠红包</string>
+    <string name="platform_coupon">平台优惠红包</string>
     <string name="starfish">海星</string>
     <string name="available_coupon_num">未选红包，最多%1$d张可用 ></string>
     <string name="order_discount_coupon_selector">选择优惠红包</string>
