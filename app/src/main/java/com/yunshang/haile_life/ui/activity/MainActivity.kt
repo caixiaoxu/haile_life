@@ -20,6 +20,7 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityMainBinding
 import com.yunshang.haile_life.ui.activity.common.CustomCaptureActivity
 import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
+import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.fragment.HomeFragment
 import com.yunshang.haile_life.ui.fragment.MineFragment
@@ -59,7 +60,24 @@ class MainActivity :
                     putExtras(IntentParams.ScanOrderParams.pack(code))
                 })
             } ?: run {
-                StringUtils.refundCode(it)?.let {
+                // 充值码
+                val rechargeCode = StringUtils.rechargeCode(it)
+                rechargeCode?.let {
+                    try {
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                RechargeStarfishActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.RechargeStarfishParams.pack(it.toInt()))
+                            })
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+                // 退款码
+                val refundCode = StringUtils.refundCode(it)
+                refundCode?.let {
                     startActivity(
                         Intent(
                             this@MainActivity,
@@ -67,7 +85,10 @@ class MainActivity :
                         ).apply {
                             putExtras(IntentParams.ScanOrderParams.pack(it))
                         })
-                } ?: SToast.showToast(this, R.string.pay_code_error)
+                }
+                if (null == rechargeCode && null == refundCode) {
+                    SToast.showToast(this, R.string.pay_code_error)
+                }
             }
         }
     }

@@ -58,14 +58,14 @@
                         style="@style/Font_20_black_85_bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.isAppoint?OrderStatus.getAppointStateName(vm.orderDetail.appointmentState):vm.orderDetail.getOrderStatusTitle}"
+                        android:text="@{vm.isAppoint?OrderStatus.getAppointStateName(vm.orderDetail.appointmentState,vm.formScan):vm.orderDetail.getOrderStatusTitle}"
                         tools:text="洗衣中" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/Font_14_black_85"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.isAppoint?vm.orderDetail.getOrderDetailAppointTimePrompt:vm.orderDetail.getOrderDetailFinishTimePrompt}"
+                        android:text="@{vm.orderStatusDesc}"
                         tools:text="预计完成时间 下午16点47" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -298,8 +298,8 @@
             android:paddingHorizontal="68dp"
             android:paddingTop="36dp"
             android:paddingBottom="32dp"
-            tools:visibility="gone"
-            android:visibility="@{vm.changeUseModel?View.VISIBLE:View.GONE}">
+            android:visibility="@{vm.changeUseModel?View.VISIBLE:View.GONE}"
+            tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"

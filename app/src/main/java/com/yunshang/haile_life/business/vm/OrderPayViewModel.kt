@@ -16,6 +16,8 @@ import com.yunshang.haile_life.data.entities.BalanceEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.thrid.AlipayHelper
+import timber.log.Timber
+import java.util.*
 
 /**
  * Title :
@@ -80,18 +82,33 @@ class OrderPayViewModel : BaseViewModel() {
         })
     }
 
+    // 计时器
+    var timer: Timer? = null
+
     /**
      * 倒计时
      */
     fun countDownTimer() {
         launch({
             DateTimeUtils.formatDateFromString(timeRemaining)?.let { invidateTime ->
-                var temp = invidateTime.time - System.currentTimeMillis()
-                while (temp > 0) {
-                    remaining.postValue(temp)
-                    temp = invidateTime.time - System.currentTimeMillis()
+                timer?.cancel()
+                timer = Timer()
+                try {
+                    timer?.schedule(object : TimerTask() {
+                        override fun run() {
+                            val temp = invidateTime.time - System.currentTimeMillis()
+                            Timber.i("倒计时：$temp")
+                            if (temp > 0) {
+                                remaining.postValue(temp)
+                            } else {
+                                remaining.postValue(0L)
+                                timer?.cancel()
+                            }
+                        }
+                    }, 0, 1000)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-                remaining.postValue(0L)
             }
         }, showLoading = false)
     }

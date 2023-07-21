@@ -78,13 +78,15 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/tv_recharge_starfish_agreement"
             style="@style/font_14_04D1E5"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:background="@color/secondColorPrimaryBg"
-            android:drawableStart="@mipmap/icon_cyan_checked"
+            android:button="@null"
+            android:checked="@={vm.isAgree}"
+            android:drawableStart="@drawable/selector_cyan_check"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"
@@ -127,8 +129,8 @@
                 android:id="@+id/btn_recharge_starfish_pay"
                 android:layout_width="132dp"
                 android:layout_height="46dp"
-                android:background="@drawable/shape_s04d1e5_r23"
-                android:enabled="@{null!=vm.shopStarfishList}"
+                android:background="@drawable/selector_login_btn"
+                android:enabled="@{vm.canSubmit}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

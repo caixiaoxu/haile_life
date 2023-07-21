@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
@@ -153,7 +154,7 @@ class AppointmentSubmitActivity :
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
                             itemBinding.isDryer = mViewModel.isDryer.value
-                            itemBinding.name = "$item"
+                            itemBinding.name = "$item${StringUtils.getString(R.string.minute)}"
                             (itemBinding.root as AppCompatRadioButton).let { rb ->
                                 rb.id = index + 1
                                 mViewModel.selectMinute.observe(this) {

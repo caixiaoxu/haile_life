@@ -130,6 +130,8 @@ class OrderSubmitViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
+    var isPaying = false
+
     private fun getCommonParams(autoSelect: Boolean) = hashMapOf(
         "autoSelectPromotion" to if (autoSelect) (null == tradePreview.value) else false,
         "purchaseList" to goods.value!!.map {
@@ -173,6 +175,7 @@ class OrderSubmitViewModel : BaseViewModel() {
                 )
             )?.let {
                 tradePreview.postValue(it)
+                orderNo = ""
             }
 
             ApiRepository.dealApiResult(
@@ -228,8 +231,14 @@ class OrderSubmitViewModel : BaseViewModel() {
         })
     }
 
+    var isPayFinish = false
+
+    /**
+     * 支付宝支付
+     */
     fun alipay(activity: Activity, prepayParam: String) {
         launch({
+            isPayFinish = false
             val resultStatus: String? = AlipayHelper.requestPay(activity, prepayParam).resultStatus
             //用户取消不去请求接口查询支付状态
             if (TextUtils.equals(resultStatus, "6001")) {
@@ -239,6 +248,9 @@ class OrderSubmitViewModel : BaseViewModel() {
             if (orderNo.isEmpty() || -1 == payMethod) {
                 return@launch
             }
+
+            isPayFinish = true
+
             requestAsyncPay()
         })
     }

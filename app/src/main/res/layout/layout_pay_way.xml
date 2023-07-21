@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_sffffff_r8"
+        android:checkedButton="@id/rb_order_submit_alipay_pay_way"
         android:orientation="vertical"
         android:paddingVertical="4dp"
         tools:showIn="@layout/activity_order_submit">
@@ -27,20 +28,6 @@
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"
             android:text="@string/select_model_of_pay" />
-
-        <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/rb_order_submit_balance_pay_way"
-            style="@style/Font_14_black_85_bold"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@color/transparent"
-            android:button="@null"
-            android:drawableStart="@mipmap/icon_pay_account_way"
-            android:drawableEnd="@{isDryer?@drawable/selector_orange_check:@drawable/selector_cyan_check}"
-            android:drawablePadding="12dp"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="12dp"
-            android:text="@string/balance" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_order_submit_alipay_pay_way"
@@ -68,6 +55,21 @@
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"
-            android:text="@string/wechat"/>
+            android:text="@string/wechat"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_order_submit_balance_pay_way"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/transparent"
+            android:button="@null"
+            android:drawableStart="@mipmap/icon_pay_account_way"
+            android:drawableEnd="@{isDryer?@drawable/selector_orange_check:@drawable/selector_cyan_check}"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:text="@string/balance" />
     </RadioGroup>
 </layout>

@@ -203,12 +203,7 @@ class RechargeStarfishActivity :
         }
 
         mBinding.includeRechargeStarfishPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
-            mViewModel.payMethod = when (checkedId) {
-                R.id.rb_order_submit_balance_pay_way -> 1001
-                R.id.rb_order_submit_alipay_pay_way -> 103
-                R.id.rb_order_submit_wechat_pay_way -> 203
-                else -> -1
-            }
+            changePayWay()
         }
         mBinding.btnRechargeStarfishPay.setOnClickListener {
             if (null == mViewModel.selectGoodsItem.value) {
@@ -233,7 +228,22 @@ class RechargeStarfishActivity :
         }
     }
 
+
+    /**
+     * 切换支付方式
+     */
+    private fun changePayWay() {
+        mViewModel.payMethod =
+            when (mBinding.includeRechargeStarfishPayWay.rgOrderSubmitPayWay.checkedRadioButtonId) {
+                R.id.rb_order_submit_balance_pay_way -> 1001
+                R.id.rb_order_submit_alipay_pay_way -> 103
+                R.id.rb_order_submit_wechat_pay_way -> 203
+                else -> -1
+            }
+    }
+
     override fun initData() {
+        changePayWay()
         mViewModel.requestData()
     }
 }

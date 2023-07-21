@@ -3,26 +3,26 @@ package com.yunshang.haile_life.ui.activity.order
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.lsy.framelib.async.LiveDataBus
+import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.SToast
-import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderDetailViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.PromotionParticipation
-import com.yunshang.haile_life.data.entities.WxPrePayEntity
 import com.yunshang.haile_life.databinding.ActivityOrderDetailBinding
 import com.yunshang.haile_life.databinding.ItemTitleValueLrBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
-import com.yunshang.haile_life.ui.view.dialog.OrderPayDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.string.StringUtils
-import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 
 class OrderDetailActivity :
@@ -52,14 +52,14 @@ class OrderDetailActivity :
     override fun initIntent() {
         super.initIntent()
         mViewModel.orderNo = IntentParams.OrderParams.parseOrderNo(intent)
-        mViewModel.isAppoint = IntentParams.OrderParams.parseIsAppoint(intent)
-        mViewModel.formScan = 1 == IntentParams.OrderParams.parseFormScan(intent)
+        mViewModel.isAppoint.value = IntentParams.OrderParams.parseIsAppoint(intent)
+        mViewModel.formScan.value = 1 == IntentParams.OrderParams.parseFormScan(intent)
     }
 
     override fun initEvent() {
         super.initEvent()
 
-        if (!mViewModel.formScan) {
+        if (true != mViewModel.formScan.value) {
             mViewModel.orderDetail.observe(this) {
                 it?.let { detail ->
                     mBinding.llOrderDetailDiscount.buildChild<ItemTitleValueLrBinding, PromotionParticipation>(
@@ -73,8 +73,29 @@ class OrderDetailActivity :
             }
         }
 
-        LiveDataBus.with(BusEvents.APPOINT_ORDER_USE_STATUS)?.observe(this) {
-            finish()
+        mViewModel.remaining.observe(this) {
+            mViewModel.orderStatusDesc.value = it?.let {
+                val minute = (it / 60000)
+                val second = (it % 60000) / 1000
+                val content = com.lsy.framelib.utils.StringUtils.getString(
+                    R.string.order_status_desc, String.format(
+                        "%02d分%02d秒",
+                        minute,
+                        second
+                    )
+                )
+                StringUtils.formatMultiStyleStr(
+                    content, arrayOf(
+                        ForegroundColorSpan(
+                            ContextCompat.getColor(Constants.APP_CONTEXT, R.color.color_ff630e)
+                        )
+                    ), 0, content.length
+                )
+            } ?: SpannableString("订单待付款")
+        }
+
+        mViewModel.orderDetail.observe(this) {
+            mViewModel.getOrderStatusVal(it)
         }
 
         LiveDataBus.with(BusEvents.PAY_OVERTIME_STATUS)?.observe(this) {
@@ -112,10 +133,15 @@ class OrderDetailActivity :
                     } ?: -1
 
                 CommonDialog.Builder(
-                    if (mViewModel.isAppoint && overTime > 0)
-                        com.lsy.framelib.utils.StringUtils.getString(
-                            R.string.over_time_prompt, overTime
-                        )
+                    if (true == mViewModel.isAppoint.value && overTime > 0)
+                        if (overTime > 10)
+                            com.lsy.framelib.utils.StringUtils.getString(
+                                R.string.over_time_prompt2
+                            )
+                        else
+                            com.lsy.framelib.utils.StringUtils.getString(
+                                R.string.over_time_prompt1
+                            )
                     else com.lsy.framelib.utils.StringUtils.getString(R.string.cancel_order_prompt)
                 ).apply {
                     title = "提示"
@@ -137,5 +163,10 @@ class OrderDetailActivity :
 
     override fun initData() {
         mViewModel.requestOrderDetailAsync()
+    }
+
+    override fun onDestroy() {
+        mViewModel.timer?.cancel()
+        super.onDestroy()
     }
 }

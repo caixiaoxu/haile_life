@@ -103,15 +103,17 @@ data class OrderEntity(
                     )
                 }"
             } ?: "").let { content ->
-                com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
-                    content,
-                    arrayOf(
-                        ForegroundColorSpan(
-                            ContextCompat.getColor(Constants.APP_CONTEXT, R.color.color_ff630e)
-                        )
-                    ),
-                    prefix.length, content.length
-                )
+                if (content.isNotEmpty()){
+                    com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+                        content,
+                        arrayOf(
+                            ForegroundColorSpan(
+                                ContextCompat.getColor(Constants.APP_CONTEXT, R.color.color_ff630e)
+                            )
+                        ),
+                        prefix.length, content.length
+                    )
+                } else SpannableString("")
             }
         }
         1000 -> SpannableString("订单已完成，祝您生活愉快～")
@@ -123,11 +125,11 @@ data class OrderEntity(
     fun getOrderDetailAppointTimePrompt(): SpannableString = when (appointmentState) {
         0 -> SpannableString("订单待付款")
         1 -> {
-            val useDate = DateTimeUtils.formatDateFromString(appointmentTime)
+            val useDate = DateTimeUtils.formatDateFromString(appointmentUsageTime)
             val time = if (DateTimeUtils.isSameDay(useDate, Date())) {
                 "今天${DateTimeUtils.formatDateTime(useDate, "HH:mm")}"
             } else appointmentTime
-            val content = com.lsy.framelib.utils.StringUtils.getString(
+            val content = StringUtils.getString(
                 R.string.order_submit_used_time_prompt,
                 time
             )
@@ -135,7 +137,7 @@ data class OrderEntity(
                 content, arrayOf(
                     ForegroundColorSpan(
                         ContextCompat.getColor(
-                            Constants.APP_CONTEXT, R.color.secondColorPrimary
+                            Constants.APP_CONTEXT, R.color.color_ff630e
                         )
                     )
                 ), 3, 3 + time.length

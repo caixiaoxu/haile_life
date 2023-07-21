@@ -67,9 +67,9 @@ object DeviceCategory {
 
 object OrderStatus {
     @JvmStatic
-    fun getAppointStateName(code: Int): String = when (code) {
+    fun getAppointStateName(code: Int, formScan: Boolean = false): String = when (code) {
         0 -> "待支付"
-        1 -> "待生效"
+        1 -> if (formScan) "您已预约该机器" else "待生效"
         2 -> "已生效"
         3 -> "已失效"
         4 -> "已取消"

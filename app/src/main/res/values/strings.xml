@@ -93,7 +93,7 @@
     <string name="select_work_time">请选择%1$s时长</string>
     <string name="select_work_device">请选择%1$s设备</string>
     <string name="please_select">请选择</string>
-    <string name="appoint_submit_prompt">温馨提示：\n1、预约时间超时10分钟未使用，则订单自动失效， 不退款。\n2、预约单生效前10分钟取消，系统自动退款。预约单生效不足\n10分钟取消，不退款。</string>
+    <string name="appoint_submit_prompt">温馨提示：\n1、预约时间超时10分钟未使用，则订单自动失效， 不退款。\n2、预约单生效前10分钟取消，系统自动退款。预约单生效不足10分钟取消，不退款。</string>
     <string name="queue_num">排队人数</string>
     <string name="appoint_use_time">预计使用时间</string>
     <string name="appoint_device_queue_use_time">%1$s排队%2$d人，预计使用时间</string>
@@ -149,11 +149,12 @@
     <string name="wechat">微信</string>
     <string name="result_fellback">结果反馈</string>
     <string name="pay_success">支付成功</string>
-    <string name="pay_success_hint">设备将在稍后为您启动，预计将在今日%1$s左右完成%2$s完成后会通过消息通知到您，请及时取走衣物</string>
+    <string name="pay_success_hint">设备将在稍后为您启动，预计将在今日%1$s左右完成%2$s。完成后会通过消息通知到您，请及时取走衣物</string>
     <string name="appoint_pay_success_hint">请在%1$s到具体店铺使用%2$s</string>
     <string name="pay_success_default_hint">恭喜您支付成功！</string>
     <string name="appoint_time">预约时间</string>
-    <string name="over_time_prompt">距预约时间超过%1$d分钟，取消后付款金额原路退回您的账户，已使用的优惠券等权益不返还，确认取消？</string>
+    <string name="over_time_prompt1">距预约时间不足10分钟，取消后付款金额不退还，确认取消？</string>
+    <string name="over_time_prompt2">距预约时间超过10分钟，取消后付款金额原路退回您的账户，已使用的优惠券等权益不返还，确认取消？</string>
     <string name="cancel_order_prompt">您确定要取消订单吗？</string>
     <string name="user_account">用户账号</string>
     <string name="order_no">订单编号</string>
@@ -213,6 +214,7 @@
     <string name="close_account_prompt2">请先确保所有交易已完结且无纠纷，账号删除后的历史交易可能产生的资金退回权益等将视作自动放弃。</string>
     <string name="sure_close">确认注销</string>
     <string name="sure_pay">确认支付</string>
+    <string name="order_status_desc">请在%1$s内完成支付</string>
 
     <string-array name="scan_order_wash_confirm">
         <item>请确认当前洗衣机舱门已经锁好</item>

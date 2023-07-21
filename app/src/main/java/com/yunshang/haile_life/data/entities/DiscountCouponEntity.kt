@@ -46,6 +46,14 @@ data class DiscountCouponEntity(
         else -> StringUtils.getString(R.string.expired)
     }
 
+    fun cutOffShow(): Boolean = when (state) {
+        1 -> DateTimeUtils.formatDateFromString(endAt)?.let { endDate ->
+            ((endDate.time - System.currentTimeMillis()) / 1000 / 3600 / 24) <= 7
+        } ?: false
+        30 -> true
+        else -> true
+    }
+
     fun indateVal(): String = "${
         DateTimeUtils.formatDateTimeForStr(
             onsetTime,
@@ -141,9 +149,9 @@ data class Promotion(
 
     fun limitDesc(): String =
         when (couponType) {
-            1 -> "满${orderReachPrice}可用"
+            1 -> "满${orderReachPrice}元可用"
             3 -> "最高抵扣${maxDiscountPrice}元"
-            4 -> if (specifiedPrice.isEmpty()) "全额减免" else "额外支付金额"
+            4 -> if (specifiedPrice.isEmpty()) "全额减免" else "本次下单只需要支付${specifiedPrice}元"
             else -> ""
         }
 

@@ -48,5 +48,5 @@ data class RechargeStarfishDetailEntity(
     }
 
     fun rewardVal(): String =
-        "${StringUtils.getString(R.string.reward_starfish)}$moneyUnit$principalAmount"
+        "${StringUtils.getString(R.string.reward_starfish)}$moneyUnit$presentAmount"
 }

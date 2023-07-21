@@ -83,17 +83,7 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
             ), 0, 1
         )
         mBinding.rgOrderPayWay.setOnCheckedChangeListener { _, checkedId ->
-            try {
-                mViewModel.payMethod =
-                    if (mViewModel.price.toDouble() == 0.0) 1001 else when (checkedId) {
-                        R.id.rb_order_balance_pay_way -> 1001
-                        R.id.rb_order_alipay_pay_way -> 103
-                        R.id.rb_order_wechat_pay_way -> 203
-                        else -> -1
-                    }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            changePayWay()
         }
         mBinding.btnOrderPay.setOnClickListener {
             if (0L == mViewModel.remaining.value) {
@@ -117,8 +107,32 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
         }
     }
 
+
+    /**
+     * 切换支付方式
+     */
+    private fun changePayWay() {
+        try {
+            mViewModel.payMethod =
+                if (mViewModel.price.toDouble() == 0.0) 1001 else when (mBinding.rgOrderPayWay.checkedRadioButtonId) {
+                    R.id.rb_order_balance_pay_way -> 1001
+                    R.id.rb_order_alipay_pay_way -> 103
+                    R.id.rb_order_wechat_pay_way -> 203
+                    else -> -1
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     override fun initData() {
+        changePayWay()
         mViewModel.requestData()
         mViewModel.countDownTimer()
+    }
+
+    override fun onDestroy() {
+        mViewModel.timer?.cancel()
+        super.onDestroy()
     }
 }

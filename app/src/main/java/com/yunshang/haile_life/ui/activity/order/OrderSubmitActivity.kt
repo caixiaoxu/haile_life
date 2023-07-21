@@ -2,6 +2,8 @@ package com.yunshang.haile_life.ui.activity.order
 
 import android.content.Intent
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
+import com.lsy.framelib.utils.AppManager
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
@@ -17,6 +20,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderSubmitViewModel
+import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
 import com.yunshang.haile_life.data.entities.WxPrePayEntity
@@ -54,6 +58,8 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
 
     override fun layoutId(): Int = R.layout.activity_order_submit
 
+    override fun activityTag(): String = ActivityTag.TAG_ORDER_PAY
+
     override fun backBtn(): View = mBinding.barOrderSubmitTitle
 
     override fun initIntent() {
@@ -68,6 +74,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
 
     override fun initEvent() {
         super.initEvent()
+
         mViewModel.tradePreview.observe(this) {
             it?.let { trade ->
 
@@ -188,6 +195,8 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                 } else {
                     mBinding.llOrderGoodDiscounts.visibility = View.GONE
                 }
+
+                changePayWay()
             }
         }
 
@@ -238,7 +247,12 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                         OrderPaySuccessActivity::class.java
                     ).apply {
                         if (mViewModel.orderNo.isNotEmpty()) {
-                            putExtras(IntentParams.OrderParams.pack(mViewModel.orderNo))
+                            putExtras(
+                                IntentParams.OrderParams.pack(
+                                    mViewModel.orderNo,
+                                    !(mViewModel.reserveTime.value.isNullOrEmpty())
+                                )
+                            )
                         }
                     })
                 finish()
@@ -250,14 +264,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
         window.statusBarColor = Color.WHITE
 
         mBinding.includeOrderSubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
-            mViewModel.tradePreview.value?.let {
-                mViewModel.payMethod = if (it.isZero()) 1001 else when (checkedId) {
-                    R.id.rb_order_submit_balance_pay_way -> 1001
-                    R.id.rb_order_submit_alipay_pay_way -> 103
-                    R.id.rb_order_submit_wechat_pay_way -> 203
-                    else -> -1
-                }
-            }
+            changePayWay()
         }
         mBinding.btnOrderSubmitPay.setOnClickListener {
             if (-1 == mViewModel.payMethod) {
@@ -277,6 +284,45 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
             } else mViewModel.requestPrePay()
         }
     }
+
+    /**
+     * 切换支付方式
+     */
+    private fun changePayWay() {
+        mViewModel.tradePreview.value?.let {
+            mViewModel.payMethod =
+                if (it.isZero()) 1001 else when (mBinding.includeOrderSubmitPayWay.rgOrderSubmitPayWay.checkedRadioButtonId) {
+                    R.id.rb_order_submit_balance_pay_way -> 1001
+                    R.id.rb_order_submit_alipay_pay_way -> 103
+                    R.id.rb_order_submit_wechat_pay_way -> 203
+                    else -> -1
+                }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            // 如果是未支付完成，并且订单不为空
+            if (!mViewModel.isPayFinish && mViewModel.orderNo.isNotEmpty()) {
+                startActivity(
+                    Intent(
+                        this@OrderSubmitActivity,
+                        OrderDetailActivity::class.java
+                    ).apply {
+                        putExtras(
+                            IntentParams.OrderParams.pack(
+                                mViewModel.orderNo,
+                                !(mViewModel.reserveTime.value.isNullOrEmpty())
+                            )
+                        )
+                    })
+                AppManager.finishAllActivityForTag(ActivityTag.TAG_ORDER_PAY)
+            }
+        }, 300)
+    }
+
 
     override fun initData() {
         mViewModel.requestData()

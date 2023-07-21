@@ -42,13 +42,15 @@
             android:paddingVertical="2dp"
             android:text="@{item.cutOffVal()}"
             android:textSize="10sp"
+            android:visibility="@{item.cutOffShow?View.VISIBLE:View.GONE}"
             app:bgResIds="@{item.multiTypeBgRes}"
             app:layout_constraintEnd_toEndOf="@id/gl_discount_coupon_begin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_discount_coupon_amount"
             app:txtColors="@{item.multiTypeTxtColors}"
             app:type="@{item.multiType}"
-            tools:text="3天后到期" />
+            tools:text="3天后到期"
+            tools:visibility="gone" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_discount_coupon_begin"

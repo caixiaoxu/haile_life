@@ -174,6 +174,7 @@ object StringUtils {
     }
 
     private val PayCodeH5 = "^(https://h5.haier-ioc.com/scan\\?N=\\S*)$"
+    private val RechargeCode = "^(https://h5.haier-ioc.com/scan\\?rechargeId=\\S*)$"
     private val RefundCode = "^(https://h5.haier-ioc.com/scan\\?refundId=\\S*)$"
     private val HaiLiCode1 = "^((http|https)://(uhome.haier.net|app.mrhi.cn)" +
             "/download/app/washcall/index.html\\?devid=\\S*)"
@@ -197,6 +198,19 @@ object StringUtils {
         } else {
             null
         }
+    } catch (e: java.lang.Exception) {
+        e.printStackTrace()
+        null
+    }
+
+    /**
+     * 是否是充值码
+     */
+    fun rechargeCode(codeStr: String): String? = try {
+        if (codeStr.matches(Regex(RechargeCode))) {
+            codeStr.split("\\?rechargeId=".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()[1]
+        } else null
     } catch (e: java.lang.Exception) {
         e.printStackTrace()
         null

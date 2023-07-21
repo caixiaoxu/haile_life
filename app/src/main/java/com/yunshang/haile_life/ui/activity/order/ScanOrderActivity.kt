@@ -15,6 +15,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.ScanOrderViewModel
+import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.ExtAttrBean
@@ -29,6 +30,8 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
     ScanOrderViewModel::class.java, BR.vm
 ) {
     override fun layoutId(): Int = R.layout.activity_scan_order
+
+    override fun activityTag(): String = ActivityTag.TAG_ORDER_PAY
 
     override fun backBtn(): View = mBinding.barScanOrderTitle.getBackBtn()
 

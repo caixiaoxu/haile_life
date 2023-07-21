@@ -3,6 +3,7 @@ package com.yunshang.haile_life.business.vm
 import android.app.Activity
 import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
@@ -53,12 +54,32 @@ class RechargeStarfishViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
+    val isAgree: MutableLiveData<Boolean> = MutableLiveData(true)
+
     val shopStarfishTotal: MutableLiveData<ShopStarfishTotalEntity> by lazy {
         MutableLiveData()
     }
     val shopStarfishList: MutableLiveData<ShopStarfishListEntity> by lazy {
         MutableLiveData()
     }
+
+
+    // 是否可提交
+    val canSubmit: MediatorLiveData<Boolean> = MediatorLiveData(false).apply {
+        addSource(isAgree) {
+            value = checkSubmit()
+        }
+        addSource(selectGoodsItem) {
+            value = checkSubmit()
+        }
+    }
+
+    /**
+     * 检测是否可提交
+     */
+    private fun checkSubmit(): Boolean =
+        true == isAgree.value && null != selectGoodsItem.value
+
 
     fun requestData() {
         if (-1 == shopId) return

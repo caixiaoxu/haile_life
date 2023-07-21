@@ -1,5 +1,6 @@
 package com.yunshang.haile_life.ui.activity.order
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.style.AbsoluteSizeSpan
 import android.view.View
@@ -27,8 +28,8 @@ class OrderPaySuccessActivity : BaseBindingActivity<ActivityOrderPaySuccessBindi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        IntentParams.OrderParams.parseOrderNo(intent)?.let {
+        val orderNo = IntentParams.OrderParams.parseOrderNo(intent)
+        orderNo?.let {
             launch({
                 ApiRepository.dealApiResult(mOrderRepo.requestOrderDetail(it))?.let {
                     withContext(Dispatchers.Main) {
@@ -76,6 +77,22 @@ class OrderPaySuccessActivity : BaseBindingActivity<ActivityOrderPaySuccessBindi
         }
 
         mBinding.btnPaySuccess.setOnClickListener {
+            if (2 !=  IntentParams.OrderParams.parseFormScan(intent)){
+                orderNo?.let {
+                    startActivity(
+                        Intent(
+                            this@OrderPaySuccessActivity,
+                            OrderDetailActivity::class.java
+                        ).apply {
+                            putExtras(
+                                IntentParams.OrderParams.pack(
+                                    it,
+                                    IntentParams.OrderParams.parseIsAppoint(intent)
+                                )
+                            )
+                        })
+                }
+            }
             finish()
         }
     }
