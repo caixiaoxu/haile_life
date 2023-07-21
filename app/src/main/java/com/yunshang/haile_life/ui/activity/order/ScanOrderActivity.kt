@@ -22,6 +22,7 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityScanOrderBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 
 class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrderViewModel>(
@@ -41,7 +42,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         this@ScanOrderActivity,
                         OrderDetailActivity::class.java
                     ).apply {
-                        putExtras(IntentParams.OrderParams.pack(it.orderNo, true, true))
+                        putExtras(IntentParams.OrderParams.pack(it.orderNo, true, 1))
                     })
             }
         }
@@ -70,6 +71,12 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                 }
                                 rb.setOnClickListener {
                                     mViewModel.selectDeviceConfig.value = item
+                                    mViewModel.goodsScan.value?.categoryCode?.let { code ->
+                                        item.getExtAttrs(DeviceCategory.isDryerOrHair(code))
+                                            .firstOrNull()?.let { firstAttr ->
+                                                mViewModel.selectExtAttr.postValue(firstAttr)
+                                            }
+                                    }
                                 }
                             }
                             cl.addView(
@@ -96,16 +103,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                 val inflater = LayoutInflater.from(this@ScanOrderActivity)
 
                 val list: List<ExtAttrBean> =
-                    if (DeviceCategory.isDryerOrHair(mViewModel.goodsScan.value!!.categoryCode)) {
-                        GsonUtils.json2List(it.extAttr, ExtAttrBean::class.java) ?: arrayListOf()
-                    } else {
-                        try {
-                            arrayListOf(ExtAttrBean(it.unit.toInt(), it.price.toDouble()))
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            arrayListOf()
-                        }
-                    }
+                    it.getExtAttrs(DeviceCategory.isDryerOrHair(mViewModel.goodsScan.value!!.categoryCode))
                 if (list.isNotEmpty()) {
                     list.forEachIndexed { index, item ->
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
@@ -172,6 +170,18 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                 } else {
                     jumpOrderSubmit()
                 }
+            }
+        }
+
+        mBinding.clScanRechargeStarfish.setOnClickListener {
+            mViewModel.goodsScan.value?.let {
+                startActivity(
+                    Intent(
+                        this@ScanOrderActivity,
+                        RechargeStarfishActivity::class.java
+                    ).apply {
+                        putExtras(IntentParams.RechargeStarfishParams.pack(it.shopId))
+                    })
             }
         }
     }

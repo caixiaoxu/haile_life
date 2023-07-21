@@ -14,6 +14,7 @@ import com.yunshang.haile_life.data.model.OnDownloadProgressListener
 import com.yunshang.haile_life.databinding.ActivitySettingBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import timber.log.Timber
 import java.io.File
@@ -53,6 +54,15 @@ class SettingActivity : BaseBusinessActivity<ActivitySettingBinding, SettingView
 
         mBinding.tvSettingCloseAccount.setOnClickListener {
             startActivity(Intent(this@SettingActivity, CloseAccountActivity::class.java))
+        }
+        mBinding.tvSettingLogout.setOnClickListener {
+            CommonDialog.Builder("确定退出当前账号吗？").apply {
+                title = StringUtils.getString(R.string.tip)
+                negativeTxt = StringUtils.getString(R.string.cancel)
+                setPositiveButton(StringUtils.getString(R.string.sure)) {
+                    mViewModel.logout()
+                }
+            }.build().show(supportFragmentManager)
         }
     }
 

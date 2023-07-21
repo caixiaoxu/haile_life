@@ -143,6 +143,12 @@
                 layout="@layout/item_title_value"
                 app:title='@{@string/apply_time +"："}'
                 app:value="@{vm.refundDetail.createTime}" />
+
+            <include
+                android:id="@+id/include_refund_detail_refund_time"
+                layout="@layout/item_title_value"
+                app:title='@{@string/refund_time +"："}'
+                app:value="@{vm.refundDetail.updateTime}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </LinearLayout>

@@ -1,5 +1,6 @@
 package com.yunshang.haile_life.ui.activity.shop
 
+import android.view.View
 import com.lsy.framelib.async.LiveDataBus
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
@@ -13,6 +14,8 @@ class StarfishRefundActivity : BaseBusinessActivity<ActivityStarfishRefundBindin
     StarfishRefundViewModel::class.java,BR.vm
 ) {
     override fun layoutId(): Int =R.layout.activity_starfish_refund
+
+    override fun backBtn(): View = mBinding.barStarfishRefundTitle.getBackBtn()
 
     override fun initIntent() {
         super.initIntent()

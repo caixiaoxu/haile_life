@@ -121,7 +121,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                         childBinding.icon = promotion.getDiscountIcon()
                         childBinding.title = promotion.getDiscountTitle()
                         childBinding.value =
-                            com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
+                            "-" + com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
                                 promotion.discountPrice
                             )
 

@@ -21,6 +21,7 @@
     <string name="copy_success">复制成功</string>
     <string name="am">上午</string>
     <string name="pm">下午</string>
+    <string name="tip">提示</string>
 
     <string name="login_title">登录海乐生活</string>
     <string name="bind_phone_title">绑定手机号</string>
@@ -103,6 +104,7 @@
     <string name="refund_list_prompt">退款后充值海星和赠送海星都会清零</string>
     <string name="apply_refund">申请退款</string>
     <string name="apply_time">申请时间</string>
+    <string name="refund_time">退款时间</string>
     <string name="refund_detail">退款详情</string>
 
     <string name="system_setting">系统设置</string>
@@ -134,6 +136,7 @@
     <string name="shop_coupon">商家优惠红包</string>
     <string name="platform_coupon">平台优惠红包</string>
     <string name="starfish">海星</string>
+    <string name="starfish_discount">海星抵扣</string>
     <string name="available_coupon_num">未选红包，最多%1$d张可用 ></string>
     <string name="order_discount_coupon_selector">选择优惠红包</string>
     <string name="order_pay_time_remaining">支付剩余时间</string>
@@ -148,6 +151,7 @@
     <string name="pay_success">支付成功</string>
     <string name="pay_success_hint">设备将在稍后为您启动，预计将在今日%1$s左右完成%2$s完成后会通过消息通知到您，请及时取走衣物</string>
     <string name="appoint_pay_success_hint">请在%1$s到具体店铺使用%2$s</string>
+    <string name="pay_success_default_hint">恭喜您支付成功！</string>
     <string name="appoint_time">预约时间</string>
     <string name="over_time_prompt">距预约时间超过%1$d分钟，取消后付款金额原路退回您的账户，已使用的优惠券等权益不返还，确认取消？</string>
     <string name="cancel_order_prompt">您确定要取消订单吗？</string>

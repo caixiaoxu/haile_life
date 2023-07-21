@@ -23,7 +23,7 @@ import java.util.*
 class StarfishRefundRecordViewModel: BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
 
-    var searchDate: Date = Date()
+//    var searchDate: Date = Date()
 
     fun requestRechargeRefundList(
         page: Int,
@@ -37,16 +37,16 @@ class StarfishRefundRecordViewModel: BaseViewModel() {
                         hashMapOf(
                             "page" to page,
                             "pageSize" to pageSize,
-                            "startTime" to DateTimeUtils.formatDateTimeStartParam(
-                                DateTimeUtils.getMonthFirst(
-                                    searchDate
-                                )
-                            ),
-                            "endTime" to DateTimeUtils.formatDateTimeEndParam(
-                                DateTimeUtils.getMonthLast(
-                                    searchDate
-                                )
-                            ),
+//                            "startTime" to DateTimeUtils.formatDateTimeStartParam(
+//                                DateTimeUtils.getMonthFirst(
+//                                    searchDate
+//                                )
+//                            ),
+//                            "endTime" to DateTimeUtils.formatDateTimeEndParam(
+//                                DateTimeUtils.getMonthLast(
+//                                    searchDate
+//                                )
+//                            ),
                         )
                     )
                 )

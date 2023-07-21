@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:overScrollMode="never"
-            app:layout_constraintBottom_toTopOf="@id/view_scan_order_bottom"
+            app:layout_constraintBottom_toTopOf="@id/cl_scan_recharge_starfish"
             app:layout_constraintTop_toBottomOf="@id/tv_scan_order_hint">
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -54,9 +54,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="12dp"
-                app:showDividers="middle"
                 app:divider="@drawable/divder_efefef"
-                app:dividerPadding="12dp">
+                app:dividerPadding="12dp"
+                app:showDividers="middle">
 
                 <include
                     android:id="@+id/include_scan_order_config"
@@ -74,6 +74,26 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_scan_recharge_starfish"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@mipmap/bg_recharge_starfish"
+            android:visibility="@{null == vm.shopUmpItem?View.GONE:View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/view_scan_order_bottom">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ib_scan_recharge_starfish_close"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_margin="5dp"
+                android:background="@color/transparent"
+                android:onClick="@{vm::closeRechargeStarfish}"
+                android:src="@mipmap/icon_close_x_white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <View
             android:id="@+id/view_scan_order_bottom"
             android:layout_width="match_parent"
@@ -85,13 +105,14 @@
             app:layout_constraintTop_toTopOf="@id/view_scan_order_bottom"
             tools:ignore="MissingConstraints" />
 
-        <View
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/view_scan_order_selected"
             android:layout_width="132dp"
             android:layout_height="46dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:background="@{vm.isDryer()?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
+            android:enabled="@{vm.canSubmit}"
             app:layout_constraintEnd_toEndOf="@id/view_scan_order_bottom"
             app:layout_constraintTop_toTopOf="@id/view_scan_order_bottom" />
 

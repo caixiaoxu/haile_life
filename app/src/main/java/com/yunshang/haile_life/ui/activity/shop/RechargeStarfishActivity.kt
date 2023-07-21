@@ -68,8 +68,8 @@ class RechargeStarfishActivity :
                                     false
                                 )
                             itemBinding.item = reward
-                            itemBinding.ivRechargeStarfishRecommend.visibility =
-                                if (0 == index) View.VISIBLE else View.GONE
+//                            itemBinding.ivRechargeStarfishRecommend.visibility =
+//                                if (0 == index) View.VISIBLE else View.GONE
                             mViewModel.selectGoodsItem.observe(this@RechargeStarfishActivity) { item ->
                                 itemBinding.llRechargeStarfishItem.setBackgroundResource(
                                     if (reward.goodsItemId == item.goodsItemId) R.drawable.shape_s04d1e5_04d7e5_r8
@@ -128,7 +128,11 @@ class RechargeStarfishActivity :
                         OrderPaySuccessActivity::class.java
                     ).apply {
                         if (mViewModel.orderNo.isNotEmpty()) {
-                            putExtras(IntentParams.OrderParams.pack(mViewModel.orderNo))
+                            putExtras(
+                                IntentParams.OrderParams.pack(
+                                    mViewModel.orderNo, formScan = 2
+                                )
+                            )
                         }
                     })
                 finish()
@@ -192,7 +196,7 @@ class RechargeStarfishActivity :
                 ).apply {
                     putExtras(
                         IntentParams.WebViewParams.pack(
-                            Constants.agreement,
+                            Constants.buyAgreement,
                         )
                     )
                 })

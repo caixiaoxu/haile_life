@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableEnd="@mipmap/icon_arrow_right"
-            android:text="@{isAppoint?OrderStatus.getAppointStateName(item.appointmentState):item.stateDesc}"
+            android:text="@{isAppoint?OrderStatus.getAppointStateName(item.appointmentState):item.getOrderStatusTitle}"
             android:textSize="12sp"
             app:bgResIds="@{item.multiTypeBgRes}"
             app:layout_constraintEnd_toEndOf="parent"

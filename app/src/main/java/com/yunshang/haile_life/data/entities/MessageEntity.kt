@@ -27,8 +27,14 @@ data class MessageEntity(
     val title: String,
     val typeId: Int
 ) {
+
+    fun getTitleVal(): String =
+        if (subtype == "user:order:start") "您有1笔订单正在进行中" else "您有1笔订单已完成"
+
     fun messageContent(): String =
-        GsonUtils.json2Class(content, MessageContentEntity::class.java)?.title ?: ""
+        GsonUtils.json2Class(content, MessageContentEntity::class.java)?.let {
+            if (subtype == "user:order:start") "预计${it.endTime}完成" else "完成时间:${it.endTime}"
+        } ?: ""
 }
 
 data class MessageContentEntity(

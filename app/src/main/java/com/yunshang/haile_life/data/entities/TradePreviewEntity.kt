@@ -83,7 +83,7 @@ data class TradePreviewPromotion(
             1 -> R.string.limited_time_offer
             2-> R.string.shop_coupon
             4-> R.string.platform_coupon
-            5 -> R.string.starfish
+            5 -> R.string.starfish_discount
             else -> R.string.order_discount_coupon
         }
     )

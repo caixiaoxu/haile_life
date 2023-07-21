@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="8dp"
-                        android:text='@{vm.lastMessage.title}'
+                        android:text='@{vm.lastMessage.titleVal}'
                         app:layout_constraintBottom_toTopOf="@id/tv_home_cur_task_predict"
                         app:layout_constraintEnd_toStartOf="@id/btn_home_cur_task_close"
                         app:layout_constraintStart_toStartOf="parent"

@@ -92,6 +92,7 @@ class StarfishRefundDetailActivity :
         unifyTitleW(mBinding.includeRefundDetailUserAccount.tvItemTitle, titleW)
         unifyTitleW(mBinding.includeRefundDetailOrderNo.tvItemTitle, titleW)
         unifyTitleW(mBinding.includeRefundDetailApplyTime.tvItemTitle, titleW)
+        unifyTitleW(mBinding.includeRefundDetailRefundTime.tvItemTitle, titleW)
     }
 
     private fun unifyTitleW(tvItemTitle: AppCompatTextView, w: Int) {

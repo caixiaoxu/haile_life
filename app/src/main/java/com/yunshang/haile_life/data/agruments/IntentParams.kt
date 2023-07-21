@@ -353,17 +353,17 @@ object IntentParams {
         /**
          * 包装参数
          */
-        fun pack(orderNo: String, isAppoint: Boolean = false, formScan: Boolean = false): Bundle =
+        fun pack(orderNo: String, isAppoint: Boolean = false, formScan: Int = 0): Bundle =
             Bundle().apply {
                 putString(OrderNo, orderNo)
                 putBoolean(IsAppoint, isAppoint)
-                putBoolean(FormScan, formScan)
+                putInt(FormScan, formScan)
             }
 
         fun parseOrderNo(intent: Intent): String? = intent.getStringExtra(OrderNo)
 
         fun parseIsAppoint(intent: Intent): Boolean = intent.getBooleanExtra(IsAppoint, false)
-        fun parseFormScan(intent: Intent): Boolean = intent.getBooleanExtra(FormScan, false)
+        fun parseFormScan(intent: Intent): Int = intent.getIntExtra(FormScan, 0)
     }
 
     object OrderPayParams {

@@ -14,13 +14,10 @@ import com.yunshang.haile_life.business.vm.StarfishRefundRecordViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.StarfishRefundRecordEntity
 import com.yunshang.haile_life.databinding.ActivityStarfishRefundRecordBinding
-import com.yunshang.haile_life.databinding.ItemRechargeStarfishDetailListBinding
 import com.yunshang.haile_life.databinding.ItemRechargeStarfishRefundListBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
-import com.yunshang.haile_life.utils.DateTimeUtils
-import java.util.*
 
 class StarfishRefundRecordActivity :
     BaseBusinessActivity<ActivityStarfishRefundRecordBinding, StarfishRefundRecordViewModel>(
@@ -73,29 +70,29 @@ class StarfishRefundRecordActivity :
                 pageSize: Int,
                 callBack: (responseList: ResponseList<out StarfishRefundRecordEntity>?) -> Unit
             ) {
-                if (isRefresh) {
-                    mViewModel.searchDate = DateTimeUtils.curMonthFirst
-                }
+//                if (isRefresh) {
+//                    mViewModel.searchDate = DateTimeUtils.curMonthFirst
+//                }
                 mViewModel.requestRechargeRefundList(page, pageSize, callBack)
             }
-
-            override fun onCommonDeal(
-                responseList: ResponseList<out StarfishRefundRecordEntity>,
-                isRefresh: Boolean
-            ): Boolean {
-
-                if (responseList.items.size < responseList.pageSize) {
-                    mBinding.includeTitleRefreshList.rvTitleRefreshList.page = 1
-                    mViewModel.searchDate = Calendar.getInstance().apply {
-                        time = mViewModel.searchDate
-                        add(Calendar.MONTH, -1)
-                    }.time
-                }
-
-                // 刷新数据
-                mAdapter.refreshList(responseList.items, isRefresh)
-                return true
-            }
+//          按月分查寻，不做了去掉
+//            override fun onCommonDeal(
+//                responseList: ResponseList<out StarfishRefundRecordEntity>,
+//                isRefresh: Boolean
+//            ): Boolean {
+//
+//                if (responseList.items.size < responseList.pageSize) {
+//                    mBinding.includeTitleRefreshList.rvTitleRefreshList.page = 1
+//                    mViewModel.searchDate = Calendar.getInstance().apply {
+//                        time = mViewModel.searchDate
+//                        add(Calendar.MONTH, -1)
+//                    }.time
+//                }
+//
+//                // 刷新数据
+//                mAdapter.refreshList(responseList.items, isRefresh)
+//                return true
+//            }
         }
     }
 

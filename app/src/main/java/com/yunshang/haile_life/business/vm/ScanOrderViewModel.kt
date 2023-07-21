@@ -1,5 +1,6 @@
 package com.yunshang.haile_life.business.vm
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.MarketingService
+import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -68,7 +70,7 @@ class ScanOrderViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    val promotionInfoOfShopConfigs: MutableLiveData<PromotionInfoOfShop> by lazy {
+    val shopUmpItem: MutableLiveData<ShopUmpItem> by lazy {
         MutableLiveData()
     }
 
@@ -124,6 +126,14 @@ class ScanOrderViewModel : BaseViewModel() {
                         mDeviceRepo.requestDeviceDetailItem(scan.goodsId)
                     )?.let {
                         deviceConfigs.postValue(it)
+                        it.firstOrNull()?.let { first ->
+                            selectDeviceConfig.postValue(first)
+
+                            first.getExtAttrs(DeviceCategory.isDryerOrHair(scan.categoryCode))
+                                .firstOrNull()?.let { firstAttr ->
+                                    selectExtAttr.postValue(firstAttr)
+                                }
+                        }
                     }
                     if (scan.shopId > 0) {
                         ApiRepository.dealApiResult(
@@ -136,11 +146,15 @@ class ScanOrderViewModel : BaseViewModel() {
                             )
                         )?.let {
                             it.items.find { item -> item.promotionProduct == 5 }?.let { ump ->
-                                promotionInfoOfShopConfigs.postValue(ump.promotionInfoOfShop)
+                                shopUmpItem.postValue(ump)
                             }
                         }
                     }
                 }
         })
+    }
+
+    fun closeRechargeStarfish(v: View) {
+        shopUmpItem.value = null
     }
 }

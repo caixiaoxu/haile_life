@@ -34,7 +34,7 @@ class OrderViewModel : BaseViewModel() {
             IndicatorEntity("未支付", 0, 100),
             IndicatorEntity("已支付", 0, 500),
             IndicatorEntity("已完成", 0, 1000),
-            IndicatorEntity("申请退款", 0, 2000),
+//            IndicatorEntity("申请退款", 0, 2000),
             IndicatorEntity("已退款", 0, 2099),
         )
     )

@@ -342,6 +342,13 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         mViewModel.requestData()
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            mViewModel.requestHomeMsgAsync()
+        }
+    }
+
     //方法一：自己控制banner的生命周期
     override fun onStart() {
         super.onStart()

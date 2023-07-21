@@ -51,7 +51,7 @@ class SettingViewModel : BaseViewModel() {
 //        appVersionInfo.value = GsonUtils.json2Class(json,AppVersionEntity::class.java)
     }
 
-    fun logout(v: View) {
+    fun logout() {
         launch({
             mLoginRepo.logout(
                 ApiRepository.createRequestBody(

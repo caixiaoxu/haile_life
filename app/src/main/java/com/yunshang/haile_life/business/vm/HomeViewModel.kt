@@ -93,7 +93,7 @@ class HomeViewModel : BaseViewModel() {
      * 首页消息
      */
     fun requestHomeMsgAsync() {
-        launch({ requestHomeMsg() })
+        launch({ requestHomeMsg() }, showLoading = false)
     }
 
     /**

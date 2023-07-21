@@ -40,29 +40,36 @@ class OrderPaySuccessActivity : BaseBindingActivity<ActivityOrderPaySuccessBindi
                             ), 0, 1
                         )
                         mBinding.tvPaySuccessPrompt.text =
-                            if (it.orderItemList.isNotEmpty()) {
-                                if (it.appointmentUsageTime.isNullOrEmpty()) {
-                                    com.lsy.framelib.utils.StringUtils.getString(
-                                        R.string.pay_success_hint,
-                                        DateTimeUtils.formatDateTimeForStr(
-                                            it.orderItemList.first().finishTime,
-                                            "HH:mm"
-                                        ),
-                                        DeviceCategory.categoryName(it.orderItemList.first().categoryCode)
-                                            .replace("机", "")
-                                    )
-                                } else {
-                                    val useDate =
-                                        DateTimeUtils.formatDateFromString(it.appointmentUsageTime)
-                                    com.lsy.framelib.utils.StringUtils.getString(
-                                        R.string.appoint_pay_success_hint,
-                                        if (DateTimeUtils.isSameDay(useDate, Date())) {
-                                            "今天${DateTimeUtils.formatDateTime(useDate, "HH:mm")}"
-                                        } else it,
-                                        it.orderItemList.first().goodsName
-                                    )
-                                }
-                            } else ""
+                            if (2 != IntentParams.OrderParams.parseFormScan(intent)) {
+                                if (it.orderItemList.isNotEmpty()) {
+                                    if (it.appointmentUsageTime.isNullOrEmpty()) {
+                                        com.lsy.framelib.utils.StringUtils.getString(
+                                            R.string.pay_success_hint,
+                                            DateTimeUtils.formatDateTimeForStr(
+                                                it.orderItemList.first().finishTime,
+                                                "HH:mm"
+                                            ),
+                                            DeviceCategory.categoryName(it.orderItemList.first().categoryCode)
+                                                .replace("机", "")
+                                        )
+                                    } else {
+                                        val useDate =
+                                            DateTimeUtils.formatDateFromString(it.appointmentUsageTime)
+                                        com.lsy.framelib.utils.StringUtils.getString(
+                                            R.string.appoint_pay_success_hint,
+                                            if (DateTimeUtils.isSameDay(useDate, Date())) {
+                                                "今天${
+                                                    DateTimeUtils.formatDateTime(
+                                                        useDate,
+                                                        "HH:mm"
+                                                    )
+                                                }"
+                                            } else it,
+                                            it.orderItemList.first().goodsName
+                                        )
+                                    }
+                                } else com.lsy.framelib.utils.StringUtils.getString(R.string.pay_success_default_hint)
+                            } else com.lsy.framelib.utils.StringUtils.getString(R.string.pay_success_default_hint)
                     }
                 }
             })

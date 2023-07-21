@@ -31,6 +31,7 @@
         <include
             android:id="@+id/include_order_submit_good_discount"
             layout="@layout/item_order_submit_good_item"
+            android:visibility="gone"
             app:title="@{@string/good_discount}"
             app:value="@{item.getDiscountAmountStr}"
             app:type="@{2}" />
@@ -38,6 +39,7 @@
         <include
             android:id="@+id/include_order_submit_good_actually_paid"
             layout="@layout/item_order_submit_good_item"
+            android:visibility="gone"
             app:title="@{@string/actually_paid}"
             app:value="@{item.getRealAmountStr}"
             app:type="@{2}" />

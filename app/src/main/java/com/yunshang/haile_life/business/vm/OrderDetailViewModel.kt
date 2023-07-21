@@ -1,7 +1,5 @@
 package com.yunshang.haile_life.business.vm
 
-import android.app.Activity
-import android.text.TextUtils
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -13,7 +11,6 @@ import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.model.ApiRepository
-import com.yunshang.haile_life.utils.thrid.AlipayHelper
 
 /**
  * Title :
@@ -45,7 +42,7 @@ class OrderDetailViewModel : BaseViewModel() {
             if (formScan)
                 false
             else
-                detail.buyerPhone.isNotEmpty()
+                detail.serviceTelephone.isNotEmpty()
         } ?: false
     }
 
@@ -55,7 +52,7 @@ class OrderDetailViewModel : BaseViewModel() {
                 false
             } else {
                 if (isAppoint) 0 == detail.appointmentState || 1 == detail.appointmentState
-                else 100 == detail.state || 500 == detail.state
+                else 100 == detail.state
             }
         } ?: false
     }
@@ -87,7 +84,7 @@ class OrderDetailViewModel : BaseViewModel() {
     }
 
     private fun checkShowAnyBtn() =
-        ((formScan || true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && false == changeUseModel.value)
+        (((true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && !formScan) || (formScan && true == changeUseModel.value))
 
     fun requestOrderDetailAsync() {
         if (orderNo.isNullOrEmpty()) return

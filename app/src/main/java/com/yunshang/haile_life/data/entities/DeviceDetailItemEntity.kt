@@ -1,7 +1,9 @@
 package com.yunshang.haile_life.data.entities
 
 import com.lsy.framelib.utils.StringUtils
+import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 
 /**
  * Title :
@@ -33,7 +35,19 @@ data class DeviceDetailItemEntity(
     val unit: String,
     val vipDiscount: String,
     val vipDiscountPrice: String
-)
+) {
+    fun getExtAttrs(isDryerOrHair: Boolean) =
+        if (isDryerOrHair) {
+            GsonUtils.json2List(extAttr, ExtAttrBean::class.java) ?: arrayListOf()
+        } else {
+            try {
+                arrayListOf(ExtAttrBean(unit.toInt(), price.toDouble()))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                arrayListOf()
+            }
+        }
+}
 
 data class ExtAttrBean(
     val minutes: Int,

@@ -42,9 +42,10 @@ data class StarfishRefundRecordEntity(
 
     override fun getMultiType(): Int = when (state) {
         0 -> 1
-        3 -> 2
-        else -> 0
+        1 -> 0
+        else -> 2
     }
+
     override fun getMultiTypeBgRes(): IntArray = intArrayOf()
 
     override fun getMultiTypeTxtColors(): IntArray = intArrayOf(
