@@ -6,8 +6,10 @@ import com.lsy.framelib.utils.AppManager
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.CloseAccountViewModel
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.ActivityCloseAccountBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
 
 class CloseAccountActivity :
@@ -23,7 +25,9 @@ class CloseAccountActivity :
         super.initEvent()
         mViewModel.jump.observe(this) {
             AppManager.finishAllActivity()
-            startActivity(Intent(this@CloseAccountActivity, LoginActivity::class.java))
+            startActivity(Intent(this@CloseAccountActivity, MainActivity::class.java).apply {
+                putExtras(IntentParams.DefaultPageParams.pack(0))
+            })
         }
     }
 
