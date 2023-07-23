@@ -114,6 +114,8 @@ class SharedViewModel : ViewModel() {
             SPRepository.loginInfo = this
             loginInfo.postValue(this)
         }
+        // 绑定手机号后，刷新用户信息
+        requestUserInfoAsync()
     }
 
     /**
