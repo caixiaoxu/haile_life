@@ -86,12 +86,13 @@ object ApiRepository {
     fun <T> dealApiResult(response: ResponseWrapper<T>): T? {
         if (0 != response.code) {
             // 1 参数不正常
+            // 2 未登录
             // 100000 未账号注册
             // 100002 登录失效
             // 100003 账号在其他地方登录
 
             when (response.code) {
-                100002, 100003 -> {
+                2, 100002, 100003 -> {
                     mHandler.post {
                         ActivityManagerUtils.clearLoginInfoGoLogin()
                     }
@@ -121,6 +122,7 @@ object ApiRepository {
         }
     }
 }
+
 interface OnDownloadProgressListener {
     /**
      * 百分比，完成100

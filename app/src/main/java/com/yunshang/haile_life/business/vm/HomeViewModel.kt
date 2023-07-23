@@ -13,6 +13,7 @@ import com.yunshang.haile_life.data.entities.MessageEntity
 import com.yunshang.haile_life.data.entities.NearStoreEntity
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.data.model.ApiRepository
+import com.yunshang.haile_life.data.model.SPRepository
 
 /**
  * Title :
@@ -100,19 +101,21 @@ class HomeViewModel : BaseViewModel() {
      * 首页消息
      */
     private suspend fun requestHomeMsg() {
-        ApiRepository.dealApiResult(
-            mMessageRepo.requestHomeMessage(
-                ApiRepository.createRequestBody(
-                    hashMapOf(
-                        "page" to 1,
-                        "pageSize" to 1,
-                        "readStatus" to 0
+        if (SPRepository.isLogin()){
+            ApiRepository.dealApiResult(
+                mMessageRepo.requestHomeMessage(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "page" to 1,
+                            "pageSize" to 1,
+                            "readStatus" to 0
+                        )
                     )
                 )
-            )
-        )?.let {
-            if (it.isNotEmpty()) {
-                lastMessage.postValue(it[0])
+            )?.let {
+                if (it.isNotEmpty()) {
+                    lastMessage.postValue(it[0])
+                }
             }
         }
     }

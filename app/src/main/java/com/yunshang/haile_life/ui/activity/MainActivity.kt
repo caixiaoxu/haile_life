@@ -19,6 +19,7 @@ import com.yunshang.haile_life.data.model.OnDownloadProgressListener
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityMainBinding
 import com.yunshang.haile_life.ui.activity.common.CustomCaptureActivity
+import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
@@ -133,24 +134,48 @@ class MainActivity :
                 showChildFragment(it)
             }
         }
-        mViewModel.storeAdEntity.observe(this) { ad ->
-            mBinding.viewMainStore.setOnClickListener {
-                ad.images.firstOrNull()?.let { image ->
-                    SchemeURLHelper.parseSchemeURL(
-                        this@MainActivity,
-                        image.linkUrl,
-                        image.linkType
-                    )
-                }
-            }
-        }
     }
 
     override fun initView() {
         mBinding.ivMainScan.setOnClickListener {
-            scanCodeLauncher.launch(scanOptions)
+            if (checkLogin()) {
+                scanCodeLauncher.launch(scanOptions)
+            }
+        }
+
+        mBinding.rbMainTabStore.setOnClickListener {
+            if (checkLogin()) {
+                mViewModel.storeAdEntity.value?.let { ad ->
+                    ad.images.firstOrNull()?.let { image ->
+                        SchemeURLHelper.parseSchemeURL(
+                            this@MainActivity,
+                            image.linkUrl,
+                            image.linkType
+                        )
+                    }
+                }
+            }
+            true
+        }
+
+        mBinding.rbMainTabOrder.setOnRadioClickListener {
+            !checkLogin()
+        }
+
+        mBinding.rbMainTabMine.setOnRadioClickListener {
+            !checkLogin()
         }
     }
+
+    /**
+     * 检测是否登录
+     */
+    private fun checkLogin(): Boolean =
+        if (!SPRepository.isLogin()) {
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            false
+        } else true
+
 
     override fun initData() {
         mViewModel.requestData()

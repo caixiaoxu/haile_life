@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.lsy.framelib.ui.base.activity.BaseActivity
-import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivitySplashBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
-import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import timber.log.Timber
 
 class SplashActivity : BaseActivity() {
@@ -53,11 +51,11 @@ class SplashActivity : BaseActivity() {
      */
     private fun checkDelayJump() {
         Handler(Looper.getMainLooper()).postDelayed({
-            if (SPRepository.isLogin()) {
+//            if (SPRepository.isLogin()) {
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            } else {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-            }
+//            } else {
+//                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+//            }
             finish()
         }, delayTime)
     }

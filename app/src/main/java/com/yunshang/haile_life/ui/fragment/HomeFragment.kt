@@ -12,12 +12,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StatusBarUtils
 import com.youth.banner.indicator.CircleIndicator
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.HomeCategory
 import com.yunshang.haile_life.business.vm.HomeViewModel
 import com.yunshang.haile_life.data.Constants
@@ -200,6 +202,10 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
 
         mSharedViewModel.mSharedLocation.observe(this) {
             mViewModel.requestNearByStore(it)
+        }
+
+        LiveDataBus.with(BusEvents.LOGIN_STATUS)?.observe(this){
+            mViewModel.requestHomeMsgAsync()
         }
     }
 

@@ -97,8 +97,4 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
     override fun initData() {
         mBinding.shared = mSharedViewModel
     }
-
-    override fun onBackListener() {
-        ActivityUtils.doubleBack(this)
-    }
 }

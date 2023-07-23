@@ -44,68 +44,40 @@
                 android:drawableTop="@drawable/selector_main_home"
                 android:text="@string/main_tab_home" />
 
-            <androidx.appcompat.widget.AppCompatRadioButton
+            <com.yunshang.haile_life.ui.view.ClickRadioButton
                 android:id="@+id/rb_main_tab_store"
                 style="@style/MainTab"
                 android:drawableTop="@drawable/selector_main_store"
                 android:text="@string/main_tab_store" />
 
-            <androidx.appcompat.widget.AppCompatRadioButton
+            <com.yunshang.haile_life.ui.view.ClickRadioButton
                 android:id="@+id/rb_main_tab_scan"
                 style="@style/MainTab"
                 android:drawableTop="@drawable/selector_main_store"
                 android:enabled="false" />
 
-            <androidx.appcompat.widget.AppCompatRadioButton
+            <com.yunshang.haile_life.ui.view.ClickRadioButton
                 android:id="@+id/rb_main_tab_order"
                 style="@style/MainTab"
                 android:drawableTop="@drawable/selector_main_order"
                 android:text="@string/main_tab_order" />
 
-            <androidx.appcompat.widget.AppCompatRadioButton
+            <com.yunshang.haile_life.ui.view.ClickRadioButton
                 android:id="@+id/rb_main_tab_mine"
                 style="@style/MainTab"
                 android:drawableTop="@drawable/selector_main_mine"
                 android:text="@string/main_tab_mine" />
         </RadioGroup>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:weightSum="5"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_main_scan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:src="@mipmap/icon_main_scan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/view_main_bottom">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <View
-                android:id="@+id/view_main_store"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_main_scan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:src="@mipmap/icon_main_scan" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="@id/view_main_bottom" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
