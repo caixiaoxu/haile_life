@@ -29,14 +29,14 @@ class CommonLoadMoreRecyclerView<D> @JvmOverloads constructor(
     // 排版布局
     var layoutManager: LayoutManager? = null
         set(value) {
-            mBinding.rvRefreshList.layoutManager = value
+            mBinding.rvRefreshList.recyclerView.layoutManager = value
             field = value
         }
 
     // 适配器
     var adapter: CommonRecyclerAdapter<*, D>? = null
         set(value) {
-            mBinding.rvRefreshList.adapter = value
+            mBinding.rvRefreshList.recyclerView.adapter = value
             field = value
         }
 
@@ -44,7 +44,7 @@ class CommonLoadMoreRecyclerView<D> @JvmOverloads constructor(
      * 分割线
      */
     fun addItemDecoration(decor: ItemDecoration) {
-        mBinding.rvRefreshList.addItemDecoration(decor)
+        mBinding.rvRefreshList.recyclerView.addItemDecoration(decor)
     }
 
     // 页数
@@ -56,11 +56,29 @@ class CommonLoadMoreRecyclerView<D> @JvmOverloads constructor(
     // 请求数据
     var requestData: OnRequestDataListener<D>? = null
 
+    // 是否启用空状态
+    var enableEmptyStatus: Boolean = false
+
     init {
         mBinding = CustomRefreshRecyclerViewBinding.bind(
             LayoutInflater.from(context).inflate(R.layout.custom_refresh_recycler_view, null, false)
         )
         addView(mBinding.root)
+
+        val array = context.obtainStyledAttributes(attrs, R.styleable.CommonRefreshRecyclerView)
+        enableEmptyStatus = array.getBoolean(
+            R.styleable.CommonRefreshRecyclerView_enableEmptyStatus, false
+        )
+        setListStatus(
+            array.getResourceId(
+                R.styleable.CommonRefreshRecyclerView_emptyImgRes,
+                R.mipmap.icon_list_content_empty
+            ), array.getResourceId(
+                R.styleable.CommonRefreshRecyclerView_emptyTxtRes,
+                R.string.empty_content
+            )
+        )
+        array.recycle()
 
         mBinding.refreshLayout.setEnableRefresh(false)
 
@@ -68,6 +86,13 @@ class CommonLoadMoreRecyclerView<D> @JvmOverloads constructor(
         mBinding.refreshLayout.setOnLoadMoreListener {
             requestData(false)
         }
+    }
+
+    /**
+     * 设置空值
+     */
+    fun setListStatus(imgResId: Int? = null, txtResId: Int? = null) {
+        mBinding.rvRefreshList.setListStatus(imgResId, txtResId)
     }
 
     /**
@@ -121,6 +146,12 @@ class CommonLoadMoreRecyclerView<D> @JvmOverloads constructor(
         if (true == requestData?.onLoadMore(it)) {
             return
         }
+
+        // 显示空状态
+        if (enableEmptyStatus) {
+            mBinding.rvRefreshList.changeStatusView(isRefresh && 0 == it.size)
+        }
+
         // 刷新数据
         adapter?.refreshList(it, isRefresh)
 

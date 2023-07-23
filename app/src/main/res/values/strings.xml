@@ -204,6 +204,10 @@
     <string name="recharge_shop_title">附近可充值门店</string>
     <string name="total">合计</string>
 
+    <string name="empty_content">暂无内容信息</string>
+    <string name="empty_order">暂无订单信息</string>
+    <string name="empty_coupon">暂无优惠券信息</string>
+
     <string name="pay_code_error">该付款码无效</string>
     <string name="empty_permission">需要授权才能继续操作</string>
     <string name="close_account_prompt">以下信息将被清空 且无法找回</string>

@@ -44,4 +44,22 @@
     <declare-styleable name="MaxHeightScrollView">
         <attr name="maxHeight" />
     </declare-styleable>
+
+    <attr name="emptyTxtRes" format="reference" />
+    <attr name="emptyImgRes" format="reference" />
+    <attr name="enableEmptyStatus" format="boolean" />
+    <declare-styleable name="EmptyStatusRecyclerView">
+        <attr name="emptyTxtRes" />
+        <attr name="emptyImgRes" />
+    </declare-styleable>
+    <declare-styleable name="CommonLoadMoreRecyclerView">
+        <attr name="emptyTxtRes" />
+        <attr name="emptyImgRes" />
+        <attr name="enableEmptyStatus" />
+    </declare-styleable>
+    <declare-styleable name="CommonRefreshRecyclerView">
+        <attr name="emptyTxtRes" />
+        <attr name="emptyImgRes" />
+        <attr name="enableEmptyStatus" />
+    </declare-styleable>
 </resources>

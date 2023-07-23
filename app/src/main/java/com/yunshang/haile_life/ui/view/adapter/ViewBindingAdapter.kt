@@ -11,6 +11,7 @@ import androidx.core.view.MarginLayoutParamsCompat
 import androidx.databinding.BindingAdapter
 import com.yunshang.haile_life.ui.view.CommonTitleActionBar
 import com.yunshang.haile_life.ui.view.MultiTypeTextView
+import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
 import com.yunshang.haile_life.utils.GlideUtils
 import kotlin.math.abs
 

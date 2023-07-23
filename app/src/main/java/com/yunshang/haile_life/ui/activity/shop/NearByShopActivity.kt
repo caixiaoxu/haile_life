@@ -124,6 +124,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
         }
 
         mBinding.includeIndicatorList.rvIndicatorListList.layoutManager = LinearLayoutManager(this)
+        mBinding.includeIndicatorList.rvIndicatorListList.enableEmptyStatus = true
         ResourcesCompat.getDrawable(resources, R.drawable.divide_size8, null)?.let {
             mBinding.includeIndicatorList.rvIndicatorListList.addItemDecoration(
                 DividerItemDecoration(

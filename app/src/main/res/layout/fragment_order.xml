@@ -18,7 +18,7 @@
             android:id="@+id/view_order_padding"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:background="@color/white"/>
+            android:background="@color/white" />
 
         <com.yunshang.haile_life.ui.view.CommonTitleActionBar
             android:id="@+id/bar_mine_order_title"
@@ -38,7 +38,10 @@
         <com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
             android:id="@+id/rv_mine_order_list"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:padding="12dp"
-            android:layout_height="match_parent" />
+            app:emptyImgRes="@mipmap/icon_list_order_empty"
+            app:emptyTxtRes="@string/empty_order"
+            app:enableEmptyStatus="true" />
     </LinearLayout>
 </layout>

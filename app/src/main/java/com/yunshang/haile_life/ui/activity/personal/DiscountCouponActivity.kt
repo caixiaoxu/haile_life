@@ -126,6 +126,10 @@ class DiscountCouponActivity :
         mBinding.includeIndicatorList.barIndicatorListTitle.setTitle(R.string.discount_coupon)
 
         mBinding.includeIndicatorList.rvIndicatorListList.layoutManager = LinearLayoutManager(this)
+        mBinding.includeIndicatorList.rvIndicatorListList.setListStatus(
+            R.mipmap.icon_list_coupon_empty,
+            R.string.empty_coupon
+        )
         ResourcesCompat.getDrawable(resources, R.drawable.divide_size8, null)?.let {
             mBinding.includeIndicatorList.rvIndicatorListList.addItemDecoration(
                 DividerItemDecoration(
