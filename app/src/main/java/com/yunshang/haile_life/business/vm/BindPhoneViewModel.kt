@@ -2,7 +2,6 @@ package com.yunshang.haile_life.business.vm
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import com.yunshang.haile_life.business.apiService.LoginUserService
 import com.yunshang.haile_life.data.entities.BindPhoneEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 

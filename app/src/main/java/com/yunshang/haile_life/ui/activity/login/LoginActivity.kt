@@ -3,9 +3,7 @@ package com.yunshang.haile_life.ui.activity.login
 import android.content.Intent
 import android.graphics.Color
 import com.lsy.framelib.async.LiveDataBus
-import com.lsy.framelib.utils.ActivityUtils
 import com.lsy.framelib.utils.AppManager
-import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
@@ -32,7 +30,7 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
         super.initEvent()
 
         LiveDataBus.with(BusEvents.LOGIN_STATUS)?.observe(this) {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+//            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }
 

@@ -9,10 +9,12 @@ import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.SettingViewModel
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.AppVersionEntity
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
 import com.yunshang.haile_life.databinding.ActivitySettingBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
@@ -38,7 +40,9 @@ class SettingActivity : BaseBusinessActivity<ActivitySettingBinding, SettingView
         }
         mViewModel.jump.observe(this) {
             AppManager.finishAllActivity()
-            startActivity(Intent(this@SettingActivity, LoginActivity::class.java))
+            startActivity(Intent(this@SettingActivity, MainActivity::class.java).apply {
+                putExtras(IntentParams.DefaultPageParams.pack(0))
+            })
         }
     }
 

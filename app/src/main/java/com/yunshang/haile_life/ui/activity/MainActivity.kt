@@ -143,7 +143,7 @@ class MainActivity :
             }
         }
 
-        mBinding.rbMainTabStore.setOnClickListener {
+        mBinding.rbMainTabStore.setOnRadioClickListener {
             if (checkLogin()) {
                 mViewModel.storeAdEntity.value?.let { ad ->
                     ad.images.firstOrNull()?.let { image ->
