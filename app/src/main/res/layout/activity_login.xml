@@ -75,13 +75,15 @@
 
         <com.lsy.framelib.ui.weight.SingleTapTextView
             android:id="@+id/tv_login_getcode"
-            style="@style/Font_14_black_45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="@{vm.canSendCode}"
             android:gravity="center"
             android:onClick="@{vm::sendCode}"
             android:text="@string/getCode"
+            android:textAllCaps="false"
+            android:textColor="@{(null == vm.phone || 11 != vm.phone.length())?@color/color_black_45:@color/colorPrimary}"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/et_login_code"
             app:layout_constraintEnd_toEndOf="@id/et_login_code"
             app:layout_constraintTop_toTopOf="@id/et_login_code" />
@@ -150,9 +152,9 @@
             android:id="@+id/iv_login_alipay"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginBottom="75dp"
             android:background="@color/transparent"
             android:src="@mipmap/icon_alipay"
-            android:layout_marginBottom="75dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_login_wechat"
             app:layout_constraintHorizontal_chainStyle="packed"

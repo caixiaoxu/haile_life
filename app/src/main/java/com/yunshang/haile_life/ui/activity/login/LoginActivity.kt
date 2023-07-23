@@ -97,4 +97,9 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
     override fun initData() {
         mBinding.shared = mSharedViewModel
     }
+
+    override fun onDestroy() {
+        mViewModel.timer?.cancel()
+        super.onDestroy()
+    }
 }

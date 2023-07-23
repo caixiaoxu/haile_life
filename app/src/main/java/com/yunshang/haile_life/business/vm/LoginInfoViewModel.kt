@@ -41,7 +41,7 @@ open class LoginInfoViewModel : BaseViewModel() {
         !it.isNullOrEmpty()
     }
 
-    private var timer: CountDownTimer? = null
+    var timer: CountDownTimer? = null
 
     // 验证码发送按钮内容
     private val defaultCodeTxt = com.lsy.framelib.utils.StringUtils.getString(R.string.send_again)
@@ -76,6 +76,7 @@ open class LoginInfoViewModel : BaseViewModel() {
             SToast.showToast(view.context, "请先输入手机号")
             return
         }
+        timer?.cancel()
 
         launch({
             ApiRepository.dealApiResult(
@@ -101,18 +102,17 @@ open class LoginInfoViewModel : BaseViewModel() {
     private fun countDownTimer(btn: TextView) {
         btn.isEnabled = false
         var num = 60
-        if (null == timer) {
-            timer = object : CountDownTimer((num + 1) * 1000L, 1000L) {
+        timer?.cancel()
+        timer = object : CountDownTimer((num + 1) * 1000L, 1000L) {
 
-                override fun onTick(millisUntilFinished: Long) {
-                    btn.text = "${num--}s"
-                }
+            override fun onTick(millisUntilFinished: Long) {
+                btn.text = "${num--}s"
+            }
 
-                override fun onFinish() {
-                    btn.text = defaultCodeTxt
-                    btn.isEnabled = true
-                    btn.setTextColor(ContextCompat.getColor(btn.context, R.color.colorPrimary))
-                }
+            override fun onFinish() {
+                btn.text = defaultCodeTxt
+                btn.isEnabled = true
+                btn.setTextColor(ContextCompat.getColor(btn.context, R.color.colorPrimary))
             }
         }
         timer?.start()
