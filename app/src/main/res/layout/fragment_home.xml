@@ -118,7 +118,7 @@
                         android:layout_marginBottom="18dp"
                         android:background="@drawable/shape_04cee5_04dbe5_r14"
                         android:text="@string/i_know"
-                        android:onClick="@{vm::hideCurTask}"
+                        android:onClick="@{vm::readCurTaskMsg}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 

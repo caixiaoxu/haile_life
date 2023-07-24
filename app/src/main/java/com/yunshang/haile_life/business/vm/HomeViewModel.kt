@@ -2,13 +2,14 @@ package com.yunshang.haile_life.business.vm
 
 import android.location.Location
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.MarketingService
 import com.yunshang.haile_life.business.apiService.MessageService
 import com.yunshang.haile_life.business.apiService.ShopService
-import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.ADEntity
 import com.yunshang.haile_life.data.entities.MessageEntity
 import com.yunshang.haile_life.data.entities.NearStoreEntity
@@ -55,8 +56,12 @@ class HomeViewModel : BaseViewModel() {
 
     val showCurTaskClose: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    val lastMessage: MutableLiveData<MessageEntity> by lazy {
+    val noReadMessage: MutableLiveData<MutableList<MessageEntity>> by lazy {
         MutableLiveData()
+    }
+
+    val lastMessage: LiveData<MessageEntity?> = noReadMessage.map {
+        it.firstOrNull()
     }
 
     val adEntity: MutableLiveData<ADEntity> by lazy {
@@ -116,9 +121,7 @@ class HomeViewModel : BaseViewModel() {
                     )
                 )
             )?.let {
-                if (it.isNotEmpty()) {
-                    lastMessage.postValue(it[0])
-                }
+                noReadMessage.postValue(it)
             }
         }
     }
@@ -142,6 +145,22 @@ class HomeViewModel : BaseViewModel() {
 
     fun hideCurTask(v: View) {
         showCurTaskClose.value = false
+    }
+
+    fun readCurTaskMsg(v: View) {
+        if (null == lastMessage.value) return
+        launch({
+            ApiRepository.dealApiResult(
+                mMessageRepo.readHomeMessage(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "id" to lastMessage.value?.id,
+                        )
+                    )
+                )
+            )
+            requestHomeMsg()
+        })
     }
 
     /**

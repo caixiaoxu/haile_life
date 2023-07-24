@@ -19,4 +19,7 @@ interface MessageService {
 
     @POST("/message/index")
     suspend fun requestHomeMessage(@Body body: RequestBody): ResponseWrapper<MutableList<MessageEntity>>
+
+    @POST("/message/read")
+    suspend fun readHomeMessage(@Body body: RequestBody): ResponseWrapper<Any>
 }

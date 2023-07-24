@@ -29,11 +29,19 @@ data class MessageEntity(
 ) {
 
     fun getTitleVal(): String =
-        if (subtype == "user:order:start") "您有1笔订单正在进行中" else "您有1笔订单已完成"
+        when (subtype) {
+            "user:order:appoint" -> title
+            "user:order:start" -> "您有1笔订单正在进行中"
+            else -> "您有1笔订单已完成"
+        }
 
     fun messageContent(): String =
         GsonUtils.json2Class(content, MessageContentEntity::class.java)?.let {
-            if (subtype == "user:order:start") "预计${it.endTime}完成" else "完成时间:${it.endTime}"
+            when (subtype) {
+                "user:order:appoint" -> it.content
+                "user:order:start" -> "预计${it.endTime}完成"
+                else -> "完成时间:${it.endTime}"
+            }
         } ?: ""
 }
 
@@ -50,5 +58,5 @@ data class MessageContentEntity(
     val startTime: String,
     val subject: String,
     val tags: String,
-    val title: String
+    val content: String,
 )
