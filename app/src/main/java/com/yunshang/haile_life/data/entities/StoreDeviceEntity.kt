@@ -25,7 +25,8 @@ data class StoreDeviceEntity(
         DeviceCategory.Shoes -> R.mipmap.icon_home_device_shoes
         DeviceCategory.Dryer -> R.mipmap.icon_home_device_dryer
         DeviceCategory.Hair -> R.mipmap.icon_home_device_hair
-        DeviceCategory.Water -> 0
+        DeviceCategory.Water -> R.mipmap.icon_home_device_drink
+        DeviceCategory.Dispenser -> R.mipmap.icon_home_device_dispenser
         else -> 0
     }
 }

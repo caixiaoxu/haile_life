@@ -27,7 +27,7 @@
             android:id="@+id/view_main_bottom"
             android:layout_width="match_parent"
             android:layout_height="84dp"
-            android:background="@color/white"
+            android:background="@drawable/shape_top_stroke_dividing"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <RadioGroup

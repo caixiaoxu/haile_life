@@ -32,7 +32,10 @@ object DeviceCategory {
     // 饮水机
     const val Water = "04"
 
-    @StringDef(Washing, Shoes, Dryer, Hair, Water)
+    // 投放器
+    const val Dispenser = "09"
+
+    @StringDef(Washing, Shoes, Dryer, Hair, Water,Dispenser)
     @Retention(AnnotationRetention.SOURCE)
     annotation class IDeviceCategoryType
 
@@ -48,6 +51,7 @@ object DeviceCategory {
         Dryer -> "烘干机"
         Hair -> "吹风机"
         Water -> "饮水机"
+        Dispenser->"投放器"
         else -> ""
     }
 
