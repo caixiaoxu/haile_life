@@ -25,13 +25,13 @@ data class NearStoreEntity(
     val rechargeFlag: Boolean,
     val idleCount: Int,
 ) : IMultiTypeEntity {
-    fun formatDistance(): String =
+    fun formatDistance(isJoin: Boolean = true): String =
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +
                 if (distance >= 1000) String.format(
                     "%.2fkm", distance / 1000
                 ) else String.format(
                     "%.2fm", distance
-                ) + if (getAddressVal().isNotEmpty()) " | " else ""
+                ) + if (isJoin && getAddressVal().isNotEmpty()) " | " else ""
 
     fun getAddressVal(): String = "$area$address"
 

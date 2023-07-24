@@ -200,7 +200,7 @@
                             android:drawableStart="@mipmap/icon_location_anchor"
                             android:drawablePadding="4dp"
                             android:gravity="center"
-                            android:text="@{vm.nearStoreEntity.formatDistance + vm.nearStoreEntity.getAddressVal}"
+                            android:text="@{vm.nearStoreEntity.formatDistance(false)}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_home_near_stores_name"
                             tools:text="距您 534m" />
