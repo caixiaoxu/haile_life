@@ -103,8 +103,8 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_margin="8dp"
-                        android:onClick="@{vm::hideCurTask}"
                         android:background="@color/transparent"
+                        android:onClick="@{vm::hideCurTask}"
                         android:src="@mipmap/icon_small_close"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -117,8 +117,8 @@
                         android:layout_marginEnd="12dp"
                         android:layout_marginBottom="18dp"
                         android:background="@drawable/shape_04cee5_04dbe5_r14"
-                        android:text="@string/i_know"
                         android:onClick="@{vm::readCurTaskMsg}"
+                        android:text="@string/i_know"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -200,7 +200,7 @@
                             android:drawableStart="@mipmap/icon_location_anchor"
                             android:drawablePadding="4dp"
                             android:gravity="center"
-                            android:text="@{vm.nearStoreEntity.formatDistance}"
+                            android:text="@{vm.nearStoreEntity.formatDistance + vm.nearStoreEntity.getAddressVal}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_home_near_stores_name"
                             tools:text="距您 534m" />
@@ -339,8 +339,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:visibility="gone"
-                    android:background="@drawable/shape_sffffff_r8">
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:visibility="gone">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="wrap_content"
@@ -472,10 +472,10 @@
                         app:layout_constraintTop_toBottomOf="@id/ib_student_area_close" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-                
+
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"/>
+                    android:layout_height="20dp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
