@@ -61,7 +61,7 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/shape_sffffff_r8"
                     android:paddingStart="12dp"
-                    android:visibility="@{null == vm.lastMessage?View.GONE:View.VISIBLE}">
+                    android:visibility="@{(null == vm.lastMessage || !vm.showCurTaskClose)?View.GONE:View.VISIBLE}">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_home_cur_task_title"
@@ -103,6 +103,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_margin="8dp"
+                        android:onClick="@{vm::hideCurTask}"
                         android:background="@color/transparent"
                         android:src="@mipmap/icon_small_close"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -117,6 +118,7 @@
                         android:layout_marginBottom="18dp"
                         android:background="@drawable/shape_04cee5_04dbe5_r14"
                         android:text="@string/i_know"
+                        android:onClick="@{vm::hideCurTask}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 

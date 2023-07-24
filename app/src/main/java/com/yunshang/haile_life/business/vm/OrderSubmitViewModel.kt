@@ -240,16 +240,17 @@ class OrderSubmitViewModel : BaseViewModel() {
         launch({
             isPayFinish = false
             val resultStatus: String? = AlipayHelper.requestPay(activity, prepayParam).resultStatus
+            isPayFinish = true
+
             //用户取消不去请求接口查询支付状态
             if (TextUtils.equals(resultStatus, "6001")) {
+                jump.postValue(1)
                 return@launch
             }
 
             if (orderNo.isEmpty() || -1 == payMethod) {
                 return@launch
             }
-
-            isPayFinish = true
 
             requestAsyncPay()
         })

@@ -258,6 +258,10 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                 finish()
             }
         }
+
+        mViewModel.jump.observe(this) {
+            goOrderDetail()
+        }
     }
 
     override fun initView() {
@@ -306,23 +310,26 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
         Handler(Looper.getMainLooper()).postDelayed({
             // 如果是未支付完成，并且订单不为空
             if (!mViewModel.isPayFinish && mViewModel.orderNo.isNotEmpty()) {
-                startActivity(
-                    Intent(
-                        this@OrderSubmitActivity,
-                        OrderDetailActivity::class.java
-                    ).apply {
-                        putExtras(
-                            IntentParams.OrderParams.pack(
-                                mViewModel.orderNo,
-                                !(mViewModel.reserveTime.value.isNullOrEmpty())
-                            )
-                        )
-                    })
-                AppManager.finishAllActivityForTag(ActivityTag.TAG_ORDER_PAY)
+                goOrderDetail()
             }
         }, 300)
     }
 
+    private fun goOrderDetail() {
+        startActivity(
+            Intent(
+                this@OrderSubmitActivity,
+                OrderDetailActivity::class.java
+            ).apply {
+                putExtras(
+                    IntentParams.OrderParams.pack(
+                        mViewModel.orderNo,
+                        !(mViewModel.reserveTime.value.isNullOrEmpty())
+                    )
+                )
+            })
+        AppManager.finishAllActivityForTag(ActivityTag.TAG_ORDER_PAY)
+    }
 
     override fun initData() {
         mViewModel.requestData()

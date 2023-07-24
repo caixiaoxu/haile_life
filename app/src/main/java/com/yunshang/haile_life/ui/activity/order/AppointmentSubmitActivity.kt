@@ -193,6 +193,10 @@ class AppointmentSubmitActivity :
                 finish()
             }
         }
+
+        LiveDataBus.with(BusEvents.LOGIN_STATUS)?.observe(this) {
+            mViewModel.requestData()
+        }
     }
 
     override fun initView() {

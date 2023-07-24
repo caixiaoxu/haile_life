@@ -126,6 +126,10 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
             mBinding.rvMineOrderList.requestRefresh()
         }
 
+        LiveDataBus.with(BusEvents.APPOINT_ORDER_USE_STATUS)?.observe(this) {
+            mBinding.rvMineOrderList.requestRefresh()
+        }
+
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
             mBinding.rvMineOrderList.requestRefresh()
         }

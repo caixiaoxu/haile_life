@@ -36,7 +36,7 @@ class OrderDetailActivity :
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
             if (result) {
                 // 授权权限成功
-                mViewModel.orderDetail.value?.buyerPhone?.let {
+                mViewModel.orderDetail.value?.serviceTelephone?.let {
                     startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$it")))
                 }
             } else {
@@ -129,19 +129,22 @@ class OrderDetailActivity :
             mViewModel.orderDetail.value?.let { detail ->
                 val overTime =
                     DateTimeUtils.formatDateFromString(detail.appointmentUsageTime)?.let {
-                        (System.currentTimeMillis() - it.time) / 1000 / 60
+                        (it.time - System.currentTimeMillis()) / 1000 / 60
                     } ?: -1
 
                 CommonDialog.Builder(
-                    if (true == mViewModel.isAppoint.value && overTime > 0)
+                    if (true == mViewModel.isAppoint.value)
                         if (overTime > 10)
                             com.lsy.framelib.utils.StringUtils.getString(
                                 R.string.over_time_prompt2
                             )
-                        else
+                        else if (overTime > 0)
                             com.lsy.framelib.utils.StringUtils.getString(
                                 R.string.over_time_prompt1
                             )
+                        else com.lsy.framelib.utils.StringUtils.getString(
+                            R.string.over_time_prompt3
+                        )
                     else com.lsy.framelib.utils.StringUtils.getString(R.string.cancel_order_prompt)
                 ).apply {
                     title = "提示"

@@ -1,6 +1,7 @@
 package com.yunshang.haile_life.business.vm
 
 import android.location.Location
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.R
@@ -52,6 +53,8 @@ class HomeViewModel : BaseViewModel() {
         ),
     )
 
+    val showCurTaskClose: MutableLiveData<Boolean> = MutableLiveData(true)
+
     val lastMessage: MutableLiveData<MessageEntity> by lazy {
         MutableLiveData()
     }
@@ -101,7 +104,7 @@ class HomeViewModel : BaseViewModel() {
      * 首页消息
      */
     private suspend fun requestHomeMsg() {
-        if (SPRepository.isLogin()){
+        if (SPRepository.isLogin()) {
             ApiRepository.dealApiResult(
                 mMessageRepo.requestHomeMessage(
                     ApiRepository.createRequestBody(
@@ -135,6 +138,10 @@ class HomeViewModel : BaseViewModel() {
         )?.let {
             adEntity.postValue(it)
         }
+    }
+
+    fun hideCurTask(v: View) {
+        showCurTaskClose.value = false
     }
 
     /**

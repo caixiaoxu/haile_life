@@ -51,7 +51,7 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
         mBinding.barLoginTitle.getBackBtn()
             .setCompoundDrawablesRelativeWithIntrinsicBounds(R.mipmap.icon_close, 0, 0, 0)
         mBinding.barLoginTitle.setOnBackListener {
-            AppManager.finishAllActivity()
+            finish()
         }
 
         // 协议内容

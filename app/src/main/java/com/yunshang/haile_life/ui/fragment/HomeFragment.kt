@@ -285,13 +285,6 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             }
         }
 
-        mBinding.ibHomeCurTaskClose.setOnClickListener {
-            mBinding.clHomeCurTask.visibility = View.GONE
-        }
-        mBinding.btnHomeCurTaskClose.setOnClickListener {
-            mBinding.clHomeCurTask.visibility = View.GONE
-        }
-
         // 指南
         mBinding.clHomeGuideMain.setOnClickListener {
             startActivity(

@@ -15,9 +15,11 @@ import com.yunshang.haile_life.business.vm.ShopDetailViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
+import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityShopDetailBinding
 import com.yunshang.haile_life.databinding.ItemHomeNearStoresBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
 
 class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopDetailViewModel>(
@@ -72,6 +74,9 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
             requestPermission.launch(Manifest.permission.CALL_PHONE)
         }
         mBinding.tvShopDetailRecharge.setOnClickListener {
+            if (!checkLogin()) {
+                return@setOnClickListener
+            }
             startActivity(
                 Intent(
                     this@ShopDetailActivity,
@@ -81,6 +86,9 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
                 })
         }
         mBinding.btnShopDetailAppoint.setOnClickListener {
+            if (!checkLogin()) {
+                return@setOnClickListener
+            }
             mViewModel.shopDetail.value?.let {
                 startActivity(Intent(this, AppointmentSubmitActivity::class.java).apply {
                     putExtras(
@@ -90,6 +98,16 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
             }
         }
     }
+
+    /**
+     * 检测是否登录
+     */
+    private fun checkLogin(): Boolean =
+        if (!SPRepository.isLogin()) {
+            startActivity(Intent(this@ShopDetailActivity, LoginActivity::class.java))
+            false
+        } else true
+
 
     override fun initData() {
         mViewModel.requestData()
