@@ -10,5 +10,6 @@
  */
 object EnvConfig {
     const val HTTP_BASE_DEBUG = "\"http://192.168.5.20:9081\""
+    const val HTTP_BASE_PRE = "\"https://pre-user.haier-ioc.com\""
     const val HTTP_BASE_RELEASE = "\"https://yshz-merchant.haier-ioc.com\""
 }

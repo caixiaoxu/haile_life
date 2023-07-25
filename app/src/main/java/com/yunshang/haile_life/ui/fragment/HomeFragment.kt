@@ -1,6 +1,5 @@
 package com.yunshang.haile_life.ui.fragment
 
-import android.Manifest
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -16,6 +15,7 @@ import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StatusBarUtils
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.youth.banner.indicator.CircleIndicator
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
@@ -49,13 +49,10 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
     HomeViewModel::class.java, BR.vm
 ) {
 
-    private val permissions = arrayOf(
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.READ_PHONE_STATE,
-    )
+    private val permissions = SystemPermissionHelper.locationPermissions()
+        .plus(SystemPermissionHelper.readWritePermissions()).plus(
+            SystemPermissionHelper.phoneStatePermissions()
+        )
 
     // 权限
     private val requestMultiplePermission =
@@ -204,7 +201,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             mViewModel.requestNearByStore(it)
         }
 
-        LiveDataBus.with(BusEvents.LOGIN_STATUS)?.observe(this){
+        LiveDataBus.with(BusEvents.LOGIN_STATUS)?.observe(this) {
             mViewModel.requestHomeMsgAsync()
         }
     }

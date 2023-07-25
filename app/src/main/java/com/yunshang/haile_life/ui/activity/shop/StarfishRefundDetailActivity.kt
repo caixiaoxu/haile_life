@@ -1,6 +1,5 @@
 package com.yunshang.haile_life.ui.activity.shop
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -12,6 +11,7 @@ import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.StarfishRefundDetailViewModel
@@ -27,8 +27,8 @@ class StarfishRefundDetailActivity :
 
     // 拨打电话权限
     private val requestPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
-            if (result) {
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            if (result.values.any { it }) {
                 // 授权权限成功
                 mViewModel.refundDetail.value?.serviceTelephone?.let {
                     startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$it")))
@@ -84,7 +84,7 @@ class StarfishRefundDetailActivity :
     override fun initView() {
 
         mBinding.tvRefundDetailContact.setOnClickListener {
-            requestPermission.launch(Manifest.permission.CALL_PHONE)
+            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
         }
         val titleW = DimensionUtils.dip2px(this, 86f)
         unifyTitleW(mBinding.includeRefundDetailAccount.tvItemTitle, titleW)

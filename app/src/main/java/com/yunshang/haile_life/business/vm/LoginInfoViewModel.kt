@@ -91,6 +91,7 @@ open class LoginInfoViewModel : BaseViewModel() {
                 )
             )
             viewModelScope.launch(Dispatchers.Main) {
+                SToast.showToast(view.context, "验证码已发送")
                 countDownTimer(view as TextView)
             }
         })

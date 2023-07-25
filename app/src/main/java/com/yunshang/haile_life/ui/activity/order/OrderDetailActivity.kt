@@ -1,6 +1,5 @@
 package com.yunshang.haile_life.ui.activity.order
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.text.SpannableString
@@ -11,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
@@ -33,8 +33,8 @@ class OrderDetailActivity :
 
     // 拨打电话权限
     private val requestPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
-            if (result) {
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            if (result.values.any { it }) {
                 // 授权权限成功
                 mViewModel.orderDetail.value?.serviceTelephone?.let {
                     startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$it")))
@@ -109,7 +109,7 @@ class OrderDetailActivity :
 
     override fun initView() {
         mBinding.tvOrderDetailContact.setOnClickListener {
-            requestPermission.launch(Manifest.permission.CALL_PHONE)
+            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
         }
         mBinding.tvOrderDetailPay.setOnClickListener {
             mViewModel.orderDetail.value?.let { detail ->

@@ -1,6 +1,5 @@
 package com.yunshang.haile_life.ui.activity.shop
 
-import android.Manifest
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -9,10 +8,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.ShopDetailViewModel
-import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.data.model.SPRepository
@@ -28,8 +27,8 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
 
     // 拨打电话权限
     private val requestPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
-            if (result) {
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            if (result.values.any { it }) {
                 // 授权权限成功
                 mViewModel.shopDetail.value?.serviceTelephone?.let {
                     startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$it")))
@@ -71,7 +70,7 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
         window.statusBarColor = Color.WHITE
 
         mBinding.tvShopDetailContactPhone.setOnClickListener {
-            requestPermission.launch(Manifest.permission.CALL_PHONE)
+            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
         }
         mBinding.tvShopDetailRecharge.setOnClickListener {
             if (!checkLogin()) {
