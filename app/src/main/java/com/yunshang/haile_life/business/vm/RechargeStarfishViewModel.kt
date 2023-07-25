@@ -3,8 +3,10 @@ package com.yunshang.haile_life.business.vm
 import android.app.Activity
 import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.SToast
@@ -62,6 +64,9 @@ class RechargeStarfishViewModel : BaseViewModel() {
     val shopStarfishList: MutableLiveData<ShopStarfishListEntity> by lazy {
         MutableLiveData()
     }
+    val isEmpty:LiveData<Boolean> = shopStarfishList.map {
+        null == it || it.rewardList.isEmpty()
+    }
 
 
     // 是否可提交
@@ -106,7 +111,7 @@ class RechargeStarfishViewModel : BaseViewModel() {
                 it.rewardList.firstOrNull()?.let { reward ->
                     selectGoodsItem.postValue(reward)
                 }
-            }
+            } ?: shopStarfishList.postValue(null)
             ApiRepository.dealApiResult(
                 mCapitalRepo.requestBalance(
                     ApiRepository.createRequestBody("")

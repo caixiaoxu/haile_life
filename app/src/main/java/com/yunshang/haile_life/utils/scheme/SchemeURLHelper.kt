@@ -87,6 +87,7 @@ object SchemeURLHelper {
      */
     private fun parseScheme(link: String): Int {
         val schemeEnd = link.indexOf("://")
+        if (-1 == schemeEnd) return 0
         return when (link.substring(0, schemeEnd)) {
             "weixin" -> 1
             "alipays" -> 2

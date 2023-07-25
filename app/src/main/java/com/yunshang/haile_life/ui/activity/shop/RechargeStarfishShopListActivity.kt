@@ -36,6 +36,7 @@ class RechargeStarfishShopListActivity :
                         putExtras(IntentParams.RechargeStarfishDetailListParams.pack(item.shopId))
                     })
             }
+
             mItemBinding?.btnRechargeStarfish?.setOnClickListener {
                 startActivity(
                     Intent(

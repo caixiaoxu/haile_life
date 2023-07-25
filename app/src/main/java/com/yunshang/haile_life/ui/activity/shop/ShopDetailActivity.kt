@@ -49,7 +49,6 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
 
         mViewModel.shopDetail.observe(this) {
             it?.let { detail ->
-
                 mBinding.llShopDetailDevices.buildChild<ItemHomeNearStoresBinding, StoreDeviceEntity>(
                     detail.shopDeviceDetailList,
                     LinearLayoutCompat.LayoutParams(
@@ -62,6 +61,9 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
                     childBinding.status = "${data.idleCount}"
                     childBinding.nameIcon = data.shopIcon()
                 }
+
+                mBinding.tvShopDetailRecharge.visibility =
+                    if (detail.rechargeFlag) View.VISIBLE else View.GONE
             }
         }
     }

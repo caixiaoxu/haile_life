@@ -25,6 +25,7 @@ import com.yunshang.haile_life.databinding.ItemRechargeStarfishListBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.order.OrderPaySuccessActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.utils.ViewUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
@@ -47,7 +48,6 @@ class RechargeStarfishActivity :
         super.initEvent()
         mViewModel.shopStarfishList.observe(this) {
             it?.let {
-
                 mBinding.glRechargeStarfishList.let { grid ->
                     if (it.rewardList.isEmpty()) {
                         grid.visibility = View.GONE
@@ -94,6 +94,10 @@ class RechargeStarfishActivity :
                     }
                 }
             }
+        }
+
+        mViewModel.isEmpty.observe(this) {
+            if (it) showEmptyDialog()
         }
 
         mViewModel.prepayParam.observe(this) {
@@ -151,6 +155,16 @@ class RechargeStarfishActivity :
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun showEmptyDialog() {
+        CommonDialog.Builder("当前店铺暂无可充值的海星方案!").apply {
+            title = "提示"
+            isNegativeShow = false
+            setPositiveButton("返回") {
+                finish()
+            }
+        }.build().show(supportFragmentManager)
     }
 
     override fun initView() {

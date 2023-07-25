@@ -27,13 +27,13 @@ data class NearStoreEntity(
 ) : IMultiTypeEntity {
     fun formatDistance(isJoin: Boolean = true): String =
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +
-                if (distance >= 1000) String.format(
+                (if (distance >= 1000) String.format(
                     "%.2fkm", distance / 1000
                 ) else String.format(
                     "%.2fm", distance
-                ) + if (isJoin && getAddressVal().isNotEmpty()) " | " else ""
+                )) + if (isJoin && getAddressVal().isNotEmpty()) " | " else ""
 
-    fun getAddressVal(): String = "$area$address"
+    fun getAddressVal(): String = address
 
     fun appointStateVal(): String =
         StringUtils.getString(if (1 == appointmentState) R.string.can_appointment else R.string.can_not_appointment)

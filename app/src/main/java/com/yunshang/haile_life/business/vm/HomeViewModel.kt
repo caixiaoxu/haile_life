@@ -43,11 +43,11 @@ class HomeViewModel : BaseViewModel() {
         HomeCategory(R.mipmap.icon_home_cloth_recycle, R.string.home_category_cloth_recyce),
         HomeCategory(
             R.mipmap.icon_home_cloth_lease,
-            R.string.home_category_hair,
+            R.string.home_category_cloth_lease,
             MutableLiveData<Boolean>(true)
         ),
-        HomeCategory(R.mipmap.icon_home_cloth_care, R.string.home_category_drinking),
-        HomeCategory(R.mipmap.icon_home_cloth_manager, R.string.home_category_shower),
+        HomeCategory(R.mipmap.icon_home_cloth_care, R.string.home_category_cloth_care),
+        HomeCategory(R.mipmap.icon_home_cloth_manager, R.string.home_category_cloth_manager),
         HomeCategory(
             R.mipmap.icon_home_student_entrepreneurship,
             R.string.home_category_student_entrepreneurship
@@ -134,7 +134,8 @@ class HomeViewModel : BaseViewModel() {
             mMarketingRepo.requestAD(
                 ApiRepository.createRequestBody(
                     hashMapOf(
-                        "slotKey" to "9191"
+//                        "slotKey" to "9191"
+                        "slotKey" to "home_banner_top_android"
                     )
                 )
             )
@@ -171,7 +172,8 @@ class HomeViewModel : BaseViewModel() {
             mMarketingRepo.requestAD(
                 ApiRepository.createRequestBody(
                     hashMapOf(
-                        "slotKey" to "mini_store"
+//                        "slotKey" to "mini_store"
+                        "slotKey" to "home_tab_shop_android"
                     )
                 )
             )
@@ -188,7 +190,8 @@ class HomeViewModel : BaseViewModel() {
             mMarketingRepo.requestAD(
                 ApiRepository.createRequestBody(
                     hashMapOf(
-                        "slotKey" to "mini_goods_recommend"
+//                        "slotKey" to "mini_goods_recommend"
+                        "slotKey" to "home_goods_suggest_android"
                     )
                 )
             )
@@ -205,7 +208,8 @@ class HomeViewModel : BaseViewModel() {
             mMarketingRepo.requestAD(
                 ApiRepository.createRequestBody(
                     hashMapOf(
-                        "slotKey" to "mini_student_recommend"
+//                        "slotKey" to "mini_student_recommend"
+                        "slotKey" to "home_goods_student_android"
                     )
                 )
             )

@@ -46,7 +46,8 @@ class MainViewModel : BaseViewModel() {
                 mMarketingRepo.requestAD(
                     ApiRepository.createRequestBody(
                         hashMapOf(
-                            "slotKey" to "mini_store"
+//                            "slotKey" to "mini_store"
+                            "slotKey" to "home_tab_shop_android"
                         )
                     )
                 )
