@@ -11,7 +11,7 @@ package com.yunshang.haile_life.data.entities
  * 作者姓名 修改时间 版本号 描述
  */
 data class DeviceDetailEntity(
-    val amount: Double,
+    val amount: Int,
     val brandId: Int,
     val categoryCode: String,
     val categoryId: Int,

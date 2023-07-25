@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.data.entities.AppointDevice
+import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
 
 /**
@@ -73,18 +74,28 @@ object IntentParams {
 
     object ScanOrderParams {
         private const val CODE = "Code"
+        private const val GoodsScan = "GoodsScan"
 
         /**
          * 包装参数
          */
-        fun pack(payCode: String): Bundle = Bundle().apply {
+        fun pack(payCode: String, goodsScan: GoodsScanEntity? = null): Bundle = Bundle().apply {
             putString(CODE, payCode)
+            goodsScan?.let {
+                putString(GoodsScan, GsonUtils.any2Json(goodsScan))
+            }
         }
 
         /**
          * 解析code
          */
         fun parseCode(intent: Intent): String? = intent.getStringExtra(CODE)
+
+        /**
+         * 解析code
+         */
+        fun parseGoodsScan(intent: Intent): GoodsScanEntity? =
+            GsonUtils.json2Class(intent.getStringExtra(GoodsScan), GoodsScanEntity::class.java)
     }
 
     object OrderSubmitParams {

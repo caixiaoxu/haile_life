@@ -35,6 +35,14 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
 
     override fun backBtn(): View = mBinding.barScanOrderTitle.getBackBtn()
 
+    override fun initIntent() {
+        super.initIntent()
+
+        IntentParams.ScanOrderParams.parseGoodsScan(intent)?.let {
+            mViewModel.goodsScan.value = it
+        }
+    }
+
     override fun initEvent() {
         super.initEvent()
         mViewModel.goodsAppointment.observe(this) {

@@ -10,7 +10,6 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.MarketingService
-import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -102,55 +101,59 @@ class ScanOrderViewModel : BaseViewModel() {
 
     fun requestData(code: String?) {
         launch({
-            ApiRepository.dealApiResult(
-                mDeviceRepo.requestGoodsScan(
-                    imei = if (StringUtils.isImeiCode(code)) code else null,
-                    n = if (StringUtils.isImeiCode(code)) null else code
-                )
-            )
-                ?.let { scan ->
-                    goodsScan.postValue(scan)
-                    // 如果有预约跳转预约订单详情列表
-                    val appointment = ApiRepository.dealApiResult(
-                        mAppointmentRepo.requestIsAppointmentOfGoods(
-                            ApiRepository.createRequestBody(
-                                hashMapOf("goodsId" to scan.goodsId)
-                            )
+            // 如果扫码信息为空，重新请求
+            val goodsScan = if (null == goodsScan.value) {
+                ApiRepository.dealApiResult(
+                    mDeviceRepo.requestGoodsScan(
+                        imei = if (StringUtils.isImeiCode(code)) code else null,
+                        n = if (StringUtils.isImeiCode(code)) null else code
+                    )
+                )?.also {
+                    goodsScan.postValue(it)
+                }
+            } else goodsScan.value
+            goodsScan?.let { scan ->
+                // 如果有预约跳转预约订单详情列表
+                val appointment = ApiRepository.dealApiResult(
+                    mAppointmentRepo.requestIsAppointmentOfGoods(
+                        ApiRepository.createRequestBody(
+                            hashMapOf("goodsId" to scan.goodsId)
                         )
                     )
-                    if (!appointment?.orderNo.isNullOrEmpty()) {
-                        goodsAppointment.postValue(appointment)
-                    }
+                )
+                if (!appointment?.orderNo.isNullOrEmpty()) {
+                    goodsAppointment.postValue(appointment)
+                }
 
+                ApiRepository.dealApiResult(
+                    mDeviceRepo.requestDeviceDetailItem(scan.goodsId)
+                )?.let {
+                    deviceConfigs.postValue(it)
+                    it.firstOrNull()?.let { first ->
+                        selectDeviceConfig.postValue(first)
+
+                        first.getExtAttrs(DeviceCategory.isDryerOrHair(scan.categoryCode))
+                            .firstOrNull()?.let { firstAttr ->
+                                selectExtAttr.postValue(firstAttr)
+                            }
+                    }
+                }
+                if (scan.shopId > 0) {
                     ApiRepository.dealApiResult(
-                        mDeviceRepo.requestDeviceDetailItem(scan.goodsId)
-                    )?.let {
-                        deviceConfigs.postValue(it)
-                        it.firstOrNull()?.let { first ->
-                            selectDeviceConfig.postValue(first)
-
-                            first.getExtAttrs(DeviceCategory.isDryerOrHair(scan.categoryCode))
-                                .firstOrNull()?.let { firstAttr ->
-                                    selectExtAttr.postValue(firstAttr)
-                                }
-                        }
-                    }
-                    if (scan.shopId > 0) {
-                        ApiRepository.dealApiResult(
-                            mMarketingRepo.requestShopUmpList(
-                                ApiRepository.createRequestBody(
-                                    hashMapOf(
-                                        "shopId" to scan.shopId
-                                    )
+                        mMarketingRepo.requestShopUmpList(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "shopId" to scan.shopId
                                 )
                             )
-                        )?.let {
-                            it.items.find { item -> item.promotionProduct == 5 }?.let { ump ->
-                                shopUmpItem.postValue(ump)
-                            }
+                        )
+                    )?.let {
+                        it.items.find { item -> item.promotionProduct == 5 }?.let { ump ->
+                            shopUmpItem.postValue(ump)
                         }
                     }
                 }
+            }
         })
     }
 

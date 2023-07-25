@@ -72,7 +72,6 @@
 
         <com.lsy.framelib.ui.weight.SingleTapButton
             android:id="@+id/tv_bind_phone_getcode"
-            style="@style/Font_14_black_45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
@@ -80,6 +79,8 @@
             android:gravity="center"
             android:onClick="@{vm::sendCode}"
             android:text="@string/getCode"
+            android:textColor="@{(null == vm.phone || 11 != vm.phone.length())?@color/color_black_45:@color/colorPrimary}"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/et_bind_phone_code"
             app:layout_constraintEnd_toEndOf="@id/et_bind_phone_code"
             app:layout_constraintTop_toTopOf="@id/et_bind_phone_code" />
