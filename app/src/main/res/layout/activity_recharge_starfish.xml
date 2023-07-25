@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.RechargeStarfishViewModel" />
@@ -106,6 +108,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/money"
                 android:text='@{@string/unit_money +" "+ vm.selectGoodsItem.price}'
+                android:visibility="@{(null == vm.selectGoodsItem.price || 0 == vm.selectGoodsItem.price.length())?View.GONE:View.VISIBLE}"
                 app:layout_constraintBottom_toTopOf="@id/tv_recharge_starfish_desc"
                 app:layout_constraintEnd_toStartOf="@id/btn_recharge_starfish_pay"
                 app:layout_constraintStart_toStartOf="parent"
@@ -118,6 +121,7 @@
                 style="@style/Font_12_black_65"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="@{(null == vm.selectGoodsItem.price || 0 == vm.selectGoodsItem.price.length())?View.GONE:View.VISIBLE}"
                 android:text='@{vm.selectGoodsItem.reach + @string/starfish +"+"+ vm.selectGoodsItem.reward + @string/starfish}'
                 app:layout_constraintBottom_toBottomOf="@id/btn_recharge_starfish_pay"
                 app:layout_constraintEnd_toEndOf="@id/tv_recharge_starfish_price"
