@@ -18,10 +18,17 @@
             android:background="@color/white"
             app:rightModel="text" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_title_list_list"
+        <com.yunshang.haile_life.ui.view.refresh.CommonRefreshView
+            android:id="@+id/refresh_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="12dp" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_title_list_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp" />
+
+        </com.yunshang.haile_life.ui.view.refresh.CommonRefreshView>
     </merge>
 </layout>

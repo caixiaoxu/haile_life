@@ -48,7 +48,8 @@ class SelectAppointmentDeviceActivity :
     override fun initEvent() {
         super.initEvent()
         mViewModel.appointDeviceList.observe(this) {
-            mAdapter.refreshList(it,true)
+            mBinding.includeTitleList.refreshView.finishRefresh()
+            mAdapter.refreshList(it, true)
         }
     }
 
@@ -63,6 +64,10 @@ class SelectAppointmentDeviceActivity :
                     it.replace("机", "")
                 )
             )
+        }
+
+        mBinding.includeTitleList.refreshView.setOnRefreshListener {
+            mViewModel.requestAppointDevice()
         }
 
         mBinding.includeTitleList.rvTitleListList.layoutManager = LinearLayoutManager(this)

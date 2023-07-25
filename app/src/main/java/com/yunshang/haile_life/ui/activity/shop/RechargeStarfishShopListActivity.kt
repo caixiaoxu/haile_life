@@ -56,6 +56,7 @@ class RechargeStarfishShopListActivity :
     override fun initEvent() {
         super.initEvent()
         mViewModel.rechargeShopList.observe(this) {
+            mBinding.includeTitleList.refreshView.finishRefresh()
             mAdapter.refreshList(it.items, true)
         }
         LiveDataBus.with(BusEvents.RECHARGE_SUCCESS_STATUS)?.observe(this) {
@@ -77,6 +78,9 @@ class RechargeStarfishShopListActivity :
                     )
                 )
             }
+        }
+        mBinding.includeTitleList.refreshView.setOnRefreshListener {
+            mViewModel.requestData()
         }
 
         mBinding.includeTitleList.rvTitleListList.layoutManager = LinearLayoutManager(this)
