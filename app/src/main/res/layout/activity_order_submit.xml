@@ -125,6 +125,7 @@
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/money"
                 android:text='@{@string/unit_money + " "+ vm.tradePreview.realPrice}'
+                android:visibility="@{(null == vm.tradePreview.realPrice || 0 == vm.tradePreview.realPrice.length())?View.GONE:View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/btn_order_submit_pay"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/btn_order_submit_pay"

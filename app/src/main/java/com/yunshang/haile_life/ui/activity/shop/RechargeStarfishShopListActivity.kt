@@ -27,7 +27,7 @@ class RechargeStarfishShopListActivity :
         CommonRecyclerAdapter<ItemRechargeStartfishShopListBinding, RechargeShopListItem>(
             R.layout.item_recharge_startfish_shop_list, BR.item
         ) { mItemBinding, _, item ->
-            mItemBinding?.btnRechargeStarfishRecord?.setOnClickListener {
+            mItemBinding?.root?.setOnClickListener {
                 startActivity(
                     Intent(
                         this@RechargeStarfishShopListActivity,

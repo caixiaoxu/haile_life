@@ -155,7 +155,7 @@ data class Promotion(
             else -> ""
         }
 
-    fun useRuleVal(): String = "1.可用时段：${hourMinuteStartTime}-${hourMinuteEndTime})\n2${
+    fun useRuleVal(): String = "1.可用时段：${hourMinuteStartTime}-${hourMinuteEndTime}\n2${
         if (organizationType == 1) "适用于全部店铺" else "适用店铺：${shopNames.joinToString(" ")}"
     }\n3.${
         if (goodsCategoryNames.isEmpty()) "不限设备" else "适用于：${goodsCategoryNames.joinToString(" ")}"
