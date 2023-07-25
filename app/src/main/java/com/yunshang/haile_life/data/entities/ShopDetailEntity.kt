@@ -40,7 +40,7 @@ data class ShopDetailEntity(
     fun getBusinessTimeVal(): String =
         "${StringUtils.getString(R.string.business_time)} ${workTime.ifEmpty { "全天24小时" }}"
 
-    fun getAddressVal(): String = "$area$address"
+    fun getAddressVal(): String = address
     override fun getMultiType(): Int = 0
 
     override fun getMultiTypeBgRes(): IntArray = intArrayOf(
