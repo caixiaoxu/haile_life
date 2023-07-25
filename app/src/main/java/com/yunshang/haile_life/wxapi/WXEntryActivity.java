@@ -43,7 +43,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     public void onResp(BaseResp baseResp) {
         switch (baseResp.getType()) {
             case ConstantsAPI.COMMAND_SENDAUTH: //授权回调
-                LiveDataBus.post(BusEvents.WECHAT_LOGIN, ((SendAuth.Resp) baseResp).code);
+                String code = ((SendAuth.Resp) baseResp).code;
+                if (null != code) {
+                    LiveDataBus.post(BusEvents.WECHAT_LOGIN, code);
+                }
                 break;
             case ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX://分享回调
                 break;

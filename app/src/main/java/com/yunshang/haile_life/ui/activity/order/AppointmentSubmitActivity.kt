@@ -61,7 +61,9 @@ class AppointmentSubmitActivity :
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
-                            itemBinding.isDryer = mViewModel.isDryer.value
+                            mViewModel.isDryer.observe(this){
+                                itemBinding.isDryer = it
+                            }
                             itemBinding.name = item.goodsCategoryName
                             (itemBinding.root as AppCompatRadioButton).let { rb ->
                                 rb.id = index + 1
@@ -111,7 +113,9 @@ class AppointmentSubmitActivity :
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
-                            itemBinding.isDryer = mViewModel.isDryer.value
+                            mViewModel.isDryer.observe(this){
+                                itemBinding.isDryer = it
+                            }
                             itemBinding.name = item.name
                             (itemBinding.root as AppCompatRadioButton).let { rb ->
                                 rb.id = index + 1
@@ -153,7 +157,9 @@ class AppointmentSubmitActivity :
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
-                            itemBinding.isDryer = mViewModel.isDryer.value
+                            mViewModel.isDryer.observe(this){
+                                itemBinding.isDryer = it
+                            }
                             itemBinding.name = "$item${StringUtils.getString(R.string.minute)}"
                             (itemBinding.root as AppCompatRadioButton).let { rb ->
                                 rb.id = index + 1

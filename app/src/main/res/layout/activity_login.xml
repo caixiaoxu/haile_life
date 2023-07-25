@@ -167,6 +167,7 @@
             android:layout_marginStart="32dp"
             android:background="@color/transparent"
             android:src="@mipmap/icon_wechat"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_login_alipay"
             app:layout_constraintTop_toTopOf="@id/iv_login_alipay" />

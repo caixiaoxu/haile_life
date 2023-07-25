@@ -20,6 +20,7 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityMainBinding
 import com.yunshang.haile_life.ui.activity.common.CustomCaptureActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
+import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
@@ -57,33 +58,51 @@ class MainActivity :
             Timber.i("二维码：$it")
             val code = StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
             code?.let {
-                mViewModel.requestScanResult(code) { scan, detail ->
-                    if (detail.deviceErrorCode > 0) {
-                        SToast.showToast(
-                            this@MainActivity,
-                            detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" }
-                        )
-                        return@requestScanResult
-                    } else if (2 == detail.soldState) {
-                        SToast.showToast(
-                            this@MainActivity,
-                            detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" }
-                        )
-                        return@requestScanResult
-                    } else if (0 == detail.amount) {
-                        SToast.showToast(
-                            this@MainActivity, "设备工作中,请稍后再试!"
-                        )
-                        return@requestScanResult
-                    } else if (detail.shopClosed) {
-                        SToast.showToast(
-                            this@MainActivity, "门店不在营业时间内,请稍后再试!"
-                        )
-                        return@requestScanResult
+                mViewModel.requestScanResult(code) { scan, detail, appoint ->
+                    detail?.let {
+                        if (detail.deviceErrorCode > 0) {
+                            SToast.showToast(
+                                this@MainActivity,
+                                detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" }
+                            )
+                            return@requestScanResult
+                        } else if (2 == detail.soldState) {
+                            SToast.showToast(
+                                this@MainActivity,
+                                detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" }
+                            )
+                            return@requestScanResult
+                        } else if (0 == detail.amount) {
+                            SToast.showToast(
+                                this@MainActivity, "设备工作中,请稍后再试!"
+                            )
+                            return@requestScanResult
+                        } else if (detail.shopClosed) {
+                            SToast.showToast(
+                                this@MainActivity, "门店不在营业时间内,请稍后再试!"
+                            )
+                            return@requestScanResult
+                        }
                     }
-                    startActivity(Intent(this@MainActivity, ScanOrderActivity::class.java).apply {
-                        putExtras(IntentParams.ScanOrderParams.pack(code, scan))
-                    })
+                    if (!appoint?.orderNo.isNullOrEmpty()) {
+                        // 预约详情界面
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                OrderDetailActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.ScanOrderParams.pack(code, scan))
+                                putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo, true, 1))
+                            })
+                    } else {
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                ScanOrderActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.ScanOrderParams.pack(code, scan))
+                            })
+                    }
                 }
             } ?: run {
                 // 充值码

@@ -45,18 +45,6 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
 
     override fun initEvent() {
         super.initEvent()
-        mViewModel.goodsAppointment.observe(this) {
-            if (!it.orderNo.isNullOrEmpty()) {
-                // 预约详情界面
-                startActivity(
-                    Intent(
-                        this@ScanOrderActivity,
-                        OrderDetailActivity::class.java
-                    ).apply {
-                        putExtras(IntentParams.OrderParams.pack(it.orderNo, true, 1))
-                    })
-            }
-        }
         mViewModel.deviceConfigs.observe(this) { configs ->
             if (configs.isNotEmpty()) {
                 mBinding.includeScanOrderConfig.clScanOrderConfig.let { cl ->

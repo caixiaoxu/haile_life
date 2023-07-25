@@ -2,8 +2,8 @@ package com.yunshang.haile_life.ui.activity.login
 
 import android.content.Intent
 import android.graphics.Color
+import android.view.View
 import com.lsy.framelib.async.LiveDataBus
-import com.lsy.framelib.utils.AppManager
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
@@ -12,8 +12,8 @@ import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.ActivityLoginBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
-import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.utils.ViewUtils
+import com.yunshang.haile_life.utils.thrid.AlipayHelper
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 import com.yunshang.haile_life.web.WebViewActivity
 import timber.log.Timber
@@ -72,7 +72,11 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
                     )
                 })
         }
+        val isAlipayInstall = AlipayHelper.isAlipayInstalled(this)
+        val isWxInstall = WeChatHelper.isWxInstall
 
+        mBinding.ivLoginAlipay.visibility =
+            if (isAlipayInstall) View.VISIBLE else View.GONE
         mBinding.ivLoginAlipay.setOnClickListener {
             mViewModel.aliPayAuth(this@LoginActivity) {
                 mSharedViewModel.thirdLogin(7, it) { code ->
@@ -87,9 +91,13 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
             }
         }
 
+        mBinding.ivLoginWechat.visibility =
+            if (isWxInstall) View.VISIBLE else View.GONE
         mBinding.ivLoginWechat.setOnClickListener {
             WeChatHelper.openWeChatLogin()
         }
+        mBinding.tvLoginThirdLoginTitle.visibility =
+            if (isAlipayInstall || isWxInstall) View.VISIBLE else View.GONE
     }
 
     override fun initData() {

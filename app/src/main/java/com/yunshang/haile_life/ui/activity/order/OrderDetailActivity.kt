@@ -157,6 +157,13 @@ class OrderDetailActivity :
         }
 
         mBinding.tvOrderDetailAppointNoUse.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@OrderDetailActivity,
+                    ScanOrderActivity::class.java
+                ).apply {
+                    putExtras(intent)
+                })
             finish()
         }
         mBinding.tvOrderDetailAppointUse.setOnClickListener {

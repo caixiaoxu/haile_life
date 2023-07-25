@@ -27,7 +27,6 @@ import com.yunshang.haile_life.utils.string.StringUtils
  */
 class ScanOrderViewModel : BaseViewModel() {
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
-    private val mAppointmentRepo = ApiRepository.apiClient(AppointmentService::class.java)
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
 
     val goodsScan: MutableLiveData<GoodsScanEntity> by lazy {
@@ -59,10 +58,6 @@ class ScanOrderViewModel : BaseViewModel() {
             R.string.select_work_time,
             it.categoryName.replace("机", "")
         )
-    }
-
-    val goodsAppointment: MutableLiveData<GoodsAppointmentEntity> by lazy {
-        MutableLiveData()
     }
 
     val deviceConfigs: MutableLiveData<MutableList<DeviceDetailItemEntity>> by lazy {
@@ -113,18 +108,6 @@ class ScanOrderViewModel : BaseViewModel() {
                 }
             } else goodsScan.value
             goodsScan?.let { scan ->
-                // 如果有预约跳转预约订单详情列表
-                val appointment = ApiRepository.dealApiResult(
-                    mAppointmentRepo.requestIsAppointmentOfGoods(
-                        ApiRepository.createRequestBody(
-                            hashMapOf("goodsId" to scan.goodsId)
-                        )
-                    )
-                )
-                if (!appointment?.orderNo.isNullOrEmpty()) {
-                    goodsAppointment.postValue(appointment)
-                }
-
                 ApiRepository.dealApiResult(
                     mDeviceRepo.requestDeviceDetailItem(scan.goodsId)
                 )?.let {

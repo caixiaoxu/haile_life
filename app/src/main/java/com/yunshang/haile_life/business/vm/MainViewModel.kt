@@ -5,13 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.AppPackageUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.CommonService
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.MarketingService
-import com.yunshang.haile_life.data.entities.ADEntity
-import com.yunshang.haile_life.data.entities.AppVersionEntity
-import com.yunshang.haile_life.data.entities.DeviceDetailEntity
-import com.yunshang.haile_life.data.entities.GoodsScanEntity
+import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
 import com.yunshang.haile_life.utils.string.StringUtils
@@ -32,6 +30,7 @@ class MainViewModel : BaseViewModel() {
     private val mCommonRepo = ApiRepository.apiClient(CommonService::class.java)
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
+    private val mAppointmentRepo = ApiRepository.apiClient(AppointmentService::class.java)
 
     //选择的id
     val checkId: MutableLiveData<Int> = MutableLiveData(R.id.rb_main_tab_home)
@@ -91,7 +90,7 @@ class MainViewModel : BaseViewModel() {
 
     fun requestScanResult(
         code: String,
-        callBack: (scanEntity: GoodsScanEntity, detailEntity: DeviceDetailEntity) -> Unit
+        callBack: (scanEntity: GoodsScanEntity, detailEntity: DeviceDetailEntity?, appointEntity: GoodsAppointmentEntity?) -> Unit
     ) {
         launch({
             ApiRepository.dealApiResult(
@@ -100,12 +99,22 @@ class MainViewModel : BaseViewModel() {
                     n = if (StringUtils.isImeiCode(code)) null else code
                 )
             )?.let { scan ->
-                ApiRepository.dealApiResult(mDeviceRepo.requestDeviceDetail(scan.goodsId))
-                    ?.let { detail ->
-                        withContext(Dispatchers.Main) {
-                            callBack(scan, detail)
-                        }
-                    }
+                // 设备详情
+                val deviceDetail =
+                    ApiRepository.dealApiResult(mDeviceRepo.requestDeviceDetail(scan.goodsId))
+
+                // 如果有预约跳转预约订单详情列表
+                val appointEntity = ApiRepository.dealApiResult(
+                    mAppointmentRepo.requestIsAppointmentOfGoods(
+                        ApiRepository.createRequestBody(
+                            hashMapOf("goodsId" to scan.goodsId)
+                        )
+                    )
+                )
+
+                withContext(Dispatchers.Main) {
+                    callBack(scan, deviceDetail, appointEntity)
+                }
             }
         })
     }
