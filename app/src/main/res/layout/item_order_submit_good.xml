@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingVertical="12dp"
+        android:paddingVertical="16dp"
         app:divider="@drawable/divide_size10"
         app:showDividers="middle">
 

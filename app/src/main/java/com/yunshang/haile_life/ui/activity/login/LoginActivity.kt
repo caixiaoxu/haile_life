@@ -72,6 +72,7 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
                     )
                 })
         }
+        // 微信和支付宝登录
         val isAlipayInstall = AlipayHelper.isAlipayInstalled(this)
         val isWxInstall = WeChatHelper.isWxInstall
 

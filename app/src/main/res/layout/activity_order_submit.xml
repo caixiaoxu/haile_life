@@ -91,16 +91,15 @@
                     android:paddingVertical="12dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Font_12_black_85"
+                        style="@style/Font_12_black_85_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text='@{@string/actually_paid+" ¥ "}' />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Font_22_black_85"
+                        style="@style/Font_22_black_85_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/money"
                         android:text="@{vm.tradePreview.realPrice}"
                         tools:text="0.00" />
                 </LinearLayout>
@@ -119,11 +118,10 @@
             android:paddingTop="10dp">
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/Font_20_black_85"
+                style="@style/Font_20_black_85_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:fontFamily="@font/money"
                 android:text='@{@string/unit_money + " "+ vm.tradePreview.realPrice}'
                 android:visibility="@{(null == vm.tradePreview.realPrice || 0 == vm.tradePreview.realPrice.length())?View.GONE:View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/btn_order_submit_pay"

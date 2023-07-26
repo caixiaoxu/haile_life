@@ -38,10 +38,11 @@
             android:id="@+id/tv_item_mine_order_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableEnd="@mipmap/icon_arrow_right"
+            android:drawableEnd="@mipmap/icon_small_right_no_padding"
             android:text="@{isAppoint?OrderStatus.getAppointStateName(item.appointmentState,false):item.getOrderStatusTitle}"
             android:textSize="12sp"
             app:bgResIds="@{item.multiTypeBgRes}"
+            android:drawablePadding="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_item_mine_order_time"
             app:layout_constraintTop_toTopOf="@id/tv_item_mine_order_time"
@@ -50,7 +51,7 @@
             tools:text="已完成" />
 
         <View
-            style="@style/DividingStyle"
+            style="@style/DividingStyle1"
             android:layout_marginTop="12dp"
             app:layout_constraintTop_toBottomOf="@id/tv_item_mine_order_time"
             tools:ignore="MissingConstraints" />

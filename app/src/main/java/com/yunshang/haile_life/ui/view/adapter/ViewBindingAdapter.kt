@@ -1,17 +1,16 @@
 package com.yunshang.haile_life.ui.view.adapter
 
-import android.graphics.drawable.Drawable
+import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.Group
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MarginLayoutParamsCompat
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.request.RequestOptions
 import com.yunshang.haile_life.ui.view.CommonTitleActionBar
 import com.yunshang.haile_life.ui.view.MultiTypeTextView
-import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
 import com.yunshang.haile_life.utils.GlideUtils
 import kotlin.math.abs
 
@@ -63,6 +62,8 @@ object ViewBindingAdapter {
         "marginStart",
         "txtSize",
         "txtColor",
+        "txtStateColor",
+        "txtStyle",
         requireAll = false
     )
     @JvmStatic
@@ -76,8 +77,10 @@ object ViewBindingAdapter {
         mS: Float?,
         txtSize: Float?,
         txtColor: Int?,
+        txtStateColor: Int?,
+        txtStyle: Int?,
     ) {
-        setCompoundDrawablesRelativeWithIntrinsicBounds(
+        setCompoundDrawablesWithIntrinsicBounds(
             dsRes ?: 0,
             dtRes ?: 0,
             deRes ?: 0,
@@ -102,6 +105,16 @@ object ViewBindingAdapter {
         txtColor?.let {
             setTextColor(it)
         }
+        txtStateColor?.let {
+            setTextColor(ResourcesCompat.getColorStateList(resources, it, null))
+        }
+        txtStyle?.let {
+            typeface = when (it) {
+                1 -> Typeface.DEFAULT_BOLD
+                2 -> Typeface.defaultFromStyle(Typeface.ITALIC)
+                else -> Typeface.defaultFromStyle(Typeface.NORMAL)
+            }
+        }
     }
 
     @BindingAdapter("bgResIds", "txtColors", "type", requireAll = false)
@@ -121,14 +134,17 @@ object ViewBindingAdapter {
     /**
      * ImageView 加载图片
      */
-    @BindingAdapter("imgRes", "imgUrl", requireAll = false)
+    @BindingAdapter("imgRes", "imgUrl", "imgHeadUrl", requireAll = false)
     @JvmStatic
-    fun ImageView.loadImage(res: Int?, url: String?) {
+    fun ImageView.loadImage(res: Int?, url: String?, imgHeadUrl: String?) {
         res?.let {
             setImageResource(res)
         }
         url?.let {
             GlideUtils.loadImage(this, url)
+        }
+        imgHeadUrl?.let {
+            GlideUtils.loadImage(this, imgHeadUrl, RequestOptions.centerCropTransform())
         }
     }
 }

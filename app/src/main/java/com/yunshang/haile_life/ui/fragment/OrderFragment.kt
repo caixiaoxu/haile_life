@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.network.response.ResponseList
+import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.StatusBarUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
@@ -46,8 +48,11 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
     private val mAdapter by lazy {
         CommonRecyclerAdapter<ItemMineOrderBinding, OrderEntity>(
             R.layout.item_mine_order, BR.item
-        ) { mItemBinding, _, item ->
+        ) { mItemBinding, pos, item ->
             mItemBinding?.isAppoint = mViewModel.isAppoint
+            (mItemBinding?.root?.layoutParams as? MarginLayoutParams)?.let {
+                it.topMargin = if (0 == pos) DimensionUtils.dip2px(requireContext(), 12f) else 0
+            }
             mItemBinding?.root?.setOnClickListener {
                 startActivity(Intent(requireContext(), OrderDetailActivity::class.java).apply {
                     putExtras(IntentParams.OrderParams.pack(item.orderNo, mViewModel.isAppoint))

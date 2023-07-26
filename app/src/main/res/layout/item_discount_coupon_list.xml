@@ -134,12 +134,13 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.71532845" />
 
-        <com.lsy.framelib.ui.weight.SingleTapButton
+        <com.lsy.framelib.ui.weight.SingleTapTextView
             android:id="@+id/btn_discount_coupon_use"
             style="@style/Font_12_FFFFFF"
             android:layout_width="69dp"
             android:layout_height="33dp"
             android:layout_marginTop="40dp"
+            android:gravity="center"
             android:background="@drawable/selector_login_btn"
             android:text="@string/go_use"
             android:visibility="@{1 == item.state?View.VISIBLE:View.GONE}"
@@ -158,13 +159,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.yunshang.haile_life.ui.view.DividerView
-            android:layout_width="1dp"
+            android:layout_width="0.5dp"
             android:layout_height="0dp"
             android:layerType="software"
             app:dashGap="10dp"
             app:dashLength="10dp"
-            app:dashThickness="1dp"
-            app:divider_line_color="#E3E3E3"
+            app:dashThickness="0.5dp"
+            android:layout_marginVertical="4dp"
+            app:divider_line_color="@color/dividing_line_color"
             app:divider_orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/iv_discount_coupon_yuan2"
             app:layout_constraintStart_toStartOf="@id/gl_discount_coupon_end"

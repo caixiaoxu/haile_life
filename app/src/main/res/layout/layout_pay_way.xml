@@ -4,8 +4,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="isDryer"
             type="java.lang.Boolean" />
@@ -37,7 +35,7 @@
             android:background="@color/transparent"
             android:button="@null"
             android:drawableStart="@mipmap/icon_pay_alipay_way"
-            android:drawableEnd="@{isDryer?@drawable/selector_orange_check:@drawable/selector_cyan_check}"
+            android:drawableEnd="@{isDryer?@drawable/selector_orange_big_check:@drawable/selector_cyan_big_check}"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"
@@ -51,7 +49,7 @@
             android:background="@color/transparent"
             android:button="@null"
             android:drawableStart="@mipmap/icon_pay_wechat_way"
-            android:drawableEnd="@{isDryer?@drawable/selector_orange_check:@drawable/selector_cyan_check}"
+            android:drawableEnd="@{isDryer?@drawable/selector_orange_big_check:@drawable/selector_cyan_big_check}"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"
@@ -66,7 +64,7 @@
             android:background="@color/transparent"
             android:button="@null"
             android:drawableStart="@mipmap/icon_pay_account_way"
-            android:drawableEnd="@{isDryer?@drawable/selector_orange_check:@drawable/selector_cyan_check}"
+            android:drawableEnd="@{isDryer?@drawable/selector_orange_big_check:@drawable/selector_cyan_big_check}"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="12dp"

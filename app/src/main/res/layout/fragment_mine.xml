@@ -37,7 +37,7 @@
             android:layout_marginTop="14dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/icon_default_head"
-            app:imgUrl="@{shared.userInfo.avatar}"
+            app:imgHeadUrl="@{shared.userInfo.avatar}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ib_mine_setting"
             app:strokeColor="@color/white"
@@ -146,17 +146,18 @@
             android:src="@mipmap/icon_mine_recharge"
             app:layout_constraintTop_toBottomOf="@id/tv_mine_balance_title" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.lsy.framelib.ui.weight.SingleTapTextView
             android:id="@+id/btn_mine_recharge"
             style="@style/Font_13_5c430a_bold"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
             android:layout_marginTop="18dp"
+            android:gravity="center"
             android:layout_marginEnd="35dp"
             android:background="@drawable/shape_ffdd68_ffd530_r14"
-            android:drawableEnd="@mipmap/icon_small_arrow_right"
-            android:drawableTint="@color/color_5c430a"
-            android:paddingHorizontal="12dp"
+            android:drawableEnd="@mipmap/icon_recharge_right"
+            android:paddingStart="12dp"
+            android:paddingEnd="8dp"
             android:text="@string/go_recharge"
             app:layout_constraintEnd_toEndOf="@id/iv_mine_recharge"
             app:layout_constraintTop_toTopOf="@id/iv_mine_recharge" />

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_sffffff_rt8"
     android:paddingTop="16dp"
-    android:paddingBottom="44dp">
+    android:paddingBottom="32dp">
 
     <com.lsy.framelib.ui.weight.SingleTapTextView
         android:id="@+id/btn_scan_order_confirm_cancel"
@@ -30,12 +30,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/btn_scan_order_confirm_next" />
 
-    <com.lsy.framelib.ui.weight.SingleTapButton
+    <com.lsy.framelib.ui.weight.SingleTapTextView
         android:id="@+id/btn_scan_order_confirm_next"
-        style="@style/CommonMatchBtnStyle1"
+        style="@style/Font_14_ffffff"
         android:layout_width="75dp"
         android:layout_height="36dp"
+        android:gravity="center"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/selector_login_btn"
         android:text="@string/next_step"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -55,11 +57,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
-        android:divider="@drawable/divide_size16"
         android:orientation="vertical"
-        android:showDividers="middle"
+        app:divider="@drawable/divide_size16"
         app:itemLayout="@layout/item_scan_order_confirm_item"
-        app:layout_constraintTop_toBottomOf="@id/iv_scan_order_confirm_main" />
+        app:layout_constraintTop_toBottomOf="@id/iv_scan_order_confirm_main"
+        app:showDividers="middle" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/cb_scan_order_confirm_no_prompt"
@@ -69,11 +71,11 @@
         android:layout_marginTop="24dp"
         android:background="@null"
         android:button="@null"
-        tools:drawableStart="@drawable/selector_login_agreement"
         android:drawablePadding="4dp"
         android:text="@string/no_prompt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_scan_order_confirm_items" />
+        app:layout_constraintTop_toBottomOf="@id/ll_scan_order_confirm_items"
+        tools:drawableStart="@drawable/selector_login_agreement" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="163dp"
         android:background="@mipmap/bg_recharge_shop_list_item"
         android:padding="12dp">
 
@@ -52,34 +52,37 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rv_recharge_starfish_reach"
-            style="@style/Font_12_black_45"
+            style="@style/Font_14_black_85"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             tools:text="充值海星"
+            android:fontFamily="@font/money"
             android:text="@{item.getReachVal}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_recharge_starfish_shop_total" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rv_recharge_starfish_reward"
-            style="@style/Font_12_black_45"
+            style="@style/Font_14_black_85"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             tools:text="赠送海星"
+            android:fontFamily="@font/money"
             android:text="@{item.getRewardVal}"
             app:layout_constraintStart_toEndOf="@id/rv_recharge_starfish_reach"
             app:layout_constraintTop_toTopOf="@id/rv_recharge_starfish_reach" />
 
         <com.lsy.framelib.ui.weight.SingleTapTextView
             android:id="@+id/btn_recharge_starfish"
-            style="@style/CommonMatchBtnStyle1"
+            style="@style/Font_14_ffffff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
+            android:background="@drawable/selector_login_btn"
             android:text="@string/go_recharge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

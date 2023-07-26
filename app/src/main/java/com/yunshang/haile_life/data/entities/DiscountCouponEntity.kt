@@ -67,7 +67,7 @@ data class DiscountCouponEntity(
     }
 
     override fun getMultiTypeBgRes(): IntArray = intArrayOf(
-        R.drawable.shape_s26ff630e_r4,
+        R.drawable.shape_s19ff630e_r4,
         R.drawable.shape_s0c000000_r4
     )
 
@@ -124,23 +124,23 @@ data class Promotion(
     val userActivationLimit: Int
 ) {
     fun discountCouponValue(): SpannableString = when (couponType) {
-        1 -> formatValue("¥$reduce", 1)
-        3 -> formatValue("${percentage}折", 0)
-        4 -> formatValue("¥$specifiedPrice", 1)
+        1 -> "¥$reduce".let { formatValue(it, 1, it.length) }
+        3 -> "${percentage}折".let { formatValue(it, 0, it.length - 1) }
+        4 -> "¥$specifiedPrice".let { formatValue(it, 1, it.length) }
         else -> SpannableString("")
     }
 
-    private fun formatValue(content: String, start: Int): SpannableString {
+    private fun formatValue(content: String, start: Int, end: Int): SpannableString {
         val index = content.indexOf(".")
-        val end = if (index == -1) {
-            content.length
+        val e = if (index == -1) {
+            end
         } else {
             index
         }
         return com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
             content, arrayOf(
                 AbsoluteSizeSpan(DimensionUtils.sp2px(32f))
-            ), start, end
+            ), start, e
         )
     }
 

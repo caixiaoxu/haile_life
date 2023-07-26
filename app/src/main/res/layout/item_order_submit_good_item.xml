@@ -48,6 +48,7 @@
             android:text="@{title}"
             android:textStyle="bold"
             app:drawStart="@{icon}"
+            app:txtStyle="@{4== type?0:1}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_order_submit_good_value"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -63,9 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:background="@{noSelect?@drawable/shape_s26ff630e_r14:null}"
+            android:background="@{noSelect?@drawable/shape_s19ff630e_r14:null}"
             android:drawablePadding="4dp"
-            android:fontFamily="@font/money"
             android:gravity="center"
             android:text="@{value}"
             app:drawEnd="@{endDraw}"
@@ -75,6 +75,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:txtColor="@{noSelect?@color/color_ff630e:2 == type?@color/color_black_45:@color/color_black_85}"
             app:txtSize="@{noSelect?12f:(2 == type || 4 == type)? 14f:16f}"
+            app:txtStyle="@{noSelect?0:1}"
             tools:text="¥ 5.00" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.ViewUtils
-import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
@@ -109,6 +108,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
                             itemBinding.isDryer = mViewModel.isDryer.value
+                            itemBinding.isTime = true
                             itemBinding.name = item.minutesStr()
                             (itemBinding.root as AppCompatRadioButton).let { rb ->
                                 rb.id = index + 1

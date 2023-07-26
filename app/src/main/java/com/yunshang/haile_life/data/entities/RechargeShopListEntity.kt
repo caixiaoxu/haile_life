@@ -1,8 +1,10 @@
 package com.yunshang.haile_life.data.entities
 
+import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import androidx.core.content.ContextCompat
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.DimensionUtils
@@ -40,15 +42,15 @@ data class RechargeShopListItem(
             "$prefix $principalAmount",
             arrayOf(
                 AbsoluteSizeSpan(
-                    DimensionUtils.sp2px(14f),
+                    DimensionUtils.sp2px(12f),
                 ),
                 ForegroundColorSpan(
                     ContextCompat.getColor(
-                        Constants.APP_CONTEXT, R.color.color_black_85
+                        Constants.APP_CONTEXT, R.color.color_black_45
                     )
-                )
-            ),
-            prefix.length, content.length
+                ),
+                StyleSpan(Typeface.NORMAL)
+            ), 0, prefix.length
         )
     }
 
@@ -59,13 +61,16 @@ data class RechargeShopListItem(
             content,
             arrayOf(
                 AbsoluteSizeSpan(
-                    DimensionUtils.sp2px(14f),
-                ), ForegroundColorSpan(
+                    DimensionUtils.sp2px(12f),
+                ),
+                ForegroundColorSpan(
                     ContextCompat.getColor(
-                        Constants.APP_CONTEXT, R.color.color_black_85
+                        Constants.APP_CONTEXT, R.color.color_black_45
                     )
-                )
-            ), prefix.length, content.length
+                ),
+                StyleSpan(Typeface.NORMAL)
+            ),
+            0, prefix.length,
         )
     }
 }

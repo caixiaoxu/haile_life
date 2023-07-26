@@ -39,7 +39,7 @@
             android:id="@+id/rv_mine_order_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="12dp"
+            android:paddingHorizontal="12dp"
             app:emptyImgRes="@mipmap/icon_list_order_empty"
             app:emptyTxtRes="@string/empty_order"
             app:enableEmptyStatus="true" />

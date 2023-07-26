@@ -160,9 +160,11 @@ class AppointmentSubmitActivity :
                             mViewModel.isDryer.observe(this){
                                 itemBinding.isDryer = it
                             }
+                            itemBinding.isTime = true
                             itemBinding.name = "$item${StringUtils.getString(R.string.minute)}"
                             (itemBinding.root as AppCompatRadioButton).let { rb ->
                                 rb.id = index + 1
+
                                 mViewModel.selectMinute.observe(this) {
                                     (item == it).let { isSame ->
                                         if (isSame != rb.isChecked) {

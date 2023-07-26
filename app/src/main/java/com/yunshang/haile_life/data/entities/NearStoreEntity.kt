@@ -44,8 +44,8 @@ data class NearStoreEntity(
     override fun getMultiType(): Int = 0
 
     override fun getMultiTypeBgRes(): IntArray = intArrayOf(
-        R.drawable.shape_s26ff630e_r4,
-        R.drawable.shape_s2604cee5_r4,
+        R.drawable.shape_s19ff630e_r4,
+        R.drawable.shape_s1904cee5_r4,
     )
 
     override fun getMultiTypeTxtColors(): IntArray = intArrayOf(

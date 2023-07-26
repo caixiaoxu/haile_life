@@ -6,7 +6,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="colorPrimary">#04CEE5</color>
-    <color name="colorPrimaryBg">#2604CEE5</color>
+    <color name="colorPrimaryBg">#1904CEE5</color>
     <color name="secondColorPrimary">#04D1E5</color>
     <color name="secondColorPrimaryBg">#2604D1E5</color>
 
@@ -29,7 +29,7 @@
     <color name="second_color_green">#2630C19A</color>
 
     <color name="color_appoint">#FF630E</color>
-    <color name="color_appoint_bg">#26FF630E</color>
+    <color name="color_appoint_bg">#19FF630E</color>
     <color name="bg_gray">#082E3D3E</color>
     <color name="bg_wathet">#F4FFFF</color>
     <color name="color_black_85">#D8000000</color>

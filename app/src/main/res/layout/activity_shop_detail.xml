@@ -65,7 +65,7 @@
                 app:layout_constraintTop_toTopOf="@id/tv_shop_detail_business"
                 app:txtColors="@{vm.shopDetail.multiTypeTxtColors}"
                 app:type="@{0}"
-                tools:background="@drawable/shape_s26ff630e_r4" />
+                tools:background="@drawable/shape_s19ff630e_r4" />
 
             <com.yunshang.haile_life.ui.view.MultiTypeTextView
                 android:id="@+id/tv_shop_detail_business"
@@ -84,7 +84,7 @@
                 app:layout_constraintTop_toTopOf="@id/tv_shop_detail_name"
                 app:txtColors="@{vm.shopDetail.multiTypeTxtColors}"
                 app:type="@{1}"
-                tools:background="@drawable/shape_s2604cee5_r4" />
+                tools:background="@drawable/shape_s1904cee5_r4" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_shop_detail_distance"
