@@ -3,9 +3,11 @@ package com.yunshang.haile_life.ui.activity.marketing
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.DiscountCouponSelectorViewModel
@@ -24,7 +26,10 @@ class DiscountCouponSelectorActivity :
     private val mAdapter by lazy {
         CommonRecyclerAdapter<ItemDiscountCouponBinding, TradePreviewParticipate>(
             R.layout.item_discount_coupon, BR.item
-        ) { mItemBinding, _, item ->
+        ) { mItemBinding, pos, item ->
+            (mItemBinding?.root?.layoutParams as? ViewGroup.MarginLayoutParams)?.let {
+                it.topMargin = if (0 == pos) DimensionUtils.dip2px(this@DiscountCouponSelectorActivity, 12f) else 0
+            }
 
             mItemBinding?.root?.setOnClickListener {
                 item.isCheck = !item.isCheck

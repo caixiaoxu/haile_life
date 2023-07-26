@@ -16,15 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:divider="@drawable/divide_size12"
-        app:showDividers="middle"
         tools:context=".ui.activity.marketing.DiscountCouponSelectorActivity">
 
         <com.yunshang.haile_life.ui.view.CommonTitleActionBar
             android:id="@+id/bar_discount_coupon_selector_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
-            android:background="@color/white"
+            android:background="@drawable/shape_bottom_stroke_dividing_efefef"
             app:title="@string/order_discount_coupon_selector" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -37,17 +35,16 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="98dp"
-            android:background="@color/white"
+            android:background="@drawable/shape_top_stroke_dividing"
             android:paddingHorizontal="16dp"
             android:paddingTop="10dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_discount_coupon_selector_price"
-                style="@style/Font_20_black_85"
+                style="@style/Font_20_black_85_bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/money"
                 android:text='@{@string/unit_money +" "+ vm.tradePreview.discountPrice}'
                 app:layout_constraintBottom_toTopOf="@id/tv_discount_coupon_selector_desc"
                 app:layout_constraintEnd_toStartOf="@id/btn_discount_coupon_selector_sure"

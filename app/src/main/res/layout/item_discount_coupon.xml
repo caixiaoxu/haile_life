@@ -84,7 +84,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:drawStart="@{item.isCheck?R.mipmap.icon_cyan_checked:R.mipmap.icon_uncheck}"
+            app:drawStart="@{item.isCheck?R.mipmap.icon_cyan_big_checked:R.mipmap.icon_uncheck_big}"
             android:layout_marginEnd="16dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

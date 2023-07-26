@@ -289,7 +289,7 @@ object StringUtils {
             }
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
-            null
+            numStr
         }
     }
 
