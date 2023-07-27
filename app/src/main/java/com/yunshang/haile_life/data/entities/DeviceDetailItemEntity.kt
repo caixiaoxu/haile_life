@@ -4,6 +4,8 @@ import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.rule.IOrderConfigEntity
+
 
 /**
  * Title :
@@ -16,7 +18,7 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
  * 作者姓名 修改时间 版本号 描述
  */
 data class DeviceDetailItemEntity(
-    val amount: Double,
+    val amount: Int,
     val attach: Int,
     val channelStatus: Int,
     val couponAmount: Double,
@@ -35,7 +37,20 @@ data class DeviceDetailItemEntity(
     val unit: String,
     val vipDiscount: String,
     val vipDiscountPrice: String
-) {
+) : IOrderConfigEntity {
+
+    override fun getTitle(code: String?): String =
+        if (DeviceCategory.isHair(code) && 0 == amount) "使用中..." else name
+
+    override fun getTitleTxtColor(code: String?): Int =
+        if (DeviceCategory.isHair(code) && 0 == amount) R.color.color_black_25
+        else if (DeviceCategory.isDryerOrHair(code)) R.color.selector_black85_ff630e
+        else R.color.selector_black85_04d1e5
+
+    override fun getTitleBg(code: String?): Int =
+        if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
+        else R.drawable.selector_device_model_item
+
     fun getExtAttrs(isDryerOrHair: Boolean) =
         if (isDryerOrHair) {
             GsonUtils.json2List(extAttr, ExtAttrBean::class.java) ?: arrayListOf()
@@ -52,6 +67,15 @@ data class DeviceDetailItemEntity(
 data class ExtAttrBean(
     val minutes: Int,
     var price: Double,
-) {
-    fun minutesStr(): String = "${minutes}${StringUtils.getString(R.string.minute)}"
+) : IOrderConfigEntity {
+    override fun getTitle(code: String?): String =
+        "${minutes}${StringUtils.getString(R.string.minute)}"
+
+    override fun getTitleTxtColor(code: String?): Int =
+        if (DeviceCategory.isDryerOrHair(code)) R.color.selector_black85_ff630e
+        else R.color.selector_black85_04d1e5
+
+    override fun getTitleBg(code: String?): Int =
+        if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
+        else R.drawable.selector_device_model_item1
 }

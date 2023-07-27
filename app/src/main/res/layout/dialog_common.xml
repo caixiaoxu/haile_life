@@ -30,6 +30,7 @@
         android:layout_marginBottom="32dp"
         android:textColor="@color/color_black_85"
         android:textSize="@dimen/font_14"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@id/gl_btns_start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

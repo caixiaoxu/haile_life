@@ -1,6 +1,8 @@
 package com.yunshang.haile_life.ui.activity.personal
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import com.lsy.framelib.utils.AppManager
 import com.yunshang.haile_life.BR
@@ -11,6 +13,7 @@ import com.yunshang.haile_life.databinding.ActivityCloseAccountBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 
 class CloseAccountActivity :
     BaseBusinessActivity<ActivityCloseAccountBinding, CloseAccountViewModel>(
@@ -32,8 +35,22 @@ class CloseAccountActivity :
     }
 
     override fun initView() {
+        mBinding.btnCloseAccountSubmit.setOnClickListener {
+            CommonDialog.Builder("注销后您的身份、账号信息、交易信息、钱包资产等都会被清空且无法找回请谨慎操作。").apply {
+                setNegativeButton("确定注销") {
+                    mViewModel.closeAccount()
+                }
+                positiveTxt = "我再想想"
+            }.build().show(supportFragmentManager)
+        }
+        mViewModel.timer.start()
     }
 
     override fun initData() {
+    }
+
+    override fun onDestroy() {
+        mViewModel.timer.cancel()
+        super.onDestroy()
     }
 }

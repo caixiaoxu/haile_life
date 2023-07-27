@@ -1,5 +1,12 @@
 package com.yunshang.haile_life.data.entities
 
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.TypefaceSpan
+import androidx.core.content.ContextCompat
+import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
@@ -35,12 +42,26 @@ data class ShopDetailEntity(
                     "%.2fkm", distance / 1000
                 ) else String.format(
                     "%.2fm", distance
-                ) + if (getAddressVal().isNotEmpty()) " | " else ""
+                )
 
     fun getBusinessTimeVal(): String =
         "${StringUtils.getString(R.string.business_time)} ${workTime.ifEmpty { "全天24小时" }}"
 
-    fun getAddressVal(): String = address
+    fun getAddressVal(): SpannableString {
+        val distance = formatDistance()
+        val address = if (address.isNotEmpty()) " | $address" else ""
+
+        return com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+            distance + address,
+            arrayOf(
+                ForegroundColorSpan(
+                    ContextCompat.getColor(Constants.APP_CONTEXT, R.color.color_black_45),
+                ),
+                StyleSpan(Typeface.NORMAL)
+            ), 0, distance.length
+        )
+    }
+
     override fun getMultiType(): Int = 0
 
     override fun getMultiTypeBgRes(): IntArray = intArrayOf(

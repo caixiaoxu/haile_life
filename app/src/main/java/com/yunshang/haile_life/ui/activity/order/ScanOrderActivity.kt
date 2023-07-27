@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatRadioButton
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.SToast
@@ -23,6 +24,7 @@ import com.yunshang.haile_life.databinding.ActivityScanOrderBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
+import com.yunshang.haile_life.ui.view.ClickRadioButton
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 
 class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrderViewModel>(
@@ -55,10 +57,24 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
-                            itemBinding.isDryer = mViewModel.isDryer.value
-                            itemBinding.name = item.name
-                            (itemBinding.root as AppCompatRadioButton).let { rb ->
+                            mViewModel.goodsScan.value?.categoryCode?.let {
+                                itemBinding.code = it
+                            }
+                            itemBinding.item = item
+                            (itemBinding.root as ClickRadioButton).let { rb ->
                                 rb.id = index + 1
+
+                                if (DeviceCategory.isHair(mViewModel.goodsScan.value?.categoryCode)
+                                    && 0 == item.amount
+                                ) {
+                                    rb.setTextColor(
+                                        ContextCompat.getColor(
+                                            this@ScanOrderActivity,
+                                            R.color.color_black_25
+                                        )
+                                    )
+                                    rb.setOnRadioClickListener { true }
+                                }
 
                                 mViewModel.selectDeviceConfig.observe(this) {
                                     (item.id == it.id).let { isSame ->
@@ -107,9 +123,10 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
-                            itemBinding.isDryer = mViewModel.isDryer.value
-                            itemBinding.isTime = true
-                            itemBinding.name = item.minutesStr()
+                            mViewModel.goodsScan.value?.categoryCode?.let {
+                                itemBinding.code = it
+                            }
+                            itemBinding.item = item
                             (itemBinding.root as AppCompatRadioButton).let { rb ->
                                 rb.id = index + 1
 
@@ -162,7 +179,9 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                     return@setOnClickListener
                 }
 
-                if (!SPRepository.isNoPrompt && null != mViewModel.goodsScan.value) {
+                if (!SPRepository.isNoPrompt && null != mViewModel.goodsScan.value
+                    && !DeviceCategory.isHair(mViewModel.goodsScan.value!!.categoryCode)
+                ) {
                     ScanOrderConfirmDialog.Builder(mViewModel.goodsScan.value!!.categoryCode) {
                         jumpOrderSubmit()
                     }.build().show(supportFragmentManager)

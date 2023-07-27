@@ -114,8 +114,6 @@
                 style="@style/Font_16_black_85"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@mipmap/icon_arrow_right"
-                android:drawablePadding="8dp"
                 android:text="@{shared.userInfo.phone}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

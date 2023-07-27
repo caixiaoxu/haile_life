@@ -51,16 +51,16 @@ data class OrderEntity(
     val viewReply: Boolean,
 ) : IMultiTypeEntity {
     override fun getMultiType(): Int = when (state) {
-        100, 500 -> 1
-        1000 -> 2
-        else -> 0
+        100, 500 -> 0
+        1000, 2099 -> 2
+        else -> 1
     }
 
     fun getMultiType(isAppoint: Boolean): Int = if (isAppoint) {
         when (appointmentState) {
-            0, 1, 2 -> 1
-            3 -> 2
-            else -> 0
+            0, 1, 2 -> 0
+            3, 4 -> 2
+            else -> 1
         }
     } else getMultiType()
 
@@ -103,7 +103,7 @@ data class OrderEntity(
                     )
                 }"
             } ?: "").let { content ->
-                if (content.isNotEmpty()){
+                if (content.isNotEmpty()) {
                     com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
                         content,
                         arrayOf(

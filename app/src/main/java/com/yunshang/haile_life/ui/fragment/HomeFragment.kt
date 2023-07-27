@@ -27,6 +27,7 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.ADImage
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.databinding.*
+import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.ShopDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
@@ -263,6 +264,27 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             childBinding.item = data
             childBinding.root.setOnClickListener {
                 SToast.showToast(requireContext(), "敬请期待")
+            }
+        }
+
+        mBinding.clHomeCurTask.setOnClickListener {
+            mViewModel.lastMessage.value?.let { msg ->
+                msg.messageContent()?.let { content ->
+                    if (content.orderNo.isNotEmpty()) {
+                        startActivity(
+                            Intent(
+                                requireContext(),
+                                OrderDetailActivity::class.java
+                            ).apply {
+                                putExtras(
+                                    IntentParams.OrderParams.pack(
+                                        content.orderNo,
+                                        msg.subtype == "user:order:appoint"
+                                    )
+                                )
+                            })
+                    }
+                }
             }
         }
 

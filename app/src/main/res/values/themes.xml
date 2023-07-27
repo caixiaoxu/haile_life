@@ -196,6 +196,10 @@
         <item name="android:textColor">@color/color_ff630e</item>
     </style>
 
+    <style name="Font_14_ff630e_bold" parent="Font_14_ff630e">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Font_14_black_85">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/color_black_85</item>

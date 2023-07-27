@@ -298,10 +298,31 @@ object StringUtils {
      */
     @JvmStatic
     fun formatAmountStr(amount: Double): String {
-        return (if (amount >= 0) "¥" else "-¥") + abs(amount).let {
-            if (0 == (it * 100).toInt() % 100) it.toInt()
-            else String.format("%.2f", it)
+        return (if (amount >= 0) "¥" else "-¥") +checkAmountIsIntOrDouble(amount)
+    }
+
+    /**
+     * 判断是否是整数
+     */
+    @JvmStatic
+    fun checkAmountStrIsIntOrDouble(numStr: String?): String?{
+        return try {
+            numStr?.let {
+                checkAmountIsIntOrDouble(numStr.toDouble())
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            numStr
         }
+    }
+
+    /**
+     * 判断是否是整数
+     */
+    @JvmStatic
+    fun checkAmountIsIntOrDouble(amount: Double): String = abs(amount).let {
+        if (0 == (it * 100).toInt() % 100) "${it.toInt()}"
+        else String.format("%.2f", it)
     }
 
     /**

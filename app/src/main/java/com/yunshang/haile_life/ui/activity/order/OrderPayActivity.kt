@@ -77,12 +77,12 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
 
     override fun initView() {
         mBinding.tvOrderPayPrice.text = StringUtils.formatMultiStyleStr(
-            com.lsy.framelib.utils.StringUtils.getString(R.string.unit_money) + mViewModel.price,
+            com.lsy.framelib.utils.StringUtils.getString(R.string.unit_money) + " " + mViewModel.price,
             arrayOf(
                 AbsoluteSizeSpan(DimensionUtils.sp2px(24f, this@OrderPayActivity))
-            ), 0, 1
+            ), 0, 2
         )
-        mBinding.rgOrderPayWay.setOnCheckedChangeListener { _, checkedId ->
+        mBinding.rgOrderPayWay.setOnCheckedChangeListener { _, _ ->
             changePayWay()
         }
         mBinding.btnOrderPay.setOnClickListener {

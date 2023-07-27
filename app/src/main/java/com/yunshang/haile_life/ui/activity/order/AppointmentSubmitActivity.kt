@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.SToast
-import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
@@ -52,52 +51,55 @@ class AppointmentSubmitActivity :
 
         // 设备列表
         mViewModel.categoryList.observe(this) { categoryList ->
-            if (categoryList.isNotEmpty()) {
-                mBinding.includeAppointSubmitCategory.clScanOrderConfig.let { cl ->
-                    if (cl.childCount > 3) {
-                        cl.removeViews(3, cl.childCount - 3)
-                    }
-                    categoryList.forEachIndexed { index, item ->
-                        DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
-                            inflater, R.layout.item_scan_order_model_item, null, false
-                        )?.let { itemBinding ->
-                            mViewModel.isDryer.observe(this){
-                                itemBinding.isDryer = it
-                            }
-                            itemBinding.name = item.goodsCategoryName
-                            (itemBinding.root as AppCompatRadioButton).let { rb ->
-                                rb.id = index + 1
-                                mViewModel.isDryer.observe(this) {
-                                    rb.setBackgroundResource(if (it) R.drawable.selector_device_model_item_dryer else R.drawable.selector_device_model_item)
-                                    rb.setTextColor(
-                                        ContextCompat.getColor(
-                                            this,
-                                            if (it) R.color.selector_black85_ff630e else R.color.selector_black85_04d1e5
-                                        )
-                                    )
+            categoryList?.let {
+                if (categoryList.isNotEmpty()) {
+                    mBinding.includeAppointSubmitCategory.clScanOrderConfig.let { cl ->
+                        if (cl.childCount > 3) {
+                            cl.removeViews(3, cl.childCount - 3)
+                        }
+                        categoryList.forEachIndexed { index, item ->
+                            DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
+                                inflater, R.layout.item_scan_order_model_item, null, false
+                            )?.let { itemBinding ->
+                                itemBinding.item = item
+                                mViewModel.selectCategory.observe(this){
+                                    itemBinding.code = it?.goodsCategoryCode
                                 }
-                                mViewModel.selectCategory.observe(this) {
-                                    (item.goodsCategoryId == it.goodsCategoryId).let { isSame ->
-                                        if (isSame != rb.isChecked) {
-                                            rb.isChecked = isSame
+
+                                (itemBinding.root as AppCompatRadioButton).let { rb ->
+                                    rb.id = index + 1
+                                    mViewModel.isDryer.observe(this) {
+                                        rb.setBackgroundResource(if (it) R.drawable.selector_device_model_item_dryer else R.drawable.selector_device_model_item)
+                                        rb.setTextColor(
+                                            ContextCompat.getColor(
+                                                this,
+                                                if (it) R.color.selector_black85_ff630e else R.color.selector_black85_04d1e5
+                                            )
+                                        )
+                                    }
+                                    mViewModel.selectCategory.observe(this) {
+                                        (item.goodsCategoryId == it.goodsCategoryId).let { isSame ->
+                                            if (isSame != rb.isChecked) {
+                                                rb.isChecked = isSame
+                                            }
                                         }
                                     }
+                                    rb.setOnClickListener {
+                                        mViewModel.selectCategory.value = item
+                                        mViewModel.selectDevice.value = null
+                                    }
                                 }
-                                rb.setOnClickListener {
-                                    mViewModel.selectCategory.value = item
-                                    mViewModel.selectDevice.value = null
-                                }
+                                cl.addView(
+                                    itemBinding.root,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT
+                                )
                             }
-                            cl.addView(
-                                itemBinding.root,
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
                         }
+                        // 设置id
+                        val idList = IntArray(categoryList.size) { it + 1 }
+                        mBinding.includeAppointSubmitCategory.flowScanOrderItem.referencedIds = idList
                     }
-                    // 设置id
-                    val idList = IntArray(categoryList.size) { it + 1 }
-                    mBinding.includeAppointSubmitCategory.flowScanOrderItem.referencedIds = idList
                 }
             }
         }
@@ -113,10 +115,10 @@ class AppointmentSubmitActivity :
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
-                            mViewModel.isDryer.observe(this){
-                                itemBinding.isDryer = it
+                            mViewModel.selectCategory.observe(this){
+                                itemBinding.code = it?.goodsCategoryCode
                             }
-                            itemBinding.name = item.name
+                            itemBinding.item = item
                             (itemBinding.root as AppCompatRadioButton).let { rb ->
                                 rb.id = index + 1
                                 mViewModel.selectSpec.observe(this) {
@@ -148,7 +150,7 @@ class AppointmentSubmitActivity :
         // 时长
         mViewModel.minuteList.observe(this) { minuteList ->
             if (minuteList.isNotEmpty()) {
-                mViewModel.selectMinute.value = minuteList.first()
+                mViewModel.selectMinute.value = minuteList.firstOrNull()?.minute
                 mBinding.includeAppointSubmitMinute.clScanOrderConfig.let { cl ->
                     if (cl.childCount > 3) {
                         cl.removeViews(3, cl.childCount - 3)
@@ -157,23 +159,22 @@ class AppointmentSubmitActivity :
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
-                            mViewModel.isDryer.observe(this){
-                                itemBinding.isDryer = it
+                            mViewModel.selectCategory.observe(this){
+                                itemBinding.code = it?.goodsCategoryCode
                             }
-                            itemBinding.isTime = true
-                            itemBinding.name = "$item${StringUtils.getString(R.string.minute)}"
+                            itemBinding.item = item
                             (itemBinding.root as AppCompatRadioButton).let { rb ->
                                 rb.id = index + 1
 
                                 mViewModel.selectMinute.observe(this) {
-                                    (item == it).let { isSame ->
+                                    (item.minute == it).let { isSame ->
                                         if (isSame != rb.isChecked) {
                                             rb.isChecked = isSame
                                         }
                                     }
                                 }
                                 rb.setOnClickListener {
-                                    mViewModel.selectMinute.value = item
+                                    mViewModel.selectMinute.value = item.minute
                                     mViewModel.selectDevice.value = null
                                 }
                             }

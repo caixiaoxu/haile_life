@@ -1,5 +1,11 @@
 package com.yunshang.haile_life.data.entities
 
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import androidx.core.content.ContextCompat
+import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
@@ -31,9 +37,22 @@ data class NearStoreEntity(
                     "%.2fkm", distance / 1000
                 ) else String.format(
                     "%.2fm", distance
-                )) + if (isJoin && getAddressVal().isNotEmpty()) " | " else ""
+                ))
 
-    fun getAddressVal(): String = address
+    fun getAddressVal(): SpannableString {
+        val distance = formatDistance()
+        val address = if (address.isNotEmpty()) " | $address" else ""
+
+        return com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+            distance + address,
+            arrayOf(
+                ForegroundColorSpan(
+                    ContextCompat.getColor(Constants.APP_CONTEXT, R.color.color_black_45),
+                ),
+                StyleSpan(Typeface.NORMAL)
+            ), 0, distance.length
+        )
+    }
 
     fun appointStateVal(): String =
         StringUtils.getString(if (1 == appointmentState) R.string.can_appointment else R.string.can_not_appointment)

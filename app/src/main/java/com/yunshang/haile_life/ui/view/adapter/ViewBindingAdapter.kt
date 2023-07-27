@@ -64,6 +64,7 @@ object ViewBindingAdapter {
         "txtColor",
         "txtStateColor",
         "txtStyle",
+        "txtBgRes",
         requireAll = false
     )
     @JvmStatic
@@ -79,6 +80,7 @@ object ViewBindingAdapter {
         txtColor: Int?,
         txtStateColor: Int?,
         txtStyle: Int?,
+        txtBgRes: Int?
     ) {
         setCompoundDrawablesWithIntrinsicBounds(
             dsRes ?: 0,
@@ -114,6 +116,9 @@ object ViewBindingAdapter {
                 2 -> Typeface.defaultFromStyle(Typeface.ITALIC)
                 else -> Typeface.defaultFromStyle(Typeface.NORMAL)
             }
+        }
+        txtBgRes?.let {
+            setBackgroundResource(txtBgRes)
         }
     }
 

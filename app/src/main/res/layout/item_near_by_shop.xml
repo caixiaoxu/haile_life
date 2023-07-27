@@ -38,11 +38,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:text="@string/idle"
             app:layout_constraintBottom_toBottomOf="@id/tv_near_by_shop_name"
             app:layout_constraintEnd_toStartOf="@id/rv_near_by_device_num"
             app:layout_constraintStart_toEndOf="@id/tv_near_by_shop_name"
-            app:layout_constraintTop_toTopOf="@id/tv_near_by_shop_name"
-            android:text="@string/idle" />
+            app:layout_constraintTop_toTopOf="@id/tv_near_by_shop_name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rv_near_by_device_num"
@@ -58,26 +58,16 @@
             tools:text="10" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_near_by_shop_distance"
-            style="@style/Font_12_black_85"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text='@{item.formatDistance(true)}'
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_near_by_shop_name"
-            tools:text="距您 534m" />
-
-        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_near_by_shop_address"
-            style="@style/Font_12_black_85"
+            style="@style/Font_12_black_85_bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@{item.getAddressVal}"
-            tools:text="I 浙大紫金港路具体多少号"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_near_by_shop_distance"
-            app:layout_constraintTop_toTopOf="@id/tv_near_by_shop_distance" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_near_by_shop_name"
+            tools:text="I 浙大紫金港路具体多少号" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"

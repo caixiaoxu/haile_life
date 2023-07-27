@@ -17,6 +17,7 @@ import com.yunshang.haile_life.data.entities.AppointCategory
 import com.yunshang.haile_life.data.entities.AppointDevice
 import com.yunshang.haile_life.data.entities.AppointSpec
 import com.yunshang.haile_life.data.model.ApiRepository
+import com.yunshang.haile_life.data.rule.IOrderConfigEntity
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 import java.util.*
@@ -85,11 +86,13 @@ class AppointmentSubmitViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    val minuteList: LiveData<List<Int>> = selectSpec.map {
+    val minuteList: LiveData<List<MinuteEntity>> = selectSpec.map {
         if (DeviceCategory.isDryerOrHair(selectCategory.value?.goodsCategoryCode)) {
-            it.unitList
+            it.unitList.map { unit ->
+                MinuteEntity(unit)
+            }
         } else {
-            listOf(it.extAttr.minutes)
+            listOf(MinuteEntity(it.extAttr.minutes))
         }
     }
 
@@ -168,5 +171,18 @@ class AppointmentSubmitViewModel : BaseViewModel() {
                 }
             }
         })
+    }
+
+    class MinuteEntity(val minute: Int) : IOrderConfigEntity {
+        override fun getTitle(code: String?): String =
+            "${minute}${com.lsy.framelib.utils.StringUtils.getString(R.string.minute)}"
+
+        override fun getTitleTxtColor(code: String?): Int =
+            if (DeviceCategory.isDryerOrHair(code)) R.color.selector_black85_ff630e
+            else R.color.selector_black85_04d1e5
+
+        override fun getTitleBg(code: String?): Int =
+            if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
+            else R.drawable.selector_device_model_item1
     }
 }

@@ -1,5 +1,9 @@
 package com.yunshang.haile_life.data.entities
 
+import com.yunshang.haile_life.R
+import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.rule.IOrderConfigEntity
+
 /**
  * Title :
  * Author: Lsy
@@ -20,4 +24,14 @@ data class AppointSpec(
     val name: String,
     val specValueId: Int,
     val unitList: List<Int>
-)
+) : IOrderConfigEntity {
+    override fun getTitle(code: String?): String = name
+    override fun getTitleTxtColor(code: String?): Int =
+        if (DeviceCategory.isDryerOrHair(code)) R.color.selector_black85_ff630e
+        else R.color.selector_black85_04d1e5
+
+    override fun getTitleBg(code: String?): Int =
+        if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
+        else R.drawable.selector_device_model_item
+
+}

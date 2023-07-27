@@ -39,15 +39,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            style="@style/Font_24_black_85"
-            tools:text="¥ 4.00"
-            android:fontFamily="@font/money"/>
+            style="@style/Font_24_black_85_bold"
+            tools:text="¥ 4.00"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_pay_success_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:gravity="center"
             android:layout_marginHorizontal="46dp"
             style="@style/Font_12_666666"/>
 

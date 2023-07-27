@@ -35,8 +35,11 @@ data class MessageEntity(
             else -> "您有1笔订单已完成"
         }
 
-    fun messageContent(): String =
-        GsonUtils.json2Class(content, MessageContentEntity::class.java)?.let {
+    fun messageContent(): MessageContentEntity? =
+        GsonUtils.json2Class(content, MessageContentEntity::class.java)
+
+    fun messageContentVal(): String =
+        messageContent()?.let {
             when (subtype) {
                 "user:order:appoint" -> it.content
                 "user:order:start" -> "预计${it.endTime}完成"

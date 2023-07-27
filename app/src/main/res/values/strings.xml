@@ -88,6 +88,7 @@
     <string name="scan_order_wash_hint">温馨提示：请勿将宠物用品、鞋类、易损衣物放入洗衣机清洗。</string>
     <string name="scan_order_dryer_hint">温馨提示：烘干前请检查衣物是不遗留易燃易爆物品。</string>
     <string name="scan_order_shoes_hint">温馨提示：请勿将宠物用品、易损衣物放入洗鞋机清洗。</string>
+    <string name="scan_order_hair_hint">温馨提示：使用时请不要离吹风口太近避免烫伤。</string>
     <string name="select_category_model">请选择设备类型</string>
     <string name="select_work_model">请选择%1$s模式</string>
     <string name="select_work_time">请选择%1$s时长</string>

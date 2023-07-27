@@ -81,8 +81,8 @@ data class TradePreviewPromotion(
     fun getDiscountTitle(): String = StringUtils.getString(
         when (promotionProduct) {
             1 -> R.string.limited_time_offer
-            2-> R.string.shop_coupon
-            4-> R.string.platform_coupon
+            2 -> R.string.shop_coupon
+            4 -> R.string.platform_coupon
             5 -> R.string.starfish_discount
             else -> R.string.order_discount_coupon
         }
@@ -147,30 +147,52 @@ data class TradePreviewPromotionDetail(
         StringUtils.getStringArray(R.array.discount_coupon_type)[couponType]
 
     fun discountCouponValue(): SpannableString = when (couponType) {
-        1 -> formatValue("¥ $reduce", 2)
-        3 -> formatValue("${percentage}折", 0)
-        4 -> formatValue("¥ $specifiedPrice", 2)
+        1 -> "¥ ${
+            com.yunshang.haile_life.utils.string.StringUtils.checkAmountStrIsIntOrDouble(
+                reduce
+            )
+        }".let { formatValue(it, 2, it.length) }
+        3 -> "${
+            com.yunshang.haile_life.utils.string.StringUtils.checkAmountStrIsIntOrDouble(
+                percentage
+            )
+        }折".let {
+            formatValue(it, 0, it.length - 1)
+        }
+        4 -> "¥ ${
+            com.yunshang.haile_life.utils.string.StringUtils.checkAmountStrIsIntOrDouble(
+                specifiedPrice
+            )
+        }".let { formatValue(it, 2, it.length) }
         else -> SpannableString("")
     }
 
-    private fun formatValue(content: String, start: Int): SpannableString {
+    private fun formatValue(content: String, start: Int, end: Int): SpannableString {
         val index = content.indexOf(".")
-        val end = if (index == -1) {
-            content.length
+        val e = if (index == -1) {
+            end
         } else {
             index
         }
         return com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
             content, arrayOf(
                 AbsoluteSizeSpan(DimensionUtils.sp2px(32f))
-            ), start, end
+            ), start, e
         )
     }
 
     fun limitDesc(): String =
         when (couponType) {
-            1 -> "满${orderReachPrice}可用"
-            3 -> "最高抵扣${maxDiscountPrice}元"
+            1 -> "满${
+                com.yunshang.haile_life.utils.string.StringUtils.checkAmountStrIsIntOrDouble(
+                    orderReachPrice
+                )
+            }可用"
+            3 -> "最高抵扣${
+                com.yunshang.haile_life.utils.string.StringUtils.checkAmountStrIsIntOrDouble(
+                    maxDiscountPrice
+                )
+            }元"
             4 -> if (specifiedPrice.isEmpty()) "全额减免" else "额外支付金额"
             else -> ""
         }

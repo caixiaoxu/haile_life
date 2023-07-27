@@ -1,10 +1,12 @@
 package com.yunshang.haile_life.business.vm
 
 import android.app.Activity
+import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -102,9 +104,11 @@ class OrderSubmitViewModel : BaseViewModel() {
                 content, arrayOf(
                     ForegroundColorSpan(
                         ContextCompat.getColor(
-                            Constants.APP_CONTEXT, R.color.secondColorPrimary
+                            Constants.APP_CONTEXT,
+                            if (DeviceCategory.isDryerOrHair(goods.value?.firstOrNull()?.categoryCode)) R.color.color_ff630e else R.color.secondColorPrimary
                         )
-                    )
+                    ),
+                    StyleSpan(Typeface.BOLD)
                 ), 3, 3 + time.length
             )
         } ?: SpannableString("")

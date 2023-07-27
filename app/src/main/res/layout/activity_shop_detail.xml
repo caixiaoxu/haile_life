@@ -87,26 +87,16 @@
                 tools:background="@drawable/shape_s1904cee5_r4" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_shop_detail_distance"
-                style="@style/Font_12_black_85"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text='@{vm.shopDetail.formatDistance()}'
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_shop_detail_name"
-                tools:text="距您 534m" />
-
-            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_shop_detail_address"
-                style="@style/Font_12_black_85"
+                style="@style/Font_12_black_85_bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text='@{vm.shopDetail.getAddressVal}'
+                android:layout_marginTop="4dp"
+                android:text='@{vm.shopDetail.getAddressVal()}'
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_shop_detail_distance"
-                app:layout_constraintTop_toTopOf="@id/tv_shop_detail_distance"
-                tools:text=" I 浙大紫金港路具体多少号" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_shop_detail_name"
+                tools:text="距您 534m I 浙大紫金港路具体多少号" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/tv_shop_detail_startfinsh"

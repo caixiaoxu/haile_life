@@ -83,7 +83,7 @@
                 android:background="@drawable/shape_sffffff_rb8"
                 android:button="@null"
                 android:drawableStart="@mipmap/icon_pay_alipay_way"
-                android:drawableEnd="@drawable/selector_cyan_check"
+                android:drawableEnd="@drawable/selector_cyan_big_check"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="12dp"
@@ -97,14 +97,13 @@
                 android:background="@drawable/shape_sffffff_rb8"
                 android:button="@null"
                 android:drawableStart="@mipmap/icon_pay_wechat_way"
-                android:drawableEnd="@drawable/selector_cyan_check"
+                android:drawableEnd="@drawable/selector_cyan_big_check"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="12dp"
                 android:paddingBottom="4dp"
                 android:text="@string/wechat"
                 android:visibility="gone" />
-
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/rb_order_balance_pay_way"
@@ -115,7 +114,7 @@
                 android:background="@drawable/shape_sffffff_r8"
                 android:button="@null"
                 android:drawableStart="@mipmap/icon_pay_account_way"
-                android:drawableEnd="@drawable/selector_cyan_check"
+                android:drawableEnd="@drawable/selector_cyan_big_check"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="12dp"

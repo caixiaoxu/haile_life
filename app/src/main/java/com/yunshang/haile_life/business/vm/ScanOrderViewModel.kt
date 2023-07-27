@@ -7,11 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.MarketingService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
-import com.yunshang.haile_life.data.entities.*
+import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
+import com.yunshang.haile_life.data.entities.ExtAttrBean
+import com.yunshang.haile_life.data.entities.GoodsScanEntity
+import com.yunshang.haile_life.data.entities.ShopUmpItem
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.string.StringUtils
 
@@ -42,6 +44,7 @@ class ScanOrderViewModel : BaseViewModel() {
             DeviceCategory.Washing -> com.lsy.framelib.utils.StringUtils.getString(R.string.scan_order_wash_hint)
             DeviceCategory.Dryer -> com.lsy.framelib.utils.StringUtils.getString(R.string.scan_order_dryer_hint)
             DeviceCategory.Shoes -> com.lsy.framelib.utils.StringUtils.getString(R.string.scan_order_shoes_hint)
+            DeviceCategory.Hair -> com.lsy.framelib.utils.StringUtils.getString(R.string.scan_order_hair_hint)
             else -> ""
         }
     }
@@ -112,7 +115,9 @@ class ScanOrderViewModel : BaseViewModel() {
                     mDeviceRepo.requestDeviceDetailItem(scan.goodsId)
                 )?.let {
                     deviceConfigs.postValue(it)
-                    it.firstOrNull()?.let { first ->
+                    (if (DeviceCategory.isHair(scan.categoryCode)) {
+                        it.find { item -> 1 == item.amount }
+                    } else it.firstOrNull())?.let { first ->
                         selectDeviceConfig.postValue(first)
 
                         first.getExtAttrs(DeviceCategory.isDryerOrHair(scan.categoryCode))

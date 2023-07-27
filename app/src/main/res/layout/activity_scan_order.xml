@@ -121,9 +121,8 @@
             style="@style/Font_16_white_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableEnd="@mipmap/icon_small_arrow_right"
+            android:drawableEnd="@mipmap/icon_order_submit_right"
             android:drawablePadding="4dp"
-            android:drawableTint="@color/white"
             android:gravity="center"
             android:text="@string/selected"
             app:layout_constraintBottom_toBottomOf="@id/view_scan_order_selected"
@@ -133,11 +132,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_scan_order_price"
-            style="@style/Font_20_black_85"
+            style="@style/Font_20_black_85_bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/money"
             app:layout_constraintBottom_toTopOf="@id/tv_scan_order_desc"
             app:layout_constraintEnd_toStartOf="@id/view_scan_order_selected"
             app:layout_constraintStart_toStartOf="parent"

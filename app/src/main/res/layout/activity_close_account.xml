@@ -132,12 +132,13 @@
             android:paddingTop="10dp">
 
             <com.lsy.framelib.ui.weight.SingleTapButton
+                android:id="@+id/btn_close_account_submit"
                 style="@style/CommonMatchBtnStyle1"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginHorizontal="24dp"
-                android:onClick="@{vm::closeAccount}"
-                android:text="@string/sure_close" />
+                android:enabled="@{0 >= vm.btnVal }"
+                android:text='@{@string/sure_close + (vm.btnVal > 0?"("+vm.btnVal+")":"")}' />
         </FrameLayout>
     </LinearLayout>
 </layout>

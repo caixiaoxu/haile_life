@@ -94,7 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="@{vm.lastMessage.messageContent()}"
+                        android:text="@{vm.lastMessage.messageContentVal()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:text="预计17:05完成洗衣" />
@@ -110,13 +110,14 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.lsy.framelib.ui.weight.SingleTapButton
+                    <com.lsy.framelib.ui.weight.SingleTapTextView
                         android:id="@+id/btn_home_cur_task_close"
                         style="@style/Font_12_FFFFFF"
                         android:layout_width="66dp"
                         android:layout_height="27dp"
                         android:layout_marginEnd="12dp"
                         android:layout_marginBottom="18dp"
+                        android:gravity="center"
                         android:background="@drawable/shape_04cee5_04dbe5_r14"
                         android:onClick="@{vm::readCurTaskMsg}"
                         android:text="@string/i_know"

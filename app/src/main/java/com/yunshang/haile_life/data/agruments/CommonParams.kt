@@ -35,15 +35,27 @@ object DeviceCategory {
     // 投放器
     const val Dispenser = "09"
 
-    @StringDef(Washing, Shoes, Dryer, Hair, Water,Dispenser)
+    @StringDef(Washing, Shoes, Dryer, Hair, Water, Dispenser)
     @Retention(AnnotationRetention.SOURCE)
     annotation class IDeviceCategoryType
+
+    /**
+     * 是否是烘干机或吹风机
+     */
+    @JvmStatic
+    fun isDryerOrHair(categoryCode: String?) = Dryer == categoryCode || Hair == categoryCode
 
     /**
      * 是否是烘干机
      */
     @JvmStatic
-    fun isDryerOrHair(categoryCode: String?) = Dryer == categoryCode || Hair == categoryCode
+    fun isDryer(categoryCode: String?) = Dryer == categoryCode
+
+    /**
+     * 是否是吹机
+     */
+    @JvmStatic
+    fun isHair(categoryCode: String?) = Hair == categoryCode
 
     fun categoryName(categoryCode: String?): String = when (categoryCode) {
         Washing -> "洗衣机"
@@ -51,7 +63,7 @@ object DeviceCategory {
         Dryer -> "烘干机"
         Hair -> "吹风机"
         Water -> "饮水机"
-        Dispenser->"投放器"
+        Dispenser -> "投放器"
         else -> ""
     }
 
