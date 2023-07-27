@@ -66,7 +66,7 @@ class SharedViewModel : ViewModel() {
         isCheckToken: Boolean = false,
     ) {
         // 公共参数
-        params["authorizationClientType"] = 4
+        params["authorizationClientType"] = 9
         //区分是否是检验token接口
         val loginData = if (isCheckToken) {
             ApiRepository.dealApiResult(mRepo.checkToken(ApiRepository.createRequestBody(params)))

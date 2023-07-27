@@ -56,7 +56,7 @@ class SettingViewModel : BaseViewModel() {
             mLoginRepo.logout(
                 ApiRepository.createRequestBody(
                     hashMapOf(
-                        "authorizationClientType" to 4
+                        "authorizationClientType" to 9
                     )
                 )
             )
