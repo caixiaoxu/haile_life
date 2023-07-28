@@ -3,12 +3,14 @@ package com.yunshang.haile_life.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.SparseArray
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import com.lsy.framelib.utils.ActivityUtils
 import com.lsy.framelib.utils.AppPackageUtils
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.tencent.map.geolocation.TencentLocationManager
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
@@ -51,6 +53,18 @@ class MainActivity :
         })
         put(R.id.rb_main_tab_mine, MineFragment())
     }
+
+    // 权限
+    private val requestMultiplePermission =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result: Map<String, Boolean> ->
+            if (result.values.any { it }) {
+                // 授权权限成功
+                scanCodeLauncher.launch(scanOptions)
+            } else {
+                // 授权失败
+                SToast.showToast(this, R.string.empty_permission)
+            }
+        }
 
     // 扫码相机启动器
     private val scanCodeLauncher = registerForActivityResult(ScanContract()) { result ->
@@ -135,7 +149,7 @@ class MainActivity :
                     SToast.showToast(this, R.string.pay_code_error)
                 }
             }
-        }
+        } ?: SToast.showToast(this, R.string.qr_code_error)
     }
 
     private val scanOptions: ScanOptions by lazy {
@@ -183,7 +197,10 @@ class MainActivity :
     override fun initView() {
         mBinding.ivMainScan.setOnClickListener {
             if (checkLogin()) {
-                scanCodeLauncher.launch(scanOptions)
+                requestMultiplePermission.launch(
+                    SystemPermissionHelper.cameraPermissions()
+                        .plus(SystemPermissionHelper.readWritePermissions())
+                )
             }
         }
 

@@ -73,6 +73,8 @@ object PictureSelectUtils {
     fun pictureForAlbum(
         context: Context,
         maxNum: Int,
+        needCompress: Boolean = true,
+        needCrop: Boolean = true,
         callback: (isSuccess: Boolean, result: ArrayList<LocalMedia>?) -> Unit
     ) {
         // 相册
@@ -80,8 +82,14 @@ object PictureSelectUtils {
             .openGallery(SelectMimeType.ofImage())//相册筛选类型
             .setImageEngine(GlideEngine)//加载图片引擎
             .setMaxSelectNum(maxNum)//最大选择数
-            .setCompressEngine(ImageCompressFileEngine())//压缩
-            .setCropEngine(ImageCropFileCropEngine())//裁剪
+            .apply {
+                if (needCompress) {
+                    setCompressEngine(ImageCompressFileEngine())//压缩
+                }
+                if (needCrop) {
+                    setCropEngine(ImageCropFileCropEngine())//裁剪
+                }
+            }
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: ArrayList<LocalMedia>) {
                     result.forEachIndexed { index, localMedia ->

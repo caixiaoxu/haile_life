@@ -44,7 +44,7 @@ object DialogUtils {
                     if (1 == data!!.id) {
                         PictureSelectUtils.takePicture(activity, callback)
                     } else {
-                        PictureSelectUtils.pictureForAlbum(activity, maxNum, callback)
+                        PictureSelectUtils.pictureForAlbum(activity, maxNum, callback = callback)
                     }
                 }
             }
