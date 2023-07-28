@@ -445,6 +445,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:visibility="gone"
                     android:background="@drawable/shape_sffffff_r8">
 
                     <androidx.appcompat.widget.AppCompatImageView

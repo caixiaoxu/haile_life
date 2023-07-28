@@ -30,6 +30,8 @@ class CustomCaptureActivity : BaseActivity() {
 
     private lateinit var capture: CustomCaptureManager
 
+    override fun isFullScreen(): Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
@@ -98,19 +100,21 @@ class CustomCaptureActivity : BaseActivity() {
      * 解析图片选择
      */
     private fun parseImgQrCode(bitmap: Bitmap) {
-        capture.returnResultForAlbum(try {
-            val width = bitmap.width
-            val height = bitmap.height
-            val pixels = IntArray(width * height)
-            bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
-            val source = RGBLuminanceSource(width, height, pixels)
-            val binaryBitmap = BinaryBitmap(HybridBinarizer(source))
+        capture.returnResultForAlbum(
+            try {
+                val width = bitmap.width
+                val height = bitmap.height
+                val pixels = IntArray(width * height)
+                bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
+                val source = RGBLuminanceSource(width, height, pixels)
+                val binaryBitmap = BinaryBitmap(HybridBinarizer(source))
 
-            QRCodeReader().decode(binaryBitmap).text
-        }catch (e:Exception){
-            e.printStackTrace()
-            null
-        })
+                QRCodeReader().decode(binaryBitmap).text
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        )
     }
 
     override fun onResume() {
