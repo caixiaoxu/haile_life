@@ -115,7 +115,6 @@ object IntentParams {
         private const val ReserveTime = "reserveTime"
         private const val DeviceName = "deviceName"
         private const val ShopAddress = "shopAddress"
-        private const val IsForceUseStarfish = "isForceUseStarfish"
 
         /**
          * 包装参数
@@ -125,7 +124,6 @@ object IntentParams {
             reserveTime: String? = null,
             deviceName: String? = null,
             shopAddress: String? = null,
-            isForceUseStarfish: Boolean = false,
         ): Bundle =
             Bundle().apply {
                 putString(Goods, GsonUtils.any2Json(goods))
@@ -138,7 +136,6 @@ object IntentParams {
                 shopAddress?.let {
                     putString(ShopAddress, shopAddress)
                 }
-                putBoolean(IsForceUseStarfish, isForceUseStarfish)
             }
 
         /**
@@ -150,8 +147,6 @@ object IntentParams {
         fun parseReserveTime(intent: Intent): String? = intent.getStringExtra(ReserveTime)
         fun parseDeviceName(intent: Intent): String? = intent.getStringExtra(DeviceName)
         fun parseShopAddress(intent: Intent): String? = intent.getStringExtra(ShopAddress)
-        fun parseIsForceUseStarfish(intent: Intent): Boolean =
-            intent.getBooleanExtra(IsForceUseStarfish, true)
 
         data class OrderSubmitGood(
             val categoryCode: String,

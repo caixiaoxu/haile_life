@@ -60,9 +60,6 @@ class OrderSubmitViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    // 是否强制海星
-    var isForceUseStarfish: Boolean = false
-
     val balance: MutableLiveData<BalanceEntity> by lazy {
         MutableLiveData()
     }

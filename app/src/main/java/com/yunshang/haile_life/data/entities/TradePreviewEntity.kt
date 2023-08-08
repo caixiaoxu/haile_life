@@ -76,7 +76,8 @@ data class TradePreviewPromotion(
     val participateList: List<TradePreviewParticipate>,
     val promotionProduct: Int,//1-限时特惠，2-商家优惠券，3-折扣卡，4-平台优惠券，5-海星折扣
     val realPrice: String,
-    val used: Boolean
+    val used: Boolean,
+    val forceUse:Boolean,//是否强制使用
 ) {
     fun getDiscountTitle(): String = StringUtils.getString(
         when (promotionProduct) {
@@ -105,6 +106,7 @@ data class TradePreviewParticipate(
     val originAmount: String,
     val realAmount: String,
     val used: Boolean,
+    val forceUse:Boolean,//是否强制使用
     val promotionDetail: TradePreviewPromotionDetail
 ) {
     var isCheck = false
