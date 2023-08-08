@@ -1,6 +1,8 @@
 package com.yunshang.haile_life.business.vm
 
 import android.content.Context
+import android.util.SparseArray
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.AppPackageUtils
@@ -9,9 +11,14 @@ import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.CommonService
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.MarketingService
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
+import com.yunshang.haile_life.ui.fragment.HomeFragment
+import com.yunshang.haile_life.ui.fragment.MineFragment
+import com.yunshang.haile_life.ui.fragment.OrderFragment
+import com.yunshang.haile_life.ui.fragment.StoreFragment
 import com.yunshang.haile_life.utils.string.StringUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,6 +38,19 @@ class MainViewModel : BaseViewModel() {
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mAppointmentRepo = ApiRepository.apiClient(AppointmentService::class.java)
+
+    // 当前的fragment
+    var curFragmentTag: String? = null
+
+    val fragments = SparseArray<Fragment>(5).apply {
+        put(R.id.rb_main_tab_home, HomeFragment())
+        put(R.id.rb_main_tab_store, StoreFragment())
+        put(R.id.rb_main_tab_scan, HomeFragment())
+        put(R.id.rb_main_tab_order, OrderFragment().apply {
+            arguments = IntentParams.OrderListParams.pack(true)
+        })
+        put(R.id.rb_main_tab_mine, MineFragment())
+    }
 
     //选择的id
     val checkId: MutableLiveData<Int> = MutableLiveData(R.id.rb_main_tab_home)

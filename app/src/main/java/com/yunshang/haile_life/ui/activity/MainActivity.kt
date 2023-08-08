@@ -2,9 +2,7 @@ package com.yunshang.haile_life.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.SparseArray
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import com.lsy.framelib.utils.ActivityUtils
@@ -26,10 +24,6 @@ import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
-import com.yunshang.haile_life.ui.fragment.HomeFragment
-import com.yunshang.haile_life.ui.fragment.MineFragment
-import com.yunshang.haile_life.ui.fragment.OrderFragment
-import com.yunshang.haile_life.ui.fragment.StoreFragment
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
@@ -40,19 +34,6 @@ import java.util.*
 
 class MainActivity :
     BaseBusinessActivity<ActivityMainBinding, MainViewModel>(MainViewModel::class.java, BR.vm) {
-
-    // 当前的fragment
-    private var curFragment: Fragment? = null
-
-    private val fragments = SparseArray<Fragment>(2).apply {
-        put(R.id.rb_main_tab_home, HomeFragment())
-        put(R.id.rb_main_tab_store, StoreFragment())
-        put(R.id.rb_main_tab_scan, HomeFragment())
-        put(R.id.rb_main_tab_order, OrderFragment().apply {
-            arguments = IntentParams.OrderListParams.pack(true)
-        })
-        put(R.id.rb_main_tab_mine, MineFragment())
-    }
 
     // 权限
     private val requestMultiplePermission =
@@ -245,18 +226,28 @@ class MainActivity :
      * 显示子布局
      */
     private fun showChildFragment(id: Int) {
-        curFragment?.let {
-            supportFragmentManager.beginTransaction().hide(it).commit()
+        // 隐藏之前的界面
+        mViewModel.curFragmentTag?.let {
+            supportFragmentManager.findFragmentByTag(it)?.let { fragment ->
+                supportFragmentManager.beginTransaction().hide(fragment).commit()
+            }
+        } ?: run {
+            supportFragmentManager.fragments.forEach { fragment ->
+                supportFragmentManager.beginTransaction().hide(fragment).commit()
+            }
         }
 
-        fragments[id]?.let {
-            if (it.isAdded) {
-                supportFragmentManager.beginTransaction().show(it).commit()
-            } else {
-                supportFragmentManager.beginTransaction().add(R.id.fl_main_controller, it)
-                    .commit()
-            }
-            curFragment = it
+        mViewModel.fragments[id]?.let {
+            val fragmentName = it.javaClass.name
+            supportFragmentManager.findFragmentByTag(fragmentName)?.let { fragment ->
+                supportFragmentManager.beginTransaction().show(fragment).commit()
+                if (it != fragment) {
+                    mViewModel.fragments[id] = fragment
+                }
+            } ?: supportFragmentManager.beginTransaction()
+                .add(R.id.fl_main_controller, it, fragmentName)
+                .commit()
+            mViewModel.curFragmentTag = fragmentName
         }
     }
 
