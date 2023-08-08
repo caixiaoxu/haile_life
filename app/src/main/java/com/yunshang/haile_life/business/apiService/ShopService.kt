@@ -56,4 +56,7 @@ interface ShopService {
 
     @GET("/starfish/refundDetail")
     suspend fun requestRefundDetail(@Query("id") id: Int): ResponseWrapper<StarfishRefundDetailEntity>
+
+    @POST("/shopConfig/list")
+    suspend fun requestShopConfigList(@Body body: RequestBody): ResponseWrapper<MutableList<ShopConfigEntity>>
 }

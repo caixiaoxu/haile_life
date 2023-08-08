@@ -70,6 +70,8 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
         mViewModel.reserveTime.value = IntentParams.OrderSubmitParams.parseReserveTime(intent)
         mViewModel.deviceName.value = IntentParams.OrderSubmitParams.parseDeviceName(intent) ?: ""
         mViewModel.shopAddress.value = IntentParams.OrderSubmitParams.parseShopAddress(intent) ?: ""
+        mViewModel.isForceUseStarfish =
+            IntentParams.OrderSubmitParams.parseIsForceUseStarfish(intent)
     }
 
     override fun initEvent() {
@@ -173,6 +175,9 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                 } else R.mipmap.icon_uncheck
                             childBinding.tvOrderSubmitGoodValue.setOnClickListener {
                                 if (promotion.used) {
+                                    // 如果强制使用海星，不可取消
+                                    if (mViewModel.isForceUseStarfish) return@setOnClickListener
+
                                     mViewModel.selectParticipate?.removeAll { item -> 5 == item.promotionProduct }
                                 } else {
                                     if (promotion.options.isNotEmpty()) {

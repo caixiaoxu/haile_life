@@ -90,7 +90,7 @@ class MainViewModel : BaseViewModel() {
 
     fun requestScanResult(
         code: String,
-        callBack: (scanEntity: GoodsScanEntity, detailEntity: DeviceDetailEntity?, appointEntity: GoodsAppointmentEntity?) -> Unit
+        callBack: (scanEntity: GoodsScanEntity, detailEntity: DeviceDetailEntity, appointEntity: GoodsAppointmentEntity?) -> Unit
     ) {
         launch({
             ApiRepository.dealApiResult(
@@ -100,21 +100,20 @@ class MainViewModel : BaseViewModel() {
                 )
             )?.let { scan ->
                 // 设备详情
-                val deviceDetail =
-                    ApiRepository.dealApiResult(mDeviceRepo.requestDeviceDetail(scan.goodsId))
-
-                // 如果有预约跳转预约订单详情列表
-                val appointEntity = ApiRepository.dealApiResult(
-                    mAppointmentRepo.requestIsAppointmentOfGoods(
-                        ApiRepository.createRequestBody(
-                            hashMapOf("goodsId" to scan.goodsId)
+                ApiRepository.dealApiResult(mDeviceRepo.requestDeviceDetail(scan.goodsId))
+                    ?.let { deviceDetail ->
+                        // 如果有预约跳转预约订单详情列表
+                        val appointEntity = ApiRepository.dealApiResult(
+                            mAppointmentRepo.requestIsAppointmentOfGoods(
+                                ApiRepository.createRequestBody(
+                                    hashMapOf("goodsId" to scan.goodsId)
+                                )
+                            )
                         )
-                    )
-                )
-
-                withContext(Dispatchers.Main) {
-                    callBack(scan, deviceDetail, appointEntity)
-                }
+                        withContext(Dispatchers.Main) {
+                            callBack(scan, deviceDetail, appointEntity)
+                        }
+                    }
             }
         })
     }

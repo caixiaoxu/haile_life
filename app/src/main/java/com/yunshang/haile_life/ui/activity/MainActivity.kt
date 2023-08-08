@@ -73,30 +73,28 @@ class MainActivity :
             val code = StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
             code?.let {
                 mViewModel.requestScanResult(code) { scan, detail, appoint ->
-                    detail?.let {
-                        if (detail.deviceErrorCode > 0) {
-                            SToast.showToast(
-                                this@MainActivity,
-                                detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" }
-                            )
-                            return@requestScanResult
-                        } else if (2 == detail.soldState) {
-                            SToast.showToast(
-                                this@MainActivity,
-                                detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" }
-                            )
-                            return@requestScanResult
-                        } else if (0 == detail.amount) {
-                            SToast.showToast(
-                                this@MainActivity, "设备工作中,请稍后再试!"
-                            )
-                            return@requestScanResult
-                        } else if (detail.shopClosed) {
-                            SToast.showToast(
-                                this@MainActivity, "门店不在营业时间内,请稍后再试!"
-                            )
-                            return@requestScanResult
-                        }
+                    if (detail.deviceErrorCode > 0) {
+                        SToast.showToast(
+                            this@MainActivity,
+                            detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" }
+                        )
+                        return@requestScanResult
+                    } else if (2 == detail.soldState) {
+                        SToast.showToast(
+                            this@MainActivity,
+                            detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" }
+                        )
+                        return@requestScanResult
+                    } else if (0 == detail.amount) {
+                        SToast.showToast(
+                            this@MainActivity, "设备工作中,请稍后再试!"
+                        )
+                        return@requestScanResult
+                    } else if (detail.shopClosed) {
+                        SToast.showToast(
+                            this@MainActivity, "门店不在营业时间内,请稍后再试!"
+                        )
+                        return@requestScanResult
                     }
                     if (!appoint?.orderNo.isNullOrEmpty()) {
                         // 预约详情界面
@@ -114,7 +112,7 @@ class MainActivity :
                                 this@MainActivity,
                                 ScanOrderActivity::class.java
                             ).apply {
-                                putExtras(IntentParams.ScanOrderParams.pack(code, scan))
+                                putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
                             })
                     }
                 }

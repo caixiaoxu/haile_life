@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.data.entities.AppointDevice
+import com.yunshang.haile_life.data.entities.DeviceDetailEntity
 import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
 
@@ -75,14 +76,22 @@ object IntentParams {
     object ScanOrderParams {
         private const val CODE = "Code"
         private const val GoodsScan = "GoodsScan"
+        private const val DeviceDetail = "DeviceDetail"
 
         /**
          * 包装参数
          */
-        fun pack(payCode: String, goodsScan: GoodsScanEntity? = null): Bundle = Bundle().apply {
+        fun pack(
+            payCode: String,
+            goodsScan: GoodsScanEntity? = null,
+            deviceDetail: DeviceDetailEntity? = null
+        ): Bundle = Bundle().apply {
             putString(CODE, payCode)
             goodsScan?.let {
                 putString(GoodsScan, GsonUtils.any2Json(goodsScan))
+            }
+            deviceDetail?.let {
+                putString(DeviceDetail, GsonUtils.any2Json(deviceDetail))
             }
         }
 
@@ -91,11 +100,14 @@ object IntentParams {
          */
         fun parseCode(intent: Intent): String? = intent.getStringExtra(CODE)
 
-        /**
-         * 解析code
-         */
         fun parseGoodsScan(intent: Intent): GoodsScanEntity? =
             GsonUtils.json2Class(intent.getStringExtra(GoodsScan), GoodsScanEntity::class.java)
+
+        fun parseDeviceDetail(intent: Intent): DeviceDetailEntity? =
+            GsonUtils.json2Class(
+                intent.getStringExtra(DeviceDetail),
+                DeviceDetailEntity::class.java
+            )
     }
 
     object OrderSubmitParams {
@@ -103,6 +115,7 @@ object IntentParams {
         private const val ReserveTime = "reserveTime"
         private const val DeviceName = "deviceName"
         private const val ShopAddress = "shopAddress"
+        private const val IsForceUseStarfish = "isForceUseStarfish"
 
         /**
          * 包装参数
@@ -111,7 +124,8 @@ object IntentParams {
             goods: List<OrderSubmitGood>,
             reserveTime: String? = null,
             deviceName: String? = null,
-            shopAddress: String? = null
+            shopAddress: String? = null,
+            isForceUseStarfish: Boolean = false,
         ): Bundle =
             Bundle().apply {
                 putString(Goods, GsonUtils.any2Json(goods))
@@ -124,6 +138,7 @@ object IntentParams {
                 shopAddress?.let {
                     putString(ShopAddress, shopAddress)
                 }
+                putBoolean(IsForceUseStarfish, isForceUseStarfish)
             }
 
         /**
@@ -135,6 +150,8 @@ object IntentParams {
         fun parseReserveTime(intent: Intent): String? = intent.getStringExtra(ReserveTime)
         fun parseDeviceName(intent: Intent): String? = intent.getStringExtra(DeviceName)
         fun parseShopAddress(intent: Intent): String? = intent.getStringExtra(ShopAddress)
+        fun parseIsForceUseStarfish(intent: Intent): Boolean =
+            intent.getBooleanExtra(IsForceUseStarfish, true)
 
         data class OrderSubmitGood(
             val categoryCode: String,

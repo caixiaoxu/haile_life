@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.ViewUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
@@ -25,6 +26,7 @@ import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.view.ClickRadioButton
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 
 class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrderViewModel>(
@@ -42,67 +44,72 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
         IntentParams.ScanOrderParams.parseGoodsScan(intent)?.let {
             mViewModel.goodsScan.value = it
         }
+        IntentParams.ScanOrderParams.parseDeviceDetail(intent)?.let {
+            mViewModel.deviceDetail.value = it
+        }
     }
 
     override fun initEvent() {
         super.initEvent()
-        mViewModel.deviceConfigs.observe(this) { configs ->
-            if (configs.isNotEmpty()) {
-                mBinding.includeScanOrderConfig.clScanOrderConfig.let { cl ->
-                    if (cl.childCount > 3) {
-                        cl.removeViews(3, cl.childCount - 3)
-                    }
-                    val inflater = LayoutInflater.from(this@ScanOrderActivity)
-                    configs.forEachIndexed { index, item ->
-                        DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
-                            inflater, R.layout.item_scan_order_model_item, null, false
-                        )?.let { itemBinding ->
-                            mViewModel.goodsScan.value?.categoryCode?.let {
-                                itemBinding.code = it
-                            }
-                            itemBinding.item = item
-                            (itemBinding.root as ClickRadioButton).let { rb ->
-                                rb.id = index + 1
-
-                                if (DeviceCategory.isHair(mViewModel.goodsScan.value?.categoryCode)
-                                    && 0 == item.amount
-                                ) {
-                                    rb.setTextColor(
-                                        ContextCompat.getColor(
-                                            this@ScanOrderActivity,
-                                            R.color.color_black_25
-                                        )
-                                    )
-                                    rb.setOnRadioClickListener { true }
+        mViewModel.deviceDetail.observe(this) { detail ->
+            detail?.items?.let { configs ->
+                if (configs.isNotEmpty()) {
+                    mBinding.includeScanOrderConfig.clScanOrderConfig.let { cl ->
+                        if (cl.childCount > 3) {
+                            cl.removeViews(3, cl.childCount - 3)
+                        }
+                        val inflater = LayoutInflater.from(this@ScanOrderActivity)
+                        configs.forEachIndexed { index, item ->
+                            DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
+                                inflater, R.layout.item_scan_order_model_item, null, false
+                            )?.let { itemBinding ->
+                                mViewModel.goodsScan.value?.categoryCode?.let {
+                                    itemBinding.code = it
                                 }
+                                itemBinding.item = item
+                                (itemBinding.root as ClickRadioButton).let { rb ->
+                                    rb.id = index + 1
 
-                                mViewModel.selectDeviceConfig.observe(this) {
-                                    (item.id == it.id).let { isSame ->
-                                        if (isSame != rb.isChecked) {
-                                            rb.isChecked = isSame
+                                    if (DeviceCategory.isHair(mViewModel.goodsScan.value?.categoryCode)
+                                        && 0 == item.amount
+                                    ) {
+                                        rb.setTextColor(
+                                            ContextCompat.getColor(
+                                                this@ScanOrderActivity,
+                                                R.color.color_black_25
+                                            )
+                                        )
+                                        rb.setOnRadioClickListener { true }
+                                    }
+
+                                    mViewModel.selectDeviceConfig.observe(this) {
+                                        (item.id == it.id).let { isSame ->
+                                            if (isSame != rb.isChecked) {
+                                                rb.isChecked = isSame
+                                            }
+                                        }
+                                    }
+                                    rb.setOnClickListener {
+                                        mViewModel.selectDeviceConfig.value = item
+                                        mViewModel.goodsScan.value?.categoryCode?.let { code ->
+                                            item.getExtAttrs(DeviceCategory.isDryerOrHair(code))
+                                                .firstOrNull()?.let { firstAttr ->
+                                                    mViewModel.selectExtAttr.postValue(firstAttr)
+                                                }
                                         }
                                     }
                                 }
-                                rb.setOnClickListener {
-                                    mViewModel.selectDeviceConfig.value = item
-                                    mViewModel.goodsScan.value?.categoryCode?.let { code ->
-                                        item.getExtAttrs(DeviceCategory.isDryerOrHair(code))
-                                            .firstOrNull()?.let { firstAttr ->
-                                                mViewModel.selectExtAttr.postValue(firstAttr)
-                                            }
-                                    }
-                                }
+                                cl.addView(
+                                    itemBinding.root,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT
+                                )
                             }
-                            cl.addView(
-                                itemBinding.root,
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
                         }
+                        // 设置id
+                        val idList = IntArray(configs.size) { it + 1 }
+                        mBinding.includeScanOrderConfig.flowScanOrderItem.referencedIds = idList
                     }
-                    // 设置id
-                    val idList = IntArray(configs.size) { it + 1 }
-                    mBinding.includeScanOrderConfig.flowScanOrderItem.referencedIds = idList
                 }
             }
         }
@@ -159,6 +166,15 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
             finish()
         }
 
+        // 充值后刷新店铺配置
+        LiveDataBus.with(BusEvents.RECHARGE_SUCCESS_STATUS)?.observe(this) {
+            mViewModel.goodsScan.value?.let { scan ->
+                mViewModel.deviceDetail.value?.let { detail ->
+                    mViewModel.requestShopListAsync(detail.shopId, scan.goodsId, detail.categoryId)
+                }
+            }
+        }
+
         LiveDataBus.with(BusEvents.APPOINT_ORDER_USE_STATUS)?.observe(this) {
             finish()
         }
@@ -179,6 +195,25 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                     return@setOnClickListener
                 }
 
+                if (true == mViewModel.shopConfig.value?.result) {
+                    mViewModel.deviceDetail.value?.shopId?.let { shopId ->
+                        CommonDialog.Builder("海星余额不足，请先购买海星后再使用").apply {
+                            title = StringUtils.getString(R.string.scan_order_tips_hint)
+                            isCancelable = true
+                            isNegativeShow = false
+                            setPositiveButton(StringUtils.getString(R.string.go_buy)) {
+                                startActivity(
+                                    Intent(
+                                        this@ScanOrderActivity,
+                                        RechargeStarfishActivity::class.java
+                                    ).apply {
+                                        putExtras(IntentParams.RechargeStarfishParams.pack(shopId))
+                                    })
+                            }
+                        }.build().show(supportFragmentManager)
+                    }
+                    return@setOnClickListener
+                }
                 if (!SPRepository.isNoPrompt && null != mViewModel.goodsScan.value
                     && !DeviceCategory.isHair(mViewModel.goodsScan.value!!.categoryCode)
                 ) {
@@ -228,9 +263,10 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                             categoryCode,
                             goodId,
                             goodItemId,
-                            "$num"
+                            "$num",
                         )
-                    )
+                    ),
+                    isForceUseStarfish = !(mViewModel.shopConfig.value?.closable ?: true)
                 )
             )
         })

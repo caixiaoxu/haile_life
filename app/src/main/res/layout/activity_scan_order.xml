@@ -62,7 +62,7 @@
                 <include
                     android:id="@+id/include_scan_order_config"
                     layout="@layout/item_scan_order_model"
-                    android:visibility="@{(null == vm.deviceConfigs || 0 == vm.deviceConfigs.size())?View.GONE:View.VISIBLE}"
+                    android:visibility="@{(null == vm.deviceDetail || 0 == vm.deviceDetail.items.size())?View.GONE:View.VISIBLE}"
                     app:desc="@{vm.selectDeviceConfig.feature}"
                     app:modelTitle="@{vm.modelTitle}" />
 

@@ -1,5 +1,7 @@
 package com.yunshang.haile_life.business.vm
 
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.view.View
 import androidx.lifecycle.LiveData
@@ -13,6 +15,7 @@ import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
+import kotlinx.coroutines.delay
 import timber.log.Timber
 import java.util.*
 
@@ -125,6 +128,7 @@ class OrderDetailViewModel : BaseViewModel() {
                 )
             )
             LiveDataBus.post(BusEvents.ORDER_CANCEL_STATUS, true)
+            delay(2_000)
             requestOrderDetail()
         })
     }
@@ -150,6 +154,8 @@ class OrderDetailViewModel : BaseViewModel() {
             isAppoint.postValue(false)
             formScan.postValue(false)
             changeUseModel.postValue(false)
+
+            delay(2_000)
             requestOrderDetail()
         })
     }

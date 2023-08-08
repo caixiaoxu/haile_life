@@ -9,11 +9,9 @@ import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.MarketingService
+import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
-import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
-import com.yunshang.haile_life.data.entities.ExtAttrBean
-import com.yunshang.haile_life.data.entities.GoodsScanEntity
-import com.yunshang.haile_life.data.entities.ShopUmpItem
+import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.string.StringUtils
 
@@ -29,9 +27,14 @@ import com.yunshang.haile_life.utils.string.StringUtils
  */
 class ScanOrderViewModel : BaseViewModel() {
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
+    private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
 
     val goodsScan: MutableLiveData<GoodsScanEntity> by lazy {
+        MutableLiveData()
+    }
+
+    val shopConfig: MutableLiveData<ShopConfigEntity?> by lazy {
         MutableLiveData()
     }
 
@@ -63,7 +66,7 @@ class ScanOrderViewModel : BaseViewModel() {
         )
     }
 
-    val deviceConfigs: MutableLiveData<MutableList<DeviceDetailItemEntity>> by lazy {
+    val deviceDetail: MutableLiveData<DeviceDetailEntity> by lazy {
         MutableLiveData()
     }
 
@@ -111,20 +114,26 @@ class ScanOrderViewModel : BaseViewModel() {
                 }
             } else goodsScan.value
             goodsScan?.let { scan ->
-                ApiRepository.dealApiResult(
-                    mDeviceRepo.requestDeviceDetailItem(scan.goodsId)
-                )?.let {
-                    deviceConfigs.postValue(it)
+                // 商品详情
+                val deviceDetail = if (null == deviceDetail.value) {
+                    ApiRepository.dealApiResult(
+                        mDeviceRepo.requestDeviceDetail(scan.goodsId)
+                    )?.also {
+                        deviceDetail.postValue(it)
+                    }
+                } else deviceDetail.value
+                deviceDetail?.let { detail ->
                     (if (DeviceCategory.isHair(scan.categoryCode)) {
-                        it.find { item -> 1 == item.amount }
-                    } else it.firstOrNull())?.let { first ->
+                        detail.items.find { item -> 1 == item.amount }
+                    } else detail.items.firstOrNull())?.let { first ->
                         selectDeviceConfig.postValue(first)
-
                         first.getExtAttrs(DeviceCategory.isDryerOrHair(scan.categoryCode))
                             .firstOrNull()?.let { firstAttr ->
                                 selectExtAttr.postValue(firstAttr)
                             }
                     }
+
+                    requestShopList(detail.shopId, scan.goodsId, detail.categoryId)
                 }
                 if (scan.shopId > 0) {
                     ApiRepository.dealApiResult(
@@ -143,6 +152,29 @@ class ScanOrderViewModel : BaseViewModel() {
                 }
             }
         })
+    }
+
+    fun requestShopListAsync(shopId: Int, goodsId: Int, categoryId: Int) {
+        launch({
+            requestShopList(shopId, goodsId, categoryId)
+        })
+    }
+
+    private suspend fun requestShopList(shopId: Int, goodsId: Int, categoryId: Int) {
+        // 强制使用海星
+        ApiRepository.dealApiResult(
+            mShopRepo.requestShopConfigList(
+                ApiRepository.createRequestBody(
+                    hashMapOf(
+                        "shopId" to shopId,
+                        "goodsId" to goodsId,
+                        "goodsCategoryId" to categoryId
+                    )
+                )
+            )
+        )?.let {
+            shopConfig.postValue(it.find { item -> 1 == item.configType })
+        } ?: shopConfig.postValue(null)
     }
 
     fun closeRechargeStarfish(v: View) {
