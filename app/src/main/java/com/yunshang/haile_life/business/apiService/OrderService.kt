@@ -20,12 +20,14 @@ import retrofit2.http.Query
  * 作者姓名 修改时间 版本号 描述
  */
 interface OrderService {
-
     @POST("/trade/preview")
     suspend fun requestTradePreview(@Body body: RequestBody): ResponseWrapper<TradePreviewEntity>
 
     @POST("/trade/create")
     suspend fun createTrade(@Body body: RequestBody): ResponseWrapper<CreateTradeEntity>
+
+    @POST("/trade/payLaterCreate")
+    suspend fun createLaterTrade(@Body body: RequestBody): ResponseWrapper<CreateTradeEntity>
 
     @POST("/pay/prePay")
     suspend fun prePay(@Body body: RequestBody): ResponseWrapper<PrePayEntity>
@@ -53,4 +55,8 @@ interface OrderService {
 
     @POST("/appointment/using")
     suspend fun useAppointOrder(@Body body: RequestBody): ResponseWrapper<MutableList<Any>>
+
+    @POST("/trade/queryUnPayOrder")
+    suspend fun hasUnPayOrder(@Body body: RequestBody): ResponseWrapper<CreateTradeEntity>
+
 }

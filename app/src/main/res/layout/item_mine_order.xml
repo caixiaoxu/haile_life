@@ -73,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text='@{item.getOrderDeviceModel + " x1"}'
+            android:text="@{item.getOrderDeviceModel}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_item_mine_order_device_name"
             tools:text="大物洗 x1" />

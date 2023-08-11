@@ -15,9 +15,12 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderDetailViewModel
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.databinding.ActivityOrderDetailBinding
+import com.yunshang.haile_life.databinding.ItemOrderDetailSkuBinding
 import com.yunshang.haile_life.databinding.ItemTitleValueLrBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
@@ -95,7 +98,21 @@ class OrderDetailActivity :
         }
 
         mViewModel.orderDetail.observe(this) {
-            mViewModel.getOrderStatusVal(it)
+            it?.let {
+                mViewModel.getOrderStatusVal(it)
+
+                mBinding.llOrderDetailSkus.buildChild<ItemOrderDetailSkuBinding, OrderItem>(it.orderItemList.filter { item ->
+                    try {
+                        item.unit.toDouble() > 0.0
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        true
+                    }
+                }) { _, childBinding, data ->
+                    childBinding.item = data
+                    childBinding.state = it.state
+                }
+            }
         }
 
         LiveDataBus.with(BusEvents.PAY_OVERTIME_STATUS)?.observe(this) {
@@ -117,8 +134,9 @@ class OrderDetailActivity :
                     putExtras(
                         IntentParams.OrderPayParams.pack(
                             detail.orderNo,
-                            detail.invalidTime,
-                            detail.realPrice
+                            if (DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)) "" else detail.invalidTime,
+                            detail.realPrice,
+                            detail.orderItemList.firstOrNull()?.categoryCode
                         )
                     )
                 })

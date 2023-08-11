@@ -42,6 +42,7 @@
             app:flow_horizontalStyle="packed"
             app:flow_verticalGap="12dp"
             app:flow_wrapMode="chain"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/tv_scan_order_item_title" />
 
         <androidx.appcompat.widget.AppCompatTextView

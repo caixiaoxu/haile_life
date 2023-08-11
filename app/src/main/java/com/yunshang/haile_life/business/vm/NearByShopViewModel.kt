@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.network.response.ResponseList
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.business.apiService.ShopService
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.NearStoreEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.rule.IndicatorEntity
@@ -34,10 +35,12 @@ class NearByShopViewModel : BaseViewModel() {
 
     val mNearByShopIndicators = arrayListOf(
         IndicatorEntity("全部", 0, ""),
-        IndicatorEntity("洗衣机", 0, "00"),
-        IndicatorEntity("烘干机", 0, "02"),
-        IndicatorEntity("洗鞋机", 0, "01"),
-        IndicatorEntity("吹风机", 0, "03"),
+        IndicatorEntity("洗衣机", 0, DeviceCategory.Washing),
+        IndicatorEntity("烘干机", 0, DeviceCategory.Dryer),
+        IndicatorEntity("洗鞋机", 0, DeviceCategory.Shoes),
+        IndicatorEntity("吹风机", 0, DeviceCategory.Hair),
+        IndicatorEntity("饮水机", 0, DeviceCategory.Water),
+//        IndicatorEntity("投放器", 0, "09"),
     )
 
     /**

@@ -108,38 +108,18 @@
                     android:visibility="@{vm.formScan?View.GONE:View.VISIBLE}"
                     tools:text="浙大紫荆港校区蓝田学园\n生公寓3区1号楼\n10号洗衣机" />
 
-                <LinearLayout
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_order_detail_skus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:background="@drawable/shape_sffffff_r8"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Font_16_black_85"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{vm.orderDetail.getOrderDeviceModel}"
-                        tools:text="标准洗" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Font_14_black_85"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:text="@{vm.orderDetail.getOrderDeviceUnit}"
-                        tools:text="30分钟" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Font_14_ff630e_bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{vm.orderDetail.getOrderDeviceOriginPrice}"
-                        tools:text="¥5" />
-                </LinearLayout>
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    app:divider="@drawable/divide_size8"
+                    app:itemLayout="@layout/item_order_detail_sku"
+                    app:showDividers="middle" />
 
                 <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
                     android:id="@+id/ll_order_detail_discount"
@@ -161,7 +141,7 @@
                     android:background="@drawable/shape_sffffff_r8"
                     android:orientation="vertical"
                     android:padding="12dp"
-                    android:visibility="@{vm.formScan?View.GONE:View.VISIBLE}"
+                    android:visibility="@{(vm.formScan || 50 == vm.orderDetail.state)?View.GONE:View.VISIBLE}"
                     app:divider="@drawable/divide_size8"
                     app:showDividers="middle">
 
@@ -192,7 +172,7 @@
                     android:background="@drawable/shape_sffffff_r8"
                     android:orientation="vertical"
                     android:padding="12dp"
-                    android:visibility="@{vm.formScan?View.GONE:View.VISIBLE}"
+                    android:visibility="@{(vm.formScan || 50 == vm.orderDetail.state)?View.GONE:View.VISIBLE}"
                     app:divider="@drawable/divide_size8"
                     app:showDividers="middle">
 
@@ -217,6 +197,57 @@
                     android:layout_marginHorizontal="16dp"
                     android:text="@string/appoint_order_detail_prompt"
                     android:visibility="@{(!vm.isAppoint || vm.formScan)?View.GONE:View.VISIBLE}" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:padding="12dp"
+                    android:visibility="@{50 == vm.orderDetail.state?View.VISIBLE:View.GONE}">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_drinking_scan_order_tip"
+                        style="@style/Font_14_black_65_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scan_order_tips_hint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_drinking_scan_order_tip1"
+                        style="@style/Font_14_black_45"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@{@string/drinking_order_tip1(vm.orderDetail.drinkingOverTime)}"
+                        app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
+                        app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip"
+                        tools:text="持续放水超过2秒会自动结束订单" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_drinking_scan_order_tip2"
+                        style="@style/Font_14_black_45"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@{@string/drinking_order_tip2(vm.orderDetail.drinkingPauseTime)}"
+                        app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
+                        app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip1"
+                        tools:text="暂停放水超过20秒会自动结束订单" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_drinking_scan_order_tip3"
+                        style="@style/Font_14_black_45"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/drinking_order_tip3"
+                        app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
+                        app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip2"
+                        tools:text="先使用，订单结束后根据用水量扣费" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
 

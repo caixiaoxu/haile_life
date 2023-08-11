@@ -13,6 +13,7 @@ import com.tencent.map.geolocation.TencentLocationManager
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.MainViewModel
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.AppVersionEntity
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
@@ -20,6 +21,7 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityMainBinding
 import com.yunshang.haile_life.ui.activity.common.CustomCaptureActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
+import com.yunshang.haile_life.ui.activity.order.DrinkingScanOrderActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
@@ -88,13 +90,22 @@ class MainActivity :
                                 putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo, true, 1))
                             })
                     } else {
-                        startActivity(
-                            Intent(
-                                this@MainActivity,
-                                ScanOrderActivity::class.java
-                            ).apply {
-                                putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
-                            })
+                        if (DeviceCategory.isDrinking(detail.categoryCode))
+                            startActivity(
+                                Intent(
+                                    this@MainActivity,
+                                    DrinkingScanOrderActivity::class.java
+                                ).apply {
+                                    putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
+                                })
+                        else
+                            startActivity(
+                                Intent(
+                                    this@MainActivity,
+                                    ScanOrderActivity::class.java
+                                ).apply {
+                                    putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
+                                })
                     }
                 }
             } ?: run {
@@ -128,7 +139,7 @@ class MainActivity :
                     SToast.showToast(this, R.string.pay_code_error)
                 }
             }
-        } ?: SToast.showToast(this, R.string.qr_code_error)
+        }
     }
 
     private val scanOptions: ScanOptions by lazy {

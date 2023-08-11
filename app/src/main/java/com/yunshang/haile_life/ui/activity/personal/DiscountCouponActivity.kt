@@ -62,6 +62,11 @@ class DiscountCouponActivity :
 
     override fun backBtn(): View = mBinding.includeIndicatorList.barIndicatorListTitle.getBackBtn()
 
+    override fun initIntent() {
+        super.initIntent()
+        mViewModel.categoryCode = IntentParams.DeviceParams.parseCategoryCode(intent)
+    }
+
     override fun initEvent() {
         super.initEvent()
         mViewModel.curCouponStatus.observe(this) {

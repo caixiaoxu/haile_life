@@ -62,7 +62,7 @@ class AppointmentSubmitActivity :
                                 inflater, R.layout.item_scan_order_model_item, null, false
                             )?.let { itemBinding ->
                                 itemBinding.item = item
-                                mViewModel.selectCategory.observe(this){
+                                mViewModel.selectCategory.observe(this) {
                                     itemBinding.code = it?.goodsCategoryCode
                                 }
 
@@ -98,7 +98,10 @@ class AppointmentSubmitActivity :
                         }
                         // 设置id
                         val idList = IntArray(categoryList.size) { it + 1 }
-                        mBinding.includeAppointSubmitCategory.flowScanOrderItem.referencedIds = idList
+                        mBinding.includeAppointSubmitCategory.flowScanOrderItem.referencedIds =
+                            idList
+                        mBinding.includeAppointSubmitCategory.flowScanOrderItem.visibility =
+                            View.VISIBLE
                     }
                 }
             }
@@ -115,7 +118,7 @@ class AppointmentSubmitActivity :
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
-                            mViewModel.selectCategory.observe(this){
+                            mViewModel.selectCategory.observe(this) {
                                 itemBinding.code = it?.goodsCategoryCode
                             }
                             itemBinding.item = item
@@ -143,6 +146,7 @@ class AppointmentSubmitActivity :
                     // 设置id
                     val idList = IntArray(specList.size) { it + 1 }
                     mBinding.includeAppointSubmitSpec.flowScanOrderItem.referencedIds = idList
+                    mBinding.includeAppointSubmitSpec.flowScanOrderItem.visibility = View.VISIBLE
                 }
             }
         }
@@ -159,7 +163,7 @@ class AppointmentSubmitActivity :
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                             inflater, R.layout.item_scan_order_model_item, null, false
                         )?.let { itemBinding ->
-                            mViewModel.selectCategory.observe(this){
+                            mViewModel.selectCategory.observe(this) {
                                 itemBinding.code = it?.goodsCategoryCode
                             }
                             itemBinding.item = item
@@ -188,6 +192,7 @@ class AppointmentSubmitActivity :
                     // 设置id
                     val idList = IntArray(minuteList.size) { it + 1 }
                     mBinding.includeAppointSubmitMinute.flowScanOrderItem.referencedIds = idList
+                    mBinding.includeAppointSubmitMinute.flowScanOrderItem.visibility = View.VISIBLE
                 }
             }
         }

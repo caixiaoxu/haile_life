@@ -268,6 +268,21 @@ object IntentParams {
         }
     }
 
+    object DeviceParams {
+        private const val CategoryCode = "categoryCode"
+
+        /**
+         * 包装参数
+         */
+        fun pack(categoryCode: String?): Bundle =
+            Bundle().apply {
+                putString(CategoryCode, categoryCode)
+            }
+
+
+        fun parseCategoryCode(intent: Intent): String? = intent.getStringExtra(CategoryCode)
+    }
+
     object DiscountCouponSelectorParams {
         private const val SelectCoupon = "SelectCoupon"
         private const val PromotionProduct = "promotionProduct"
@@ -396,11 +411,17 @@ object IntentParams {
         /**
          * 包装参数
          */
-        fun pack(orderNo: String, timeRemaining: String, price: String): Bundle =
+        fun pack(
+            orderNo: String,
+            timeRemaining: String,
+            price: String,
+            categoryCode: String? = null
+        ): Bundle =
             Bundle().apply {
                 putAll(OrderParams.pack(orderNo))
                 putString(TimeRemaining, timeRemaining)
                 putString(Price, price)
+                putAll(DeviceParams.pack(categoryCode))
             }
 
         fun parseOrderNo(intent: Intent): String? = OrderParams.parseOrderNo(intent)

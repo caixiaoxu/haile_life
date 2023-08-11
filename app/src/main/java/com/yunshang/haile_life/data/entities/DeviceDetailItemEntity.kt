@@ -1,5 +1,11 @@
 package com.yunshang.haile_life.data.entities
 
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.StyleSpan
+import androidx.lifecycle.MutableLiveData
+import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
@@ -36,7 +42,8 @@ data class DeviceDetailItemEntity(
     val stockState: Int,
     val unit: String,
     val vipDiscount: String,
-    val vipDiscountPrice: String
+    val vipDiscountPrice: String,
+    val dosingConfigDTOS: List<DosingConfigDTOS>
 ) : IOrderConfigEntity {
 
     override fun getTitle(code: String?): String =
@@ -62,6 +69,25 @@ data class DeviceDetailItemEntity(
                 arrayListOf()
             }
         }
+
+    val drinkingTitle: SpannableString
+        get() = com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+            "${name} ${price}${if (1 == getDrinkingExtAttr()?.priceCalculateMode) "ml" else "s"}",
+            arrayOf(
+                AbsoluteSizeSpan(DimensionUtils.sp2px(14f)),
+                StyleSpan(Typeface.NORMAL)
+            ), 0, name.length
+        )
+
+    val drinkingIcon: Int
+        get() = if (1 == getDrinkingExtAttr()?.waterTypeId) R.mipmap.icon_drinking_configure_normal else R.mipmap.icon_drinking_configure_hot
+
+    var drinkAttrConfigure: DrinkAttrConfigure? = null
+
+    fun getDrinkingExtAttr() =
+        (drinkAttrConfigure ?: GsonUtils.json2Class(extAttr, DrinkAttrConfigure::class.java).also {
+            drinkAttrConfigure = it
+        })
 }
 
 data class ExtAttrBean(
@@ -78,4 +104,32 @@ data class ExtAttrBean(
     override fun getTitleBg(code: String?): Int =
         if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
         else R.drawable.selector_device_model_item1
+}
+
+data class DrinkAttrConfigure(
+    val overTime: String,
+    val pauseTime: String,
+    val priceCalculateMode: Int,//1 按流量，2按时间
+    val priceCalculateUnit: String,
+    val singlePulseQuantity: String,
+    val waterTypeId: Int
+)
+
+data class DosingConfigDTOS(
+    val amount: String,
+    val delayTime: Int,
+    val description: String,
+    val isDefault: Boolean,
+    val isOn: Boolean,
+    val itemId: Int,
+    val liquidTypeId: Int,
+    val name: String,
+    val price: String
+):IOrderConfigEntity{
+    override fun getTitle(code: String?): String = name
+
+    override fun getTitleTxtColor(code: String?): Int = R.color.selector_black85_04d1e5
+
+    override fun getTitleBg(code: String?): Int = R.drawable.selector_device_model_item1
+
 }

@@ -1,7 +1,5 @@
 package com.yunshang.haile_life.business.vm
 
-import android.os.Handler
-import android.os.Looper
 import android.text.SpannableString
 import android.view.View
 import androidx.lifecycle.LiveData
@@ -12,6 +10,7 @@ import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -38,6 +37,7 @@ class OrderDetailViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
+
     val formScan: MutableLiveData<Boolean> by lazy {
         MutableLiveData()
     }
@@ -63,7 +63,7 @@ class OrderDetailViewModel : BaseViewModel() {
                 false
             } else {
                 if (true == isAppoint.value) 0 == detail.appointmentState || 1 == detail.appointmentState
-                else 100 == detail.state
+                else 100 == detail.state && !DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)
             }
         } ?: false
     }
@@ -178,7 +178,7 @@ class OrderDetailViewModel : BaseViewModel() {
         if (true == isAppoint.value) {
             orderStatusDesc.postValue(detail.getOrderDetailAppointTimePrompt())
         } else {
-            if (100 == detail.state) {
+            if (100 == detail.state && !DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)) {
                 DateTimeUtils.formatDateFromString(detail.invalidTime)
                     ?.let { invidateTime ->
                         //后端脚本延迟15秒

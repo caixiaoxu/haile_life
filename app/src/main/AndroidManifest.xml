@@ -36,6 +36,12 @@
         android:theme="@style/Theme.HaileLife"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.order.DrinkingScanOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.device.DeviceNavigationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.order.OrderPayActivity"
             android:exported="false" />
         <activity

@@ -19,9 +19,12 @@ import com.yunshang.haile_life.business.vm.ScanOrderViewModel
 import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.DeviceDetailEntity
+import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
 import com.yunshang.haile_life.data.entities.ExtAttrBean
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityScanOrderBinding
+import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
@@ -52,65 +55,70 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
     override fun initEvent() {
         super.initEvent()
         mViewModel.deviceDetail.observe(this) { detail ->
-            detail?.items?.let { configs ->
-                if (configs.isNotEmpty()) {
-                    mBinding.includeScanOrderConfig.clScanOrderConfig.let { cl ->
-                        if (cl.childCount > 3) {
-                            cl.removeViews(3, cl.childCount - 3)
-                        }
-                        val inflater = LayoutInflater.from(this@ScanOrderActivity)
-                        configs.forEachIndexed { index, item ->
-                            DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
-                                inflater, R.layout.item_scan_order_model_item, null, false
-                            )?.let { itemBinding ->
-                                mViewModel.goodsScan.value?.categoryCode?.let {
-                                    itemBinding.code = it
-                                }
-                                itemBinding.item = item
-                                (itemBinding.root as ClickRadioButton).let { rb ->
-                                    rb.id = index + 1
-
-                                    if (DeviceCategory.isHair(mViewModel.goodsScan.value?.categoryCode)
-                                        && 0 == item.amount
-                                    ) {
-                                        rb.setTextColor(
-                                            ContextCompat.getColor(
-                                                this@ScanOrderActivity,
-                                                R.color.color_black_25
-                                            )
-                                        )
-                                        rb.setOnRadioClickListener { true }
+            detail?.let {
+                detail.items.let { configs ->
+                    if (configs.isNotEmpty()) {
+                        mBinding.includeScanOrderConfig.clScanOrderConfig.let { cl ->
+                            if (cl.childCount > 3) {
+                                cl.removeViews(3, cl.childCount - 3)
+                            }
+                            val inflater = LayoutInflater.from(this@ScanOrderActivity)
+                            configs.forEachIndexed { index, item ->
+                                DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
+                                    inflater, R.layout.item_scan_order_model_item, null, false
+                                )?.let { itemBinding ->
+                                    mViewModel.goodsScan.value?.categoryCode?.let {
+                                        itemBinding.code = it
                                     }
+                                    itemBinding.item = item
+                                    (itemBinding.root as ClickRadioButton).let { rb ->
+                                        rb.id = index + 1
 
-                                    mViewModel.selectDeviceConfig.observe(this) {
-                                        (item.id == it.id).let { isSame ->
-                                            if (isSame != rb.isChecked) {
-                                                rb.isChecked = isSame
+                                        if (DeviceCategory.isHair(mViewModel.goodsScan.value?.categoryCode)
+                                            && 0 == item.amount
+                                        ) {
+                                            rb.setTextColor(
+                                                ContextCompat.getColor(
+                                                    this@ScanOrderActivity,
+                                                    R.color.color_black_25
+                                                )
+                                            )
+                                            rb.setOnRadioClickListener { true }
+                                        }
+
+                                        mViewModel.selectDeviceConfig.observe(this) {
+                                            (item.id == it.id).let { isSame ->
+                                                if (isSame != rb.isChecked) {
+                                                    rb.isChecked = isSame
+                                                }
+                                            }
+                                        }
+                                        rb.setOnClickListener {
+                                            mViewModel.selectDeviceConfig.value = item
+                                            mViewModel.goodsScan.value?.categoryCode?.let { code ->
+                                                item.getExtAttrs(DeviceCategory.isDryerOrHair(code))
+                                                    .firstOrNull()?.let { firstAttr ->
+                                                        mViewModel.selectExtAttr.postValue(firstAttr)
+                                                    }
                                             }
                                         }
                                     }
-                                    rb.setOnClickListener {
-                                        mViewModel.selectDeviceConfig.value = item
-                                        mViewModel.goodsScan.value?.categoryCode?.let { code ->
-                                            item.getExtAttrs(DeviceCategory.isDryerOrHair(code))
-                                                .firstOrNull()?.let { firstAttr ->
-                                                    mViewModel.selectExtAttr.postValue(firstAttr)
-                                                }
-                                        }
-                                    }
+                                    cl.addView(
+                                        itemBinding.root,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT
+                                    )
                                 }
-                                cl.addView(
-                                    itemBinding.root,
-                                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                                    ViewGroup.LayoutParams.WRAP_CONTENT
-                                )
                             }
+                            // 设置id
+                            val idList = IntArray(configs.size) { it + 1 }
+                            mBinding.includeScanOrderConfig.flowScanOrderItem.referencedIds = idList
+                            mBinding.includeScanOrderConfig.flowScanOrderItem.visibility =
+                                View.VISIBLE
                         }
-                        // 设置id
-                        val idList = IntArray(configs.size) { it + 1 }
-                        mBinding.includeScanOrderConfig.flowScanOrderItem.referencedIds = idList
                     }
                 }
+                buildAttachSkuView(detail)
             }
         }
 
@@ -158,6 +166,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                     // 设置id
                     val idList = IntArray(list.size) { it + 1 }
                     mBinding.includeScanOrderTime.flowScanOrderItem.referencedIds = idList
+                    mBinding.includeScanOrderTime.flowScanOrderItem.visibility = View.VISIBLE
                 }
             }
         }
@@ -177,6 +186,76 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
 
         LiveDataBus.with(BusEvents.APPOINT_ORDER_USE_STATUS)?.observe(this) {
             finish()
+        }
+    }
+
+    /**
+     * 构建关键sku的布局
+     */
+    private fun buildAttachSkuView(detail: DeviceDetailEntity) {
+        if (!detail.attachItems.isNullOrEmpty()) {
+            val attachList = detail.attachItems.filter { item -> 1 == item.soldState }
+            mBinding.llScanOrderConfigsAttrSku.buildChild<ItemScanOrderModelBinding, DeviceDetailItemEntity>(
+                if (detail.isShowDispenser)
+                    attachList
+                else
+                    detail.attachItems.subList(0, 1)
+            ) { _, childBinding, data ->
+                if (detail.isShowDispenser) {
+                    childBinding.modelTitle = "自动投放${data.name}"
+                    childBinding.clScanOrderConfig.let { cl ->
+                        if (cl.childCount > 3) {
+                            cl.removeViews(3, cl.childCount - 3)
+                        }
+                        val inflater = LayoutInflater.from(this@ScanOrderActivity)
+                        data.dosingConfigDTOS.forEachIndexed { index, item ->
+                            DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
+                                inflater, R.layout.item_scan_order_model_item, null, false
+                            )?.let { itemBinding ->
+                                mViewModel.goodsScan.value?.categoryCode?.let {
+                                    itemBinding.code = it
+                                }
+                                itemBinding.item = item
+                                (itemBinding.root as ClickRadioButton).let { rb ->
+                                    rb.id = index + 1
+
+                                    mViewModel.selectDeviceConfig.observe(this) {
+                                        (item.itemId == it.id).let { isSame ->
+                                            if (isSame != rb.isChecked) {
+                                                rb.isChecked = isSame
+                                            }
+                                        }
+                                    }
+
+                                    rb.setOnClickListener {
+                                        //                                                mViewModel.selectDeviceConfig.value = item
+                                        //                                                mViewModel.goodsScan.value?.categoryCode?.let { code ->
+                                        //                                                    item.getExtAttrs(DeviceCategory.isDryerOrHair(code))
+                                        //                                                        .firstOrNull()?.let { firstAttr ->
+                                        //                                                            mViewModel.selectExtAttr.postValue(firstAttr)
+                                        //                                                        }
+                                        //                                                }
+                                    }
+                                }
+                                cl.addView(
+                                    itemBinding.root,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT
+                                )
+                            }
+                        }
+                        // 设置id
+                        val idList = IntArray(data.dosingConfigDTOS.size) { it + 1 }
+                        childBinding.flowScanOrderItem.referencedIds = idList
+                        childBinding.flowScanOrderItem.visibility = View.VISIBLE
+                    }
+                } else {
+                    childBinding.modelTitle = "自动投放" + attachList.joinToString("/") { item ->
+                        item.name
+                    }
+                    childBinding.desc = detail.hideDispenserTips
+                }
+            }
         }
     }
 

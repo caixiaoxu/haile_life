@@ -82,8 +82,8 @@ object StringUtils {
     fun formatMultiStyleStr(
         content: String,
         spans: Array<Any>,
-        start: Int,
-        end: Int
+        start: Int = 0,
+        end: Int = content.length
     ): SpannableString = SpannableString(content).apply {
         spans.forEach {
             setSpan(it, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
@@ -298,14 +298,14 @@ object StringUtils {
      */
     @JvmStatic
     fun formatAmountStr(amount: Double): String {
-        return (if (amount >= 0) "¥" else "-¥") +checkAmountIsIntOrDouble(amount)
+        return (if (amount >= 0) "¥" else "-¥") + checkAmountIsIntOrDouble(amount)
     }
 
     /**
      * 判断是否是整数
      */
     @JvmStatic
-    fun checkAmountStrIsIntOrDouble(numStr: String?): String?{
+    fun checkAmountStrIsIntOrDouble(numStr: String?): String? {
         return try {
             numStr?.let {
                 checkAmountIsIntOrDouble(numStr.toDouble())

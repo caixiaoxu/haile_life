@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.DeviceDetailItemEntity" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_drinking_scan_order_configure"
+        style="@style/Font_18_black_65_bold"
+        app:drawTop="@{item.drinkingIcon}"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:text="@{item.drinkingTitle}"
+        tools:text="常温 1.00元/L">
+
+    </androidx.appcompat.widget.AppCompatTextView>
+</layout>

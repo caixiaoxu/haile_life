@@ -22,6 +22,8 @@
     <string name="am">上午</string>
     <string name="pm">下午</string>
     <string name="tip">提示</string>
+    <string name="scan">扫码</string>
+    <string name="coming_soon">敬请期待</string>
 
     <string name="login_title">登录海乐生活</string>
     <string name="bind_phone_title">绑定手机号</string>
@@ -227,6 +229,18 @@
     <string name="capture_light">补光</string>
     <string name="capture_album">相册</string>
     <string name="capture_scan">扫一扫</string>
+
+    <string name="card_manager">卡管理</string>
+    <string name="consumption_order">消费订单</string>
+    <string name="faq">常见问题</string>
+    <string name="drinking_device_name">您要使用的是%1$s</string>
+    <string name="click_start_use">点击开始使用</string>
+    <string name="drinking_order_tip1">持续放水超过%1$s秒会自动结束订单</string>
+    <string name="drinking_order_tip2">暂停放水超过%1$s秒会自动结束订单</string>
+    <string name="drinking_order_tip3">先使用，订单结束后根据用水量扣费</string>
+
+    <string name="auto_put_in_laundry_detergent">自动投放洗衣液</string>
+    <string name="auto_put_in_disinfectant">自动投放除菌液</string>
 
     <string-array name="scan_order_wash_confirm">
         <item>请确认当前洗衣机舱门已经锁好</item>

@@ -10,6 +10,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderPayViewModel
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.WxPrePayEntity
 import com.yunshang.haile_life.databinding.ActivityOrderPayBinding
@@ -30,6 +31,8 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
         mViewModel.orderNo = IntentParams.OrderPayParams.parseOrderNo(intent)
         mViewModel.timeRemaining = IntentParams.OrderPayParams.parseTimeRemaining(intent)
         mViewModel.price = IntentParams.OrderPayParams.parsePrice(intent) ?: ""
+        mViewModel.isDrinking =
+            DeviceCategory.isDrinking(IntentParams.DeviceParams.parseCategoryCode(intent))
     }
 
     override fun initEvent() {

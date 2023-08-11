@@ -23,6 +23,8 @@ import kotlinx.coroutines.withContext
 class DiscountCouponViewModel : BaseViewModel() {
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
 
+    var categoryCode: String? = null
+
     var curCouponStatus: MutableLiveData<Int> = MutableLiveData(1)
 
     val mCouponIndicators: MutableLiveData<List<IndicatorEntity<Int>>> = MutableLiveData(
@@ -46,6 +48,7 @@ class DiscountCouponViewModel : BaseViewModel() {
                             "page" to page,
                             "pageSize" to pageSize,
                             "state" to curCouponStatus.value,
+                            "categoryCode" to categoryCode
                         )
                     )
                 )
@@ -54,14 +57,14 @@ class DiscountCouponViewModel : BaseViewModel() {
                     callBack(it)
                 }
             }
-            requestCouponNum()
+//            requestCouponNum()
         })
     }
 
-    suspend fun requestCouponNum() {
-        ApiRepository.dealApiResult(
-            mMarketingRepo.requestDiscountCouponNum()
-        )?.let {
-        }
-    }
+//    suspend fun requestCouponNum() {
+//        ApiRepository.dealApiResult(
+//            mMarketingRepo.requestDiscountCouponNum()
+//        )?.let {
+//        }
+//    }
 }

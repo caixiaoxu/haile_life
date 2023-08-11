@@ -12,6 +12,7 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.CapitalService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.BalanceEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -32,10 +33,11 @@ import java.util.*
 class OrderPayViewModel : BaseViewModel() {
     private val mCapitalRepo = ApiRepository.apiClient(CapitalService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
-
     var orderNo: String? = null
 
     var timeRemaining: String? = null
+
+    var isDrinking: Boolean = false
 
     val remaining: MutableLiveData<Long> by lazy {
         MutableLiveData()
@@ -54,7 +56,6 @@ class OrderPayViewModel : BaseViewModel() {
                 second
             )
         } ?: "00:00"
-
     }
 
     var price: String = ""

@@ -5,6 +5,7 @@ import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
+import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
@@ -88,7 +89,22 @@ data class OrderEntity(
     }
 
     fun getOrderDetailFinishTimePrompt(): SpannableString = when (state) {
-        100 -> SpannableString("订单待付款")
+        50 -> com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+            "先使用，订单结束后根据用水量扣费",
+            arrayOf(
+                ForegroundColorSpan(
+                    ContextCompat.getColor(Constants.APP_CONTEXT, R.color.color_ff630e)
+                )
+            ),
+        )
+        100 -> if (DeviceCategory.isDrinking(orderItemList.firstOrNull()?.categoryCode)) com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+            "请尽快完成支付",
+            arrayOf(
+                ForegroundColorSpan(
+                    ContextCompat.getColor(Constants.APP_CONTEXT, R.color.color_ff630e)
+                )
+            ),
+        ) else SpannableString("订单待付款")
         401 -> SpannableString("订单超时关闭，请重新下单～")
         411 -> SpannableString("订单已取消，请重新下单～")
         500 -> StringUtils.getString(R.string.predict_finish_time).let { prefix ->
@@ -152,20 +168,14 @@ data class OrderEntity(
     fun getOrderDeviceName(): String =
         if (orderItemList.isNotEmpty()) orderItemList.first().goodsName else ""
 
-    fun getOrderDeviceModel(): String = orderItemList.firstOrNull()?.goodsItemName ?: ""
+    fun getOrderDeviceModel(): String = orderItemList.firstOrNull()?.let {
+        if (DeviceCategory.isDrinking(it.categoryCode)) {
+            orderItemList.joinToString(",") { item -> item.goodsItemName }
+        } else "${it.goodsItemName} x1"
+    } ?: ""
 
     fun getGoodInfo(): String = if (orderItemList.isNotEmpty()) orderItemList.first()
         .run { "${shopName}\n${area}${address}\n${goodsName}" } else ""
-
-    fun getOrderDeviceUnit(): String =
-        if (orderItemList.isNotEmpty()) "${orderItemList.first().unit}分钟" else ""
-
-    fun getOrderDeviceOriginPrice(): String =
-        if (orderItemList.isNotEmpty()) "${
-            com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
-                orderItemList.first().originPrice
-            )
-        }" else ""
 
     fun getOrderDiscountTotalPrice(): String = try {
         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(originPrice.toDouble() - payAmount.toDouble())
@@ -173,6 +183,9 @@ data class OrderEntity(
         e.printStackTrace()
         ""
     }
+
+    fun drinkingOverTime(): String = orderItemList.firstOrNull()?.goodsItemInfo?.overTime ?: ""
+    fun drinkingPauseTime(): String = orderItemList.firstOrNull()?.goodsItemInfo?.pauseTime ?: ""
 }
 
 data class OrderItem(
@@ -190,7 +203,37 @@ data class OrderItem(
     val originPrice: String,
     val realPrice: String,
     val shopName: String,
-    val unit: Int
+    val unit: String,
+    val goodsItemExtAttr: String,
+    val originUnitPrice: String,
+    val realUnitPrice: String,
+) {
+    val goodsItemInfo: GoodsItemInfoEntity?
+        get() = if (DeviceCategory.isDrinking(categoryCode)) GsonUtils.json2Class(
+            goodsItemExtAttr,
+            GoodsItemInfoEntity::class.java
+        ) else null
+
+    fun getOrderDeviceUnit(state: Int): String = if (DeviceCategory.isDrinking(categoryCode)) {
+        if (1 == goodsItemInfo?.priceCalculateMode) "${originUnitPrice}元/ml${if (50 != state) " X ${unit}/ml" else ""}" else "${originUnitPrice}元/s${if (50 != state) " X ${unit}/s" else ""}"
+    } else "${unit}分钟"
+
+    fun getOrderDeviceOriginPrice(state: Int): String = if (50 == state) ""
+    else
+        "${
+            com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
+                originPrice
+            )
+        }"
+}
+
+data class GoodsItemInfoEntity(
+    val priceCalculateMode: Int,
+    val overTime: String,
+    val pauseTime: String,
+    val priceCalculateUnit: String,
+    val singlePulseQuantity: String,
+    val waterTypeId: Int
 )
 
 data class PromotionParticipation(

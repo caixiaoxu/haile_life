@@ -71,8 +71,16 @@
                     layout="@layout/item_scan_order_model"
                     android:visibility="@{(null == vm.selectDeviceConfig)?View.GONE:View.VISIBLE}"
                     app:modelTitle="@{vm.timeTitle}" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_scan_order_configs_attr_sku"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:itemLayout="@layout/item_scan_order_model"
+                    app:divider="@drawable/divder_efefef"
+                    app:showDividers="middle"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout

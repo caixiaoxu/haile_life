@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="state"
+            type="java.lang.Integer" />
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.OrderItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_16_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.goodsItemName}"
+            tools:text="标准洗" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@{item.getOrderDeviceUnit(state)}"
+            tools:text="30分钟" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_ff630e_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.getOrderDeviceOriginPrice(state)}"
+            tools:text="¥5" />
+
+    </LinearLayout>
+</layout>
