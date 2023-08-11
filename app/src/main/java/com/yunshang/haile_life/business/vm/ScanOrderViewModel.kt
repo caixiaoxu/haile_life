@@ -94,6 +94,8 @@ class ScanOrderViewModel : BaseViewModel() {
         }
     }
 
+    var selectAttachSku: MutableMap<Int, MutableLiveData<DosingConfigDTOS>> = mutableMapOf()
+
     /**
      * 检测是否可提交
      */
@@ -131,6 +133,19 @@ class ScanOrderViewModel : BaseViewModel() {
                             .firstOrNull()?.let { firstAttr ->
                                 selectExtAttr.postValue(firstAttr)
                             }
+                    }
+
+                    if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
+                        // 初始化关联的sku
+                        selectAttachSku = mutableMapOf()
+                        detail.attachItems.forEach { item ->
+                            (item.dosingConfigDTOS.find { dtos -> dtos.isDefault }
+                                ?: run {
+                                    item.dosingConfigDTOS.firstOrNull()
+                                })?.let { default ->
+                                selectAttachSku[item.id] = MutableLiveData(default)
+                            }
+                        }
                     }
 
                     requestShopList(detail.shopId, scan.goodsId, detail.categoryId)

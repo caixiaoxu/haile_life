@@ -7,24 +7,45 @@
 
         <import type="com.yunshang.haile_life.R" />
 
+        <import type="android.view.View" />
+
         <variable
             name="code"
             type="java.lang.String" />
+
+        <variable
+            name="isDefault"
+            type="java.lang.Boolean" />
 
         <variable
             name="item"
             type="com.yunshang.haile_life.data.rule.IOrderConfigEntity" />
     </data>
 
-    <com.yunshang.haile_life.ui.view.ClickRadioButton
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:button="@null"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp"
-        android:text="@{item.getTitle(code)}"
-        android:textSize="14sp"
-        app:txtBgRes="@{item.getTitleBg(code)}"
-        app:txtStateColor="@{item.getTitleTxtColor(code)}"
-        tools:showIn="@layout/item_scan_order_model" />
+        tools:showIn="@layout/item_scan_order_model">
+
+        <com.yunshang.haile_life.ui.view.ClickRadioButton
+            android:id="@+id/rb_order_model_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="15dp"
+            android:button="@null"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:text="@{item.getTitle(code)}"
+            android:textSize="14sp"
+            app:txtBgRes="@{item.getTitleBg(code)}"
+            app:txtStateColor="@{item.getTitleTxtColor(code)}" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@mipmap/icon_recharge_starfish_recommend"
+            android:visibility="@{isDefault?View.VISIBLE:View.GONE}" />
+    </FrameLayout>
 </layout>

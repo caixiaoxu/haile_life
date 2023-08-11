@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
@@ -65,9 +64,8 @@ class AppointmentSubmitActivity :
                                 mViewModel.selectCategory.observe(this) {
                                     itemBinding.code = it?.goodsCategoryCode
                                 }
-
-                                (itemBinding.root as AppCompatRadioButton).let { rb ->
-                                    rb.id = index + 1
+                                itemBinding.root.id = index + 1
+                                itemBinding.rbOrderModelItem.let { rb ->
                                     mViewModel.isDryer.observe(this) {
                                         rb.setBackgroundResource(if (it) R.drawable.selector_device_model_item_dryer else R.drawable.selector_device_model_item)
                                         rb.setTextColor(
@@ -122,8 +120,8 @@ class AppointmentSubmitActivity :
                                 itemBinding.code = it?.goodsCategoryCode
                             }
                             itemBinding.item = item
-                            (itemBinding.root as AppCompatRadioButton).let { rb ->
-                                rb.id = index + 1
+                            itemBinding.root.id = index + 1
+                            itemBinding.rbOrderModelItem.let { rb ->
                                 mViewModel.selectSpec.observe(this) {
                                     (item.specValueId == it.specValueId).let { isSame ->
                                         if (isSame != rb.isChecked) {
@@ -167,9 +165,8 @@ class AppointmentSubmitActivity :
                                 itemBinding.code = it?.goodsCategoryCode
                             }
                             itemBinding.item = item
-                            (itemBinding.root as AppCompatRadioButton).let { rb ->
-                                rb.id = index + 1
-
+                            itemBinding.root.id = index + 1
+                            itemBinding.rbOrderModelItem.let { rb ->
                                 mViewModel.selectMinute.observe(this) {
                                     (item.minute == it).let { isSame ->
                                         if (isSame != rb.isChecked) {

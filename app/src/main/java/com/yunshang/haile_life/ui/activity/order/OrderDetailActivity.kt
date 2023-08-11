@@ -4,9 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.SToast
@@ -21,6 +24,8 @@ import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.databinding.ActivityOrderDetailBinding
 import com.yunshang.haile_life.databinding.ItemOrderDetailSkuBinding
+import com.yunshang.haile_life.databinding.ItemOrderDetailSkuDispenserBinding
+import com.yunshang.haile_life.databinding.ItemOrderDetailSkuGoodBinding
 import com.yunshang.haile_life.databinding.ItemTitleValueLrBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
@@ -102,15 +107,52 @@ class OrderDetailActivity :
                 mViewModel.getOrderStatusVal(it)
 
                 mBinding.llOrderDetailSkus.buildChild<ItemOrderDetailSkuBinding, OrderItem>(it.orderItemList.filter { item ->
-                    try {
-                        item.unit.toDouble() > 0.0
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        true
-                    }
+                    !DeviceCategory.isDispenser(item.categoryCode) &&
+                            try {
+                                item.unit.toDouble() > 0.0
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                true
+                            }
                 }) { _, childBinding, data ->
                     childBinding.item = data
                     childBinding.state = it.state
+                }
+                val dispenserList =
+                    it.orderItemList.filter { item -> DeviceCategory.isDispenser(item.categoryCode) }
+                if (dispenserList.isNotEmpty()) {
+                    val dispenserBinding =
+                        DataBindingUtil.inflate<ItemOrderDetailSkuDispenserBinding>(
+                            LayoutInflater.from(this@OrderDetailActivity),
+                            R.layout.item_order_detail_sku_dispenser,
+                            null,
+                            false
+                        )
+                    dispenserBinding.llItemOrderSkuDispenser.buildChild<ItemOrderDetailSkuGoodBinding, OrderItem>(
+                        dispenserList
+                    ) { _, childBinding, data ->
+                        childBinding.type = 1
+                        childBinding.title = data.goodsItemName
+                        childBinding.num = data.num + "ml"
+                        childBinding.price = StringUtils.formatAmountStrOfStr(data.originPrice)
+                    }
+                    try {
+                        var discountVal = 0.0
+                        dispenserList.forEach { item ->
+                            discountVal += item.discountPrice.toDouble()
+                        }
+                        dispenserBinding.discount = StringUtils.formatAmountStr(-discountVal)
+                        dispenserBinding.includeItemOrderDetailSkuGood.root.visibility =
+                            View.VISIBLE
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        dispenserBinding.includeItemOrderDetailSkuGood.root.visibility = View.GONE
+                    }
+                    mBinding.llOrderDetailSkus.addView(
+                        dispenserBinding.root,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
                 }
             }
         }

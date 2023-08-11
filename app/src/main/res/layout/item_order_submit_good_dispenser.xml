@@ -3,14 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <import type="android.view.View" />
-
-        <import type="com.yunshang.haile_life.data.agruments.DeviceCategory" />
-
         <variable
-            name="item"
-            type="com.yunshang.haile_life.data.entities.TradePreviewGoodItem" />
+            name="discount"
+            type="java.lang.String" />
+        <variable
+            name="price"
+            type="java.lang.String" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -21,27 +19,27 @@
         app:divider="@drawable/divide_size10"
         app:showDividers="middle">
 
-        <include
-            android:id="@+id/include_order_submit_good_info"
-            layout="@layout/item_order_submit_good_item"
-            app:icon="@{item.getCategoryIcon}"
-            app:title="@{item.goodsItemName}"
-            app:type="@{DeviceCategory.canShowDeviceCategory(item.goodsCategoryCode)?1:0}"
-            app:value="@{item.getOriginAmountStr}" />
+        <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+            android:id="@+id/ll_order_submit_good_dispenser_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:itemLayout="@layout/item_order_submit_good_item"
+            app:divider="@drawable/divide_size10"
+            app:showDividers="middle"/>
 
         <include
             android:id="@+id/include_order_submit_good_discount"
             layout="@layout/item_order_submit_good_item"
-            android:visibility="@{0 == item.getDiscountAmountStr().length()?View.GONE:View.VISIBLE}"
             app:title="@{@string/good_discount}"
             app:type="@{2}"
-            app:value="@{item.getDiscountAmountStr}" />
+            app:value="@{discount}" />
 
         <include
             android:id="@+id/include_order_submit_good_actually_paid"
             layout="@layout/item_order_submit_good_item"
             app:title="@{@string/actually_paid}"
             app:type="@{2}"
-            app:value="@{item.getRealAmountStr}" />
+            app:value="@{price}" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

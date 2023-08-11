@@ -21,12 +21,12 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderSubmitViewModel
 import com.yunshang.haile_life.data.ActivityTag
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
 import com.yunshang.haile_life.data.entities.WxPrePayEntity
-import com.yunshang.haile_life.databinding.ActivityOrderSubmitBinding
-import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
-import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
+import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
@@ -93,7 +93,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                 }
                 val inflater = LayoutInflater.from(this@OrderSubmitActivity)
                 if (trade.itemList.isNotEmpty()) {
-                    for (good in trade.itemList) {
+                    for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode) }) {
                         val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
                             inflater,
                             R.layout.item_order_submit_good,
@@ -103,6 +103,56 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                         childGoodBinding.item = good
                         mBinding.llOrderSubmitGood.addView(
                             childGoodBinding.root,
+                            (mBinding.llOrderSubmitGood.childCount - 2),
+                            ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                        )
+                    }
+
+                    // 投放器数据
+                    val dispenserList =
+                        trade.itemList.filter { item -> DeviceCategory.isDispenser(item.goodsCategoryCode) }
+                    if (dispenserList.isNotEmpty()) {
+                        val childDispenserGoodBinding =
+                            DataBindingUtil.inflate<ItemOrderSubmitGoodDispenserBinding>(
+                                inflater,
+                                R.layout.item_order_submit_good_dispenser,
+                                null,
+                                false
+                            )
+                        childDispenserGoodBinding.llOrderSubmitGoodDispenserItem.buildChild<ItemOrderSubmitGoodItemBinding, TradePreviewGoodItem>(
+                            dispenserList
+                        ) { _, childBinding, data ->
+                            childBinding.title = data.goodsItemName + "${data.num}ml"
+                            childBinding.type = 0
+                            childBinding.value = data.getOriginAmountStr()
+                        }
+                        try {
+                            var discountVal = 0.0
+                            var totalPriceVal = 0.0
+                            dispenserList.forEach { item ->
+                                discountVal += item.discountAmount.toDouble()
+                                totalPriceVal += item.realAmount.toDouble()
+                            }
+                            childDispenserGoodBinding.discount =
+                                com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(
+                                    -discountVal
+                                )
+                            childDispenserGoodBinding.price =
+                                com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(
+                                    totalPriceVal
+                                )
+                            childDispenserGoodBinding.includeOrderSubmitGoodDiscount.root.visibility =
+                                View.VISIBLE
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            childDispenserGoodBinding.includeOrderSubmitGoodDiscount.root.visibility =
+                                View.GONE
+                        }
+                        mBinding.llOrderSubmitGood.addView(
+                            childDispenserGoodBinding.root,
                             (mBinding.llOrderSubmitGood.childCount - 2),
                             ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,

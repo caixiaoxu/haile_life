@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
-import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
@@ -43,7 +42,7 @@ data class DeviceDetailItemEntity(
     val unit: String,
     val vipDiscount: String,
     val vipDiscountPrice: String,
-    val dosingConfigDTOS: List<DosingConfigDTOS>
+    val dosingConfigDTOS: MutableList<DosingConfigDTOS>
 ) : IOrderConfigEntity {
 
     override fun getTitle(code: String?): String =
@@ -116,17 +115,17 @@ data class DrinkAttrConfigure(
 )
 
 data class DosingConfigDTOS(
-    val amount: String,
-    val delayTime: Int,
-    val description: String,
-    val isDefault: Boolean,
-    val isOn: Boolean,
-    val itemId: Int,
-    val liquidTypeId: Int,
-    val name: String,
-    val price: String
-):IOrderConfigEntity{
-    override fun getTitle(code: String?): String = name
+    val amount: String = "",
+    val delayTime: Int = 0,
+    val description: String = "",
+    val isDefault: Boolean = false,
+    val isOn: Boolean = true,
+    val itemId: Int = -1,
+    val liquidTypeId: Int = -1,
+    val name: String = "",
+    val price: String = ""
+) : IOrderConfigEntity {
+    override fun getTitle(code: String?): String = if (-1 ==itemId) "不需要" else "${amount}ml"
 
     override fun getTitleTxtColor(code: String?): Int = R.color.selector_black85_04d1e5
 

@@ -198,9 +198,10 @@ data class OrderItem(
     val goodsItemName: String,
     val goodsName: String,
     val id: Int,
-    val num: Int,
+    val num: String,
     val orderNo: String,
     val originPrice: String,
+    val discountPrice: String,
     val realPrice: String,
     val shopName: String,
     val unit: String,
@@ -223,6 +224,14 @@ data class OrderItem(
         "${
             com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
                 originPrice
+            )
+        }"
+
+    fun getOrderDeviceDiscountPrice(state: Int): String = if (50 == state) ""
+    else
+        "${
+            com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
+                "-$discountPrice"
             )
         }"
 }

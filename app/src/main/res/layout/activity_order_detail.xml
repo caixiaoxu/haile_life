@@ -116,8 +116,8 @@
                     android:background="@drawable/shape_sffffff_r8"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
-                    android:padding="12dp"
-                    app:divider="@drawable/divide_size8"
+                    app:divider="@drawable/divder_efefef"
+                    app:dividerPadding="12dp"
                     app:itemLayout="@layout/item_order_detail_sku"
                     app:showDividers="middle" />
 

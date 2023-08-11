@@ -46,6 +46,13 @@ object DeviceCategory {
     fun isDryerOrHair(categoryCode: String?) = Dryer == categoryCode || Hair == categoryCode
 
     /**
+     * 是否是烘干机或吹风机或投放器
+     */
+    @JvmStatic
+    fun isDryerOrHairOrDispenser(categoryCode: String?) =
+        Dryer == categoryCode || Hair == categoryCode || Dispenser == categoryCode
+
+    /**
      * 是否是烘干机
      */
     @JvmStatic
@@ -62,6 +69,12 @@ object DeviceCategory {
      */
     @JvmStatic
     fun isDrinking(categoryCode: String?) = Water == categoryCode
+
+    /**
+     * 是否是投放机
+     */
+    @JvmStatic
+    fun isDispenser(categoryCode: String?) = Dispenser == categoryCode
 
     fun categoryName(categoryCode: String?): String = when (categoryCode) {
         Washing -> "洗衣机"

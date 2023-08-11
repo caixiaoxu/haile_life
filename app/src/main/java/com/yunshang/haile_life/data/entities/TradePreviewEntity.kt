@@ -61,7 +61,7 @@ data class TradePreviewGoodItem(
         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(originAmount) ?: ""
 
     fun getDiscountAmountStr(): String =
-        com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr("-" + discountAmount)
+        com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr("-$discountAmount")
             ?: ""
 
     fun getRealAmountStr(): String =

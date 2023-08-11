@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
@@ -21,6 +20,7 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.DeviceDetailEntity
 import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
+import com.yunshang.haile_life.data.entities.DosingConfigDTOS
 import com.yunshang.haile_life.data.entities.ExtAttrBean
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityScanOrderBinding
@@ -28,7 +28,6 @@ import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
-import com.yunshang.haile_life.ui.view.ClickRadioButton
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 
@@ -71,8 +70,8 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                         itemBinding.code = it
                                     }
                                     itemBinding.item = item
-                                    (itemBinding.root as ClickRadioButton).let { rb ->
-                                        rb.id = index + 1
+                                    itemBinding.root.id = index + 1
+                                    itemBinding.rbOrderModelItem.let { rb ->
 
                                         if (DeviceCategory.isHair(mViewModel.goodsScan.value?.categoryCode)
                                             && 0 == item.amount
@@ -142,8 +141,8 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                 itemBinding.code = it
                             }
                             itemBinding.item = item
-                            (itemBinding.root as AppCompatRadioButton).let { rb ->
-                                rb.id = index + 1
+                            itemBinding.root.id = index + 1
+                            itemBinding.rbOrderModelItem.let { rb ->
 
                                 mViewModel.selectExtAttr.observe(this) {
                                     (item.minutes == it?.minutes).let { isSame ->
@@ -208,6 +207,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                             cl.removeViews(3, cl.childCount - 3)
                         }
                         val inflater = LayoutInflater.from(this@ScanOrderActivity)
+                        data.dosingConfigDTOS.add(DosingConfigDTOS())
                         data.dosingConfigDTOS.forEachIndexed { index, item ->
                             DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                                 inflater, R.layout.item_scan_order_model_item, null, false
@@ -216,11 +216,12 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                     itemBinding.code = it
                                 }
                                 itemBinding.item = item
-                                (itemBinding.root as ClickRadioButton).let { rb ->
-                                    rb.id = index + 1
+                                itemBinding.isDefault = item.isDefault
+                                itemBinding.root.id = index + 1
+                                itemBinding.rbOrderModelItem.let { rb ->
 
-                                    mViewModel.selectDeviceConfig.observe(this) {
-                                        (item.itemId == it.id).let { isSame ->
+                                    mViewModel.selectAttachSku[data.id]?.observe(this) {
+                                        (item.amount == it.amount).let { isSame ->
                                             if (isSame != rb.isChecked) {
                                                 rb.isChecked = isSame
                                             }
@@ -228,13 +229,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                     }
 
                                     rb.setOnClickListener {
-                                        //                                                mViewModel.selectDeviceConfig.value = item
-                                        //                                                mViewModel.goodsScan.value?.categoryCode?.let { code ->
-                                        //                                                    item.getExtAttrs(DeviceCategory.isDryerOrHair(code))
-                                        //                                                        .firstOrNull()?.let { firstAttr ->
-                                        //                                                            mViewModel.selectExtAttr.postValue(firstAttr)
-                                        //                                                        }
-                                        //                                                }
+                                        mViewModel.selectAttachSku[data.id]?.value = item
                                     }
                                 }
                                 cl.addView(
@@ -334,18 +329,33 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
         val num =
             (if (true == mViewModel.isDryer.value) mViewModel.selectExtAttr.value?.minutes else 1)
                 ?: return
+
+        if (null == mViewModel.deviceDetail.value) return
+
+        // 主商品
+        val goods = mutableListOf(
+            IntentParams.OrderSubmitParams.OrderSubmitGood(
+                categoryCode,
+                goodId,
+                goodItemId,
+                "$num",
+            )
+        )
+        // 关联sku
+        goods.addAll(mViewModel.selectAttachSku.filter { item -> item.value.value?.itemId != -1 }
+            .mapNotNull { item ->
+                item.value.value?.let { dtos ->
+                    IntentParams.OrderSubmitParams.OrderSubmitGood(
+                        DeviceCategory.Dispenser,
+                        mViewModel.deviceDetail.value!!.attachGoodsId,
+                        dtos.itemId,
+                        dtos.amount,
+                    )
+                }
+            })
         startActivity(Intent(this, OrderSubmitActivity::class.java).apply {
             putExtras(
-                IntentParams.OrderSubmitParams.pack(
-                    listOf(
-                        IntentParams.OrderSubmitParams.OrderSubmitGood(
-                            categoryCode,
-                            goodId,
-                            goodItemId,
-                            "$num",
-                        )
-                    ),
-                )
+                IntentParams.OrderSubmitParams.pack(goods)
             )
         })
     }

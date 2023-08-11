@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/activity_scan_order">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -21,7 +20,8 @@
         android:id="@+id/cl_scan_order_config"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="16dp">
+        android:paddingVertical="16dp"
+        tools:showIn="@layout/activity_scan_order">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_scan_order_item_title"
@@ -38,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             app:flow_horizontalBias="0"
-            app:flow_horizontalGap="12dp"
             app:flow_horizontalStyle="packed"
             app:flow_verticalGap="12dp"
             app:flow_wrapMode="chain"
