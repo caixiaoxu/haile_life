@@ -36,7 +36,7 @@ class CustomViewFinderView(context: Context, attrs: AttributeSet) :
                 interpolator = LinearInterpolator()
                 addUpdateListener {
                     if (it.animatedValue is Float && 0 < scrollH) {
-                        Timber.i("移动y距离: ${it.animatedFraction * scrollH}")
+//                        Timber.i("移动y距离: ${it.animatedFraction * scrollH}")
                         bitmapMatrix.setTranslate(0f, it.animatedFraction * scrollH)
                         invalidate()
                     }

@@ -21,6 +21,10 @@
             type="java.lang.String" />
 
         <variable
+            name="unit"
+            type="java.lang.String" />
+
+        <variable
             name="value"
             type="java.lang.String" />
 
@@ -33,7 +37,7 @@
             type="java.lang.Integer" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -48,16 +52,19 @@
             android:text="@{title}"
             android:textStyle="bold"
             app:drawStart="@{icon}"
-            app:txtStyle="@{4== type?0:1}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_order_submit_good_value"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:txtColor="@{(2 == type || 4 == type)?@color/color_black_45:@color/color_black_85}"
             app:txtSize="@{1 == type? 16f:14f}"
+            app:txtStyle="@{4== type?0:1}"
             tools:drawableStart="@mipmap/icon_order_wash"
             tools:text="标准洗" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="@{unit}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_order_submit_good_value"
@@ -69,13 +76,9 @@
             android:gravity="center"
             android:text="@{value}"
             app:drawEnd="@{endDraw}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_order_submit_good_title"
-            app:layout_constraintTop_toTopOf="parent"
             app:txtColor="@{noSelect?@color/color_ff630e:2 == type?@color/color_black_45:@color/color_black_85}"
             app:txtSize="@{noSelect?12f:(2 == type || 4 == type)? 14f:16f}"
             app:txtStyle="@{noSelect?0:1}"
             tools:text="¥ 5.00" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

@@ -168,11 +168,16 @@ data class OrderEntity(
     fun getOrderDeviceName(): String =
         if (orderItemList.isNotEmpty()) orderItemList.first().goodsName else ""
 
-    fun getOrderDeviceModel(): String = orderItemList.firstOrNull()?.let {
+    fun getOrderDeviceModel(): String = (orderItemList.firstOrNull()?.let {
         if (DeviceCategory.isDrinking(it.categoryCode)) {
             orderItemList.joinToString(",") { item -> item.goodsItemName }
         } else "${it.goodsItemName} x1"
-    } ?: ""
+    } ?: "") + orderItemList.filter { item -> DeviceCategory.isDispenser(item.categoryCode) }
+        .let { list ->
+            if (list.isNotEmpty()) {
+                "\n" + list.joinToString(" + ") { item -> "${item.goodsItemName}${item.num}ml" }
+            } else ""
+        }
 
     fun getGoodInfo(): String = if (orderItemList.isNotEmpty()) orderItemList.first()
         .run { "${shopName}\n${area}${address}\n${goodsName}" } else ""

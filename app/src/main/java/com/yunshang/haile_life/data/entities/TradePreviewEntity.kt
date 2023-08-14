@@ -66,6 +66,8 @@ data class TradePreviewGoodItem(
 
     fun getRealAmountStr(): String =
         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(realAmount) ?: ""
+
+    fun getGoodUnit(): String = "${num}分钟"
 }
 
 data class TradePreviewPromotion(
@@ -77,7 +79,7 @@ data class TradePreviewPromotion(
     val promotionProduct: Int,//1-限时特惠，2-商家优惠券，3-折扣卡，4-平台优惠券，5-海星折扣
     val realPrice: String,
     val used: Boolean,
-    val forceUse:Boolean,//是否强制使用
+    val forceUse: Boolean,//是否强制使用
 ) {
     fun getDiscountTitle(): String = StringUtils.getString(
         when (promotionProduct) {
@@ -106,7 +108,7 @@ data class TradePreviewParticipate(
     val originAmount: String,
     val realAmount: String,
     val used: Boolean,
-    val forceUse:Boolean,//是否强制使用
+    val forceUse: Boolean,//是否强制使用
     val promotionDetail: TradePreviewPromotionDetail
 ) {
     var isCheck = false

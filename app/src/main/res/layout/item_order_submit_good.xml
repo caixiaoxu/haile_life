@@ -26,6 +26,7 @@
             layout="@layout/item_order_submit_good_item"
             app:icon="@{item.getCategoryIcon}"
             app:title="@{item.goodsItemName}"
+            app:unit="@{item.getGoodUnit}"
             app:type="@{DeviceCategory.canShowDeviceCategory(item.goodsCategoryCode)?1:0}"
             app:value="@{item.getOriginAmountStr}" />
 
