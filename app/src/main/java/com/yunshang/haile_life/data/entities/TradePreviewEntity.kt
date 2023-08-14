@@ -67,7 +67,8 @@ data class TradePreviewGoodItem(
     fun getRealAmountStr(): String =
         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(realAmount) ?: ""
 
-    fun getGoodUnit(): String = "${num}分钟"
+    fun getGoodUnit(): String =
+        if (DeviceCategory.isDryerOrHair(goodsCategoryCode)) "${num}分钟" else ""
 }
 
 data class TradePreviewPromotion(

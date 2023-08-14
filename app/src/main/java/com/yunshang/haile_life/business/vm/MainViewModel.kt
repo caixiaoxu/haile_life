@@ -4,8 +4,10 @@ import android.content.Context
 import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.AppPackageUtils
+import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.CommonService
@@ -119,6 +121,14 @@ class MainViewModel : BaseViewModel() {
                     n = if (StringUtils.isImeiCode(code)) null else code
                 )
             )?.let { scan ->
+                // goodsId为空，提示设备末绑定
+                if (null == scan.goodsId || 0 == scan.goodsId) {
+                    withContext(Dispatchers.Main) {
+                        SToast.showToast(Constants.APP_CONTEXT, "设备未激活，请换一台设备使用或联系商家")
+                    }
+                    return@let
+                }
+
                 // 设备详情
                 ApiRepository.dealApiResult(mDeviceRepo.requestDeviceDetail(scan.goodsId))
                     ?.let { deviceDetail ->
