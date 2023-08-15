@@ -45,6 +45,7 @@ android {
             versionNameSuffix '.debug'
             buildConfigField "String", "BASE_URL", EnvConfig.HTTP_BASE_DEBUG
             buildConfigField "Integer", "MAP_TYPE", "1"// 定义地图，0高德，1腾讯
+
             signingConfig signingConfigs.debug
         }
         pre {
