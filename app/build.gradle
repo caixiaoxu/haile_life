@@ -20,7 +20,7 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "HaileLife_${AndroidConfig.defaultConfig.versionName}_debug.apk"
+            outputFileName = "HaileLife_${AndroidConfig.defaultConfig.versionName}_${buildType.name}.apk"
         }
     }
 
@@ -47,11 +47,25 @@ android {
             buildConfigField "Integer", "MAP_TYPE", "1"// 定义地图，0高德，1腾讯
             signingConfig signingConfigs.debug
         }
+        pre {
+            buildConfigField "String", "BASE_URL", EnvConfig.HTTP_BASE_PRE
+            buildConfigField "Integer", "MAP_TYPE", "1"// 定义地图，0高德，1腾讯
+
+            debuggable true  // 打开日志
+            shrinkResources true // 移出无用的res文件
+            zipAlignEnabled true // Zipalign优化
+            minifyEnabled true // 开始混淆（混淆配置有问题，后面处理）
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            matchingFallbacks = ['debug', 'release'] //依赖库和主工程的build type不一致的问题
+        }
         release {
             buildConfigField "String", "BASE_URL", EnvConfig.HTTP_BASE_RELEASE
             buildConfigField "Integer", "MAP_TYPE", "1"// 定义地图，0高德，1腾讯
 
-            minifyEnabled false
+            shrinkResources true // 移出无用的res文件
+            zipAlignEnabled true // Zipalign优化
+            minifyEnabled true // 开始混淆（混淆配置有问题，后面处理）
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
