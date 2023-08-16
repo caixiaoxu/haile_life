@@ -182,6 +182,16 @@ data class OrderEntity(
     fun getGoodInfo(): String = if (orderItemList.isNotEmpty()) orderItemList.first()
         .run { "${shopName}\n${area}${address}\n${goodsName}" } else ""
 
+    fun getOrderDeviceUnit(): String =
+        if (orderItemList.isNotEmpty()) "${orderItemList.first().unit}分钟" else ""
+
+    fun getOrderDeviceOriginPrice(): String =
+        if (orderItemList.isNotEmpty()) "${
+            com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
+                orderItemList.first().originPrice
+            )
+        }" else ""
+
     fun getOrderDiscountTotalPrice(): String = try {
         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(originPrice.toDouble() - payAmount.toDouble())
     } catch (e: Exception) {
