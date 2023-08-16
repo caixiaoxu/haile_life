@@ -192,7 +192,12 @@ class DeviceNavigationActivity :
         }
         mBinding.btnDeviceNavigationCardManager.setOnClickListener {
             if (checkLogin()) {
-
+                startActivity(
+                    Intent(
+                        this@DeviceNavigationActivity,
+                        CardManagerActivity::class.java
+                    )
+                )
             }
         }
 

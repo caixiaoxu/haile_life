@@ -285,6 +285,10 @@
         <item name="android:textColorHint">@color/color_black_45</item>
     </style>
 
+    <style name="Font_16_black_85_25" parent="Font_16_black_85">
+        <item name="android:textColorHint">@color/color_black_25</item>
+    </style>
+
     <style name="Font_16_common_txt_bold" parent="Font_16_black_85">
         <item name="android:textStyle">bold</item>
     </style>

@@ -38,4 +38,7 @@ object BusEvents {
 
     // 退款成功
     const val STARFISH_REFUND_STATUS = "starfish_refund_status"
+
+    // 云卡绑定成功
+    const val CARD_BINDING_STATUS = "card_binding_status"
 }

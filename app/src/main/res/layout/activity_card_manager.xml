@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.device.CardManagerActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_card_manager_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:title="@string/card_manager" />
+
+        <com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
+            android:id="@+id/rv_card_manager_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:visibility="gone"
+            android:paddingTop="12dp" />
+
+        <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:id="@+id/btn_card_manager_add"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/shape_sffffff_r8"
+            android:drawableStart="@mipmap/icon_card_manager_add"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:text="@string/binding_cloud_card"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_45"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/binding_cloud_card_tip" />
+
+    </LinearLayout>
+</layout>
