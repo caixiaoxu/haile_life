@@ -246,6 +246,11 @@
     <string name="card_sn">卡编号</string>
     <string name="sure_binding">确认绑定</string>
 
+    <string name="follow_the_wechat_official_account">关注公众号</string>
+    <string name="follow_the_wechat_official_account_tip">保存二维码后打开微信识别关注公众号</string>
+    <string name="save_qr_code">保存二维码</string>
+    <string name="copy_official_account">复制公众号名</string>
+
     <string name="auto_put_in_laundry_detergent">自动投放洗衣液</string>
     <string name="auto_put_in_disinfectant">自动投放除菌液</string>
 
