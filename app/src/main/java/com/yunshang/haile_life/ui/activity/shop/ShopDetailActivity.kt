@@ -48,7 +48,7 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
         super.initEvent()
 
         mViewModel.shopNotice.observe(this) {
-            it?.let {
+            if (!it.isNullOrEmpty()) {
                 ShopNoticeDialog(it).show(supportFragmentManager)
             }
         }

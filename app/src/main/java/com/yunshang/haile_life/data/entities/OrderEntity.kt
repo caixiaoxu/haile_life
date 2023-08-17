@@ -231,7 +231,7 @@ data class OrderItem(
         ) else null
 
     fun getOrderDeviceUnit(state: Int): String = if (DeviceCategory.isDrinking(categoryCode)) {
-        if (1 == goodsItemInfo?.priceCalculateMode) "${originUnitPrice}元/ml${if (50 != state) " X ${unit}/ml" else ""}" else "${originUnitPrice}元/s${if (50 != state) " X ${unit}/s" else ""}"
+        if (1 == goodsItemInfo?.priceCalculateMode) "${originUnitPrice}元/L${if (50 != state) " X ${unit}ml" else ""}" else "${originUnitPrice}元/s${if (50 != state) " X ${unit}s" else ""}"
     } else "${unit}分钟"
 
     fun getOrderDeviceOriginPrice(state: Int): String = if (50 == state) ""

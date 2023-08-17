@@ -36,6 +36,7 @@
     <string name="getCode">获取验证码</string>
     <string name="send_code">发送验证码</string>
     <string name="send_again">再次发送</string>
+    <string name="send_again1">重新获取</string>
     <string name="phone_empty">请先输入手机号</string>
     <string name="password_empty">请先输入密码</string>
     <string name="code_empty">请先输入验证码</string>

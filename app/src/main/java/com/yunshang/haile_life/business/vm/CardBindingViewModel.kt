@@ -63,12 +63,12 @@ class CardBindingViewModel : BaseViewModel() {
 
 
     // 验证码发送按钮内容
-    private val defaultCodeTxt = com.lsy.framelib.utils.StringUtils.getString(R.string.send_again)
+    private val defaultCodeTxt = com.lsy.framelib.utils.StringUtils.getString(R.string.send_again1)
     var timer: CountDownTimer? = null
 
     fun sendCode(v: View) {
         if (cardSn.value.isNullOrEmpty()) {
-            SToast.showToast(v.context, "请先输入卡号")
+            SToast.showToast(v.context, "请录入卡号")
             return
         }
         if (phone.value.isNullOrEmpty()) {

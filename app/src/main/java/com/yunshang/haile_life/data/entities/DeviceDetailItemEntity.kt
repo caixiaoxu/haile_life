@@ -71,7 +71,7 @@ data class DeviceDetailItemEntity(
 
     val drinkingTitle: SpannableString
         get() = com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
-            "${name} ${price}${if (1 == getDrinkingExtAttr()?.priceCalculateMode) "ml" else "s"}",
+            "${name} ${price}${if (1 == getDrinkingExtAttr()?.priceCalculateMode) "元/L" else "元/s"}",
             arrayOf(
                 AbsoluteSizeSpan(DimensionUtils.sp2px(14f)),
                 StyleSpan(Typeface.NORMAL)
@@ -125,7 +125,7 @@ data class DosingConfigDTOS(
     val name: String = "",
     val price: String = ""
 ) : IOrderConfigEntity {
-    override fun getTitle(code: String?): String = if (-1 ==itemId) "不需要" else "${amount}ml"
+    override fun getTitle(code: String?): String = if (-1 == itemId) "不需要" else "${amount}ml"
 
     override fun getTitleTxtColor(code: String?): Int = R.color.selector_black85_04d1e5
 

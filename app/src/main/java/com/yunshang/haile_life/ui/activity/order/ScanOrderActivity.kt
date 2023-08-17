@@ -172,7 +172,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
         }
 
         mViewModel.shopNotice.observe(this) {
-            it?.let {
+            if (!it.isNullOrEmpty()) {
                 ShopNoticeDialog(it).show(supportFragmentManager)
             }
         }

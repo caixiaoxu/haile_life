@@ -52,7 +52,6 @@ android {
             buildConfigField "String", "BASE_URL", EnvConfig.HTTP_BASE_PRE
             buildConfigField "Integer", "MAP_TYPE", "1"// 定义地图，0高德，1腾讯
 
-            debuggable true  // 打开日志
             shrinkResources false // 移出无用的res文件
             zipAlignEnabled true // Zipalign优化
             minifyEnabled false // 开始混淆（混淆配置有问题，后面处理）
@@ -94,9 +93,6 @@ dependencies {
     implementation ThirdLibs.constraintlayout
 
     implementation project(':CoreLibModules:framelib')
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.4.+'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
     testImplementation TestLibs.junit
     androidTestImplementation TestLibs.test_ext

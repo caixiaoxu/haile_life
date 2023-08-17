@@ -85,6 +85,8 @@
                 android:layout_width="0dp"
                 android:layout_height="54dp"
                 android:background="@color/transparent"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:gravity="center_vertical"
                 android:hint="@string/please_input"
                 android:text="@={vm.phone}"
@@ -112,8 +114,8 @@
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
                 android:hint="@string/code_empty"
-                android:text="@={vm.code}"
                 android:inputType="numberDecimal"
+                android:text="@={vm.code}"
                 app:layout_constraintEnd_toStartOf="@id/btn_card_binding_card_code"
                 app:layout_constraintStart_toEndOf="@id/tv_card_binding_card_code_title"
                 app:layout_constraintTop_toBottomOf="@id/et_card_binding_card_phone" />
@@ -138,8 +140,8 @@
             android:layout_height="46dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
-            android:onClick="@{vm::bindingCard}"
             android:enabled="@{vm.canSubmit}"
+            android:onClick="@{vm::bindingCard}"
             android:text="@string/sure_binding" />
     </LinearLayout>
 </layout>

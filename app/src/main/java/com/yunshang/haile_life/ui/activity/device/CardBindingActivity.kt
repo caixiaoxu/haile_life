@@ -7,6 +7,7 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.CardBindingViewModel
+import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityCardBindingBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.common.CustomCaptureActivity
@@ -36,6 +37,10 @@ class CardBindingActivity : BaseBusinessActivity<ActivityCardBindingBinding, Car
     override fun layoutId(): Int = R.layout.activity_card_binding
 
     override fun backBtn(): View = mBinding.barCardBindingTitle.getBackBtn()
+    override fun initIntent() {
+        super.initIntent()
+        mViewModel.phone.value = mSharedViewModel.userInfo.value?.phone
+    }
 
     override fun initEvent() {
         super.initEvent()
