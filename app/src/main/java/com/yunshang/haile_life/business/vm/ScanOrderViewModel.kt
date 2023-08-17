@@ -102,6 +102,10 @@ class ScanOrderViewModel : BaseViewModel() {
     private fun checkSubmit(): Boolean =
         null != selectDeviceConfig.value && null != selectExtAttr.value
 
+    val shopNotice: MutableLiveData<MutableList<ShopNoticeEntity>> by lazy {
+        MutableLiveData()
+    }
+
     fun requestData(code: String?) {
         launch({
             // 如果扫码信息为空，重新请求
@@ -163,6 +167,19 @@ class ScanOrderViewModel : BaseViewModel() {
                         it.items.find { item -> item.promotionProduct == 5 }?.let { ump ->
                             shopUmpItem.postValue(ump)
                         }
+                    }
+
+                    // 是否有公告
+                    ApiRepository.dealApiResult(
+                        mShopRepo.requestShopNotice(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "shopId" to scan.shopId
+                                )
+                            )
+                        )
+                    )?.let {
+                        shopNotice.postValue(it)
                     }
                 }
             }

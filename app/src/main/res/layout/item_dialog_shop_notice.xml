@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.ShopNoticeEntity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_notice_title"
+            style="@style/Font_18_333333_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{item.templateName}"
+            tools:text="停水通知" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_notice_content"
+            style="@style/Font_14_333333"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            tools:text="各位海乐生活的洗衣用户：洗衣店设备需要做例行维护。感谢各位一直以来的支持，若有设备问题请您拨打商家电话联系我们，我们竭尽全力为您提供服务。" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_notice_date"
+            style="@style/Font_14_333333"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="16dp"
+            android:text="@{item.dateVal}"
+            tools:text="时间：6月9日-6月12日" />
+    </LinearLayout>
+</layout>

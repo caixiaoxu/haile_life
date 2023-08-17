@@ -59,4 +59,7 @@ interface ShopService {
 
     @POST("/shopConfig/list")
     suspend fun requestShopConfigList(@Body body: RequestBody): ResponseWrapper<MutableList<ShopConfigEntity>>
+
+    @POST("/notice/getNoticeByShopId")
+    suspend fun requestShopNotice(@Body body: RequestBody): ResponseWrapper<MutableList<ShopNoticeEntity>>
 }

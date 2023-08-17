@@ -20,6 +20,7 @@ import com.yunshang.haile_life.databinding.ItemHomeNearStoresBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
+import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 
 class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopDetailViewModel>(
     ShopDetailViewModel::class.java, BR.vm
@@ -42,6 +43,16 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
     override fun layoutId(): Int = R.layout.activity_shop_detail
 
     override fun backBtn(): View = mBinding.barShopDetailTitle.getBackBtn()
+
+    override fun initEvent() {
+        super.initEvent()
+
+        mViewModel.shopNotice.observe(this) {
+            it?.let {
+                ShopNoticeDialog(it).show(supportFragmentManager)
+            }
+        }
+    }
 
     override fun initIntent() {
         super.initIntent()

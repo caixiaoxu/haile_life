@@ -30,6 +30,7 @@ import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
+import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 
 class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrderViewModel>(
     ScanOrderViewModel::class.java, BR.vm
@@ -167,6 +168,12 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                     mBinding.includeScanOrderTime.flowScanOrderItem.referencedIds = idList
                     mBinding.includeScanOrderTime.flowScanOrderItem.visibility = View.VISIBLE
                 }
+            }
+        }
+
+        mViewModel.shopNotice.observe(this) {
+            it?.let {
+                ShopNoticeDialog(it).show(supportFragmentManager)
             }
         }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.entities.ShopDetailEntity
+import com.yunshang.haile_life.data.entities.ShopNoticeEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 
 /**
@@ -25,6 +26,10 @@ class ShopDetailViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
+    val shopNotice: MutableLiveData<MutableList<ShopNoticeEntity>> by lazy {
+        MutableLiveData()
+    }
+
     fun requestData() {
         if (shopId == -1) return
 
@@ -33,6 +38,17 @@ class ShopDetailViewModel : BaseViewModel() {
                 mShopRepo.requestShopDetail(shopId)
             )?.let {
                 shopDetail.postValue(it)
+            }
+            ApiRepository.dealApiResult(
+                mShopRepo.requestShopNotice(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "shopId" to shopId
+                        )
+                    )
+                )
+            )?.let {
+                shopNotice.postValue(it)
             }
         })
     }

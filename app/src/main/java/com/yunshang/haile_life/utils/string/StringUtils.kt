@@ -4,17 +4,26 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
+import android.os.Build
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.utils.NumberUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.UnsupportedEncodingException
 import java.text.DecimalFormat
 import java.util.regex.Pattern
@@ -354,5 +363,54 @@ object StringUtils {
             ),
             3, content.length
         )
+    }
+
+    private var textView: TextView? = null
+    private var htmlTxt: String? = null
+
+    fun loadHtmlText(tv: TextView?, html: String?) {
+        if (null == tv || null == html) return
+        textView = tv
+        htmlTxt = html
+        if (Build.VERSION.SDK_INT >= 24)
+            textView?.text = Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT, imageGetter, null);
+        else
+            textView?.text = Html.fromHtml(html, imageGetter, null)
+    }
+
+    private val map = mutableMapOf<String, Drawable>()
+
+    private val imageGetter by lazy {
+        Html.ImageGetter() {
+            //多张图片情况根据drawableMap.get(s)获取drawable
+            map[it] ?: run {
+                initDrawable(it)
+                null
+            }
+        }
+    }
+
+    private fun initDrawable(url: String) {
+        GlobalScope.launch(Dispatchers.IO) {
+            textView?.let {
+                try {
+                    Glide.with(it).load(url).submit().get()?.let { drawable ->
+                        drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+                        map[url] = drawable
+                        withContext(Dispatchers.Main) {
+                            loadHtmlText(textView, htmlTxt)
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    fun clearHtmlCaches(){
+        textView = null
+        htmlTxt = null
+        map.clear()
     }
 }
