@@ -240,7 +240,7 @@
     <string name="click_start_use">点击开始使用</string>
     <string name="drinking_order_tip1">持续放水超过%1$s秒会自动结束订单</string>
     <string name="drinking_order_tip2">暂停放水超过%1$s秒会自动结束订单</string>
-    <string name="drinking_order_tip3">先使用，订单结束后根据用水量扣费</string>
+    <string name="drinking_order_tip3">先使用，订单结束后根据实际使用扣费</string>
     <string name="binding_cloud_card">绑定云卡</string>
     <string name="binding_cloud_card_tip">温馨提示：\n1、云卡为平台卡，可在平台上所有支持云卡的设备上适用。\n2、云卡和用户绑定，适用云卡和扫码一样扣用户的金额（余额、海星或银行卡）</string>
     <string name="binding_cloud_card_sn_hit">请输入卡号或扫描卡面二维码</string>

@@ -56,12 +56,16 @@ class DrinkingScanOrderActivity :
 
         mViewModel.deviceDetail.observe(this) {
             it?.let {
-                val itemCount = it.items.size
+                val list = it.items.filter { item -> 1 == item.soldState }
+                val itemCount = list.size
 
                 mBinding.llDrinkingScanOrderConfigure.buildChild<ItemDrinkingScanOrderBinding, DeviceDetailItemEntity>(
-                    it.items.filter { item -> 1 == item.soldState },
+                    list,
                     if (1 == itemCount) LinearLayoutCompat.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ScreenUtils.screenWidth - 2 * DimensionUtils.dip2px(
+                            this@DrinkingScanOrderActivity,
+                            12f
+                        ),
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     ) else LinearLayoutCompat.LayoutParams(
                         ScreenUtils.screenWidth / 2 - DimensionUtils.dip2px(
