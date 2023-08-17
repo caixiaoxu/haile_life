@@ -59,7 +59,8 @@ class DrinkingScanOrderActivity :
                 val itemCount = it.items.size
 
                 mBinding.llDrinkingScanOrderConfigure.buildChild<ItemDrinkingScanOrderBinding, DeviceDetailItemEntity>(
-                    it.items, if (1 == itemCount) LinearLayoutCompat.LayoutParams(
+                    it.items.filter { item -> 1 == item.soldState },
+                    if (1 == itemCount) LinearLayoutCompat.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     ) else LinearLayoutCompat.LayoutParams(

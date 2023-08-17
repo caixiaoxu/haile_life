@@ -243,6 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:visibility="gone"
                         android:text="@string/drinking_order_tip3"
                         app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
                         app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip2"
