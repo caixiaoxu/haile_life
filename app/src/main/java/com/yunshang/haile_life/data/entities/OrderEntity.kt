@@ -3,6 +3,7 @@ package com.yunshang.haile_life.data.entities
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
+import com.google.gson.annotations.SerializedName
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
@@ -220,13 +221,15 @@ data class OrderItem(
     val realPrice: String,
     val shopName: String,
     val unit: String,
-    val goodsItemExtAttr: String,
+    @SerializedName("goodsItemInfo")
+    val _goodsItemInfo: String,
+//    val goodsItemExtAttr: String,
     val originUnitPrice: String,
     val realUnitPrice: String,
 ) {
     val goodsItemInfo: GoodsItemInfoEntity?
         get() = if (DeviceCategory.isDrinking(categoryCode)) GsonUtils.json2Class(
-            goodsItemExtAttr,
+            _goodsItemInfo,
             GoodsItemInfoEntity::class.java
         ) else null
 
