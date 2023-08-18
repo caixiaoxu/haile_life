@@ -46,7 +46,8 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
 
     override fun initEvent() {
         super.initEvent()
-        mViewModel.deviceConfigs.observe(this) { configs ->
+        mViewModel.deviceConfigs.observe(this) { list ->
+            val configs = list.filter { item-> 1 == item.soldState }
             if (configs.isNotEmpty()) {
                 mBinding.includeScanOrderConfig.clScanOrderConfig.let { cl ->
                     if (cl.childCount > 3) {
