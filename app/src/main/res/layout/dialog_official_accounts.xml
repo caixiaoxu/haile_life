@@ -68,13 +68,13 @@
         app:layout_constraintTop_toBottomOf="@id/tv_official_accounts_tip" />
 
     <com.lsy.framelib.ui.weight.SingleTapButton
-        android:id="@+id/btn_official_accounts_save_copy_name"
+        android:id="@+id/btn_official_accounts_open_mini"
         style="@style/CommonMatchBtnStyle1"
         android:layout_width="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:text="@string/copy_official_account"
+        android:text="@string/open_min_program"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_official_accounts_save_qr"
         app:layout_constraintTop_toBottomOf="@id/tv_official_accounts_tip" />

@@ -16,6 +16,7 @@ import com.yunshang.haile_life.data.entities.OfficialAccountsEntity
 import com.yunshang.haile_life.databinding.DialogOfficialAccountsBinding
 import com.yunshang.haile_life.utils.BitmapUtils
 import com.yunshang.haile_life.utils.string.StringUtils
+import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 /**
  * Title :
@@ -74,8 +75,9 @@ class OfficialAccountsDialog(private val officialAccounts: OfficialAccountsEntit
             }
         }
 
-        mBinding.btnOfficialAccountsSaveCopyName.setOnClickListener {
-            StringUtils.copyToShear(officialAccounts.name)
+        mBinding.btnOfficialAccountsOpenMini.setOnClickListener {
+            //TODO 跳转小程序
+//            WeChatHelper.openWeChatMiniProgram(page, scene, appId)
         }
     }
 

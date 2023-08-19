@@ -105,8 +105,7 @@ class OrderDetailActivity :
         mViewModel.orderDetail.observe(this) {
             it?.let {
                 mViewModel.getOrderStatusVal(it)
-
-                mBinding.llOrderDetailSkus.buildChild<ItemOrderDetailSkuBinding, OrderItem>(it.orderItemList.filter { item ->
+                val items = it.orderItemList.filter { item ->
                     !DeviceCategory.isDispenser(item.categoryCode) &&
                             try {
                                 item.unit.toDouble() > 0.0
@@ -114,8 +113,11 @@ class OrderDetailActivity :
                                 e.printStackTrace()
                                 true
                             }
-                }) { _, childBinding, data ->
+                }
+                val isSingle = 1 == items.size
+                mBinding.llOrderDetailSkus.buildChild<ItemOrderDetailSkuBinding, OrderItem>(items) { _, childBinding, data ->
                     childBinding.item = data
+                    childBinding.isSingle = isSingle
                     childBinding.state = it.state
                 }
                 val dispenserList =

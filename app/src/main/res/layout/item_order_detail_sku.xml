@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="state"
             type="java.lang.Integer" />
+
+        <variable
+            name="isSingle"
+            type="java.lang.Boolean" />
 
         <variable
             name="item"
@@ -31,6 +36,7 @@
 
         <include
             layout="@layout/item_order_detail_sku_good"
+            android:visibility="@{isSingle?View.GONE:View.VISIBLE}"
             app:price="@{item.getOrderDeviceDiscountPrice(state)}"
             app:title="@{@string/good_discount}"
             app:type="@{2}" />
