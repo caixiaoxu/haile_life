@@ -63,7 +63,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="@string/save_qr_code"
-        app:layout_constraintEnd_toStartOf="@id/btn_official_accounts_save_copy_name"
+        app:layout_constraintEnd_toStartOf="@id/btn_official_accounts_open_mini"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_official_accounts_tip" />
 

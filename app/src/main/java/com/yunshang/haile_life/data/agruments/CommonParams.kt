@@ -32,6 +32,9 @@ object DeviceCategory {
     // 饮水机
     const val Water = "04"
 
+    // 沐浴
+    const val Shower = "08"
+
     // 投放器
     const val Dispenser = "09"
 
@@ -65,10 +68,22 @@ object DeviceCategory {
     fun isHair(categoryCode: String?) = Hair == categoryCode
 
     /**
+     * 是否是饮水机或淋浴
+     */
+    @JvmStatic
+    fun isDrinkingOrShower(categoryCode: String?) = Water == categoryCode || Shower == categoryCode
+
+    /**
      * 是否是饮水机
      */
     @JvmStatic
     fun isDrinking(categoryCode: String?) = Water == categoryCode
+
+    /**
+     * 是否是淋浴
+     */
+    @JvmStatic
+    fun isShower(categoryCode: String?) = Shower == categoryCode
 
     /**
      * 是否是投放机
