@@ -15,7 +15,6 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.entities.OfficialAccountsEntity
 import com.yunshang.haile_life.databinding.DialogOfficialAccountsBinding
 import com.yunshang.haile_life.utils.BitmapUtils
-import com.yunshang.haile_life.utils.string.StringUtils
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 /**
@@ -76,8 +75,9 @@ class OfficialAccountsDialog(private val officialAccounts: OfficialAccountsEntit
         }
 
         mBinding.btnOfficialAccountsOpenMini.setOnClickListener {
-            //TODO 跳转小程序
-//            WeChatHelper.openWeChatMiniProgram(page, scene, appId)
+            // 跳转小程序
+            WeChatHelper.openWeChatMiniProgram("pages/tabbar/home", null, "gh_102c08f8d7a4")
+            dismiss()
         }
     }
 
@@ -88,6 +88,7 @@ class OfficialAccountsDialog(private val officialAccounts: OfficialAccountsEntit
         bitmap?.let {
             if (BitmapUtils.saveBitmapToGallery(requireContext(), "official_accounts.jpg", it)) {
                 SToast.showToast(requireContext(), "保存成功")
+                dismiss()
             } else {
                 SToast.showToast(requireContext(), "保存失败")
             }

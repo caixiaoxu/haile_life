@@ -152,10 +152,10 @@
             android:layout_width="wrap_content"
             android:layout_height="28dp"
             android:layout_marginTop="18dp"
-            android:gravity="center"
             android:layout_marginEnd="35dp"
             android:background="@drawable/shape_ffdd68_ffd530_r14"
             android:drawableEnd="@mipmap/icon_recharge_right"
+            android:gravity="center"
             android:paddingStart="12dp"
             android:paddingEnd="8dp"
             android:text="@string/go_recharge"
@@ -202,7 +202,7 @@
                 android:drawableTop="@mipmap/icon_order_unpaid"
                 android:drawablePadding="4dp"
                 android:gravity="center"
-                android:text='@{@string/unpaid + " " + vm.waitPay}'
+                android:text='@{@string/unpaid + (null == vm.waitPay?"":" " + vm.waitPay)}'
                 app:layout_constraintEnd_toStartOf="@id/tv_mine_order_running"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -216,7 +216,7 @@
                 android:drawableTop="@mipmap/icon_order_running"
                 android:drawablePadding="4dp"
                 android:gravity="center"
-                android:text='@{@string/running + " " + vm.running}'
+                android:text='@{@string/running + (null == vm.running?"":" " + vm.running)}'
                 app:layout_constraintEnd_toStartOf="@id/tv_mine_order_finished"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@id/tv_mine_order_unpaid"
@@ -230,7 +230,7 @@
                 android:drawableTop="@mipmap/icon_order_finished"
                 android:drawablePadding="4dp"
                 android:gravity="center"
-                android:text='@{@string/finished+ " " +vm.finish}'
+                android:text='@{@string/finished + (null == vm.finish?"":" " + vm.finish)}'
                 app:layout_constraintEnd_toStartOf="@id/tv_mine_order_refund"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@id/tv_mine_order_running"
@@ -244,7 +244,7 @@
                 android:drawableTop="@mipmap/icon_order_refund"
                 android:drawablePadding="4dp"
                 android:gravity="center"
-                android:text='@{@string/refund + " " + vm.refund}'
+                android:text='@{@string/refund + (null == vm.refund?"":" " + vm.refund)}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@id/tv_mine_order_finished"

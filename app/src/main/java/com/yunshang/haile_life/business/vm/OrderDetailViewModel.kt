@@ -14,7 +14,9 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
 
@@ -68,6 +70,17 @@ class OrderDetailViewModel : BaseViewModel() {
         } ?: false
     }
 
+    val showDeleteOrder: LiveData<Boolean> = orderDetail.map {
+        it?.let { detail ->
+            if (true == formScan.value) {
+                false
+            } else {
+                if (true == isAppoint.value) false
+                else 1000 == detail.state || 2099 == detail.state
+            }
+        } ?: false
+    }
+
     val showPayOrder: LiveData<Boolean> = orderDetail.map {
         it?.let { detail ->
             if (true == formScan.value) {
@@ -107,6 +120,7 @@ class OrderDetailViewModel : BaseViewModel() {
         ApiRepository.dealApiResult(mOrderRepo.requestOrderDetail(orderNo!!))?.let {
             orderDetail.postValue(it)
             getOrderStatusVal(it)
+            startStateTime(it)
         }
     }
 
@@ -130,6 +144,30 @@ class OrderDetailViewModel : BaseViewModel() {
             LiveDataBus.post(BusEvents.ORDER_CANCEL_STATUS, true)
             delay(2_000)
             requestOrderDetail()
+        })
+    }
+
+    /**
+     * 删除订单
+     */
+    fun deleteOrder(callBack: () -> Unit) {
+        if (orderNo.isNullOrEmpty()) return
+
+        val body = ApiRepository.createRequestBody(
+            hashMapOf(
+                "orderNo" to orderNo
+            )
+        )
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.deleteOrder(
+                    body
+                )
+            )
+            LiveDataBus.post(BusEvents.ORDER_DELETE_STATUS, orderNo!!)
+            withContext(Dispatchers.Main) {
+                callBack()
+            }
         })
     }
 
@@ -206,6 +244,32 @@ class OrderDetailViewModel : BaseViewModel() {
             } else {
                 orderStatusDesc.postValue(detail.getOrderDetailFinishTimePrompt())
             }
+        }
+    }
+
+    var orderStateTimer: Timer? = null
+    private fun startStateTime(detail: OrderEntity) {
+        // 如果是饮水并且，未创建过监听，开始一个新的监听
+        if (50 == detail.state) {
+            if (null == orderStateTimer) {
+                orderStateTimer = Timer()
+                orderStateTimer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        if (orderNo.isNullOrEmpty() || null == orderDetail.value) return
+                        launch({
+                            ApiRepository.dealApiResult(mOrderRepo.requestOrderDetailSimple(orderNo!!))
+                                ?.let {
+                                    if (it.state != orderDetail.value!!.state) {
+                                        requestOrderDetail()
+                                    }
+                                }
+                        }, {}, showLoading = false)
+                    }
+                }, 2000, 2000)
+            }
+        } else {
+            orderStateTimer?.cancel()
+            orderStateTimer = null
         }
     }
 }

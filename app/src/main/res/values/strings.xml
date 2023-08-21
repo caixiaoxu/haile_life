@@ -180,6 +180,7 @@
     <string name="order_time">下单时间</string>
     <string name="pay_now">立即支付</string>
     <string name="cancel_order">取消订单</string>
+    <string name="delete_order">删除订单</string>
     <string name="contact_shop">联系商家</string>
     <string name="predict_finish_time">预计完成时间</string>
     <string name="order_submit_used_time_prompt">请在 %1$s 到店使用</string>

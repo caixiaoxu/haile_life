@@ -44,8 +44,14 @@ interface OrderService {
     @GET("/trade/detail")
     suspend fun requestOrderDetail(@Query("orderNo") orderNo: String): ResponseWrapper<OrderEntity>
 
+    @GET("/trade/detail/simple")
+    suspend fun requestOrderDetailSimple(@Query("orderNo") orderNo: String): ResponseWrapper<OrderEntity>
+
     @POST("/trade/cancel")
     suspend fun cancelOrder(@Body body: RequestBody): ResponseWrapper<Any>
+
+    @POST("/trade/hidden")
+    suspend fun deleteOrder(@Body body: RequestBody): ResponseWrapper<Any>
 
     @POST("/appointment/cancel")
     suspend fun cancelAppointOrder(@Body body: RequestBody): ResponseWrapper<Any>

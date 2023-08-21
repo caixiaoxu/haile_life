@@ -105,6 +105,7 @@ class OrderDetailActivity :
         mViewModel.orderDetail.observe(this) {
             it?.let {
                 mViewModel.getOrderStatusVal(it)
+                val isSingle = 1 == it.orderItemList.size
                 val items = it.orderItemList.filter { item ->
                     !DeviceCategory.isDispenser(item.categoryCode) &&
                             try {
@@ -114,7 +115,6 @@ class OrderDetailActivity :
                                 true
                             }
                 }
-                val isSingle = 1 == items.size
                 mBinding.llOrderDetailSkus.buildChild<ItemOrderDetailSkuBinding, OrderItem>(items) { _, childBinding, data ->
                     childBinding.item = data
                     childBinding.isSingle = isSingle
@@ -218,6 +218,12 @@ class OrderDetailActivity :
             }
         }
 
+        mBinding.tvOrderDetailDelete.setOnClickListener {
+            mViewModel.deleteOrder() {
+                finish()
+            }
+        }
+
         mBinding.tvOrderDetailAppointNoUse.setOnClickListener {
             startActivity(
                 Intent(
@@ -239,6 +245,7 @@ class OrderDetailActivity :
 
     override fun onDestroy() {
         mViewModel.timer?.cancel()
+        mViewModel.orderStateTimer?.cancel()
         super.onDestroy()
     }
 }

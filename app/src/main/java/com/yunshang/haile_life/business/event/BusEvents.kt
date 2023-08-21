@@ -30,6 +30,9 @@ object BusEvents {
     // 订单取消
     const val ORDER_CANCEL_STATUS = "order_cancel_status"
 
+    // 订单删除
+    const val ORDER_DELETE_STATUS = "order_delete_status"
+
     // 预约单使用
     const val APPOINT_ORDER_USE_STATUS = "appoint_order_use_status"
 

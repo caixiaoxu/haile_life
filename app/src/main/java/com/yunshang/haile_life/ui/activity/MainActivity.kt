@@ -53,8 +53,12 @@ class MainActivity :
     private val scanCodeLauncher = registerForActivityResult(ScanContract()) { result ->
         result.contents?.let {
             Timber.i("二维码：$it")
-            val code = StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
-            code?.let {
+            var code = StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
+            StringUtils.getPayImeiCode(it)?.let { imei->
+                code = imei
+            }
+
+            code?.let {code->
                 mViewModel.requestScanResult(code) { scan, detail, appoint ->
                     if (detail.deviceErrorCode > 0) {
                         SToast.showToast(

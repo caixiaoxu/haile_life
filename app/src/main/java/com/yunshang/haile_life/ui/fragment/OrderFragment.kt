@@ -145,6 +145,10 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
         LiveDataBus.with(BusEvents.ORDER_CANCEL_STATUS)?.observe(this) {
             mBinding.rvMineOrderList.requestRefresh()
         }
+
+        LiveDataBus.with(BusEvents.ORDER_DELETE_STATUS, String::class.java)?.observe(this) {
+            mAdapter.deleteItem { item -> item.orderNo == it }
+        }
     }
 
     override fun initArguments() {
