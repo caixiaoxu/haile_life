@@ -16,6 +16,10 @@ android {
         versionName AndroidConfig.defaultConfig.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            //设置支持的 SO 库架构（开发者可以根据需要，选择一个或多个平台的 so）
+            abiFilters 'armeabi-v7a' // , 'arm64-v8a', 'x86', 'x86_64'
+        }
     }
 
     android.applicationVariants.all { variant ->
@@ -129,4 +133,14 @@ dependencies {
     implementation(ThirdLibs.jsBridge) {
         exclude group: 'com.github.lzyzsd.jsbridge', module: 'jsbridge-debug'
     }
+
+    // OpenCV基础库（*必须）
+    implementation 'com.github.jenly1314.WeChatQRCode:opencv:2.0.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:opencv-armv7a:2.0.0'
+
+    // 微信二维码识别功能（可选）
+    implementation 'com.github.jenly1314.WeChatQRCode:wechat-qrcode:2.0.0'
+    // 微信二维码扫码功能（可选）
+    implementation 'com.github.jenly1314.WeChatQRCode:wechat-qrcode-scanning:2.0.0'
+
 }

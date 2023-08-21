@@ -2,9 +2,13 @@ package com.yunshang.haile_life.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import com.king.camera.scan.CameraScan
+import com.king.wechat.qrcode.WeChatQRCodeDetector
 import com.lsy.framelib.utils.ActivityUtils
 import com.lsy.framelib.utils.AppPackageUtils
 import com.lsy.framelib.utils.SToast
@@ -28,8 +32,10 @@ import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
+import com.yunshang.haile_life.utils.qrcode.WeChatQRCodeScanActivity
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
+import org.opencv.OpenCV
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -42,10 +48,28 @@ class MainActivity :
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result: Map<String, Boolean> ->
             if (result.values.any { it }) {
                 // 授权权限成功
-                scanCodeLauncher.launch(scanOptions)
+//                scanCodeLauncher.launch(scanOptions)
+                startQRCodeScan.launch(
+                    Intent(
+                        this@MainActivity,
+                        WeChatQRCodeScanActivity::class.java
+                    )
+                )
             } else {
                 // 授权失败
                 SToast.showToast(this, R.string.empty_permission)
+            }
+        }
+
+    // 补偿界面界面
+    private val startQRCodeScan =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                // 扫码结果
+                CameraScan.parseScanResult(it.data)?.let { code ->
+                    Timber.d("二维码：$code")
+                    SToast.showToast(this, code)
+                }
             }
         }
 
@@ -54,11 +78,11 @@ class MainActivity :
         result.contents?.let {
             Timber.i("二维码：$it")
             var code = StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
-            StringUtils.getPayImeiCode(it)?.let { imei->
+            StringUtils.getPayImeiCode(it)?.let { imei ->
                 code = imei
             }
 
-            code?.let {code->
+            code?.let { code ->
                 mViewModel.requestScanResult(code) { scan, detail, appoint ->
                     if (detail.deviceErrorCode > 0) {
                         SToast.showToast(
@@ -160,6 +184,11 @@ class MainActivity :
         TencentLocationManager.setUserAgreePrivacy(true)
         super.onCreate(savedInstanceState)
         changeDefaultPage(IntentParams.DefaultPageParams.parseDefaultPage(intent))
+
+        // 初始化OpenCV
+        OpenCV.initAsync(this)
+        // 初始化WeChatQRCodeDetector
+        WeChatQRCodeDetector.init(this)
     }
 
     override fun onNewIntent(intent: Intent?) {

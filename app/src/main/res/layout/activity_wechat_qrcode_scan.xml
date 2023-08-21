@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/pv_qrcode_scan_pre"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_qrcode_scan_result"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/pv_qrcode_scan_pre"
+        app:layout_constraintTop_toTopOf="@id/pv_qrcode_scan_pre" />
+
+    <com.king.view.viewfinderview.ViewfinderView
+        android:id="@+id/vfv_qrcode_scan"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/pv_qrcode_scan_pre"
+        app:layout_constraintTop_toTopOf="@id/pv_qrcode_scan_pre"
+        app:vvLaserDrawable="@mipmap/icon_scan_img"
+        app:vvLaserDrawableRatio="0.8"
+        app:vvLaserStyle="image"
+        app:vvViewfinderStyle="popular" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_capture_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="52dp"
+        android:background="@color/transparent"
+        android:src="@mipmap/icon_scan_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cb_capture_light"
+        style="@style/Font_12_FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="16dp"
+        android:button="@null"
+        android:drawableTop="@mipmap/icon_camera_light"
+        android:drawablePadding="4dp"
+        android:gravity="center"
+        android:text="@string/capture_light"
+        app:layout_constraintBottom_toBottomOf="@id/pv_qrcode_scan_pre"
+        app:layout_constraintStart_toStartOf="@id/pv_qrcode_scan_pre" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_capture_album"
+        style="@style/Font_12_FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:drawableTop="@mipmap/icon_camera_album"
+        android:drawablePadding="4dp"
+        android:gravity="center"
+        android:text="@string/capture_album"
+        app:layout_constraintBottom_toBottomOf="@id/pv_qrcode_scan_pre"
+        app:layout_constraintEnd_toEndOf="@id/pv_qrcode_scan_pre" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_qrcode_scan_bottom"
+        style="@style/Font_16_white"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/black"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        android:text="@string/capture_scan"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

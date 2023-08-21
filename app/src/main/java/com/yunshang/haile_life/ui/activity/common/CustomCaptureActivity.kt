@@ -34,7 +34,6 @@ class CustomCaptureActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(mBinding.root)
 
         mBinding.btnCaptureBack.setOnClickListener {
             finish()
