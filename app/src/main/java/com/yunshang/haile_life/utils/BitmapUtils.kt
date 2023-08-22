@@ -127,6 +127,7 @@ object BitmapUtils {
     /**
      * 保存图片到本地
      */
+    @JvmStatic
     fun saveBitmapToGallery(mContext: Context, name: String, bm: Bitmap): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             // 插入参数

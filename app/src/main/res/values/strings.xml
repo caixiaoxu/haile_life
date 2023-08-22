@@ -59,6 +59,9 @@
     <string name="update_failure">修改失败</string>
     <string name="upload_failure">上传失败</string>
 
+    <string name="for_one_code">条形码</string>
+    <string name="for_qr_code">二维码</string>
+
     <string name="home_category_wash">洗烘</string>
     <string name="home_category_hair">吹风</string>
     <string name="home_category_drinking">饮水</string>
@@ -232,7 +235,8 @@
 
     <string name="capture_light">补光</string>
     <string name="capture_album">相册</string>
-    <string name="capture_scan">扫一扫</string>
+    <string name="qrcode">二维码</string>
+    <string name="oncode">条形码</string>
 
     <string name="card_manager">卡管理</string>
     <string name="consumption_order">消费订单</string>

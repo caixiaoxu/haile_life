@@ -3,23 +3,34 @@ package com.yunshang.haile_life.utils.qrcode
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Point
 import android.net.Uri
+import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import androidx.appcompat.widget.AppCompatCheckBox
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
+import android.widget.RadioGroup
+import androidx.appcompat.widget.*
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.zxing.BinaryBitmap
+import com.google.zxing.RGBLuminanceSource
+import com.google.zxing.common.HybridBinarizer
+import com.google.zxing.qrcode.QRCodeReader
+import com.journeyapps.barcodescanner.DecoratedBarcodeView
+import com.journeyapps.barcodescanner.ScanOptions
 import com.king.camera.scan.AnalyzeResult
 import com.king.camera.scan.CameraScan
+import com.king.camera.scan.analyze.Analyzer
 import com.king.camera.scan.util.LogUtils
 import com.king.camera.scan.util.PointUtils
 import com.king.wechat.qrcode.WeChatQRCodeDetector
 import com.king.wechat.qrcode.scanning.WeChatCameraScanActivity
 import com.king.wechat.qrcode.scanning.analyze.WeChatScanningAnalyzer
+import com.lsy.framelib.async.LiveDataBus
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.event.BusEvents
+import com.yunshang.haile_life.ui.view.scan.CustomCaptureManager
 import com.yunshang.haile_life.utils.PictureSelectUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,7 +48,11 @@ import timber.log.Timber
  * 作者姓名 修改时间 版本号 描述
  */
 class WeChatQRCodeScanActivity : WeChatCameraScanActivity() {
+    private var capture: CustomCaptureManager? = null
     private lateinit var mIvResult: AppCompatImageView
+    private lateinit var bvQRCodeScanPre: DecoratedBarcodeView
+
+    private var isOne: Boolean = false
 
     override fun getLayoutId(): Int = R.layout.activity_wechat_qrcode_scan
 
@@ -45,12 +60,10 @@ class WeChatQRCodeScanActivity : WeChatCameraScanActivity() {
 
     override fun getViewfinderViewId(): Int = R.id.vfv_qrcode_scan
 
-//    override fun getFlashlightId(): Int = R.id.cb_capture_light
-
     override fun initUI() {
         super.initUI()
 
-        mIvResult = findViewById<AppCompatImageView>(R.id.iv_qrcode_scan_result)
+        mIvResult = findViewById(R.id.iv_qrcode_scan_result)
         findViewById<AppCompatImageButton>(R.id.btn_capture_back).setOnClickListener {
             finish()
         }
@@ -71,6 +84,12 @@ class WeChatQRCodeScanActivity : WeChatCameraScanActivity() {
                                     Uri.parse(it.path)
                                 )
                             )
+                            parseImgQrCode(
+                                MediaStore.Images.Media.getBitmap(
+                                    contentResolver,
+                                    Uri.parse(it.path)
+                                )
+                            )
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -82,8 +101,97 @@ class WeChatQRCodeScanActivity : WeChatCameraScanActivity() {
         val cbCaptureLight = findViewById<AppCompatCheckBox>(R.id.cb_capture_light)
         cbCaptureLight.visibility = if (hasFlash()) View.VISIBLE else View.GONE
         cbCaptureLight.isChecked = cameraScan?.isTorchEnabled == true
-        cbCaptureLight.setOnCheckedChangeListener { _, _ ->
-            toggleTorchState()
+        cbCaptureLight.setOnCheckedChangeListener { _, isChecked ->
+            if (isOne) {
+                if (isChecked) {
+                    bvQRCodeScanPre.setTorchOn()
+                } else {
+                    bvQRCodeScanPre.setTorchOff()
+                }
+            } else {
+                toggleTorchState()
+            }
+        }
+
+        bvQRCodeScanPre = findViewById(R.id.bv_qrcode_scan_pre)
+
+        val rgQRCodeScan = findViewById<RadioGroup>(R.id.rg_qrcode_scan)
+        rgQRCodeScan.check(if (isOne) R.id.rb_qrcode_scan_one else R.id.rb_qrcode_scan_qr)
+        findViewById<AppCompatRadioButton>(R.id.rb_qrcode_scan_qr).run {
+            setTextColor(if (isOne) Color.parseColor("#88FFFFFF") else Color.WHITE)
+            textSize = if (isOne) 14f else 16f
+            setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    capture?.onDestroy()
+                    reStartAndChange(false)
+                }
+            }
+        }
+
+        findViewById<AppCompatRadioButton>(R.id.rb_qrcode_scan_one).run {
+            setTextColor(if (!isOne) Color.parseColor("#88FFFFFF") else Color.WHITE)
+            textSize = if (!isOne) 14f else 16f
+            setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    cameraScan?.release()
+                    reStartAndChange(true)
+                }
+            }
+        }
+
+//        findViewById<RadioGroup>(R.id.rg_qrcode_scan).setOnCheckedChangeListener { group, checkedId ->
+//            if (checkedId == R.id.rb_qrcode_scan_qr) {
+//                // 停止条形码
+//                capture?.onPause()
+//                bvQRCodeScanPre.visibility = View.GONE
+//
+//                // 开始二维码
+//                previewView.visibility = View.VISIBLE
+//                cameraScan?.startCamera()
+//            } else {
+//                // 停止二维码
+//                cameraScan?.release()
+//                previewView.visibility = View.GONE
+//
+//                // 开启条形码
+//                bvQRCodeScanPre.visibility = View.VISIBLE
+//                capture?.onResume()
+//                capture?.decode()
+//            }
+//        }
+    }
+
+    private fun reStartAndChange(isOne: Boolean) {
+        finish()
+        LiveDataBus.post(BusEvents.SCAN_CHANGE_STATUS, isOne)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        isOne = intent.getBooleanExtra("isOne", false)
+        super.onCreate(savedInstanceState)
+
+        if (isOne) {
+            capture = CustomCaptureManager(this, bvQRCodeScanPre) {
+                resultIntent(it ?: "")
+            }
+            capture?.initializeFromIntent(ScanOptions().apply {
+                setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES)
+                setOrientationLocked(true)
+                setCameraId(0) // 选择摄像头
+                setBeepEnabled(false)
+            }.createScanIntent(this), savedInstanceState)
+            capture?.decode()
+            previewView.visibility = View.GONE
+            bvQRCodeScanPre.visibility = View.VISIBLE
+        } else {
+            previewView.visibility = View.VISIBLE
+            bvQRCodeScanPre.visibility = View.GONE
+        }
+    }
+
+    override fun startCamera() {
+        if (!isOne) {
+            super.startCamera()
         }
     }
 
@@ -92,6 +200,13 @@ class WeChatQRCodeScanActivity : WeChatCameraScanActivity() {
      */
     private fun hasFlash(): Boolean {
         return applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
+    }
+
+    override fun createAnalyzer(): Analyzer<MutableList<String>> {
+        // 分析器默认不会返回结果二维码的位置信息
+//        return WeChatScanningAnalyzer()
+        // 如果需要返回结果二维码位置信息，则初始化分析器时，参数传 true 即可
+        return WeChatScanningAnalyzer(true)
     }
 
     override fun onScanResultCallback(result: AnalyzeResult<MutableList<String>>) {
@@ -185,5 +300,47 @@ class WeChatQRCodeScanActivity : WeChatCameraScanActivity() {
         } catch (e: Exception) {
             LogUtils.w(e)
         }
+    }
+
+
+    /**
+     * 解析图片选择
+     */
+    private fun parseImgQrCode(bitmap: Bitmap) {
+        resultIntent(
+            try {
+                val width = bitmap.width
+                val height = bitmap.height
+                val pixels = IntArray(width * height)
+                bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
+                val source = RGBLuminanceSource(width, height, pixels)
+                val binaryBitmap = BinaryBitmap(HybridBinarizer(source))
+
+                QRCodeReader().decode(binaryBitmap).text
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ""
+            }
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        capture?.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        capture?.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        capture?.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        capture?.onSaveInstanceState(outState)
     }
 }

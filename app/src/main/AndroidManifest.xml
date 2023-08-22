@@ -37,7 +37,8 @@
         tools:targetApi="31">
         <activity
             android:name=".utils.qrcode.WeChatQRCodeScanActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.activity.device.CardBindingActivity"
             android:exported="false" />

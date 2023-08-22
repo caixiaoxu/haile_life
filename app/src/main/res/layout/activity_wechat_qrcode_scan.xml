@@ -4,29 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/pv_qrcode_scan_pre"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="100dp" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_qrcode_scan_result"
+    <FrameLayout
+        android:id="@+id/fl_qr_code_pre"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/pv_qrcode_scan_pre"
-        app:layout_constraintTop_toTopOf="@id/pv_qrcode_scan_pre" />
+        app:layout_constraintBottom_toTopOf="@id/rg_qrcode_scan"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.king.view.viewfinderview.ViewfinderView
-        android:id="@+id/vfv_qrcode_scan"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/pv_qrcode_scan_pre"
-        app:layout_constraintTop_toTopOf="@id/pv_qrcode_scan_pre"
-        app:vvLaserDrawable="@mipmap/icon_scan_img"
-        app:vvLaserDrawableRatio="0.8"
-        app:vvLaserStyle="image"
-        app:vvViewfinderStyle="popular" />
+        <androidx.camera.view.PreviewView
+            android:id="@+id/pv_qrcode_scan_pre"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <com.journeyapps.barcodescanner.DecoratedBarcodeView
+            android:id="@+id/bv_qrcode_scan_pre"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/pv_qrcode_scan_pre"
+            app:layout_constraintTop_toTopOf="@id/pv_qrcode_scan_pre"
+            app:zxing_preview_scaling_strategy="fitXY"
+            app:zxing_use_texture_view="false" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_qrcode_scan_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.king.view.viewfinderview.ViewfinderView
+            android:id="@+id/vfv_qrcode_scan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:vvLaserDrawable="@mipmap/icon_scan_img"
+            app:vvLaserDrawableRatio="0.8"
+            app:vvLaserStyle="image"
+            app:vvViewfinderStyle="popular" />
+    </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_capture_back"
@@ -51,8 +65,8 @@
         android:drawablePadding="4dp"
         android:gravity="center"
         android:text="@string/capture_light"
-        app:layout_constraintBottom_toBottomOf="@id/pv_qrcode_scan_pre"
-        app:layout_constraintStart_toStartOf="@id/pv_qrcode_scan_pre" />
+        app:layout_constraintBottom_toBottomOf="@id/fl_qr_code_pre"
+        app:layout_constraintStart_toStartOf="@id/fl_qr_code_pre" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_capture_album"
@@ -65,18 +79,40 @@
         android:drawablePadding="4dp"
         android:gravity="center"
         android:text="@string/capture_album"
-        app:layout_constraintBottom_toBottomOf="@id/pv_qrcode_scan_pre"
-        app:layout_constraintEnd_toEndOf="@id/pv_qrcode_scan_pre" />
+        app:layout_constraintBottom_toBottomOf="@id/fl_qr_code_pre"
+        app:layout_constraintEnd_toEndOf="@id/fl_qr_code_pre" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_qrcode_scan_bottom"
-        style="@style/Font_16_white"
+    <RadioGroup
+        android:id="@+id/rg_qrcode_scan"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/black"
         android:gravity="center_horizontal"
+        android:orientation="horizontal"
         android:paddingTop="16dp"
-        android:text="@string/capture_scan"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_qrcode_scan_qr"
+            style="@style/Font_16_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="8dp"
+            android:text="@string/qrcode" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_qrcode_scan_one"
+            style="@style/Font_16_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="8dp"
+            android:text="@string/oncode" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

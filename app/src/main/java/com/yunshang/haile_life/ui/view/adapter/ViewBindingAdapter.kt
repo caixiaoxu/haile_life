@@ -4,7 +4,9 @@ import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RadioButton
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MarginLayoutParamsCompat
 import androidx.databinding.BindingAdapter

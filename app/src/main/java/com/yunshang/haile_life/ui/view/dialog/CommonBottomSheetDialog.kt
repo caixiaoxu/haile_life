@@ -124,7 +124,7 @@ class CommonBottomSheetDialog<D : ICommonBottomItemEntity> private constructor(p
 
                         setOnRadioClickListener {
                             if (1 == builder.selectModel) {
-                                builder.onValueSureListener?.onValue(curEntity)
+                                builder.onValueSureListener?.onValue(data)
                                 dismiss()
                                 true
                             } else false
