@@ -203,10 +203,18 @@ class MainActivity :
                 showChildFragment(it)
             }
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         LiveDataBus.with(BusEvents.SCAN_CHANGE_STATUS, Boolean::class.java)?.observe(this) {
             startQRActivity(it)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LiveDataBus.remove(BusEvents.SCAN_CHANGE_STATUS)
     }
 
     override fun initView() {

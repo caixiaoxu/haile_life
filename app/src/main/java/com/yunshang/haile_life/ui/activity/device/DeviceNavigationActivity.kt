@@ -4,20 +4,20 @@ import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanOptions
+import com.king.camera.scan.CameraScan
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.youth.banner.indicator.CircleIndicator
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.DeviceNavigationViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityDeviceNavigationBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
-import com.yunshang.haile_life.ui.activity.common.CustomCaptureActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.activity.order.DrinkingScanOrderActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
@@ -27,6 +27,7 @@ import com.yunshang.haile_life.ui.activity.personal.DiscountCouponActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
+import com.yunshang.haile_life.utils.qrcode.WeChatQRCodeScanActivity
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
 import timber.log.Timber
@@ -41,7 +42,7 @@ class DeviceNavigationActivity :
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result: Map<String, Boolean> ->
             if (result.values.any { it }) {
                 // 授权权限成功
-                scanCodeLauncher.launch(scanOptions)
+                startQRActivity(false)
             } else {
                 // 授权失败
                 SToast.showToast(this, R.string.empty_permission)
@@ -49,108 +50,131 @@ class DeviceNavigationActivity :
         }
 
 
-    // 扫码相机启动器
-    private val scanCodeLauncher = registerForActivityResult(ScanContract()) { result ->
-        result.contents?.let {
-            Timber.i("二维码：$it")
-            val code = StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
-            code?.let {
-                mViewModel.requestScanResult(code) { scan, detail, appoint ->
-                    if (detail.deviceErrorCode > 0) {
-                        SToast.showToast(
-                            this@DeviceNavigationActivity,
-                            detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" }
-                        )
-                        return@requestScanResult
-                    } else if (2 == detail.soldState) {
-                        SToast.showToast(
-                            this@DeviceNavigationActivity,
-                            detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" }
-                        )
-                        return@requestScanResult
-                    } else if (0 == detail.amount) {
-                        SToast.showToast(
-                            this@DeviceNavigationActivity, "设备工作中,请稍后再试!"
-                        )
-                        return@requestScanResult
-                    } else if (detail.shopClosed) {
-                        SToast.showToast(
-                            this@DeviceNavigationActivity, "门店不在营业时间内,请稍后再试!"
-                        )
-                        return@requestScanResult
-                    }
-                    if (!appoint?.orderNo.isNullOrEmpty()) {
-                        // 预约详情界面
-                        startActivity(
-                            Intent(
-                                this@DeviceNavigationActivity,
-                                OrderDetailActivity::class.java
-                            ).apply {
-                                putExtras(IntentParams.ScanOrderParams.pack(code, scan))
-                                putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo, true, 1))
-                            })
-                    } else {
-                        if (DeviceCategory.isDrinking(detail.categoryCode))
+    private fun startQRActivity(isOne: Boolean) {
+        startQRCodeScan.launch(
+            Intent(
+                this,
+                WeChatQRCodeScanActivity::class.java
+            ).apply {
+                putExtra("isOne", isOne)
+            })
+    }
+
+    // 二维码
+    private val startQRCodeScan =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                // 扫码结果
+                CameraScan.parseScanResult(result.data)?.let {
+                    Timber.i("二维码：$it")
+                    val code =
+                        StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
+                    code?.let {
+                        mViewModel.requestScanResult(code) { scan, detail, appoint ->
+                            if (detail.deviceErrorCode > 0) {
+                                SToast.showToast(
+                                    this@DeviceNavigationActivity,
+                                    detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" }
+                                )
+                                return@requestScanResult
+                            } else if (2 == detail.soldState) {
+                                SToast.showToast(
+                                    this@DeviceNavigationActivity,
+                                    detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" }
+                                )
+                                return@requestScanResult
+                            } else if (0 == detail.amount) {
+                                SToast.showToast(
+                                    this@DeviceNavigationActivity, "设备工作中,请稍后再试!"
+                                )
+                                return@requestScanResult
+                            } else if (detail.shopClosed) {
+                                SToast.showToast(
+                                    this@DeviceNavigationActivity, "门店不在营业时间内,请稍后再试!"
+                                )
+                                return@requestScanResult
+                            }
+                            if (!appoint?.orderNo.isNullOrEmpty()) {
+                                // 预约详情界面
+                                startActivity(
+                                    Intent(
+                                        this@DeviceNavigationActivity,
+                                        OrderDetailActivity::class.java
+                                    ).apply {
+                                        putExtras(IntentParams.ScanOrderParams.pack(code, scan))
+                                        putExtras(
+                                            IntentParams.OrderParams.pack(
+                                                appoint!!.orderNo,
+                                                true,
+                                                1
+                                            )
+                                        )
+                                    })
+                            } else {
+                                if (DeviceCategory.isDrinking(detail.categoryCode))
+                                    startActivity(
+                                        Intent(
+                                            this@DeviceNavigationActivity,
+                                            DrinkingScanOrderActivity::class.java
+                                        ).apply {
+                                            putExtras(
+                                                IntentParams.ScanOrderParams.pack(
+                                                    code,
+                                                    scan,
+                                                    detail
+                                                )
+                                            )
+                                        })
+                                else
+                                    startActivity(
+                                        Intent(
+                                            this@DeviceNavigationActivity,
+                                            ScanOrderActivity::class.java
+                                        ).apply {
+                                            putExtras(
+                                                IntentParams.ScanOrderParams.pack(
+                                                    code,
+                                                    scan,
+                                                    detail
+                                                )
+                                            )
+                                        })
+                            }
+                        }
+                    } ?: run {
+                        // 充值码
+                        val rechargeCode = StringUtils.rechargeCode(it)
+                        rechargeCode?.let {
+                            try {
+                                startActivity(
+                                    Intent(
+                                        this@DeviceNavigationActivity,
+                                        RechargeStarfishActivity::class.java
+                                    ).apply {
+                                        putExtras(IntentParams.RechargeStarfishParams.pack(it.toInt()))
+                                    })
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                        // 退款码
+                        val refundCode = StringUtils.refundCode(it)
+                        refundCode?.let {
                             startActivity(
                                 Intent(
                                     this@DeviceNavigationActivity,
-                                    DrinkingScanOrderActivity::class.java
+                                    StarfishRefundListActivity::class.java
                                 ).apply {
-                                    putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
+                                    putExtras(IntentParams.ScanOrderParams.pack(it))
                                 })
-                        else
-                            startActivity(
-                                Intent(
-                                    this@DeviceNavigationActivity,
-                                    ScanOrderActivity::class.java
-                                ).apply {
-                                    putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
-                                })
+                        }
+                        if (null == rechargeCode && null == refundCode) {
+                            SToast.showToast(this, R.string.pay_code_error)
+                        }
                     }
-                }
-            } ?: run {
-                // 充值码
-                val rechargeCode = StringUtils.rechargeCode(it)
-                rechargeCode?.let {
-                    try {
-                        startActivity(
-                            Intent(
-                                this@DeviceNavigationActivity,
-                                RechargeStarfishActivity::class.java
-                            ).apply {
-                                putExtras(IntentParams.RechargeStarfishParams.pack(it.toInt()))
-                            })
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-                // 退款码
-                val refundCode = StringUtils.refundCode(it)
-                refundCode?.let {
-                    startActivity(
-                        Intent(
-                            this@DeviceNavigationActivity,
-                            StarfishRefundListActivity::class.java
-                        ).apply {
-                            putExtras(IntentParams.ScanOrderParams.pack(it))
-                        })
-                }
-                if (null == rechargeCode && null == refundCode) {
-                    SToast.showToast(this, R.string.pay_code_error)
                 }
             }
         }
-    }
-
-    private val scanOptions: ScanOptions by lazy {
-        ScanOptions().apply {
-            captureActivity = CustomCaptureActivity::class.java
-            setPrompt("请对准二维码")//提示语
-            setOrientationLocked(true)
-            setCameraId(0) // 选择摄像头
-            setBeepEnabled(true) // 开启声音
-        }
-    }
 
     override fun layoutId(): Int = R.layout.activity_device_navigation
 
@@ -224,6 +248,18 @@ class DeviceNavigationActivity :
         mBinding.btnDeviceNavigationFaq.setOnClickListener {
             SToast.showToast(this@DeviceNavigationActivity, R.string.coming_soon)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LiveDataBus.with(BusEvents.SCAN_CHANGE_STATUS, Boolean::class.java)?.observe(this) {
+            startQRActivity(it)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LiveDataBus.remove(BusEvents.SCAN_CHANGE_STATUS)
     }
 
     /**
