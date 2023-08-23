@@ -29,7 +29,7 @@ import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
-import com.yunshang.haile_life.utils.qrcode.WeChatQRCodeScanActivity
+import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
 import org.opencv.OpenCV

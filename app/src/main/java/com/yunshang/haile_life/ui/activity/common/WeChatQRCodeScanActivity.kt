@@ -1,4 +1,4 @@
-package com.yunshang.haile_life.utils.qrcode
+package com.yunshang.haile_life.ui.activity.common
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,7 +11,6 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.RadioGroup
 import androidx.appcompat.widget.*
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.zxing.BinaryBitmap
 import com.google.zxing.RGBLuminanceSource

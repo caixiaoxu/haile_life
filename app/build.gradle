@@ -135,12 +135,12 @@ dependencies {
     }
 
     // OpenCV基础库（*必须）
-    implementation 'com.github.jenly1314.WeChatQRCode:opencv:2.0.0'
-    implementation 'com.github.jenly1314.WeChatQRCode:opencv-armv7a:2.0.0'
+    implementation ThirdLibs.opencv
+    implementation ThirdLibs.opencv_armv7a
 
     // 微信二维码识别功能（可选）
-    implementation 'com.github.jenly1314.WeChatQRCode:wechat-qrcode:2.0.0'
+    implementation ThirdLibs.wechat_qrcode
     // 微信二维码扫码功能（可选）
-    implementation 'com.github.jenly1314.WeChatQRCode:wechat-qrcode-scanning:2.0.0'
+    implementation ThirdLibs.wechat_qrcode_scanning
 
 }

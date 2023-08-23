@@ -14,7 +14,7 @@ import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.CardBindingViewModel
 import com.yunshang.haile_life.databinding.ActivityCardBindingBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
-import com.yunshang.haile_life.utils.qrcode.WeChatQRCodeScanActivity
+import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
 import timber.log.Timber
 
 class CardBindingActivity : BaseBusinessActivity<ActivityCardBindingBinding, CardBindingViewModel>(
