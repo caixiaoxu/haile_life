@@ -77,9 +77,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:itemLayout="@layout/item_scan_order_model"
+                    app:visibility="@{vm.needAttach}"
                     app:divider="@drawable/divder_efefef"
-                    app:showDividers="middle"/>
+                    app:itemLayout="@layout/item_scan_order_model"
+                    app:showDividers="middle" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
 
@@ -149,7 +150,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/view_scan_order_selected"
             app:layout_constraintVertical_chainStyle="spread"
-            app:tMoney='@{vm.selectExtAttr.price}'
+            app:tMoney='@{vm.totalPriceVal}'
             tools:text="￥ 5.00" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -157,7 +158,8 @@
             style="@style/Font_12_black_65"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:text="@{vm.attachConfigureVal}"
+            android:visibility='@{(null == vm.attachConfigureVal || "" == vm.attachConfigureVal)?View.GONE:View.VISIBLE}'
             app:layout_constraintBottom_toBottomOf="@id/view_scan_order_selected"
             app:layout_constraintEnd_toEndOf="@id/tv_scan_order_price"
             app:layout_constraintStart_toStartOf="@id/tv_scan_order_price"

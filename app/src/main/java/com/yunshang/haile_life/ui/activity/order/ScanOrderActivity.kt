@@ -98,7 +98,8 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                             mViewModel.goodsScan.value?.categoryCode?.let { code ->
                                                 item.getExtAttrs(DeviceCategory.isDryerOrHair(code))
                                                     .firstOrNull()?.let { firstAttr ->
-                                                        mViewModel.selectExtAttr.postValue(firstAttr)
+                                                        mViewModel.selectExtAttr.value = firstAttr
+                                                        mViewModel.totalPrice()
                                                     }
                                             }
                                         }
@@ -171,6 +172,11 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
             }
         }
 
+        mViewModel.selectExtAttr.observe(this){
+            mViewModel.totalPrice()
+            mViewModel.attachConfigure()
+        }
+
         mViewModel.shopNotice.observe(this) {
             if (!it.isNullOrEmpty()) {
                 ShopNoticeDialog(it).show(supportFragmentManager)
@@ -214,42 +220,49 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                             cl.removeViews(3, cl.childCount - 3)
                         }
                         val inflater = LayoutInflater.from(this@ScanOrderActivity)
-                        data.dosingConfigDTOS.add(DosingConfigDTOS())
-                        data.dosingConfigDTOS.forEachIndexed { index, item ->
-                            DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
-                                inflater, R.layout.item_scan_order_model_item, null, false
-                            )?.let { itemBinding ->
-                                mViewModel.goodsScan.value?.categoryCode?.let {
-                                    itemBinding.code = it
-                                }
-                                itemBinding.item = item
-                                itemBinding.isDefault = item.isDefault
-                                itemBinding.root.id = index + 1
-                                itemBinding.rbOrderModelItem.let { rb ->
+                        if (data.dosingConfigDTOS.isEmpty()) {
+                            cl.visibility = View.GONE
+                        } else {
+                            data.dosingConfigDTOS.add(DosingConfigDTOS())
+                            data.dosingConfigDTOS.forEachIndexed { index, item ->
+                                DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
+                                    inflater, R.layout.item_scan_order_model_item, null, false
+                                )?.let { itemBinding ->
+                                    mViewModel.goodsScan.value?.categoryCode?.let {
+                                        itemBinding.code = it
+                                    }
+                                    itemBinding.item = item
+                                    itemBinding.isDefault = item.isDefault
+                                    itemBinding.root.id = index + 1
+                                    itemBinding.rbOrderModelItem.let { rb ->
 
-                                    mViewModel.selectAttachSku[data.id]?.observe(this) {
-                                        (item.amount == it.amount).let { isSame ->
-                                            if (isSame != rb.isChecked) {
-                                                rb.isChecked = isSame
+                                        mViewModel.selectAttachSku[data.id]?.observe(this) {
+                                            (item.amount == it.amount).let { isSame ->
+                                                if (isSame != rb.isChecked) {
+                                                    rb.isChecked = isSame
+                                                }
                                             }
                                         }
-                                    }
 
-                                    rb.setOnClickListener {
-                                        mViewModel.selectAttachSku[data.id]?.value = item
+                                        rb.setOnClickListener {
+                                            mViewModel.selectAttachSku[data.id]?.value = item
+                                            mViewModel.totalPrice()
+                                            mViewModel.attachConfigure()
+                                        }
                                     }
+                                    cl.addView(
+                                        itemBinding.root,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT
+                                    )
                                 }
-                                cl.addView(
-                                    itemBinding.root,
-                                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                                    ViewGroup.LayoutParams.WRAP_CONTENT
-                                )
                             }
+                            // 设置id
+                            val idList = IntArray(data.dosingConfigDTOS.size) { it + 1 }
+                            childBinding.flowScanOrderItem.referencedIds = idList
+                            childBinding.flowScanOrderItem.visibility = View.VISIBLE
+                            cl.visibility = View.VISIBLE
                         }
-                        // 设置id
-                        val idList = IntArray(data.dosingConfigDTOS.size) { it + 1 }
-                        childBinding.flowScanOrderItem.referencedIds = idList
-                        childBinding.flowScanOrderItem.visibility = View.VISIBLE
                     }
                 } else {
                     childBinding.modelTitle = "自动投放" + attachList.joinToString("/") { item ->

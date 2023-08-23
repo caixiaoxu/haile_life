@@ -102,6 +102,48 @@ class ScanOrderViewModel : BaseViewModel() {
     private fun checkSubmit(): Boolean =
         null != selectDeviceConfig.value && null != selectExtAttr.value
 
+    val totalPriceVal: MutableLiveData<Double> by lazy {
+        MutableLiveData()
+    }
+
+    fun totalPrice() {
+        var attachTotal = 0.0
+        selectAttachSku.forEach { item ->
+            attachTotal += try {
+                item.value.value!!.price.toDouble()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                0.0
+            }
+        }
+        totalPriceVal.value =
+            (selectExtAttr.value?.price ?: 0.0) + if (true == needAttach.value) attachTotal else 0.0
+    }
+
+    val attachConfigureVal: MutableLiveData<String> by lazy {
+        MutableLiveData()
+    }
+
+    val needAttach: LiveData<Boolean> = selectDeviceConfig.map {
+        it?.let { item ->
+            !(item.name == "单脱" || item.name == "筒自洁")
+        } ?: false
+    }
+
+    fun attachConfigure() {
+        var configure = ""
+        if (true == needAttach.value) {
+            selectAttachSku.forEach { item ->
+                item.value.value?.let {
+                    configure += "+" + it.name + "￥" + it.price
+                }
+            }
+        }
+        attachConfigureVal.value = if (configure.isNotEmpty()) {
+            configure.substring(1)
+        } else configure
+    }
+
     val shopNotice: MutableLiveData<MutableList<ShopNoticeEntity>> by lazy {
         MutableLiveData()
     }
@@ -143,11 +185,11 @@ class ScanOrderViewModel : BaseViewModel() {
                         // 初始化关联的sku
                         selectAttachSku = mutableMapOf()
                         detail.attachItems.forEach { item ->
-                            (item.dosingConfigDTOS.find { dtos -> dtos.isDefault }
-                                ?: run {
-                                    item.dosingConfigDTOS.firstOrNull()
-                                })?.let { default ->
-                                selectAttachSku[item.id] = MutableLiveData(default)
+                            if (item.dosingConfigDTOS.isNotEmpty()) {
+                                (item.dosingConfigDTOS.find { dtos -> dtos.isDefault }
+                                    ?: run { DosingConfigDTOS() }).let { default ->
+                                    selectAttachSku[item.id] = MutableLiveData(default)
+                                }
                             }
                         }
                     }
