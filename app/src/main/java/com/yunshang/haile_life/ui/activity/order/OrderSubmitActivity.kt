@@ -7,8 +7,8 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.AppManager
@@ -26,12 +26,14 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
 import com.yunshang.haile_life.data.entities.WxPrePayEntity
-import com.yunshang.haile_life.databinding.*
+import com.yunshang.haile_life.databinding.ActivityOrderSubmitBinding
+import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
+import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
+import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
-import kotlinx.coroutines.flow.merge
 
 class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, OrderSubmitViewModel>(
     OrderSubmitViewModel::class.java, BR.vm
@@ -191,7 +193,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                 childBinding.endDraw = 0
                                 val pH = DimensionUtils.dip2px(this@OrderSubmitActivity, 8f)
                                 childBinding.tvOrderSubmitGoodValue.setPadding(pH, 0, pH, 0)
-                                (childBinding.tvOrderSubmitGoodValue.layoutParams as ConstraintLayout.LayoutParams).run {
+                                (childBinding.tvOrderSubmitGoodValue.layoutParams as LinearLayout.LayoutParams).run {
                                     height = DimensionUtils.dip2px(this@OrderSubmitActivity, 25f)
                                 }
                                 childBinding.value = StringUtils.getString(
