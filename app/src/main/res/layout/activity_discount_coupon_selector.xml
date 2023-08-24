@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text='@{@string/unit_money +" "+ vm.tradePreview.discountPrice}'
+                android:text='@{@string/unit_money +" "+ vm.promotion.discountPrice}'
                 app:layout_constraintBottom_toTopOf="@id/tv_discount_coupon_selector_desc"
                 app:layout_constraintEnd_toStartOf="@id/btn_discount_coupon_selector_sure"
                 app:layout_constraintStart_toStartOf="parent"

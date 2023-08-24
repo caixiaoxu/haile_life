@@ -9,6 +9,10 @@
         <import type="com.yunshang.haile_life.data.agruments.DeviceCategory" />
 
         <variable
+            name="isSingle"
+            type="java.lang.Boolean" />
+
+        <variable
             name="item"
             type="com.yunshang.haile_life.data.entities.TradePreviewGoodItem" />
     </data>
@@ -33,7 +37,7 @@
         <include
             android:id="@+id/include_order_submit_good_discount"
             layout="@layout/item_order_submit_good_item"
-            android:visibility="@{0 == item.getDiscountAmountStr().length()?View.GONE:View.VISIBLE}"
+            android:visibility="@{(0 == item.getDiscountAmountStr().length() || isSingle)?View.GONE:View.VISIBLE}"
             app:title="@{@string/good_discount}"
             app:type="@{2}"
             app:value="@{item.getDiscountAmountStr}" />

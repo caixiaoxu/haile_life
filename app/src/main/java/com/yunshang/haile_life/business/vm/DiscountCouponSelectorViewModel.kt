@@ -7,6 +7,7 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.TradePreviewEntity
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
+import com.yunshang.haile_life.data.entities.TradePreviewPromotion
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
 import java.util.*
@@ -30,6 +31,9 @@ class DiscountCouponSelectorViewModel : BaseViewModel() {
 
     var promotionProduct: Int = -1
 
+    val promotion: MutableLiveData<TradePreviewPromotion> by lazy {
+        MutableLiveData()
+    }
     var selectParticipate: MutableList<TradePreviewParticipate>? = null
 
     val tradePreview: MutableLiveData<TradePreviewEntity> by lazy {

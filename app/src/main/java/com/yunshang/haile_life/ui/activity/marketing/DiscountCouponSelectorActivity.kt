@@ -63,6 +63,7 @@ class DiscountCouponSelectorActivity :
                 // 已选优惠
                 trade.promotionList.find { item -> mViewModel.promotionProduct == item.promotionProduct }
                     ?.let { promotion ->
+                        mViewModel.promotion.value = promotion
                         mViewModel.selectParticipate =
                             mutableListOf<TradePreviewParticipate>().apply {
                                 if (promotion.participateList.isNotEmpty()) {
