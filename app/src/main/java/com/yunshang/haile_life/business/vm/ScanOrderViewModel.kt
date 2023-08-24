@@ -135,7 +135,9 @@ class ScanOrderViewModel : BaseViewModel() {
         if (true == needAttach.value) {
             selectAttachSku.forEach { item ->
                 item.value.value?.let {
-                    configure += "+" + it.name + "￥" + it.price
+                    if (it.name.isNotEmpty() && it.price.isNotEmpty()){
+                        configure += "+" + it.name + "￥" + it.price
+                    }
                 }
             }
         }
