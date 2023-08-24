@@ -62,7 +62,7 @@ data class DeviceDetailItemEntity(
             GsonUtils.json2List(extAttr, ExtAttrBean::class.java) ?: arrayListOf()
         } else {
             try {
-                arrayListOf(ExtAttrBean(unit.toInt(), price.toDouble()))
+                arrayListOf(ExtAttrBean(unit.toInt(), price))
             } catch (e: Exception) {
                 e.printStackTrace()
                 arrayListOf()
@@ -91,7 +91,7 @@ data class DeviceDetailItemEntity(
 
 data class ExtAttrBean(
     val minutes: Int,
-    var price: Double,
+    var price: String,
 ) : IOrderConfigEntity {
     override fun getTitle(code: String?): String =
         "${minutes}${StringUtils.getString(R.string.minute)}"

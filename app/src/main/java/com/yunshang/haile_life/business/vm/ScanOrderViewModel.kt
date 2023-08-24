@@ -14,6 +14,7 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.string.StringUtils
+import java.math.BigDecimal
 
 /**
  * Title :
@@ -107,17 +108,14 @@ class ScanOrderViewModel : BaseViewModel() {
     }
 
     fun totalPrice() {
-        var attachTotal = 0.0
+        var attachTotal = BigDecimal("0.0")
         selectAttachSku.forEach { item ->
-            attachTotal += try {
-                item.value.value!!.price.toDouble()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                0.0
+            if (item.value.value!!.price.isNotEmpty()) {
+                attachTotal = attachTotal.add(BigDecimal(item.value.value!!.price))
             }
         }
         totalPriceVal.value =
-            (selectExtAttr.value?.price ?: 0.0) + if (true == needAttach.value) attachTotal else 0.0
+            BigDecimal(selectExtAttr.value?.price ?: "0.0").add(attachTotal).toDouble()
     }
 
     val attachConfigureVal: MutableLiveData<String> by lazy {
@@ -134,9 +132,12 @@ class ScanOrderViewModel : BaseViewModel() {
         var configure = ""
         if (true == needAttach.value) {
             selectAttachSku.forEach { item ->
-                item.value.value?.let {
-                    if (it.name.isNotEmpty() && it.price.isNotEmpty()){
-                        configure += "+" + it.name + "￥" + it.price
+                val name = deviceDetail.value?.attachItems?.find { it -> it.id == item.key }?.name
+                if (!name.isNullOrEmpty()) {
+                    item.value.value?.let {
+                        if (it.price.isNotEmpty()) {
+                            configure += "+" + name + "￥" + it.price
+                        }
                     }
                 }
             }
