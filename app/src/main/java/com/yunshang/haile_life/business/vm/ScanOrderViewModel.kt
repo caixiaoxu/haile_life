@@ -176,7 +176,7 @@ class ScanOrderViewModel : BaseViewModel() {
                 deviceDetail?.let { detail ->
                     (if (DeviceCategory.isHair(scan.categoryCode)) {
                         detail.items.find { item -> 1 == item.amount }
-                    } else detail.items.firstOrNull())?.let { first ->
+                    } else detail.items.firstOrNull { item -> 1 == item.soldState })?.let { first ->
                         selectDeviceConfig.postValue(first)
                         first.getExtAttrs(DeviceCategory.isDryerOrHair(scan.categoryCode))
                             .firstOrNull()?.let { firstAttr ->
