@@ -286,19 +286,24 @@ object IntentParams {
     object DiscountCouponSelectorParams {
         private const val SelectCoupon = "SelectCoupon"
         private const val PromotionProduct = "promotionProduct"
+        private const val OtherSelectCoupon = "OtherSelectCoupon"
 
         /**
          * 包装参数
          */
         fun pack(
             select: List<TradePreviewParticipate>? = null,
-            promotionProduct: Int
+            promotionProduct: Int,
+            otherSelect:List<TradePreviewParticipate>? = null,
         ): Bundle =
             Bundle().apply {
                 select?.let {
                     putString(SelectCoupon, GsonUtils.any2Json(select))
                 }
                 putInt(PromotionProduct, promotionProduct)
+                otherSelect?.let {
+                    putString(OtherSelectCoupon, GsonUtils.any2Json(otherSelect))
+                }
             }
 
         fun parseSelectCoupon(intent: Intent): MutableList<TradePreviewParticipate>? =
@@ -308,6 +313,13 @@ object IntentParams {
             )
 
         fun parsePromotionProduct(intent: Intent): Int = intent.getIntExtra(PromotionProduct, -1)
+
+
+        fun parseOtherSelectCoupon(intent: Intent): MutableList<TradePreviewParticipate>? =
+            GsonUtils.json2List(
+                intent.getStringExtra(OtherSelectCoupon),
+                TradePreviewParticipate::class.java
+            )
     }
 
     object RechargeStarfishParams {

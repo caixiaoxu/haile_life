@@ -31,6 +31,7 @@ import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
+import kotlinx.coroutines.flow.merge
 
 class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, OrderSubmitViewModel>(
     OrderSubmitViewModel::class.java, BR.vm
@@ -210,7 +211,11 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                         putExtras(
                                             IntentParams.DiscountCouponSelectorParams.pack(
                                                 promotion.participateList,
-                                                promotion.promotionProduct
+                                                promotion.promotionProduct,
+                                                trade.promotionList.filter { item -> promotion.promotionProduct != item.promotionProduct }
+                                                    .flatMap { item ->
+                                                        item.participateList
+                                                    }
                                             )
                                         )
                                     }

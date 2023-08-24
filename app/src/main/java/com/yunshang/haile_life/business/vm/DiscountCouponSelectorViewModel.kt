@@ -11,6 +11,7 @@ import com.yunshang.haile_life.data.entities.TradePreviewPromotion
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Title :
@@ -35,6 +36,7 @@ class DiscountCouponSelectorViewModel : BaseViewModel() {
         MutableLiveData()
     }
     var selectParticipate: MutableList<TradePreviewParticipate>? = null
+    var otherSelectParticipate: MutableList<TradePreviewParticipate>? = null
 
     val tradePreview: MutableLiveData<TradePreviewEntity> by lazy {
         MutableLiveData()
@@ -56,7 +58,16 @@ class DiscountCouponSelectorViewModel : BaseViewModel() {
         )
 
         if (null != selectParticipate) {
-            params["promotionList"] = selectParticipate!!.map {
+
+            val list = mutableListOf<TradePreviewParticipate>()
+            otherSelectParticipate?.let {
+                list.addAll(it)
+            }
+            selectParticipate?.let {
+                list.addAll(it)
+            }
+
+            params["promotionList"] = list.map {
                 hashMapOf(
                     "promotionId" to it.promotionId,
                     "promotionProduct" to it.promotionProduct,

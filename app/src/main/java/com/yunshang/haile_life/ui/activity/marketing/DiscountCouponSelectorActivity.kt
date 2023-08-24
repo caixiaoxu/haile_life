@@ -54,6 +54,8 @@ class DiscountCouponSelectorActivity :
             IntentParams.DiscountCouponSelectorParams.parsePromotionProduct(intent)
         mViewModel.selectParticipate =
             IntentParams.DiscountCouponSelectorParams.parseSelectCoupon(intent)
+        mViewModel.otherSelectParticipate =
+            IntentParams.DiscountCouponSelectorParams.parseOtherSelectCoupon(intent)
     }
 
     override fun initEvent() {
