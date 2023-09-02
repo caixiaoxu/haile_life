@@ -98,8 +98,10 @@
     <string name="scan_order_shoes_hint">温馨提示：请勿将宠物用品、易损衣物放入洗鞋机清洗。</string>
     <string name="scan_order_hair_hint">温馨提示：使用时请不要离吹风口太近避免烫伤。</string>
     <string name="select_category_model">请选择设备类型</string>
-    <string name="select_work_model">请选择%1$s模式</string>
+    <string name="select_work_model">请选择%1$s功能</string>
     <string name="select_work_time">请选择%1$s时长</string>
+    <string name="use_time">使用时长</string>
+    <string name="use_quantity">使用量</string>
     <string name="select_work_device">请选择%1$s设备</string>
     <string name="please_select">请选择</string>
     <string name="appoint_submit_prompt">温馨提示：\n1、预约时间超时10分钟未使用，则订单自动失效， 不退款。\n2、预约单生效前10分钟取消，系统自动退款。预约单生效不足10分钟取消，不退款。</string>

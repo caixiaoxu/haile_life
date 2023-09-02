@@ -6,7 +6,6 @@ import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.StringUtils
-import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.rule.IOrderConfigEntity
@@ -42,8 +41,22 @@ data class DeviceDetailItemEntity(
     val unit: String,
     val vipDiscount: String,
     val vipDiscountPrice: String,
-    val dosingConfigDTOS: MutableList<DosingConfigDTOS>
+    val extAttrDto: ExtAttrDto
 ) : IOrderConfigEntity {
+
+    val drinkingTitle: SpannableString
+        get() = com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+            "$name ${
+                extAttrDto.items.firstOrNull()?.let { it.unitPrice + "元/" + it.getTitle("") } ?: ""
+            }",
+            arrayOf(
+                AbsoluteSizeSpan(DimensionUtils.sp2px(14f)),
+                StyleSpan(Typeface.NORMAL)
+            ), 0, name.length
+        )
+
+    val drinkingIcon: Int
+        get() = if (1 == extAttrDto.items.firstOrNull()?.goodsType) R.mipmap.icon_drinking_configure_normal else R.mipmap.icon_drinking_configure_hot
 
     override fun getTitle(code: String?): String =
         if (DeviceCategory.isHair(code) && 0 == amount) "使用中..." else name
@@ -57,36 +70,51 @@ data class DeviceDetailItemEntity(
         if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
         else R.drawable.selector_device_model_item
 
-    fun getExtAttrs(isDryerOrHair: Boolean) =
-        if (isDryerOrHair) {
-            GsonUtils.json2List(extAttr, ExtAttrBean::class.java) ?: arrayListOf()
+    override fun defaultVal(): Boolean = false
+}
+
+data class ExtAttrDto(
+    val items: MutableList<ExtAttrDtoItem>
+)
+
+data class ExtAttrDtoItem(
+    val canMerchantEdit: Boolean,
+    val compatibleGoodsCategoryCode: List<String>,
+    val description: String,
+    val functionType: Int,
+    val goodsType: Int,
+    val isDefault: Boolean,
+//    val isOn: Boolean,
+    val isEnabled: Boolean,
+    val priceCalculateMode: Int,
+    val priceType: Int,
+    val pulse: String,
+    val pulseVolumeFactor: String,
+    val sequence: Int,
+    var unitAmount: String,
+    val unitCode: Int,
+    val unitPrice: String
+) : IOrderConfigEntity {
+
+    override fun getTitle(code: String?): String =
+        if (unitAmount.isEmpty()) "不需要" else if (1 == priceCalculateMode) {
+            // 流量
+            "${unitAmount}${if (1 == unitCode) "ml" else "L"}"
         } else {
-            try {
-                arrayListOf(ExtAttrBean(unit.toInt(), price))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                arrayListOf()
-            }
+            // 时间
+            "${unitAmount}${if (1 == unitCode) "秒" else "分钟"}"
         }
 
-    val drinkingTitle: SpannableString
-        get() = com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
-            "${name} ${price}${if (1 == getDrinkingExtAttr()?.priceCalculateMode) "元/L" else "元/s"}",
-            arrayOf(
-                AbsoluteSizeSpan(DimensionUtils.sp2px(14f)),
-                StyleSpan(Typeface.NORMAL)
-            ), 0, name.length
-        )
+    override fun getTitleTxtColor(code: String?): Int =
+        if (DeviceCategory.isHair(code) && (unitAmount.isEmpty() || unitAmount == "0")) R.color.color_black_25
+        else if (DeviceCategory.isDryerOrHair(code)) R.color.selector_black85_ff630e
+        else R.color.selector_black85_04d1e5
 
-    val drinkingIcon: Int
-        get() = if (1 == getDrinkingExtAttr()?.waterTypeId) R.mipmap.icon_drinking_configure_normal else R.mipmap.icon_drinking_configure_hot
+    override fun getTitleBg(code: String?): Int =
+        if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
+        else R.drawable.selector_device_model_item1
 
-    var drinkAttrConfigure: DrinkAttrConfigure? = null
-
-    fun getDrinkingExtAttr() =
-        (drinkAttrConfigure ?: GsonUtils.json2Class(extAttr, DrinkAttrConfigure::class.java).also {
-            drinkAttrConfigure = it
-        })
+    override fun defaultVal(): Boolean = isDefault
 }
 
 data class ExtAttrBean(
@@ -103,32 +131,6 @@ data class ExtAttrBean(
     override fun getTitleBg(code: String?): Int =
         if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
         else R.drawable.selector_device_model_item1
-}
 
-data class DrinkAttrConfigure(
-    val overTime: String,
-    val pauseTime: String,
-    val priceCalculateMode: Int,//1 按流量，2按时间
-    val priceCalculateUnit: String,
-    val singlePulseQuantity: String,
-    val waterTypeId: Int
-)
-
-data class DosingConfigDTOS(
-    val amount: String = "",
-    val delayTime: Int = 0,
-    val description: String = "",
-    val isDefault: Boolean = false,
-    val isOn: Boolean = true,
-    val itemId: Int = -1,
-    val liquidTypeId: Int = -1,
-    val name: String = "",
-    val price: String = ""
-) : IOrderConfigEntity {
-    override fun getTitle(code: String?): String = if (-1 == itemId) "不需要" else "${amount}ml"
-
-    override fun getTitleTxtColor(code: String?): Int = R.color.selector_black85_04d1e5
-
-    override fun getTitleBg(code: String?): Int = R.drawable.selector_device_model_item1
-
+    override fun defaultVal(): Boolean = false
 }

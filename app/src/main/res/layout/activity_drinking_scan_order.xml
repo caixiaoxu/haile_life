@@ -87,27 +87,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_drinking_scan_order_use" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_drinking_scan_order_tip1"
-                style="@style/Font_14_black_45"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:text="@{@string/drinking_order_tip1(vm.deviceDetail.drinkingOverTime)}"
-                app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
-                app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip"
-                tools:text="持续放水超过2秒会自动结束订单" />
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/tv_drinking_scan_order_tip1"-->
+<!--                style="@style/Font_14_black_45"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="9dp"-->
+<!--                android:text="@{@string/drinking_order_tip1(vm.deviceDetail.drinkingOverTime)}"-->
+<!--                app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip"-->
+<!--                tools:text="持续放水超过2秒会自动结束订单" />-->
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_drinking_scan_order_tip2"
-                style="@style/Font_14_black_45"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@{@string/drinking_order_tip2(vm.deviceDetail.drinkingPauseTime)}"
-                app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
-                app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip1"
-                tools:text="暂停放水超过20秒会自动结束订单" />
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/tv_drinking_scan_order_tip2"-->
+<!--                style="@style/Font_14_black_45"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:text="@{@string/drinking_order_tip2(vm.deviceDetail.drinkingPauseTime)}"-->
+<!--                app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip1"-->
+<!--                tools:text="暂停放水超过20秒会自动结束订单" />-->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_drinking_scan_order_tip3"

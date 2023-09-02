@@ -5,17 +5,9 @@
 
     <data>
 
-        <import type="com.yunshang.haile_life.R" />
-
-        <import type="android.view.View" />
-
         <variable
             name="code"
             type="java.lang.String" />
-
-        <variable
-            name="isDefault"
-            type="java.lang.Boolean" />
 
         <variable
             name="item"
@@ -46,6 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:src="@mipmap/icon_recharge_starfish_recommend"
-            android:visibility="@{isDefault?View.VISIBLE:View.GONE}" />
+            app:visibility="@{item.defaultVal}" />
     </FrameLayout>
 </layout>

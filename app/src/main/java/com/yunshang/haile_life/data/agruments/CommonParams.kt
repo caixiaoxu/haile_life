@@ -43,6 +43,21 @@ object DeviceCategory {
     annotation class IDeviceCategoryType
 
     /**
+     * 是否是洗衣机
+     */
+    fun isWashing(categoryCode: String?) = Washing == categoryCode
+
+    /**
+     * 是否是洗鞋机
+     */
+    fun isShoes(categoryCode: String?) = Shoes == categoryCode
+
+    /**
+     * 是否是洗衣机或洗鞋机
+     */
+    fun isWashingOrShoes(categoryCode: String?) = Washing == categoryCode || Shoes == categoryCode
+
+    /**
      * 是否是烘干机或吹风机
      */
     @JvmStatic

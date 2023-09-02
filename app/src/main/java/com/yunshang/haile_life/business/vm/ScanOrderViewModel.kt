@@ -60,13 +60,6 @@ class ScanOrderViewModel : BaseViewModel() {
         )
     }
 
-    val timeTitle: LiveData<String> = goodsScan.map {
-        com.lsy.framelib.utils.StringUtils.getString(
-            R.string.select_work_time,
-            it.categoryName.replace("机", "")
-        )
-    }
-
     val deviceDetail: MutableLiveData<DeviceDetailEntity> by lazy {
         MutableLiveData()
     }
@@ -80,8 +73,16 @@ class ScanOrderViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
+    val timeTitle: LiveData<String> = selectDeviceConfig.map {
+        com.lsy.framelib.utils.StringUtils.getString(
+            if (1 == it?.extAttrDto?.items?.firstOrNull { item -> item.isEnabled }?.priceCalculateMode) {
+                R.string.use_quantity
+            } else R.string.use_time
+        )
+    }
+
     // 选择的设备属性
-    val selectExtAttr: MutableLiveData<ExtAttrBean?> by lazy {
+    val selectExtAttr: MutableLiveData<ExtAttrDtoItem?> by lazy {
         MutableLiveData()
     }
 
@@ -95,7 +96,7 @@ class ScanOrderViewModel : BaseViewModel() {
         }
     }
 
-    var selectAttachSku: MutableMap<Int, MutableLiveData<DosingConfigDTOS>> = mutableMapOf()
+    var selectAttachSku: MutableMap<Int, MutableLiveData<ExtAttrDtoItem>> = mutableMapOf()
 
     /**
      * 检测是否可提交
@@ -110,12 +111,12 @@ class ScanOrderViewModel : BaseViewModel() {
     fun totalPrice() {
         var attachTotal = BigDecimal("0.0")
         selectAttachSku.forEach { item ->
-            if (item.value.value!!.price.isNotEmpty()) {
-                attachTotal = attachTotal.add(BigDecimal(item.value.value!!.price))
+            if (item.value.value!!.unitPrice.isNotEmpty()) {
+                attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
             }
         }
         totalPriceVal.value =
-            BigDecimal(selectExtAttr.value?.price ?: "0.0").add(attachTotal).toDouble()
+            BigDecimal(selectExtAttr.value?.unitPrice ?: "0.0").add(attachTotal).toDouble()
     }
 
     val attachConfigureVal: MutableLiveData<String> by lazy {
@@ -135,8 +136,8 @@ class ScanOrderViewModel : BaseViewModel() {
                 val name = deviceDetail.value?.attachItems?.find { it -> it.id == item.key }?.name
                 if (!name.isNullOrEmpty()) {
                     item.value.value?.let {
-                        if (it.price.isNotEmpty()) {
-                            configure += "+" + name + "￥" + it.price
+                        if (it.unitPrice.isNotEmpty()) {
+                            configure += "+" + name + "￥" + it.unitPrice
                         }
                     }
                 }
@@ -174,23 +175,32 @@ class ScanOrderViewModel : BaseViewModel() {
                     }
                 } else deviceDetail.value
                 deviceDetail?.let { detail ->
-                    (if (DeviceCategory.isHair(scan.categoryCode)) {
-                        detail.items.find { item -> 1 == item.amount }
-                    } else detail.items.firstOrNull { item -> 1 == item.soldState })?.let { first ->
+                    // 吹风机只选中未使用，
+                    val list = detail.items.filter { item -> 1 == item.soldState }
+                    if (DeviceCategory.isHair(scan.categoryCode)) {
+                        list.find { item -> 1 == item.amount }
+                    } else {
+                        //洗衣机和洗鞋机的默认选中格式特殊，如果没有默认，就显示第一个
+                        (if (DeviceCategory.isWashingOrShoes(scan.categoryCode)) {
+                            list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
+                        } else null) ?: run { list.firstOrNull() }
+                    }?.let { first ->
                         selectDeviceConfig.postValue(first)
-                        first.getExtAttrs(DeviceCategory.isDryerOrHair(scan.categoryCode))
-                            .firstOrNull()?.let { firstAttr ->
-                                selectExtAttr.postValue(firstAttr)
-                            }
+                        changeDeviceConfig(first)
                     }
 
                     if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
                         // 初始化关联的sku
                         selectAttachSku = mutableMapOf()
                         detail.attachItems.forEach { item ->
-                            if (item.dosingConfigDTOS.isNotEmpty()) {
-                                (item.dosingConfigDTOS.find { dtos -> dtos.isDefault }
-                                    ?: run { DosingConfigDTOS() }).let { default ->
+                            if (item.extAttrDto.items.isNotEmpty()) {
+                                (item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
+                                    ?: run {
+                                        item.extAttrDto.items.firstOrNull { dto -> dto.isEnabled }
+                                            ?.copy(
+                                                unitAmount = "", isDefault = false
+                                            )
+                                    })?.let { default ->
                                     selectAttachSku[item.id] = MutableLiveData(default)
                                 }
                             }
@@ -229,6 +239,20 @@ class ScanOrderViewModel : BaseViewModel() {
                 }
             }
         })
+    }
+
+    /**
+     * 切换选择功能的配置
+     */
+    fun changeDeviceConfig(itemEntity: DeviceDetailItemEntity) {
+        itemEntity.extAttrDto.items.firstOrNull() { item ->
+            item.isEnabled && (DeviceCategory.isWashingOrShoes(
+                goodsScan.value?.categoryCode
+            ) || item.isDefault)
+        }
+            ?.let { firstAttr ->
+                selectExtAttr.postValue(firstAttr)
+            }
     }
 
     fun requestShopListAsync(shopId: Int, goodsId: Int, categoryId: Int) {

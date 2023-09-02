@@ -49,12 +49,7 @@ data class DeviceDetailEntity(
     val attachItems:List<DeviceDetailItemEntity>,
     val isShowDispenser:Boolean,
     val hideDispenserTips:String,
-) {
-    val drinkingOverTime: String
-        get() = items.firstOrNull()?.getDrinkingExtAttr()?.overTime ?: ""
-    val drinkingPauseTime: String
-        get() = items.firstOrNull()?.getDrinkingExtAttr()?.pauseTime ?: ""
-}
+)
 
 
 

@@ -18,10 +18,7 @@ import com.yunshang.haile_life.business.vm.ScanOrderViewModel
 import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
-import com.yunshang.haile_life.data.entities.DeviceDetailEntity
-import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
-import com.yunshang.haile_life.data.entities.DosingConfigDTOS
-import com.yunshang.haile_life.data.entities.ExtAttrBean
+import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityScanOrderBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
@@ -74,6 +71,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                     itemBinding.root.id = index + 1
                                     itemBinding.rbOrderModelItem.let { rb ->
 
+                                        // 吹风机使用中不可点击
                                         if (DeviceCategory.isHair(mViewModel.goodsScan.value?.categoryCode)
                                             && 0 == item.amount
                                         ) {
@@ -95,13 +93,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                         }
                                         rb.setOnClickListener {
                                             mViewModel.selectDeviceConfig.value = item
-                                            mViewModel.goodsScan.value?.categoryCode?.let { code ->
-                                                item.getExtAttrs(DeviceCategory.isDryerOrHair(code))
-                                                    .firstOrNull()?.let { firstAttr ->
-                                                        mViewModel.selectExtAttr.value = firstAttr
-                                                        mViewModel.totalPrice()
-                                                    }
-                                            }
+                                            mViewModel.changeDeviceConfig(item)
                                         }
                                     }
                                     cl.addView(
@@ -132,8 +124,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
 
                 val inflater = LayoutInflater.from(this@ScanOrderActivity)
 
-                val list: List<ExtAttrBean> =
-                    it.getExtAttrs(DeviceCategory.isDryerOrHair(mViewModel.goodsScan.value!!.categoryCode))
+                val list: List<ExtAttrDtoItem> = it.extAttrDto.items.filter { item -> item.isEnabled }
                 if (list.isNotEmpty()) {
                     list.forEachIndexed { index, item ->
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
@@ -147,7 +138,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                             itemBinding.rbOrderModelItem.let { rb ->
 
                                 mViewModel.selectExtAttr.observe(this) {
-                                    (item.minutes == it?.minutes).let { isSame ->
+                                    (item.unitAmount == it?.unitAmount).let { isSame ->
                                         if (isSame != rb.isChecked) {
                                             rb.isChecked = isSame
                                         }
@@ -172,7 +163,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
             }
         }
 
-        mViewModel.selectExtAttr.observe(this){
+        mViewModel.selectExtAttr.observe(this) {
             mViewModel.totalPrice()
             mViewModel.attachConfigure()
         }
@@ -205,7 +196,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
      * 构建关键sku的布局
      */
     private fun buildAttachSkuView(detail: DeviceDetailEntity) {
-        if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
+        if (detail.hasAttachGoods && detail.attachItems.isNotEmpty()) {
             val attachList = detail.attachItems.filter { item -> 1 == item.soldState }
             mBinding.llScanOrderConfigsAttrSku.buildChild<ItemScanOrderModelBinding, DeviceDetailItemEntity>(
                 if (detail.isShowDispenser)
@@ -220,11 +211,14 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                             cl.removeViews(3, cl.childCount - 3)
                         }
                         val inflater = LayoutInflater.from(this@ScanOrderActivity)
-                        if (data.dosingConfigDTOS.isEmpty()) {
+                        val items = data.extAttrDto.items.filter { item -> item.isEnabled }
+                        if (data.extAttrDto.items.isEmpty()) {
                             cl.visibility = View.GONE
                         } else {
-                            data.dosingConfigDTOS.add(DosingConfigDTOS())
-                            data.dosingConfigDTOS.forEachIndexed { index, item ->
+                            val list = arrayListOf<ExtAttrDtoItem>()
+                            list.addAll(items)
+                            list.add(items.first().copy(unitAmount = "", isDefault = false, unitPrice = ""))
+                            list.forEachIndexed { index, item ->
                                 DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                                     inflater, R.layout.item_scan_order_model_item, null, false
                                 )?.let { itemBinding ->
@@ -232,12 +226,11 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                         itemBinding.code = it
                                     }
                                     itemBinding.item = item
-                                    itemBinding.isDefault = item.isDefault
                                     itemBinding.root.id = index + 1
                                     itemBinding.rbOrderModelItem.let { rb ->
 
                                         mViewModel.selectAttachSku[data.id]?.observe(this) {
-                                            (item.amount == it.amount).let { isSame ->
+                                            (item.unitAmount == it.unitAmount).let { isSame ->
                                                 if (isSame != rb.isChecked) {
                                                     rb.isChecked = isSame
                                                 }
@@ -258,7 +251,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                 }
                             }
                             // 设置id
-                            val idList = IntArray(data.dosingConfigDTOS.size) { it + 1 }
+                            val idList = IntArray(list.size) { it + 1 }
                             childBinding.flowScanOrderItem.referencedIds = idList
                             childBinding.flowScanOrderItem.visibility = View.VISIBLE
                             cl.visibility = View.VISIBLE
@@ -347,7 +340,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
             return
         }
         val num =
-            (if (true == mViewModel.isDryer.value) mViewModel.selectExtAttr.value?.minutes else 1)
+            (if (true == mViewModel.isDryer.value) mViewModel.selectExtAttr.value?.unitAmount else 1)
                 ?: return
 
         if (null == mViewModel.deviceDetail.value) return
@@ -362,14 +355,14 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
             )
         )
         // 关联sku
-        goods.addAll(mViewModel.selectAttachSku.filter { item -> item.value.value?.itemId != -1 }
+        goods.addAll(mViewModel.selectAttachSku.filter { item -> !item.value.value?.unitAmount.isNullOrEmpty() }
             .mapNotNull { item ->
                 item.value.value?.let { dtos ->
                     IntentParams.OrderSubmitParams.OrderSubmitGood(
                         DeviceCategory.Dispenser,
                         mViewModel.deviceDetail.value!!.attachGoodsId,
-                        dtos.itemId,
-                        dtos.amount,
+                        item.key,
+                        dtos.unitAmount,
                     )
                 }
             })
