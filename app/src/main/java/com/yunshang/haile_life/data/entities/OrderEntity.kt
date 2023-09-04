@@ -218,6 +218,8 @@ data class OrderItem(
     val orderNo: String,
     val originPrice: String,
     val discountPrice: String,
+    val priceCalculateMode: Int,
+    val unitCode: Int,
     val realPrice: String,
     val shopName: String,
     val unit: String,
@@ -233,9 +235,18 @@ data class OrderItem(
             GoodsItemInfoEntity::class.java
         ) else null
 
-    fun getOrderDeviceUnit(state: Int): String = if (DeviceCategory.isDrinking(categoryCode)) {
-        if (1 == goodsItemInfo?.priceCalculateMode) "${originUnitPrice}元/L${if (50 != state) " X ${unit}ml" else ""}" else "${originUnitPrice}元/s${if (50 != state) " X ${unit}s" else ""}"
-    } else "${unit}分钟"
+    val unitValue: String
+        get() = if (1 == priceCalculateMode) {
+            // 流量
+            if (1 == unitCode) "ml" else "L"
+        } else {
+            //时间
+            if (1 == unitCode) "秒" else "分钟"
+        }
+
+    fun getOrderDeviceUnit(state: Int): String = if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
+        "${originUnitPrice}元/${unitValue}${if (50 != state) " X ${unit}${unitValue}" else ""}"
+    } else "${unit}${unitValue}"
 
     fun getOrderDeviceOriginPrice(state: Int): String = if (50 == state) ""
     else
