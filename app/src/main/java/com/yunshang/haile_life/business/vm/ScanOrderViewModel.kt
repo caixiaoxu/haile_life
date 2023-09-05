@@ -180,10 +180,9 @@ class ScanOrderViewModel : BaseViewModel() {
                     if (DeviceCategory.isHair(scan.categoryCode)) {
                         list.find { item -> 1 == item.amount }
                     } else {
-                        //洗衣机和洗鞋机的默认选中格式特殊，如果没有默认，就显示第一个
-                        (if (DeviceCategory.isWashingOrShoes(scan.categoryCode)) {
-                            list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
-                        } else null) ?: run { list.firstOrNull() }
+                        //如果没有默认，就显示第一个
+                        list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
+                            ?: run { list.firstOrNull() }
                     }?.let { first ->
                         selectDeviceConfig.postValue(first)
                         changeDeviceConfig(first)
@@ -245,14 +244,11 @@ class ScanOrderViewModel : BaseViewModel() {
      * 切换选择功能的配置
      */
     fun changeDeviceConfig(itemEntity: DeviceDetailItemEntity) {
-        itemEntity.extAttrDto.items.firstOrNull() { item ->
-            item.isEnabled && (DeviceCategory.isWashingOrShoes(
-                goodsScan.value?.categoryCode
-            ) || item.isDefault)
+        (itemEntity.extAttrDto.items.firstOrNull() { item ->
+            item.isEnabled && item.isDefault
+        } ?: itemEntity.extAttrDto.items.firstOrNull { item -> item.isEnabled })?.let { firstAttr ->
+            selectExtAttr.postValue(firstAttr)
         }
-            ?.let { firstAttr ->
-                selectExtAttr.postValue(firstAttr)
-            }
     }
 
     fun requestShopListAsync(shopId: Int, goodsId: Int, categoryId: Int) {

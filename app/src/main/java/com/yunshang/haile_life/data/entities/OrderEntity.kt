@@ -228,6 +228,7 @@ data class OrderItem(
 //    val goodsItemExtAttr: String,
     val originUnitPrice: String,
     val realUnitPrice: String,
+    val volumeVisibleState: Int,
 ) {
     val goodsItemInfo: GoodsItemInfoEntity?
         get() = if (DeviceCategory.isDrinking(categoryCode)) GsonUtils.json2Class(
@@ -244,9 +245,10 @@ data class OrderItem(
             if (1 == unitCode) "秒" else "分钟"
         }
 
-    fun getOrderDeviceUnit(state: Int): String = if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-        "${originUnitPrice}元/${unitValue}${if (50 != state) " X ${unit}${unitValue}" else ""}"
-    } else "${unit}${unitValue}"
+    fun getOrderDeviceUnit(state: Int): String =
+        if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
+            "${originUnitPrice}元/${unitValue}${if (1 == volumeVisibleState && 1 == priceCalculateMode) " X ${unit}${unitValue}" else ""}"
+        } else "${unit}${unitValue}"
 
     fun getOrderDeviceOriginPrice(state: Int): String = if (50 == state) ""
     else

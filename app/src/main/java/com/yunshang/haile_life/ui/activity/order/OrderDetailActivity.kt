@@ -105,7 +105,9 @@ class OrderDetailActivity :
         mViewModel.orderDetail.observe(this) {
             it?.let {
                 mViewModel.getOrderStatusVal(it)
+                // 是否只有一个sku
                 val isSingle = 1 == it.orderItemList.size
+                // sku 列表
                 val items = it.orderItemList.filter { item ->
                     !DeviceCategory.isDispenser(item.categoryCode) &&
                             try {
@@ -120,6 +122,7 @@ class OrderDetailActivity :
                     childBinding.isSingle = isSingle
                     childBinding.state = it.state
                 }
+                // 投放器的sku
                 val dispenserList =
                     it.orderItemList.filter { item -> DeviceCategory.isDispenser(item.categoryCode) }
                 if (dispenserList.isNotEmpty()) {
