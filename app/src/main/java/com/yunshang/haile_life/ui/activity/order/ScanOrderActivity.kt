@@ -212,7 +212,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         }
                         val inflater = LayoutInflater.from(this@ScanOrderActivity)
                         val items = data.extAttrDto.items.filter { item -> item.isEnabled }
-                        if (data.extAttrDto.items.isEmpty()) {
+                        if (items.isEmpty()) {
                             cl.visibility = View.GONE
                         } else {
                             val list = arrayListOf<ExtAttrDtoItem>()

@@ -78,9 +78,9 @@ data class ExtAttrDto(
 )
 
 data class ExtAttrDtoItem(
-    val canMerchantEdit: Boolean,
-    val compatibleGoodsCategoryCode: List<String>,
-    val description: String,
+    val canMerchantEdit: Boolean?,
+    val compatibleGoodsCategoryCode: List<String>?,
+    val description: String?,
     val functionType: Int,
     val goodsType: Int,
     val isDefault: Boolean,
@@ -90,7 +90,7 @@ data class ExtAttrDtoItem(
     val priceType: Int,
     val pulse: String,
     val pulseVolumeFactor: String,
-    val sequence: Int,
+    val sequence: Int?,
     var unitAmount: String,
     val unitCode: Int,
     val unitPrice: String
