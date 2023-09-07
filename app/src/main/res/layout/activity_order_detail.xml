@@ -172,7 +172,7 @@
                     android:background="@drawable/shape_sffffff_r8"
                     android:orientation="vertical"
                     android:padding="12dp"
-                    android:visibility="@{(vm.formScan || 50 == vm.orderDetail.state)?View.GONE:View.VISIBLE}"
+                    android:visibility="@{(vm.formScan)?View.GONE:View.VISIBLE}"
                     app:divider="@drawable/divide_size8"
                     app:showDividers="middle">
 

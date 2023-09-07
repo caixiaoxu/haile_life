@@ -109,13 +109,7 @@ class OrderDetailActivity :
                 val isSingle = 1 == it.orderItemList.size
                 // sku 列表
                 val items = it.orderItemList.filter { item ->
-                    !DeviceCategory.isDispenser(item.categoryCode) &&
-                            try {
-                                item.unit.toDouble() > 0.0
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                true
-                            }
+                    !DeviceCategory.isDispenser(item.categoryCode)
                 }
                 mBinding.llOrderDetailSkus.buildChild<ItemOrderDetailSkuBinding, OrderItem>(items) { _, childBinding, data ->
                     childBinding.item = data
