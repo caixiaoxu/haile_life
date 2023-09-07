@@ -70,7 +70,7 @@ data class DeviceDetailItemEntity(
         if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
         else R.drawable.selector_device_model_item
 
-    override fun defaultVal(): Boolean = false
+    override fun defaultVal(): Boolean = extAttrDto.items.any { item -> item.defaultVal() }
 }
 
 data class ExtAttrDto(

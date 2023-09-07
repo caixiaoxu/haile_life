@@ -56,7 +56,7 @@ class ScanOrderViewModel : BaseViewModel() {
     val modelTitle: LiveData<String> = goodsScan.map {
         com.lsy.framelib.utils.StringUtils.getString(
             R.string.select_work_model,
-            it.categoryName.replace("机", "")
+            it.categoryName
         )
     }
 

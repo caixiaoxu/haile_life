@@ -22,7 +22,7 @@
             android:id="@+id/bar_drinking_scan_order_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
-            app:title="@string/home_category_drinking" />
+            app:title="@{vm.isDrinking?@string/home_category_drinking:@string/home_category_shower}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_drinking_scan_order_parent"

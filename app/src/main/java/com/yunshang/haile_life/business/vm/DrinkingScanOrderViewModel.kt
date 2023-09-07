@@ -1,10 +1,13 @@
 package com.yunshang.haile_life.business.vm
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.apiService.ShopService
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.DeviceDetailEntity
 import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -39,6 +42,10 @@ class DrinkingScanOrderViewModel : BaseViewModel() {
 
     val deviceDetail: MutableLiveData<DeviceDetailEntity> by lazy {
         MutableLiveData()
+    }
+
+    val isDrinking:LiveData<Boolean> = deviceDetail.map {
+        DeviceCategory.isDrinking(it.categoryCode)
     }
 
     fun requestData(code: String?) {

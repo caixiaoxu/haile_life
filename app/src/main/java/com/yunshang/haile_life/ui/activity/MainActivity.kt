@@ -117,7 +117,7 @@ class MainActivity :
                             putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo, true, 1))
                         })
                 } else {
-                    if (DeviceCategory.isDrinking(detail.categoryCode))
+                    if (DeviceCategory.isDrinkingOrShower(detail.categoryCode))
                         startActivity(
                             Intent(
                                 this@MainActivity,
