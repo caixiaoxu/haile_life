@@ -342,7 +342,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                 mViewModel.balance.value!!.amount.toDouble() < mViewModel.tradePreview.value!!.realPrice.toDouble()
             } catch (e: Exception) {
                 e.printStackTrace()
-                true
+                false
             }
             if (noMoney) {
                 SToast.showToast(this@OrderSubmitActivity, "余额不足，先选择其他方式支付")

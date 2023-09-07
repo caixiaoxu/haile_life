@@ -98,6 +98,18 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
                 return@setOnClickListener
             }
             if (1001 == mViewModel.payMethod) {
+                val noMoney = try {
+                    mViewModel.balance.value!!.amount.toDouble() < mViewModel.price.toDouble()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    false
+                }
+                if (noMoney) {
+                    SToast.showToast(this@OrderPayActivity, "余额不足，先选择其他方式支付")
+                    return@setOnClickListener
+                }
+
+
                 if (null != mViewModel.balance.value) {
                     BalancePaySureDialog(
                         mViewModel.balance.value!!.amount,
