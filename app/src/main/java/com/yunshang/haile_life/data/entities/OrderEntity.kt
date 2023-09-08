@@ -241,7 +241,7 @@ data class OrderItem(
 
     fun getOrderDeviceUnit(state: Int): String =
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState && 1 == goodsItemInfoDto.priceCalculateMode) " X ${unit}${unitValue}" else ""}"
+            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState) " X ${unit}${unitValue}" else ""}"
         } else "${unit}${unitValue}"
 
 
