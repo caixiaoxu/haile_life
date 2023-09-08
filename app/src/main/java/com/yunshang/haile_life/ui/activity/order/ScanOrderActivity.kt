@@ -52,7 +52,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
     override fun initEvent() {
         super.initEvent()
         mViewModel.deviceDetail.observe(this) { detail ->
-            detail?.items?.let { configs ->
+            detail?.items?.filter { item->1 == item.soldState }?.let { configs ->
                 if (configs.isNotEmpty()) {
                     mBinding.includeScanOrderConfig.clScanOrderConfig.let { cl ->
                         if (cl.childCount > 3) {
