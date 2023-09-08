@@ -8,6 +8,7 @@ import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.extend.toDefaultDouble
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 import com.yunshang.haile_life.utils.DateTimeUtils
 import java.util.*
@@ -240,8 +241,9 @@ data class OrderItem(
 
     fun getOrderDeviceUnit(state: Int): String =
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-            "${originUnitPrice}元/${if (1 == goodsItemInfoDto.unitAmount) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState && 1 == goodsItemInfoDto.priceCalculateMode) " X ${unit}${unitValue}" else ""}"
+            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState && 1 == goodsItemInfoDto.priceCalculateMode) " X ${unit}${unitValue}" else ""}"
         } else "${unit}${unitValue}"
+
 
     fun getOrderDeviceOriginPrice(state: Int): String = if (50 == state) ""
     else
@@ -271,10 +273,10 @@ data class GoodsItemInfoDto(
     val pulse: Int,
     val skuCode: String,
     val soldType: Int,
-    val unit: Int,
+    val unit: String,
     val unitCode: Int,
-    val unitAmount: Int,
-    val unitPrice: String,
+    val unitAmount: String?,
+    val unitPrice: String?,
 )
 
 data class PromotionParticipation(
