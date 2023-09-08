@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import com.google.gson.annotations.SerializedName
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
-import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
@@ -200,8 +199,8 @@ data class OrderEntity(
         ""
     }
 
-    fun drinkingOverTime(): String = orderItemList.firstOrNull()?.goodsItemInfo?.overTime ?: ""
-    fun drinkingPauseTime(): String = orderItemList.firstOrNull()?.goodsItemInfo?.pauseTime ?: ""
+    fun drinkingOverTime(): String = orderItemList.firstOrNull()?.goodsItemInfoDto?.overTime ?: ""
+    fun drinkingPauseTime(): String = orderItemList.firstOrNull()?.goodsItemInfoDto?.pauseTime ?: ""
 }
 
 data class OrderItem(
@@ -218,8 +217,6 @@ data class OrderItem(
     val orderNo: String,
     val originPrice: String,
     val discountPrice: String,
-    val priceCalculateMode: Int,
-    val unitCode: Int,
     val realPrice: String,
     val shopName: String,
     val unit: String,
@@ -229,25 +226,21 @@ data class OrderItem(
     val originUnitPrice: String,
     val realUnitPrice: String,
     val volumeVisibleState: Int,
+    val goodsItemInfoDto: GoodsItemInfoDto
 ) {
-    val goodsItemInfo: GoodsItemInfoEntity?
-        get() = if (DeviceCategory.isDrinking(categoryCode)) GsonUtils.json2Class(
-            _goodsItemInfo,
-            GoodsItemInfoEntity::class.java
-        ) else null
 
     val unitValue: String
-        get() = if (1 == priceCalculateMode) {
+        get() = if (1 == goodsItemInfoDto.priceCalculateMode) {
             // 流量
-            if (1 == unitCode) "ml" else "L"
+            if (1 == goodsItemInfoDto.unitCode) "ml" else "L"
         } else {
             //时间
-            if (1 == unitCode) "秒" else "分钟"
+            if (1 == goodsItemInfoDto.unitCode) "秒" else "分钟"
         }
 
     fun getOrderDeviceUnit(state: Int): String =
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-            "${originUnitPrice}元/${unitValue}${if (1 == volumeVisibleState && 1 == priceCalculateMode) " X ${unit}${unitValue}" else ""}"
+            "${originUnitPrice}元/${if (1 == goodsItemInfoDto.unitAmount) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState && 1 == goodsItemInfoDto.priceCalculateMode) " X ${unit}${unitValue}" else ""}"
         } else "${unit}${unitValue}"
 
     fun getOrderDeviceOriginPrice(state: Int): String = if (50 == state) ""
@@ -267,13 +260,21 @@ data class OrderItem(
         }"
 }
 
-data class GoodsItemInfoEntity(
-    val priceCalculateMode: Int,
+data class GoodsItemInfoDto(
+    val categoryCode: String,
+    val categoryName: String,
+    val goodsItemName: String,
+    val goodsName: String,
     val overTime: String,
     val pauseTime: String,
-    val priceCalculateUnit: String,
-    val singlePulseQuantity: String,
-    val waterTypeId: Int
+    val priceCalculateMode: Int,
+    val pulse: Int,
+    val skuCode: String,
+    val soldType: Int,
+    val unit: Int,
+    val unitCode: Int,
+    val unitAmount: Int,
+    val unitPrice: String,
 )
 
 data class PromotionParticipation(

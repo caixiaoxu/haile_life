@@ -193,15 +193,10 @@ class ScanOrderViewModel : BaseViewModel() {
                         selectAttachSku = mutableMapOf()
                         detail.attachItems.forEach { item ->
                             if (item.extAttrDto.items.isNotEmpty()) {
-                                (item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
-                                    ?: run {
-                                        item.extAttrDto.items.firstOrNull { dto -> dto.isEnabled }
-                                            ?.copy(
-                                                unitAmount = "", isDefault = false
-                                            )
-                                    })?.let { default ->
-                                    selectAttachSku[item.id] = MutableLiveData(default)
-                                }
+                                item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
+                                    ?.let { default ->
+                                        selectAttachSku[item.id] = MutableLiveData(default)
+                                    }
                             }
                         }
                     }
