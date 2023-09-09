@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="44dp"
-                android:text='@{@string/drinking_device_name(vm.shopName + vm.deviceDetail.name)}'
+                android:text='@{@string/drinking_device_name(vm.deviceDetail.name)}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/sv_drinking_scan_order_configure"
