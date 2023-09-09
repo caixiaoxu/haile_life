@@ -8,6 +8,7 @@ import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.extend.toDefaultDouble
 import com.yunshang.haile_life.data.rule.IOrderConfigEntity
 
 
@@ -97,12 +98,13 @@ data class ExtAttrDtoItem(
 ) : IOrderConfigEntity {
 
     override fun getTitle(code: String?): String =
-        if (unitAmount.isEmpty()) "不需要" else if (1 == priceCalculateMode) {
+        if (unitAmount.isEmpty()) "不需要"
+        else (if (unitAmount.toDefaultDouble(1.0) == 1.0) "" else unitAmount) + if (1 == priceCalculateMode) {
             // 流量
-            "${unitAmount}${if (1 == unitCode) "ml" else "L"}"
+            if (1 == unitCode) "ml" else "L"
         } else {
             // 时间
-            "${unitAmount}${if (1 == unitCode) "秒" else "分钟"}"
+            if (1 == unitCode) "秒" else "分钟"
         }
 
     override fun getTitleTxtColor(code: String?): Int =

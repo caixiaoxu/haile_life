@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import com.google.gson.annotations.SerializedName
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
+import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.extend.toDefaultDouble
@@ -200,8 +201,13 @@ data class OrderEntity(
         ""
     }
 
-    fun drinkingOverTime(): String = orderItemList.firstOrNull()?.goodsItemInfoDto?.overTime ?: ""
-    fun drinkingPauseTime(): String = orderItemList.firstOrNull()?.goodsItemInfoDto?.pauseTime ?: ""
+    fun drinkingOverTime(): String = orderItemList.firstOrNull()?.let { first ->
+        first.goodsItemInfoDto?.overTime ?: run { first.goodsItemInfo?.overTime }
+    } ?: ""
+
+    fun drinkingPauseTime(): String = orderItemList.firstOrNull()?.let { first ->
+        first.goodsItemInfoDto?.pauseTime ?: run { first.goodsItemInfo?.pauseTime }
+    } ?: ""
 }
 
 data class OrderItem(
@@ -218,6 +224,8 @@ data class OrderItem(
     val orderNo: String,
     val originPrice: String,
     val discountPrice: String,
+    val priceCalculateMode: Int,
+    val unitCode: Int,
     val realPrice: String,
     val shopName: String,
     val unit: String,
@@ -227,23 +235,44 @@ data class OrderItem(
     val originUnitPrice: String,
     val realUnitPrice: String,
     val volumeVisibleState: Int,
-    val goodsItemInfoDto: GoodsItemInfoDto
+    val goodsItemInfoDto: GoodsItemInfoDto?
 ) {
 
+    val goodsItemInfo: GoodsItemInfoEntity?
+        get() = if (DeviceCategory.isDrinking(categoryCode)) GsonUtils.json2Class(
+            _goodsItemInfo,
+            GoodsItemInfoEntity::class.java
+        ) else null
+
     val unitValue: String
-        get() = if (1 == goodsItemInfoDto.priceCalculateMode) {
-            // 流量
-            if (1 == goodsItemInfoDto.unitCode) "ml" else "L"
-        } else {
-            //时间
-            if (1 == goodsItemInfoDto.unitCode) "秒" else "分钟"
+        get() = goodsItemInfoDto?.let {
+            if (1 == goodsItemInfoDto.priceCalculateMode) {
+                // 流量
+                if (1 == goodsItemInfoDto.unitCode) "ml" else "L"
+            } else {
+                //时间
+                if (1 == goodsItemInfoDto.unitCode) "秒" else "分钟"
+            }
+        } ?: run {
+            // 兼容老数据
+            if (1 == priceCalculateMode) {
+                // 流量
+                if (1 == unitCode) "ml" else "L"
+            } else {
+                //时间
+                if (1 == unitCode) "秒" else "分钟"
+            }
         }
 
-    fun getOrderDeviceUnit(state: Int): String =
+    fun getOrderDeviceUnit(state: Int): String = goodsItemInfoDto?.let {
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState) " X ${goodsItemInfoDto.unit}${unitValue}" else ""}"
+            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState && 50 != state) " X ${goodsItemInfoDto.unit}${unitValue}" else ""}"
         } else "${goodsItemInfoDto.unit}${unitValue}"
-
+    } ?: run {
+        if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
+            "${originUnitPrice}元/${unitValue}${if (50 != state) " X ${unit}${unitValue}" else ""}"
+        } else "${unit}${unitValue}"
+    }
 
     fun getOrderDeviceOriginPrice(state: Int): String = if (50 == state) ""
     else
@@ -277,6 +306,15 @@ data class GoodsItemInfoDto(
     val unitCode: Int,
     val unitAmount: String?,
     val unitPrice: String?,
+)
+
+data class GoodsItemInfoEntity(
+    val priceCalculateMode: Int,
+    val overTime: String,
+    val pauseTime: String,
+    val priceCalculateUnit: String,
+    val singlePulseQuantity: String,
+    val waterTypeId: Int
 )
 
 data class PromotionParticipation(
