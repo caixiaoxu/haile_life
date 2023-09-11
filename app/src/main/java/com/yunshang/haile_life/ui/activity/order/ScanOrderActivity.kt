@@ -230,9 +230,11 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                                     itemBinding.rbOrderModelItem.let { rb ->
 
                                         mViewModel.selectAttachSku[data.id]?.observe(this) {
-                                            (item.unitAmount == it.unitAmount).let { isSame ->
-                                                if (isSame != rb.isChecked) {
-                                                    rb.isChecked = isSame
+                                            it?.let {
+                                                (item.unitAmount == it.unitAmount).let { isSame ->
+                                                    if (isSame != rb.isChecked) {
+                                                        rb.isChecked = isSame
+                                                    }
                                                 }
                                             }
                                         }

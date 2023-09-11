@@ -96,7 +96,7 @@ class ScanOrderViewModel : BaseViewModel() {
         }
     }
 
-    var selectAttachSku: MutableMap<Int, MutableLiveData<ExtAttrDtoItem>> = mutableMapOf()
+    var selectAttachSku: MutableMap<Int, MutableLiveData<ExtAttrDtoItem?>> = mutableMapOf()
 
     /**
      * 检测是否可提交
@@ -111,7 +111,7 @@ class ScanOrderViewModel : BaseViewModel() {
     fun totalPrice() {
         var attachTotal = BigDecimal("0.0")
         selectAttachSku.forEach { item ->
-            if (item.value.value!!.unitPrice.isNotEmpty()) {
+            if (!item.value.value?.unitPrice.isNullOrEmpty()) {
                 attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
             }
         }
@@ -193,10 +193,11 @@ class ScanOrderViewModel : BaseViewModel() {
                         selectAttachSku = mutableMapOf()
                         detail.attachItems.forEach { item ->
                             if (item.extAttrDto.items.isNotEmpty()) {
-                                item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
-                                    ?.let { default ->
-                                        selectAttachSku[item.id] = MutableLiveData(default)
-                                    }
+                                selectAttachSku[item.id] =
+                                    item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
+                                        ?.let { default ->
+                                            MutableLiveData(default)
+                                        } ?: MutableLiveData(null)
                             }
                         }
                     }
