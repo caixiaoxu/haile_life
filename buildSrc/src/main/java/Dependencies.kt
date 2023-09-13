@@ -83,6 +83,7 @@ object ThirdLibs {
     // opencv wechat_qrcode
     const val opencv = "com.github.jenly1314.WeChatQRCode:opencv:2.0.0"
     const val opencv_armv7a = "com.github.jenly1314.WeChatQRCode:opencv-armv7a:2.0.0"
+    const val opencv_armv64 = "com.github.jenly1314.WeChatQRCode:opencv-armv64:2.0.0"
     const val wechat_qrcode = "com.github.jenly1314.WeChatQRCode:wechat-qrcode:2.0.0"
     const val wechat_qrcode_scanning = "com.github.jenly1314.WeChatQRCode:wechat-qrcode-scanning:2.0.0"
 }

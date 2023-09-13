@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             //设置支持的 SO 库架构（开发者可以根据需要，选择一个或多个平台的 so）
-            abiFilters 'armeabi-v7a' // , 'arm64-v8a', 'x86', 'x86_64'
+            abiFilters 'armeabi-v7a', 'arm64-v8a' //, 'x86', 'x86_64'
         }
     }
 
@@ -137,6 +137,7 @@ dependencies {
     // OpenCV基础库（*必须）
     implementation ThirdLibs.opencv
     implementation ThirdLibs.opencv_armv7a
+    implementation ThirdLibs.opencv_armv64
 
     // 微信二维码识别功能（可选）
     implementation ThirdLibs.wechat_qrcode
