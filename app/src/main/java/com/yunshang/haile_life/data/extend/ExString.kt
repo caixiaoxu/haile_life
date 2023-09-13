@@ -17,6 +17,17 @@ fun String?.toDefaultDouble(def: Double = 0.0): Double = if (this.isNullOrEmpty(
     def
 }
 
+fun String?.toRemove0Str(): String = if (this.isNullOrEmpty()) "" else try {
+    val arr = this.split(".")
+    if (arr.size > 1) {
+        val temp = arr[1].dropLastWhile { it == '0' }
+        arr[0] + if (temp.isEmpty()) "" else ".$temp"
+    } else this
+} catch (e: Exception) {
+    e.printStackTrace()
+    ""
+}
+
 fun String?.toDefaultInt(def: Int = 0): Int = if (this.isNullOrEmpty()) def else try {
     this.toInt()
 } catch (e: Exception) {

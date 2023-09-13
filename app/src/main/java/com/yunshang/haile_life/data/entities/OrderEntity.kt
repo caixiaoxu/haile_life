@@ -10,6 +10,7 @@ import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.extend.toDefaultDouble
+import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 import com.yunshang.haile_life.utils.DateTimeUtils
 import java.util.*
@@ -266,7 +267,7 @@ data class OrderItem(
 
     fun getOrderDeviceUnit(state: Int): String = goodsItemInfoDto?.let {
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState && 50 != state) " X ${goodsItemInfoDto.unit}${unitValue}" else ""}"
+            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState && 50 != state) " X ${goodsItemInfoDto.unit.toRemove0Str()}${unitValue}" else ""}"
         } else "${goodsItemInfoDto.unit}${unitValue}"
     } ?: run {
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
