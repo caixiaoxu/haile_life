@@ -3,10 +3,7 @@ package com.yunshang.haile_life.data.agruments
 import android.content.Intent
 import android.os.Bundle
 import com.lsy.framelib.utils.gson.GsonUtils
-import com.yunshang.haile_life.data.entities.AppointDevice
-import com.yunshang.haile_life.data.entities.DeviceDetailEntity
-import com.yunshang.haile_life.data.entities.GoodsScanEntity
-import com.yunshang.haile_life.data.entities.TradePreviewParticipate
+import com.yunshang.haile_life.data.entities.*
 
 /**
  * Title :
@@ -173,6 +170,24 @@ object IntentParams {
         fun parseShopId(intent: Intent): Int = intent.getIntExtra(ShopId, -1)
     }
 
+    object ShopWorkTimeParams {
+        private const val WorkTimeArr = "workTimeArr"
+
+        /**
+         * 包装参数
+         */
+        fun pack(workTimeArr: MutableList<BusinessHourEntity>): Bundle =
+            Bundle().apply {
+                putString(WorkTimeArr, GsonUtils.any2Json(workTimeArr))
+            }
+
+        /**
+         * 解析WorkTimeArr
+         */
+        fun parseWorkTimeArr(intent: Intent): List<BusinessHourEntity>? =
+            GsonUtils.json2List(intent.getStringExtra(WorkTimeArr), BusinessHourEntity::class.java)
+    }
+
     object SelectAppointDeviceParams {
         private const val ShopId = "shopId"
         private const val SpecValueId = "specValueId"
@@ -294,7 +309,7 @@ object IntentParams {
         fun pack(
             select: List<TradePreviewParticipate>? = null,
             promotionProduct: Int,
-            otherSelect:List<TradePreviewParticipate>? = null,
+            otherSelect: List<TradePreviewParticipate>? = null,
         ): Bundle =
             Bundle().apply {
                 select?.let {

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.shop.ShopBusinessWorkTimeActivity">
+
+    <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+        android:id="@+id/bar_shop_business_work_time_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_action_bar_h"
+        android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+        app:title="@string/shop_info" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Font_16_black_85_bold"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:text="@string/business_time" />
+
+    <View
+        style="@style/DividingStyle"
+        android:layout_marginHorizontal="16dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:drawableStart="@mipmap/icon_shop_business_work_time_in"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:text="@string/in_operation" />
+
+    <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+        android:id="@+id/ll_shop_business_work_time_arr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:itemLayout="@layout/item_shop_business_work_time"
+        app:divider="@drawable/divide_size12"
+        app:showDividers="middle"/>
+</LinearLayout>

@@ -82,6 +82,19 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
     override fun initView() {
         window.statusBarColor = Color.WHITE
 
+        // 营业时间
+        mBinding.tvShopDetailWorkTime.setOnClickListener {
+            mViewModel.shopDetail.value?.let { detail ->
+                startActivity(
+                    Intent(
+                        this@ShopDetailActivity,
+                        ShopBusinessWorkTimeActivity::class.java
+                    ).apply {
+                        putExtras(IntentParams.ShopWorkTimeParams.pack(detail.workTimeArr()))
+                    })
+            }
+        }
+
         mBinding.tvShopDetailContactPhone.setOnClickListener {
             requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
         }

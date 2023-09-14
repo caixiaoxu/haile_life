@@ -240,6 +240,8 @@
     <string name="qrcode">二维码</string>
     <string name="oncode">条形码</string>
 
+    <string name="shop_info">商户信息</string>
+
     <string name="card_manager">卡管理</string>
     <string name="consumption_order">消费订单</string>
     <string name="faq">常见问题</string>

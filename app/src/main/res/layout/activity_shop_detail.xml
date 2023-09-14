@@ -123,11 +123,13 @@
             app:showDividers="middle">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_shop_detail_work_time"
                 style="@style/Font_12_black_85"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@mipmap/icon_shop_detail_business_time"
                 android:drawablePadding="4dp"
+                android:drawableEnd="@mipmap/icon_small_arrow_right"
                 android:text="@{vm.shopDetail.getBusinessTimeVal}"
                 tools:text="营业时间 全天24小时" />
 
