@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.OrderPayViewModel" />
@@ -34,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:visibility="@{vm.isDrinking?View.GONE:View.VISIBLE}"
                 android:text="@string/order_pay_time_remaining"
                 tools:text="支付剩余时间" />
 
@@ -43,8 +46,18 @@
                 android:layout_width="46dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:visibility="@{vm.isDrinking?View.GONE:View.VISIBLE}"
                 android:text="@{vm.remainingVal}"
                 tools:text="10:30" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_14_black_85_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="请尽快完成支付"
+                android:visibility="@{vm.isDrinking?View.VISIBLE:View.GONE}"
+                tools:visibility="gone" />
         </LinearLayout>
 
         <com.yunshang.haile_life.ui.view.AmountTextView

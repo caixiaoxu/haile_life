@@ -4,9 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.SToast
@@ -15,9 +18,14 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderDetailViewModel
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.databinding.ActivityOrderDetailBinding
+import com.yunshang.haile_life.databinding.ItemOrderDetailSkuBinding
+import com.yunshang.haile_life.databinding.ItemOrderDetailSkuDispenserBinding
+import com.yunshang.haile_life.databinding.ItemOrderDetailSkuGoodBinding
 import com.yunshang.haile_life.databinding.ItemTitleValueLrBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
@@ -95,7 +103,57 @@ class OrderDetailActivity :
         }
 
         mViewModel.orderDetail.observe(this) {
-            mViewModel.getOrderStatusVal(it)
+            it?.let {
+                mViewModel.getOrderStatusVal(it)
+                // 是否只有一个sku
+                val isSingle = 1 == it.orderItemList.size
+                // sku 列表
+                val items = it.orderItemList.filter { item ->
+                    !DeviceCategory.isDispenser(item.categoryCode)
+                }
+                mBinding.llOrderDetailSkus.buildChild<ItemOrderDetailSkuBinding, OrderItem>(items) { _, childBinding, data ->
+                    childBinding.item = data
+                    childBinding.isSingle = isSingle
+                    childBinding.state = it.state
+                }
+                // 投放器的sku
+                val dispenserList =
+                    it.orderItemList.filter { item -> DeviceCategory.isDispenser(item.categoryCode) }
+                if (dispenserList.isNotEmpty()) {
+                    val dispenserBinding =
+                        DataBindingUtil.inflate<ItemOrderDetailSkuDispenserBinding>(
+                            LayoutInflater.from(this@OrderDetailActivity),
+                            R.layout.item_order_detail_sku_dispenser,
+                            null,
+                            false
+                        )
+                    dispenserBinding.llItemOrderSkuDispenser.buildChild<ItemOrderDetailSkuGoodBinding, OrderItem>(
+                        dispenserList
+                    ) { _, childBinding, data ->
+                        childBinding.type = 1
+                        childBinding.title = data.goodsItemName
+                        childBinding.num = data.num + "ml"
+                        childBinding.price = StringUtils.formatAmountStrOfStr(data.originPrice)
+                    }
+                    try {
+                        var discountVal = 0.0
+                        dispenserList.forEach { item ->
+                            discountVal += item.discountPrice.toDouble()
+                        }
+                        dispenserBinding.discount = StringUtils.formatAmountStr(-discountVal)
+                        dispenserBinding.includeItemOrderDetailSkuGood.root.visibility =
+                            View.VISIBLE
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        dispenserBinding.includeItemOrderDetailSkuGood.root.visibility = View.GONE
+                    }
+                    mBinding.llOrderDetailSkus.addView(
+                        dispenserBinding.root,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                }
+            }
         }
 
         LiveDataBus.with(BusEvents.PAY_OVERTIME_STATUS)?.observe(this) {
@@ -117,8 +175,9 @@ class OrderDetailActivity :
                     putExtras(
                         IntentParams.OrderPayParams.pack(
                             detail.orderNo,
-                            detail.invalidTime,
-                            detail.realPrice
+                            if (DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)) "" else detail.invalidTime,
+                            detail.realPrice,
+                            detail.orderItemList.firstOrNull()?.categoryCode
                         )
                     )
                 })
@@ -156,6 +215,12 @@ class OrderDetailActivity :
             }
         }
 
+        mBinding.tvOrderDetailDelete.setOnClickListener {
+            mViewModel.deleteOrder() {
+                finish()
+            }
+        }
+
         mBinding.tvOrderDetailAppointNoUse.setOnClickListener {
             startActivity(
                 Intent(
@@ -177,6 +242,7 @@ class OrderDetailActivity :
 
     override fun onDestroy() {
         mViewModel.timer?.cancel()
+        mViewModel.orderStateTimer?.cancel()
         super.onDestroy()
     }
 }

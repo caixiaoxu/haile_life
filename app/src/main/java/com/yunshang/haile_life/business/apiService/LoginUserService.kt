@@ -1,10 +1,7 @@
 package com.yunshang.haile_life.business.apiService
 
 import com.lsy.framelib.network.response.ResponseWrapper
-import com.yunshang.haile_life.data.entities.BindPhoneEntity
-import com.yunshang.haile_life.data.entities.LoginEntity
-import com.yunshang.haile_life.data.entities.ThirdLoginEntity
-import com.yunshang.haile_life.data.entities.UserInfoEntity
+import com.yunshang.haile_life.data.entities.*
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -91,4 +88,10 @@ interface LoginUserService {
      */
     @POST("/account/updateUserInfo")
     suspend fun updateUserInfo(@Body body: RequestBody): ResponseWrapper<Any>
+
+    /**
+     * 获取是否关注公众号接口
+     */
+    @GET("/account/getWechatPublicAccountSubscribeFlag")
+    suspend fun requestOfficialAccounts(): ResponseWrapper<OfficialAccountsEntity>
 }

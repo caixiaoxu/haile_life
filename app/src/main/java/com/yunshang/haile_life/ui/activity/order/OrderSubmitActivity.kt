@@ -7,8 +7,8 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.AppManager
@@ -21,11 +21,14 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderSubmitViewModel
 import com.yunshang.haile_life.data.ActivityTag
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
 import com.yunshang.haile_life.data.entities.WxPrePayEntity
 import com.yunshang.haile_life.databinding.ActivityOrderSubmitBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
+import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
@@ -93,7 +96,8 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                 }
                 val inflater = LayoutInflater.from(this@OrderSubmitActivity)
                 if (trade.itemList.isNotEmpty()) {
-                    for (good in trade.itemList) {
+                    val isSingle = 1 == trade.itemList.size
+                    for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode) }) {
                         val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
                             inflater,
                             R.layout.item_order_submit_good,
@@ -101,8 +105,59 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                             false
                         )
                         childGoodBinding.item = good
+                        childGoodBinding.isSingle = isSingle
                         mBinding.llOrderSubmitGood.addView(
                             childGoodBinding.root,
+                            (mBinding.llOrderSubmitGood.childCount - 2),
+                            ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                        )
+                    }
+
+                    // 投放器数据
+                    val dispenserList =
+                        trade.itemList.filter { item -> DeviceCategory.isDispenser(item.goodsCategoryCode) }
+                    if (dispenserList.isNotEmpty()) {
+                        val childDispenserGoodBinding =
+                            DataBindingUtil.inflate<ItemOrderSubmitGoodDispenserBinding>(
+                                inflater,
+                                R.layout.item_order_submit_good_dispenser,
+                                null,
+                                false
+                            )
+                        childDispenserGoodBinding.llOrderSubmitGoodDispenserItem.buildChild<ItemOrderSubmitGoodItemBinding, TradePreviewGoodItem>(
+                            dispenserList
+                        ) { _, childBinding, data ->
+                            childBinding.title = data.goodsItemName + "${data.num}ml"
+                            childBinding.type = 0
+                            childBinding.value = data.getOriginAmountStr()
+                        }
+                        try {
+                            var discountVal = 0.0
+                            var totalPriceVal = 0.0
+                            dispenserList.forEach { item ->
+                                discountVal += item.discountAmount.toDouble()
+                                totalPriceVal += item.realAmount.toDouble()
+                            }
+                            childDispenserGoodBinding.discount =
+                                com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(
+                                    -discountVal
+                                )
+                            childDispenserGoodBinding.price =
+                                com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(
+                                    totalPriceVal
+                                )
+                            childDispenserGoodBinding.includeOrderSubmitGoodDiscount.root.visibility =
+                                View.VISIBLE
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            childDispenserGoodBinding.includeOrderSubmitGoodDiscount.root.visibility =
+                                View.GONE
+                        }
+                        mBinding.llOrderSubmitGood.addView(
+                            childDispenserGoodBinding.root,
                             (mBinding.llOrderSubmitGood.childCount - 2),
                             ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -138,7 +193,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                 childBinding.endDraw = 0
                                 val pH = DimensionUtils.dip2px(this@OrderSubmitActivity, 8f)
                                 childBinding.tvOrderSubmitGoodValue.setPadding(pH, 0, pH, 0)
-                                (childBinding.tvOrderSubmitGoodValue.layoutParams as ConstraintLayout.LayoutParams).run {
+                                (childBinding.tvOrderSubmitGoodValue.layoutParams as LinearLayout.LayoutParams).run {
                                     height = DimensionUtils.dip2px(this@OrderSubmitActivity, 25f)
                                 }
                                 childBinding.value = StringUtils.getString(
@@ -158,7 +213,11 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                         putExtras(
                                             IntentParams.DiscountCouponSelectorParams.pack(
                                                 promotion.participateList,
-                                                promotion.promotionProduct
+                                                promotion.promotionProduct,
+                                                trade.promotionList.filter { item -> promotion.promotionProduct != item.promotionProduct }
+                                                    .flatMap { item ->
+                                                        item.participateList
+                                                    }
                                             )
                                         )
                                     }
@@ -173,6 +232,9 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                 } else R.mipmap.icon_uncheck
                             childBinding.tvOrderSubmitGoodValue.setOnClickListener {
                                 if (promotion.used) {
+                                    // 如果强制使用海星，不可取消
+                                    if (promotion.forceUse) return@setOnClickListener
+
                                     mViewModel.selectParticipate?.removeAll { item -> 5 == item.promotionProduct }
                                 } else {
                                     if (promotion.options.isNotEmpty()) {
@@ -273,6 +335,17 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
         mBinding.btnOrderSubmitPay.setOnClickListener {
             if (-1 == mViewModel.payMethod) {
                 SToast.showToast(this@OrderSubmitActivity, "请选择支付方式")
+                return@setOnClickListener
+            }
+
+            val noMoney = 1001 == mViewModel.payMethod && try {
+                mViewModel.balance.value!!.amount.toDouble() < mViewModel.tradePreview.value!!.realPrice.toDouble()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+            if (noMoney) {
+                SToast.showToast(this@OrderSubmitActivity, "余额不足，先选择其他方式支付")
                 return@setOnClickListener
             }
 

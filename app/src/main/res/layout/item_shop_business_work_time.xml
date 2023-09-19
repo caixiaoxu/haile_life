@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="child"
+            type="com.yunshang.haile_life.data.entities.BusinessHourEntity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="36dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_business_work_time_week"
+            android:layout_width="74dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@{child.hourWeekVal}"
+            tools:text="周一、周二\n周三、周四"
+            style="@style/Font_14_black_85" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            tools:text="10:00-13:30"
+            android:text="@{child.workTime}"
+            style="@style/Font_14_black_85" />
+    </LinearLayout>
+</layout>

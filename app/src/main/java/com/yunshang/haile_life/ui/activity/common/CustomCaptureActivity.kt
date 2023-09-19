@@ -2,9 +2,7 @@ package com.yunshang.haile_life.ui.activity.common
 
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.KeyEvent
@@ -84,7 +82,7 @@ class CustomCaptureActivity : BaseActivity() {
             }
         }
 
-        capture = CustomCaptureManager(this, mBinding.zxingBarcodeScanner)
+        capture = CustomCaptureManager(this, mBinding.zxingBarcodeScanner){}
         capture.initializeFromIntent(intent, savedInstanceState)
         capture.decode()
     }

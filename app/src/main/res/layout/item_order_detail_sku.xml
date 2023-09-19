@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="state"
+            type="java.lang.Integer" />
+
+        <variable
+            name="isSingle"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.OrderItem" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp"
+        app:divider="@drawable/divide_size8"
+        app:showDividers="middle">
+
+        <include
+            layout="@layout/item_order_detail_sku_good"
+            app:num="@{item.getOrderDeviceUnit(state)}"
+            app:price="@{item.getOrderDeviceOriginPrice(state)}"
+            app:title="@{item.goodsItemName}"
+            app:type="@{0}" />
+
+        <include
+            layout="@layout/item_order_detail_sku_good"
+            android:visibility="@{isSingle?View.GONE:View.VISIBLE}"
+            app:price="@{item.getOrderDeviceDiscountPrice(state)}"
+            app:title="@{@string/good_discount}"
+            app:type="@{2}" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

@@ -64,6 +64,8 @@ class CommonBottomSheetDialog<D : ICommonBottomItemEntity> private constructor(p
         super.onViewCreated(view, savedInstanceState)
 
         // 关闭
+        mBinding.tvCommonDialogClose.visibility =
+            if (1 == builder.selectModel) View.GONE else View.VISIBLE
         mBinding.tvCommonDialogClose.setOnClickListener {
             dismiss()
         }
@@ -77,6 +79,8 @@ class CommonBottomSheetDialog<D : ICommonBottomItemEntity> private constructor(p
             if (builder.title.isEmpty()) View.GONE else View.VISIBLE
 
         // 确定
+        mBinding.tvCommonDialogSure.visibility =
+            if (1 == builder.selectModel) View.GONE else View.VISIBLE
         mBinding.tvCommonDialogSure.setOnClickListener {
             if (builder.mustSelect && null == curEntity) {
                 SToast.showToast(context, "您还没有选择选项")
@@ -118,15 +122,21 @@ class CommonBottomSheetDialog<D : ICommonBottomItemEntity> private constructor(p
                             setBackgroundColor(Color.TRANSPARENT)
                         }
 
+                        setOnRadioClickListener {
+                            if (1 == builder.selectModel) {
+                                builder.onValueSureListener?.onValue(data)
+                                dismiss()
+                                true
+                            } else false
+                        }
+
                         setOnCheckedChangeListener { _, isChecked ->
                             if (isChecked) {
                                 curEntity = data
-                                if (builder.title.isEmpty()) {
-                                    dismiss()
-                                    builder.onValueSureListener?.onValue(curEntity)
-                                }
                             }
                         }
+
+                        isChecked = builder.selectData == data
                     },
                     ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
@@ -148,6 +158,9 @@ class CommonBottomSheetDialog<D : ICommonBottomItemEntity> private constructor(p
 
     internal class Builder<D : ICommonBottomItemEntity>(val title: String, val list: List<D>) {
 
+        // 选择模式 0选中再点确定，1选中直接返回
+        var selectModel = 0
+
         // 不可取消
         var isCancelable = true
 
@@ -156,6 +169,9 @@ class CommonBottomSheetDialog<D : ICommonBottomItemEntity> private constructor(p
 
         // 是否可不选
         var mustSelect = true
+
+        // 已选择的数据
+        var selectData: D? = null
 
         /**
          * 构建

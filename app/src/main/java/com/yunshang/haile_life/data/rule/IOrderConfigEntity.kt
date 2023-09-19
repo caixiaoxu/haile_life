@@ -17,4 +17,6 @@ interface IOrderConfigEntity {
     fun getTitleTxtColor(code: String?): Int
 
     fun getTitleBg(code: String?): Int
+
+    fun defaultVal():Boolean
 }

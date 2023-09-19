@@ -23,10 +23,12 @@ import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.HomeCategory
 import com.yunshang.haile_life.business.vm.HomeViewModel
 import com.yunshang.haile_life.data.Constants
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.ADImage
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.databinding.*
+import com.yunshang.haile_life.ui.activity.device.DeviceNavigationActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.ShopDetailActivity
@@ -237,7 +239,6 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DefaultPageParams.pack(1))
                             })
-
                     R.mipmap.icon_home_hair ->
                         startActivity(
                             Intent(
@@ -246,7 +247,15 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DefaultPageParams.pack(4))
                             })
-                    else -> SToast.showToast(requireContext(), "敬请期待")
+                    R.mipmap.icon_home_drinking ->
+                        startActivity(
+                            Intent(
+                                requireContext(),
+                                DeviceNavigationActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Water))
+                            })
+                    else -> SToast.showToast(requireContext(), R.string.coming_soon)
                 }
             }
         }

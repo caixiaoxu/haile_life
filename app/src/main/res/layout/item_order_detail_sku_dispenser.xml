@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="state"
+            type="java.lang.Integer" />
+
+        <variable
+            name="discount"
+            type="java.lang.String" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp"
+        app:divider="@drawable/divide_size8"
+        app:showDividers="middle">
+
+        <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+            android:id="@+id/ll_item_order_sku_dispenser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:divider="@drawable/divide_size8"
+            app:itemLayout="@layout/item_order_detail_sku_good"
+            app:showDividers="middle" />
+
+        <include
+            android:id="@+id/include_item_order_detail_sku_good"
+            layout="@layout/item_order_detail_sku_good"
+            app:price="@{discount}"
+            app:title="@{@string/good_discount}"
+            app:type="@{2}" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

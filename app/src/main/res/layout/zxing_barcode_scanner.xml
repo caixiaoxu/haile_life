@@ -6,10 +6,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.yunshang.haile_life.ui.view.scan.CustomViewFinderView
+    <com.journeyapps.barcodescanner.ViewfinderView
         android:id="@+id/zxing_viewfinder_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/zxing_status_view"

@@ -142,7 +142,7 @@ class OrderSubmitViewModel : BaseViewModel() {
             hashMapOf(
                 "goodsId" to it.goodId,
                 "goodsItemId" to it.goodItmId,
-                "soldType" to if (DeviceCategory.isDryerOrHair(it.categoryCode)) 2 else 1,
+                "soldType" to if (DeviceCategory.isDryerOrHairOrDispenser(it.categoryCode)) 2 else 1,
                 "num" to it.num,
             )
         },

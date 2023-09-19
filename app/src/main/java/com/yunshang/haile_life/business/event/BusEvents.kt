@@ -30,6 +30,9 @@ object BusEvents {
     // 订单取消
     const val ORDER_CANCEL_STATUS = "order_cancel_status"
 
+    // 订单删除
+    const val ORDER_DELETE_STATUS = "order_delete_status"
+
     // 预约单使用
     const val APPOINT_ORDER_USE_STATUS = "appoint_order_use_status"
 
@@ -38,4 +41,9 @@ object BusEvents {
 
     // 退款成功
     const val STARFISH_REFUND_STATUS = "starfish_refund_status"
+
+    // 云卡绑定成功
+    const val CARD_BINDING_STATUS = "card_binding_status"
+
+    const val SCAN_CHANGE_STATUS = "scan_change_status"
 }

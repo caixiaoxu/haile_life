@@ -184,5 +184,7 @@ class AppointmentSubmitViewModel : BaseViewModel() {
         override fun getTitleBg(code: String?): Int =
             if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
             else R.drawable.selector_device_model_item1
+
+        override fun defaultVal(): Boolean = false
     }
 }

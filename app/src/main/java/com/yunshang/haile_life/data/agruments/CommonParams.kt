@@ -32,6 +32,9 @@ object DeviceCategory {
     // 饮水机
     const val Water = "04"
 
+    // 沐浴
+    const val Shower = "08"
+
     // 投放器
     const val Dispenser = "09"
 
@@ -40,10 +43,32 @@ object DeviceCategory {
     annotation class IDeviceCategoryType
 
     /**
+     * 是否是洗衣机
+     */
+    fun isWashing(categoryCode: String?) = Washing == categoryCode
+
+    /**
+     * 是否是洗鞋机
+     */
+    fun isShoes(categoryCode: String?) = Shoes == categoryCode
+
+    /**
+     * 是否是洗衣机或洗鞋机
+     */
+    fun isWashingOrShoes(categoryCode: String?) = Washing == categoryCode || Shoes == categoryCode
+
+    /**
      * 是否是烘干机或吹风机
      */
     @JvmStatic
     fun isDryerOrHair(categoryCode: String?) = Dryer == categoryCode || Hair == categoryCode
+
+    /**
+     * 是否是烘干机或吹风机或投放器
+     */
+    @JvmStatic
+    fun isDryerOrHairOrDispenser(categoryCode: String?) =
+        Dryer == categoryCode || Hair == categoryCode || Dispenser == categoryCode
 
     /**
      * 是否是烘干机
@@ -52,10 +77,34 @@ object DeviceCategory {
     fun isDryer(categoryCode: String?) = Dryer == categoryCode
 
     /**
-     * 是否是吹机
+     * 是否是吹风机
      */
     @JvmStatic
     fun isHair(categoryCode: String?) = Hair == categoryCode
+
+    /**
+     * 是否是饮水机或淋浴
+     */
+    @JvmStatic
+    fun isDrinkingOrShower(categoryCode: String?) = Water == categoryCode || Shower == categoryCode
+
+    /**
+     * 是否是饮水机
+     */
+    @JvmStatic
+    fun isDrinking(categoryCode: String?) = Water == categoryCode
+
+    /**
+     * 是否是淋浴
+     */
+    @JvmStatic
+    fun isShower(categoryCode: String?) = Shower == categoryCode
+
+    /**
+     * 是否是投放机
+     */
+    @JvmStatic
+    fun isDispenser(categoryCode: String?) = Dispenser == categoryCode
 
     fun categoryName(categoryCode: String?): String = when (categoryCode) {
         Washing -> "洗衣机"

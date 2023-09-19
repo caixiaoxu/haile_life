@@ -1,9 +1,14 @@
 package com.yunshang.haile_life.data.entities
 
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.StyleSpan
+import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.StringUtils
-import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.extend.toDefaultDouble
 import com.yunshang.haile_life.data.rule.IOrderConfigEntity
 
 
@@ -36,8 +41,23 @@ data class DeviceDetailItemEntity(
     val stockState: Int,
     val unit: String,
     val vipDiscount: String,
-    val vipDiscountPrice: String
+    val vipDiscountPrice: String,
+    val extAttrDto: ExtAttrDto
 ) : IOrderConfigEntity {
+
+    val drinkingTitle: SpannableString
+        get() = com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+            "$name ${
+                extAttrDto.items.firstOrNull()?.let { it.unitPrice + "元/" + it.getTitle("") } ?: ""
+            }",
+            arrayOf(
+                AbsoluteSizeSpan(DimensionUtils.sp2px(14f)),
+                StyleSpan(Typeface.NORMAL)
+            ), 0, name.length
+        )
+
+    val drinkingIcon: Int
+        get() = if (1 == extAttrDto.items.firstOrNull()?.goodsType) R.mipmap.icon_drinking_configure_normal else R.mipmap.icon_drinking_configure_hot
 
     override fun getTitle(code: String?): String =
         if (DeviceCategory.isHair(code) && 0 == amount) "使用中..." else name
@@ -51,22 +71,57 @@ data class DeviceDetailItemEntity(
         if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
         else R.drawable.selector_device_model_item
 
-    fun getExtAttrs(isDryerOrHair: Boolean) =
-        if (isDryerOrHair) {
-            GsonUtils.json2List(extAttr, ExtAttrBean::class.java) ?: arrayListOf()
+    override fun defaultVal(): Boolean = extAttrDto.items.any { item -> item.defaultVal() }
+}
+
+data class ExtAttrDto(
+    val items: MutableList<ExtAttrDtoItem>
+)
+
+data class ExtAttrDtoItem(
+    val canMerchantEdit: Boolean?,
+    val compatibleGoodsCategoryCode: List<String>?,
+    val description: String?,
+    val functionType: Int,
+    val goodsType: Int,
+    val isDefault: Boolean,
+//    val isOn: Boolean,
+    val isEnabled: Boolean,
+    val priceCalculateMode: Int,
+    val priceType: Int,
+    val pulse: String,
+    val pulseVolumeFactor: String,
+    val sequence: Int?,
+    var unitAmount: String,
+    val unitCode: Int,
+    val unitPrice: String
+) : IOrderConfigEntity {
+
+    override fun getTitle(code: String?): String =
+        if (unitAmount.isEmpty()) "不需要"
+        else (if (unitAmount.toDefaultDouble(1.0) == 1.0) "" else unitAmount) + if (1 == priceCalculateMode) {
+            // 流量
+            if (1 == unitCode) "ml" else "L"
         } else {
-            try {
-                arrayListOf(ExtAttrBean(unit.toInt(), price.toDouble()))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                arrayListOf()
-            }
+            // 时间
+            if (1 == unitCode) "秒" else "分钟"
         }
+
+    override fun getTitleTxtColor(code: String?): Int =
+        if (DeviceCategory.isHair(code) && (unitAmount.isEmpty() || unitAmount == "0")) R.color.color_black_25
+        else if (DeviceCategory.isDryerOrHair(code)) R.color.selector_black85_ff630e
+        else R.color.selector_black85_04d1e5
+
+    override fun getTitleBg(code: String?): Int =
+        if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
+        else R.drawable.selector_device_model_item1
+
+    override fun defaultVal(): Boolean = isDefault
 }
 
 data class ExtAttrBean(
     val minutes: Int,
-    var price: Double,
+    var price: String,
 ) : IOrderConfigEntity {
     override fun getTitle(code: String?): String =
         "${minutes}${StringUtils.getString(R.string.minute)}"
@@ -78,4 +133,6 @@ data class ExtAttrBean(
     override fun getTitleBg(code: String?): Int =
         if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
         else R.drawable.selector_device_model_item1
+
+    override fun defaultVal(): Boolean = false
 }

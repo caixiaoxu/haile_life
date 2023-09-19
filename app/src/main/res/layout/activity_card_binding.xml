@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.CardBindingViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.device.CardBindingActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_card_binding_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:title="@string/binding_cloud_card" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:background="@drawable/shape_sffffff_r8"
+            android:paddingHorizontal="12dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_card_binding_card_sn_title"
+                style="@style/Font_16_black_85"
+                android:layout_width="77dp"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:text="@string/card_sn"
+                app:layout_constraintBottom_toBottomOf="@id/et_card_binding_card_sn"
+                app:layout_constraintStart_toEndOf="@id/et_card_binding_card_sn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/et_card_binding_card_sn" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_card_binding_card_sn"
+                style="@style/Font_16_black_85_25"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:background="@color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/binding_cloud_card_sn_hit"
+                android:text="@={vm.cardSn}"
+                app:layout_constraintEnd_toStartOf="@id/ib_card_binding_scan"
+                app:layout_constraintStart_toEndOf="@id/tv_card_binding_card_sn_title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ib_card_binding_scan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="@color/transparent"
+                android:src="@mipmap/icon_card_binding_scan"
+                app:layout_constraintBottom_toBottomOf="@id/et_card_binding_card_sn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/et_card_binding_card_sn"
+                app:layout_constraintTop_toTopOf="@id/et_card_binding_card_sn" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_card_binding_card_phone_title"
+                style="@style/Font_16_black_85"
+                android:layout_width="77dp"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:text="@string/phone"
+                app:layout_constraintBottom_toBottomOf="@id/et_card_binding_card_phone"
+                app:layout_constraintStart_toEndOf="@id/et_card_binding_card_phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/et_card_binding_card_phone" />
+
+            <com.yunshang.haile_manager_android.ui.view.PhoneEditText
+                android:id="@+id/et_card_binding_card_phone"
+                style="@style/Font_16_black_85_25"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:background="@color/transparent"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center_vertical"
+                android:hint="@string/please_input"
+                android:text="@={vm.phone}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_card_binding_card_phone_title"
+                app:layout_constraintTop_toBottomOf="@id/et_card_binding_card_sn" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_card_binding_card_code_title"
+                style="@style/Font_16_black_85"
+                android:layout_width="77dp"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:text="@string/code"
+                app:layout_constraintBottom_toBottomOf="@id/et_card_binding_card_code"
+                app:layout_constraintStart_toEndOf="@id/et_card_binding_card_code"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/et_card_binding_card_code" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_card_binding_card_code"
+                style="@style/Font_16_black_85_25"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:background="@color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/code_empty"
+                android:inputType="numberDecimal"
+                android:text="@={vm.code}"
+                app:layout_constraintEnd_toStartOf="@id/btn_card_binding_card_code"
+                app:layout_constraintStart_toEndOf="@id/tv_card_binding_card_code_title"
+                app:layout_constraintTop_toBottomOf="@id/et_card_binding_card_phone" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/btn_card_binding_card_code"
+                style="@style/font_14_04D1E5"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:onClick="@{vm::sendCode}"
+                android:text="@string/send_code"
+                app:layout_constraintBottom_toBottomOf="@id/et_card_binding_card_code"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/et_card_binding_card_code"
+                app:layout_constraintTop_toTopOf="@id/et_card_binding_card_code" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.lsy.framelib.ui.weight.SingleTapButton
+            style="@style/CommonMatchBtnStyle1"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:enabled="@{vm.canSubmit}"
+            android:onClick="@{vm::bindingCard}"
+            android:text="@string/sure_binding" />
+    </LinearLayout>
+</layout>

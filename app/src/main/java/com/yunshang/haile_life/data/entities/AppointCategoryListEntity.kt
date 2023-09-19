@@ -32,4 +32,6 @@ data class AppointCategory(
         if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
         else R.drawable.selector_device_model_item
 
+    override fun defaultVal(): Boolean = false
+
 }

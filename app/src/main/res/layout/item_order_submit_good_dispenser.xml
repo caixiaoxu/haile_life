@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="discount"
+            type="java.lang.String" />
+        <variable
+            name="price"
+            type="java.lang.String" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="16dp"
+        app:divider="@drawable/divide_size10"
+        app:showDividers="middle">
+
+        <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+            android:id="@+id/ll_order_submit_good_dispenser_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:itemLayout="@layout/item_order_submit_good_item"
+            app:divider="@drawable/divide_size10"
+            app:showDividers="middle"/>
+
+        <include
+            android:id="@+id/include_order_submit_good_discount"
+            layout="@layout/item_order_submit_good_item"
+            app:title="@{@string/good_discount}"
+            app:type="@{2}"
+            app:value="@{discount}" />
+
+        <include
+            android:id="@+id/include_order_submit_good_actually_paid"
+            layout="@layout/item_order_submit_good_item"
+            app:title="@{@string/actually_paid}"
+            app:type="@{2}"
+            app:value="@{price}" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

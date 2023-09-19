@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.DrinkingScanOrderViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.order.DrinkingScanOrderActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_drinking_scan_order_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@{vm.isDrinking?@string/home_category_drinking:@string/home_category_shower}" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_drinking_scan_order_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:background="@drawable/shape_sffffff_r12"
+            android:paddingBottom="16dp">
+
+            <HorizontalScrollView
+                android:id="@+id/sv_drinking_scan_order_configure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:visibility="@{(null == vm.deviceDetail.items || 0 == vm.deviceDetail.items.size())?View.GONE:View.VISIBLE}"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_drinking_scan_order_configure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:itemLayout="@layout/item_drinking_scan_order" />
+            </HorizontalScrollView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_drinking_scan_order_device_name"
+                style="@style/Font_14_black_25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="44dp"
+                android:text='@{@string/drinking_device_name(vm.deviceDetail.name)}'
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sv_drinking_scan_order_configure"
+                tools:text="您要使用的是浙大紫金港店3号饮水机" />
+
+            <com.lsy.framelib.ui.weight.SingleTapButton
+                android:id="@+id/btn_drinking_scan_order_use"
+                style="@style/CommonMatchBtnStyle1"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/click_start_use"
+                app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_device_name" />
+
+            <View
+                style="@style/DividingStyle"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_drinking_scan_order_use" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_drinking_scan_order_tip"
+                style="@style/Font_14_black_65_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="57dp"
+                android:text="@string/scan_order_tips_hint"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_drinking_scan_order_use"
+                app:visibility="@{vm.deviceDetail.showDrinkingOverTime || vm.deviceDetail.showDrinkingPauseTime}" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_drinking_scan_order_tip1"
+                style="@style/Font_14_black_45"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:text="@{@string/drinking_order_tip1(vm.deviceDetail.drinkingOverTime)}"
+                app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
+                app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip"
+                app:visibility="@{vm.deviceDetail.showDrinkingOverTime}"
+                tools:text="持续放水超过2秒会自动结束订单" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_drinking_scan_order_tip2"
+                style="@style/Font_14_black_45"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{@string/drinking_order_tip2(vm.deviceDetail.drinkingPauseTime)}"
+                app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
+                app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip1"
+                app:visibility="@{vm.deviceDetail.showDrinkingPauseTime}"
+                tools:text="暂停放水超过20秒会自动结束订单" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_drinking_scan_order_tip3"
+                style="@style/Font_14_black_45"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/drinking_order_tip3"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
+                app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip2"
+                tools:text="先使用，订单结束后根据用水量扣费" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

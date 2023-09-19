@@ -10,6 +10,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderPayViewModel
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.WxPrePayEntity
 import com.yunshang.haile_life.databinding.ActivityOrderPayBinding
@@ -30,6 +31,8 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
         mViewModel.orderNo = IntentParams.OrderPayParams.parseOrderNo(intent)
         mViewModel.timeRemaining = IntentParams.OrderPayParams.parseTimeRemaining(intent)
         mViewModel.price = IntentParams.OrderPayParams.parsePrice(intent) ?: ""
+        mViewModel.isDrinking =
+            DeviceCategory.isDrinking(IntentParams.DeviceParams.parseCategoryCode(intent))
     }
 
     override fun initEvent() {
@@ -95,6 +98,18 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
                 return@setOnClickListener
             }
             if (1001 == mViewModel.payMethod) {
+                val noMoney = try {
+                    mViewModel.balance.value!!.amount.toDouble() < mViewModel.price.toDouble()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    false
+                }
+                if (noMoney) {
+                    SToast.showToast(this@OrderPayActivity, "余额不足，先选择其他方式支付")
+                    return@setOnClickListener
+                }
+
+
                 if (null != mViewModel.balance.value) {
                     BalancePaySureDialog(
                         mViewModel.balance.value!!.amount,

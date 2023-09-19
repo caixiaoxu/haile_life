@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.yunshang.haile_life.data.agruments.DeviceCategory" />
+
+        <variable
+            name="isSingle"
+            type="java.lang.Boolean" />
 
         <variable
             name="item"
@@ -23,25 +28,25 @@
         <include
             android:id="@+id/include_order_submit_good_info"
             layout="@layout/item_order_submit_good_item"
-            app:title="@{item.goodsItemName}"
             app:icon="@{item.getCategoryIcon}"
-            app:value="@{item.getOriginAmountStr}"
-            app:type="@{DeviceCategory.canShowDeviceCategory(item.goodsCategoryCode)?1:0}" />
+            app:title="@{item.goodsItemName}"
+            app:unit="@{item.getGoodUnit}"
+            app:type="@{DeviceCategory.canShowDeviceCategory(item.goodsCategoryCode)?1:0}"
+            app:value="@{item.getOriginAmountStr}" />
 
         <include
             android:id="@+id/include_order_submit_good_discount"
             layout="@layout/item_order_submit_good_item"
-            android:visibility="gone"
+            android:visibility="@{(0 == item.getDiscountAmountStr().length() || isSingle)?View.GONE:View.VISIBLE}"
             app:title="@{@string/good_discount}"
-            app:value="@{item.getDiscountAmountStr}"
-            app:type="@{2}" />
+            app:type="@{2}"
+            app:value="@{item.getDiscountAmountStr}" />
 
         <include
             android:id="@+id/include_order_submit_good_actually_paid"
             layout="@layout/item_order_submit_good_item"
-            android:visibility="gone"
             app:title="@{@string/actually_paid}"
-            app:value="@{item.getRealAmountStr}"
-            app:type="@{2}" />
+            app:type="@{2}"
+            app:value="@{item.getRealAmountStr}" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -22,6 +22,9 @@
     <string name="am">上午</string>
     <string name="pm">下午</string>
     <string name="tip">提示</string>
+    <string name="scan">扫码</string>
+    <string name="coming_soon">敬请期待</string>
+    <string name="please_input">请输入</string>
 
     <string name="login_title">登录海乐生活</string>
     <string name="bind_phone_title">绑定手机号</string>
@@ -31,7 +34,9 @@
     <string name="login_agreement">我已阅读并同意《隐私权政策》</string>
     <string name="code">验证码</string>
     <string name="getCode">获取验证码</string>
+    <string name="send_code">发送验证码</string>
     <string name="send_again">再次发送</string>
+    <string name="send_again1">重新获取</string>
     <string name="phone_empty">请先输入手机号</string>
     <string name="password_empty">请先输入密码</string>
     <string name="code_empty">请先输入验证码</string>
@@ -53,6 +58,9 @@
     <string name="update_success">修改成功</string>
     <string name="update_failure">修改失败</string>
     <string name="upload_failure">上传失败</string>
+
+    <string name="for_one_code">条形码</string>
+    <string name="for_qr_code">二维码</string>
 
     <string name="home_category_wash">洗烘</string>
     <string name="home_category_hair">吹风</string>
@@ -90,8 +98,10 @@
     <string name="scan_order_shoes_hint">温馨提示：请勿将宠物用品、易损衣物放入洗鞋机清洗。</string>
     <string name="scan_order_hair_hint">温馨提示：使用时请不要离吹风口太近避免烫伤。</string>
     <string name="select_category_model">请选择设备类型</string>
-    <string name="select_work_model">请选择%1$s模式</string>
+    <string name="select_work_model">请选择%1$s功能</string>
     <string name="select_work_time">请选择%1$s时长</string>
+    <string name="use_time">使用时长</string>
+    <string name="use_quantity">使用量</string>
     <string name="select_work_device">请选择%1$s设备</string>
     <string name="please_select">请选择</string>
     <string name="appoint_submit_prompt">温馨提示：\n1、预约时间超时10分钟未使用，则订单自动失效， 不退款。\n2、预约单生效前10分钟取消，系统自动退款。预约单生效不足10分钟取消，不退款。</string>
@@ -127,6 +137,7 @@
 
     <string name="next_step">下一步</string>
     <string name="scan_order_tips_hint">温馨提示</string>
+    <string name="go_buy">去购买</string>
     <string name="no_prompt">不再提示</string>
     <string name="submit_order">提交订单</string>
     <string name="go_pay">去支付</string>
@@ -174,6 +185,7 @@
     <string name="order_time">下单时间</string>
     <string name="pay_now">立即支付</string>
     <string name="cancel_order">取消订单</string>
+    <string name="delete_order">删除订单</string>
     <string name="contact_shop">联系商家</string>
     <string name="predict_finish_time">预计完成时间</string>
     <string name="order_submit_used_time_prompt">请在 %1$s 到店使用</string>
@@ -225,7 +237,32 @@
 
     <string name="capture_light">补光</string>
     <string name="capture_album">相册</string>
-    <string name="capture_scan">扫一扫</string>
+    <string name="qrcode">二维码</string>
+    <string name="oncode">条形码</string>
+
+    <string name="shop_info">商户信息</string>
+
+    <string name="card_manager">卡管理</string>
+    <string name="consumption_order">消费订单</string>
+    <string name="faq">常见问题</string>
+    <string name="drinking_device_name">您要使用的是%1$s</string>
+    <string name="click_start_use">点击开始使用</string>
+    <string name="drinking_order_tip1">持续放水超过%1$s秒会自动结束订单</string>
+    <string name="drinking_order_tip2">暂停放水超过%1$s秒会自动结束订单</string>
+    <string name="drinking_order_tip3">先使用，订单结束后根据实际使用扣费</string>
+    <string name="binding_cloud_card">绑定云卡</string>
+    <string name="binding_cloud_card_tip">温馨提示：\n1、云卡为平台卡，可在平台上所有支持云卡的设备上适用。\n2、云卡和用户绑定，适用云卡和扫码一样扣用户的金额（余额、海星或银行卡）</string>
+    <string name="binding_cloud_card_sn_hit">请输入卡号或扫描卡面二维码</string>
+    <string name="card_sn">卡编号</string>
+    <string name="sure_binding">确认绑定</string>
+
+    <string name="follow_the_wechat_official_account">关注公众号</string>
+    <string name="follow_the_wechat_official_account_tip">保存二维码后打开微信识别关注公众号</string>
+    <string name="save_qr_code">保存二维码</string>
+    <string name="open_min_program">打开小程序</string>
+
+    <string name="auto_put_in_laundry_detergent">自动投放洗衣液</string>
+    <string name="auto_put_in_disinfectant">自动投放除菌液</string>
 
     <string-array name="scan_order_wash_confirm">
         <item>请确认当前洗衣机舱门已经锁好</item>

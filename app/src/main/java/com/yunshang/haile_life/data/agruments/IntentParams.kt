@@ -3,9 +3,7 @@ package com.yunshang.haile_life.data.agruments
 import android.content.Intent
 import android.os.Bundle
 import com.lsy.framelib.utils.gson.GsonUtils
-import com.yunshang.haile_life.data.entities.AppointDevice
-import com.yunshang.haile_life.data.entities.GoodsScanEntity
-import com.yunshang.haile_life.data.entities.TradePreviewParticipate
+import com.yunshang.haile_life.data.entities.*
 
 /**
  * Title :
@@ -75,14 +73,22 @@ object IntentParams {
     object ScanOrderParams {
         private const val CODE = "Code"
         private const val GoodsScan = "GoodsScan"
+        private const val DeviceDetail = "DeviceDetail"
 
         /**
          * 包装参数
          */
-        fun pack(payCode: String, goodsScan: GoodsScanEntity? = null): Bundle = Bundle().apply {
+        fun pack(
+            payCode: String,
+            goodsScan: GoodsScanEntity? = null,
+            deviceDetail: DeviceDetailEntity? = null
+        ): Bundle = Bundle().apply {
             putString(CODE, payCode)
             goodsScan?.let {
                 putString(GoodsScan, GsonUtils.any2Json(goodsScan))
+            }
+            deviceDetail?.let {
+                putString(DeviceDetail, GsonUtils.any2Json(deviceDetail))
             }
         }
 
@@ -91,11 +97,14 @@ object IntentParams {
          */
         fun parseCode(intent: Intent): String? = intent.getStringExtra(CODE)
 
-        /**
-         * 解析code
-         */
         fun parseGoodsScan(intent: Intent): GoodsScanEntity? =
             GsonUtils.json2Class(intent.getStringExtra(GoodsScan), GoodsScanEntity::class.java)
+
+        fun parseDeviceDetail(intent: Intent): DeviceDetailEntity? =
+            GsonUtils.json2Class(
+                intent.getStringExtra(DeviceDetail),
+                DeviceDetailEntity::class.java
+            )
     }
 
     object OrderSubmitParams {
@@ -111,7 +120,7 @@ object IntentParams {
             goods: List<OrderSubmitGood>,
             reserveTime: String? = null,
             deviceName: String? = null,
-            shopAddress: String? = null
+            shopAddress: String? = null,
         ): Bundle =
             Bundle().apply {
                 putString(Goods, GsonUtils.any2Json(goods))
@@ -159,6 +168,24 @@ object IntentParams {
          * 解析ShopId
          */
         fun parseShopId(intent: Intent): Int = intent.getIntExtra(ShopId, -1)
+    }
+
+    object ShopWorkTimeParams {
+        private const val WorkTimeArr = "workTimeArr"
+
+        /**
+         * 包装参数
+         */
+        fun pack(workTimeArr: MutableList<BusinessHourEntity>): Bundle =
+            Bundle().apply {
+                putString(WorkTimeArr, GsonUtils.any2Json(workTimeArr))
+            }
+
+        /**
+         * 解析WorkTimeArr
+         */
+        fun parseWorkTimeArr(intent: Intent): List<BusinessHourEntity>? =
+            GsonUtils.json2List(intent.getStringExtra(WorkTimeArr), BusinessHourEntity::class.java)
     }
 
     object SelectAppointDeviceParams {
@@ -256,22 +283,42 @@ object IntentParams {
         }
     }
 
+    object DeviceParams {
+        private const val CategoryCode = "categoryCode"
+
+        /**
+         * 包装参数
+         */
+        fun pack(categoryCode: String?): Bundle =
+            Bundle().apply {
+                putString(CategoryCode, categoryCode)
+            }
+
+
+        fun parseCategoryCode(intent: Intent): String? = intent.getStringExtra(CategoryCode)
+    }
+
     object DiscountCouponSelectorParams {
         private const val SelectCoupon = "SelectCoupon"
         private const val PromotionProduct = "promotionProduct"
+        private const val OtherSelectCoupon = "OtherSelectCoupon"
 
         /**
          * 包装参数
          */
         fun pack(
             select: List<TradePreviewParticipate>? = null,
-            promotionProduct: Int
+            promotionProduct: Int,
+            otherSelect: List<TradePreviewParticipate>? = null,
         ): Bundle =
             Bundle().apply {
                 select?.let {
                     putString(SelectCoupon, GsonUtils.any2Json(select))
                 }
                 putInt(PromotionProduct, promotionProduct)
+                otherSelect?.let {
+                    putString(OtherSelectCoupon, GsonUtils.any2Json(otherSelect))
+                }
             }
 
         fun parseSelectCoupon(intent: Intent): MutableList<TradePreviewParticipate>? =
@@ -281,6 +328,13 @@ object IntentParams {
             )
 
         fun parsePromotionProduct(intent: Intent): Int = intent.getIntExtra(PromotionProduct, -1)
+
+
+        fun parseOtherSelectCoupon(intent: Intent): MutableList<TradePreviewParticipate>? =
+            GsonUtils.json2List(
+                intent.getStringExtra(OtherSelectCoupon),
+                TradePreviewParticipate::class.java
+            )
     }
 
     object RechargeStarfishParams {
@@ -384,11 +438,17 @@ object IntentParams {
         /**
          * 包装参数
          */
-        fun pack(orderNo: String, timeRemaining: String, price: String): Bundle =
+        fun pack(
+            orderNo: String,
+            timeRemaining: String,
+            price: String,
+            categoryCode: String? = null
+        ): Bundle =
             Bundle().apply {
                 putAll(OrderParams.pack(orderNo))
                 putString(TimeRemaining, timeRemaining)
                 putString(Price, price)
+                putAll(DeviceParams.pack(categoryCode))
             }
 
         fun parseOrderNo(intent: Intent): String? = OrderParams.parseOrderNo(intent)

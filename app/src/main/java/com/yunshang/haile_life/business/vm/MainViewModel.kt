@@ -1,17 +1,26 @@
 package com.yunshang.haile_life.business.vm
 
 import android.content.Context
+import android.util.SparseArray
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.AppPackageUtils
+import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.CommonService
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.MarketingService
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
+import com.yunshang.haile_life.ui.fragment.HomeFragment
+import com.yunshang.haile_life.ui.fragment.MineFragment
+import com.yunshang.haile_life.ui.fragment.OrderFragment
+import com.yunshang.haile_life.ui.fragment.StoreFragment
 import com.yunshang.haile_life.utils.string.StringUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,6 +40,19 @@ class MainViewModel : BaseViewModel() {
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mAppointmentRepo = ApiRepository.apiClient(AppointmentService::class.java)
+
+    // 当前的fragment
+    var curFragmentTag: String? = null
+
+    val fragments = SparseArray<Fragment>(5).apply {
+        put(R.id.rb_main_tab_home, HomeFragment())
+        put(R.id.rb_main_tab_store, StoreFragment())
+        put(R.id.rb_main_tab_scan, HomeFragment())
+        put(R.id.rb_main_tab_order, OrderFragment().apply {
+            arguments = IntentParams.OrderListParams.pack(true)
+        })
+        put(R.id.rb_main_tab_mine, MineFragment())
+    }
 
     //选择的id
     val checkId: MutableLiveData<Int> = MutableLiveData(R.id.rb_main_tab_home)
@@ -90,7 +112,7 @@ class MainViewModel : BaseViewModel() {
 
     fun requestScanResult(
         code: String,
-        callBack: (scanEntity: GoodsScanEntity, detailEntity: DeviceDetailEntity?, appointEntity: GoodsAppointmentEntity?) -> Unit
+        callBack: (scanEntity: GoodsScanEntity, detailEntity: DeviceDetailEntity, appointEntity: GoodsAppointmentEntity?) -> Unit
     ) {
         launch({
             ApiRepository.dealApiResult(
@@ -99,22 +121,29 @@ class MainViewModel : BaseViewModel() {
                     n = if (StringUtils.isImeiCode(code)) null else code
                 )
             )?.let { scan ->
-                // 设备详情
-                val deviceDetail =
-                    ApiRepository.dealApiResult(mDeviceRepo.requestDeviceDetail(scan.goodsId))
-
-                // 如果有预约跳转预约订单详情列表
-                val appointEntity = ApiRepository.dealApiResult(
-                    mAppointmentRepo.requestIsAppointmentOfGoods(
-                        ApiRepository.createRequestBody(
-                            hashMapOf("goodsId" to scan.goodsId)
-                        )
-                    )
-                )
-
-                withContext(Dispatchers.Main) {
-                    callBack(scan, deviceDetail, appointEntity)
+                // goodsId为空，提示设备末绑定
+                if (null == scan.goodsId || 0 == scan.goodsId) {
+                    withContext(Dispatchers.Main) {
+                        SToast.showToast(Constants.APP_CONTEXT, "设备未激活，请换一台设备使用或联系商家")
+                    }
+                    return@let
                 }
+
+                // 设备详情
+                ApiRepository.dealApiResult(mDeviceRepo.requestDeviceDetail(scan.goodsId))
+                    ?.let { deviceDetail ->
+                        // 如果有预约跳转预约订单详情列表
+                        val appointEntity = ApiRepository.dealApiResult(
+                            mAppointmentRepo.requestIsAppointmentOfGoods(
+                                ApiRepository.createRequestBody(
+                                    hashMapOf("goodsId" to scan.goodsId)
+                                )
+                            )
+                        )
+                        withContext(Dispatchers.Main) {
+                            callBack(scan, deviceDetail, appointEntity)
+                        }
+                    }
             }
         })
     }

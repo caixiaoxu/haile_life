@@ -52,20 +52,17 @@ class CustomChildListLinearLayout @JvmOverloads constructor(
                 removeViews(it, childCount - start)
             }
         } ?: removeAllViews()
+        val inflater = LayoutInflater.from(context)
         itemList.forEachIndexed { index, any ->
-            val mBinding = DataBindingUtil.bind<B>(
-                LayoutInflater.from(context).inflate(layoutId, null, false)
-            )
-            mBinding?.let {
-                onChildBinding.invoke(index, it, any)
-                addView(
-                    it.root,
-                    layoutParams ?: LayoutParams(
-                        LayoutParams.MATCH_PARENT,
-                        LayoutParams.WRAP_CONTENT
-                    )
+            val mBinding = DataBindingUtil.inflate<B>(inflater, layoutId, null, false)
+            onChildBinding.invoke(index, mBinding, any)
+            addView(
+                mBinding.root,
+                layoutParams ?: LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT
                 )
-            }
+            )
         }
     }
 }

@@ -54,6 +54,8 @@ class DiscountCouponSelectorActivity :
             IntentParams.DiscountCouponSelectorParams.parsePromotionProduct(intent)
         mViewModel.selectParticipate =
             IntentParams.DiscountCouponSelectorParams.parseSelectCoupon(intent)
+        mViewModel.otherSelectParticipate =
+            IntentParams.DiscountCouponSelectorParams.parseOtherSelectCoupon(intent)
     }
 
     override fun initEvent() {
@@ -63,6 +65,7 @@ class DiscountCouponSelectorActivity :
                 // 已选优惠
                 trade.promotionList.find { item -> mViewModel.promotionProduct == item.promotionProduct }
                     ?.let { promotion ->
+                        mViewModel.promotion.value = promotion
                         mViewModel.selectParticipate =
                             mutableListOf<TradePreviewParticipate>().apply {
                                 if (promotion.participateList.isNotEmpty()) {

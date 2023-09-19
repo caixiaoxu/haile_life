@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.DeviceNavigationViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activity.device.DeviceNavigationActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_device_navigation_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/home_category_drinking" />
+
+        <com.youth.banner.Banner
+            android:id="@+id/banner_device_navigation_banner"
+            android:layout_width="match_parent"
+            android:layout_height="196dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:banner_indicator_normal_width="6dp"
+            app:banner_indicator_selected_width="6dp"
+            app:banner_indicator_gravity="left"
+            app:banner_indicator_marginBottom="20dp"
+            app:banner_indicator_marginLeft="25dp"
+            app:banner_indicator_normal_color="#59FFFFFF"
+            app:banner_indicator_selected_color="@color/white"
+            app:banner_radius="8dp"
+            app:layout_constraintTop_toBottomOf="@id/bar_device_navigation_title" />
+
+        <View
+            android:id="@+id/bg_device_navigation_operate1"
+            android:layout_width="match_parent"
+            android:layout_height="135dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/shape_sffffff_r8"
+            app:layout_constraintTop_toBottomOf="@id/banner_device_navigation_banner" />
+
+        <View
+            android:id="@+id/divder_device_navigation_operate1"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="26dp"
+            android:background="@drawable/divder_efefef"
+            app:layout_constraintBottom_toBottomOf="@id/bg_device_navigation_operate1"
+            app:layout_constraintEnd_toEndOf="@id/bg_device_navigation_operate1"
+            app:layout_constraintStart_toStartOf="@id/bg_device_navigation_operate1"
+            app:layout_constraintTop_toTopOf="@id/bg_device_navigation_operate1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_device_navigation_scan"
+            style="@style/Font_16_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:drawableTop="@mipmap/icon_device_scan"
+            android:gravity="center"
+            android:text="@string/scan"
+            app:layout_constraintEnd_toEndOf="@id/divder_device_navigation_operate1"
+            app:layout_constraintStart_toStartOf="@id/bg_device_navigation_operate1"
+            app:layout_constraintTop_toTopOf="@id/bg_device_navigation_operate1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_device_navigation_card_manager"
+            style="@style/Font_16_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:drawableTop="@mipmap/icon_device_card_manager"
+            android:gravity="center"
+            android:text="@string/card_manager"
+            app:layout_constraintEnd_toEndOf="@id/bg_device_navigation_operate1"
+            app:layout_constraintStart_toStartOf="@id/divder_device_navigation_operate1"
+            app:layout_constraintTop_toTopOf="@id/bg_device_navigation_operate1" />
+
+        <View
+            android:id="@+id/bg_device_navigation_operate"
+            android:layout_width="match_parent"
+            android:layout_height="126dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="12dp"
+            app:layout_constraintTop_toBottomOf="@id/bg_device_navigation_operate1"
+            android:background="@drawable/shape_sffffff_r8"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_device_navigation_operate_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Font_14_black_85"
+            android:text="@string/fun_service"
+            app:layout_constraintTop_toTopOf="@id/bg_device_navigation_operate"
+            app:layout_constraintStart_toStartOf="@id/bg_device_navigation_operate"
+            android:layout_margin="12dp"/>
+
+        <View
+            android:id="@+id/btn_device_navigation_order"
+            android:layout_width="88dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/shape_sffffff_r8"
+            app:layout_constraintBottom_toBottomOf="@id/bg_device_navigation_operate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_device_navigation_operate_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/icon_device_navigation_order"
+            android:drawablePadding="6dp"
+            android:gravity="center"
+            android:text="@string/consumption_order"
+            app:layout_constraintBottom_toBottomOf="@id/btn_device_navigation_order"
+            app:layout_constraintEnd_toEndOf="@id/btn_device_navigation_order"
+            app:layout_constraintStart_toStartOf="@id/btn_device_navigation_order"
+            app:layout_constraintTop_toTopOf="@id/btn_device_navigation_order" />
+
+        <View
+            android:id="@+id/btn_device_navigation_coupon"
+            android:layout_width="88dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="6dp"
+            android:background="@drawable/shape_sffffff_r8"
+            app:layout_constraintStart_toEndOf="@id/btn_device_navigation_order"
+            app:layout_constraintTop_toTopOf="@id/btn_device_navigation_order"
+            app:layout_constraintBottom_toBottomOf="@id/btn_device_navigation_order"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/icon_device_navigation_coupon"
+            android:drawablePadding="6dp"
+            android:gravity="center"
+            android:text="@string/discount_coupon"
+            app:layout_constraintBottom_toBottomOf="@id/btn_device_navigation_coupon"
+            app:layout_constraintEnd_toEndOf="@id/btn_device_navigation_coupon"
+            app:layout_constraintStart_toStartOf="@id/btn_device_navigation_coupon"
+            app:layout_constraintTop_toTopOf="@id/btn_device_navigation_coupon" />
+
+        <View
+            android:id="@+id/btn_device_navigation_faq"
+            android:layout_width="88dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/shape_sffffff_r8"
+            app:layout_constraintStart_toEndOf="@id/btn_device_navigation_coupon"
+            app:layout_constraintTop_toTopOf="@id/btn_device_navigation_order"
+            app:layout_constraintBottom_toBottomOf="@id/btn_device_navigation_order"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/icon_device_navigation_faq"
+            android:drawablePadding="6dp"
+            android:gravity="center"
+            android:text="@string/faq"
+            app:layout_constraintBottom_toBottomOf="@id/btn_device_navigation_faq"
+            app:layout_constraintEnd_toEndOf="@id/btn_device_navigation_faq"
+            app:layout_constraintStart_toStartOf="@id/btn_device_navigation_faq"
+            app:layout_constraintTop_toTopOf="@id/btn_device_navigation_faq" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

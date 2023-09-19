@@ -43,5 +43,28 @@ data class DeviceDetailEntity(
     val tags: String,
     val type: Int,
     val updateTime: String,
-    val version: Int
+    val version: Int,
+    val hasAttachGoods: Boolean,
+    val attachGoodsId: Int,
+    val attachItems: List<DeviceDetailItemEntity>,
+    val isShowDispenser: Boolean,
+    val hideDispenserTips: String,
+    val advancedSettingVOS: List<AdvancedSettingVOS>
+) {
+    fun drinkingOverTime() =
+        advancedSettingVOS.find { item -> item.modelFunctionCode == "030D" }?.settingValue?.firstOrNull()
+
+    fun showDrinkingOverTime() = !drinkingOverTime().isNullOrEmpty()
+    fun drinkingPauseTime() =
+        advancedSettingVOS.find { item -> item.modelFunctionCode == "0303" }?.settingValue?.firstOrNull()
+
+    fun showDrinkingPauseTime() = !drinkingPauseTime().isNullOrEmpty()
+}
+
+data class AdvancedSettingVOS(
+    val modelFunctionCode: String,
+    val settingValue: List<String>
 )
+
+
+

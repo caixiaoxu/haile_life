@@ -62,7 +62,7 @@
                 <include
                     android:id="@+id/include_scan_order_config"
                     layout="@layout/item_scan_order_model"
-                    android:visibility="@{(null == vm.deviceConfigs || 0 == vm.deviceConfigs.size())?View.GONE:View.VISIBLE}"
+                    android:visibility="@{(null == vm.deviceDetail || 0 == vm.deviceDetail.items.size())?View.GONE:View.VISIBLE}"
                     app:desc="@{vm.selectDeviceConfig.feature}"
                     app:modelTitle="@{vm.modelTitle}" />
 
@@ -71,8 +71,17 @@
                     layout="@layout/item_scan_order_model"
                     android:visibility="@{(null == vm.selectDeviceConfig)?View.GONE:View.VISIBLE}"
                     app:modelTitle="@{vm.timeTitle}" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_scan_order_configs_attr_sku"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:visibility="@{vm.needAttach}"
+                    app:divider="@drawable/divder_efefef"
+                    app:itemLayout="@layout/item_scan_order_model"
+                    app:showDividers="middle" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -141,7 +150,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/view_scan_order_selected"
             app:layout_constraintVertical_chainStyle="spread"
-            app:tMoney='@{vm.selectExtAttr.price}'
+            app:tMoney='@{vm.totalPriceVal}'
             tools:text="￥ 5.00" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -149,7 +158,8 @@
             style="@style/Font_12_black_65"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:text="@{vm.attachConfigureVal}"
+            android:visibility='@{(null == vm.attachConfigureVal || "" == vm.attachConfigureVal)?View.GONE:View.VISIBLE}'
             app:layout_constraintBottom_toBottomOf="@id/view_scan_order_selected"
             app:layout_constraintEnd_toEndOf="@id/tv_scan_order_price"
             app:layout_constraintStart_toStartOf="@id/tv_scan_order_price"

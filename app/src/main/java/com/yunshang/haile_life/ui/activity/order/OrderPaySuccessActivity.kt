@@ -7,11 +7,13 @@ import android.view.View
 import com.lsy.framelib.ui.base.activity.BaseBindingActivity
 import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.apiService.LoginUserService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.databinding.ActivityOrderPaySuccessBinding
+import com.yunshang.haile_life.ui.view.dialog.OfficialAccountsDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +21,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 class OrderPaySuccessActivity : BaseBindingActivity<ActivityOrderPaySuccessBinding>() {
+    private val mUserRepo = ApiRepository.apiClient(LoginUserService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
     override fun layoutId(): Int = R.layout.activity_order_pay_success
@@ -77,7 +80,7 @@ class OrderPaySuccessActivity : BaseBindingActivity<ActivityOrderPaySuccessBindi
         }
 
         mBinding.btnPaySuccess.setOnClickListener {
-            if (2 !=  IntentParams.OrderParams.parseFormScan(intent)){
+            if (2 != IntentParams.OrderParams.parseFormScan(intent)) {
                 orderNo?.let {
                     startActivity(
                         Intent(
@@ -95,5 +98,18 @@ class OrderPaySuccessActivity : BaseBindingActivity<ActivityOrderPaySuccessBindi
             }
             finish()
         }
+        requestOfficialAccounts()
+    }
+
+    private fun requestOfficialAccounts() {
+        launch({
+            ApiRepository.dealApiResult(
+                mUserRepo.requestOfficialAccounts()
+            )?.let {
+                if (!it.flag) {
+                    OfficialAccountsDialog(it).show(supportFragmentManager, "OfficialAccounts")
+                }
+            }
+        })
     }
 }

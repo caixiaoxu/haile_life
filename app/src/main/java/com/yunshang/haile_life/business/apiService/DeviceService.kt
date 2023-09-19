@@ -29,4 +29,29 @@ interface DeviceService {
 
     @GET("/goods/normal/details")
     suspend fun requestDeviceDetail(@Query("goodsId") goodsId: Int): ResponseWrapper<DeviceDetailEntity>
+
+    /**
+     * 卡片列表接口
+     */
+    @POST("/card/getAll")
+    suspend fun requestCardList(@Body body: RequestBody): ResponseWrapper<ResponseList<CardEntity>>
+
+    /**
+     * 绑卡接口
+     */
+    @POST("/card/bind/submit")
+    suspend fun bindingCard(@Body body: RequestBody): ResponseWrapper<Any>
+
+    /**
+     * 解绑卡接口
+     */
+    @POST("/card/unbind")
+    suspend fun unbindCard(@Body body: RequestBody): ResponseWrapper<Any>
+
+    /**
+     * 绑卡验证码接口
+     */
+    @POST("/card/bind/code")
+    suspend fun sendBindCode(@Body body: RequestBody): ResponseWrapper<Any>
+
 }

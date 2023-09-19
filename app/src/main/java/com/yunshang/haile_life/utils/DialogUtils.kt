@@ -38,6 +38,7 @@ object DialogUtils {
         }
 
         CommonBottomSheetDialog.Builder("", list).apply {
+            selectModel = 1
             onValueSureListener = object :
                 CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
                 override fun onValue(data: SearchSelectParam?) {

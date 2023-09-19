@@ -20,12 +20,14 @@ import retrofit2.http.Query
  * 作者姓名 修改时间 版本号 描述
  */
 interface OrderService {
-
     @POST("/trade/preview")
     suspend fun requestTradePreview(@Body body: RequestBody): ResponseWrapper<TradePreviewEntity>
 
     @POST("/trade/create")
     suspend fun createTrade(@Body body: RequestBody): ResponseWrapper<CreateTradeEntity>
+
+    @POST("/trade/payLaterCreate")
+    suspend fun createLaterTrade(@Body body: RequestBody): ResponseWrapper<CreateTradeEntity>
 
     @POST("/pay/prePay")
     suspend fun prePay(@Body body: RequestBody): ResponseWrapper<PrePayEntity>
@@ -42,8 +44,14 @@ interface OrderService {
     @GET("/trade/detail")
     suspend fun requestOrderDetail(@Query("orderNo") orderNo: String): ResponseWrapper<OrderEntity>
 
+    @GET("/trade/detail/simple")
+    suspend fun requestOrderDetailSimple(@Query("orderNo") orderNo: String): ResponseWrapper<OrderEntity>
+
     @POST("/trade/cancel")
     suspend fun cancelOrder(@Body body: RequestBody): ResponseWrapper<Any>
+
+    @POST("/trade/hidden")
+    suspend fun deleteOrder(@Body body: RequestBody): ResponseWrapper<Any>
 
     @POST("/appointment/cancel")
     suspend fun cancelAppointOrder(@Body body: RequestBody): ResponseWrapper<Any>
@@ -53,4 +61,8 @@ interface OrderService {
 
     @POST("/appointment/using")
     suspend fun useAppointOrder(@Body body: RequestBody): ResponseWrapper<MutableList<Any>>
+
+    @POST("/trade/queryUnPayOrder")
+    suspend fun hasUnPayOrder(@Body body: RequestBody): ResponseWrapper<CreateTradeEntity>
+
 }

@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.HaileLife" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -228,6 +228,10 @@
         <item name="android:textColor">@color/color_black_65</item>
     </style>
 
+    <style name="Font_14_black_65_bold" parent="Font_14_black_65">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Font_14_black_85_65">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/color_black_85</item>
@@ -246,6 +250,11 @@
     <style name="font_14_04D1E5">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/secondColorPrimary</item>
+    </style>
+
+    <style name="Font_14_black_25">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_black_25</item>
     </style>
 
     <style name="Font_14_black_45">
@@ -276,6 +285,10 @@
         <item name="android:textColorHint">@color/color_black_45</item>
     </style>
 
+    <style name="Font_16_black_85_25" parent="Font_16_black_85">
+        <item name="android:textColorHint">@color/color_black_25</item>
+    </style>
+
     <style name="Font_16_common_txt_bold" parent="Font_16_black_85">
         <item name="android:textStyle">bold</item>
     </style>
@@ -302,6 +315,15 @@
     <style name="Font_18_04cee5">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Font_18_black_65">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/color_black_65</item>
+    </style>
+
+    <style name="Font_18_black_65_bold" parent="Font_18_black_65">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Font_18_black_85">
