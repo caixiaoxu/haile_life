@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="deviceName"
+            type="java.lang.String" />
+
+        <variable
+            name="shopName"
+            type="java.lang.String" />
+
+        <variable
+            name="deviceCode"
+            type="java.lang.String" />
+
+        <variable
+            name="deviceImei"
+            type="java.lang.String" />
+
+        <variable
+            name="deviceType"
+            type="java.lang.Integer" />
+
+        <variable
+            name="isHide"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="hasToggle"
+            type="java.lang.Boolean" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@{0 == deviceType?@color/transparent:@color/white}"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        app:divider="@drawable/divide_size6"
+        app:paddingB="@{hasToggle?0f:@dimen/dimen_16}"
+        app:paddingT="@{@dimen/dimen_16}"
+        app:showDividers="middle"
+        tools:showIn="@layout/activity_scan_order">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_18_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="13dp"
+            android:gravity="center_vertical"
+            android:text="@{deviceName}"
+            app:drawSD="@{0 == deviceType?null:1 == deviceType?@drawable/shape_scan_order_dryer_device_name:@drawable/shape_scan_order_washing_device_name}"
+            app:paddingTE="@{@dimen/dimen_16}"
+            app:paddingTS="@{0 == deviceType?@dimen/dimen_16:0f}"
+            tools:drawableStart="@drawable/shape_scan_order_washing_device_name"
+            tools:text="1号楼1号洗衣机" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/icon_scan_order_device_shop"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:text='@{@string/shop + "："+shopName}'
+            tools:text="门店：这大紫金港校区店学生公寓3区1号楼" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/icon_scan_order_device_info"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:text='@{@string/device_code + "：" + deviceCode}'
+            app:visibility="@{!isHide}"
+            tools:text="设备编号：123123123" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/icon_scan_order_device_info"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:text='@{@string/imei + "：" + deviceImei}'
+            app:visibility="@{!isHide}"
+            tools:text="IMEI：834203984082038" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_scan_order_device_info_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:paddingBottom="4dp"
+            app:visibility="@{hasToggle}" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

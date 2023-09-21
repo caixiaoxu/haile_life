@@ -124,7 +124,8 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
 
                 val inflater = LayoutInflater.from(this@ScanOrderActivity)
 
-                val list: List<ExtAttrDtoItem> = it.extAttrDto.items.filter { item -> item.isEnabled }
+                val list: List<ExtAttrDtoItem> =
+                    it.extAttrDto.items.filter { item -> item.isEnabled }
                 if (list.isNotEmpty()) {
                     list.forEachIndexed { index, item ->
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
@@ -174,6 +175,17 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
             }
         }
 
+        mViewModel.isHideDeviceInfo.observe(this) {
+            ContextCompat.getDrawable(
+                this@ScanOrderActivity,
+                if (it) R.mipmap.icon_info_open else R.mipmap.icon_info_hide
+            )?.let { draw ->
+                mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setImageDrawable(
+                    draw
+                )
+            }
+        }
+
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
             finish()
         }
@@ -217,7 +229,10 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         } else {
                             val list = arrayListOf<ExtAttrDtoItem>()
                             list.addAll(items)
-                            list.add(items.first().copy(unitAmount = "", isDefault = false, unitPrice = ""))
+                            list.add(
+                                items.first()
+                                    .copy(unitAmount = "", isDefault = false, unitPrice = "")
+                            )
                             list.forEachIndexed { index, item ->
                                 DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                                     inflater, R.layout.item_scan_order_model_item, null, false
@@ -325,6 +340,10 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         putExtras(IntentParams.RechargeStarfishParams.pack(it.shopId))
                     })
             }
+        }
+
+        mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setOnClickListener {
+            mViewModel.isHideDeviceInfo.value = !mViewModel.isHideDeviceInfo.value!!
         }
     }
 

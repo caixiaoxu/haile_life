@@ -34,6 +34,8 @@ data class DeviceDetailEntity(
     val name: String,
     val payType: String,
     val price: String,
+    val shopName: String,
+    val imei: String,
     val shopCategoryId: Int,
     val shopClosed: Boolean,
     val shopId: Int,

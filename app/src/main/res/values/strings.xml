@@ -100,6 +100,9 @@
     <string name="select_category_model">请选择设备类型</string>
     <string name="select_work_model">请选择%1$s功能</string>
     <string name="select_work_time">请选择%1$s时长</string>
+    <string name="shop">门店</string>
+    <string name="device_code">设备编号</string>
+    <string name="imei">IMEI</string>
     <string name="use_time">使用时长</string>
     <string name="use_quantity">使用量</string>
     <string name="select_work_device">请选择%1$s设备</string>

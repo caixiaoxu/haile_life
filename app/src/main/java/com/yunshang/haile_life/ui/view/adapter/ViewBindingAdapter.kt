@@ -1,10 +1,12 @@
 package com.yunshang.haile_life.ui.view.adapter
 
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MarginLayoutParamsCompat
 import androidx.databinding.BindingAdapter
@@ -53,10 +55,9 @@ object ViewBindingAdapter {
      * TextView属性
      */
     @BindingAdapter(
-        "drawStart",
-        "drawTop",
-        "drawEnd",
-        "drawBottom",
+        "drawStart", "drawTop", "drawEnd", "drawBottom",
+        "drawSD", "drawTD", "drawED", "drawBD",
+        "paddingTS", "paddingTT", "paddingTE", "paddingTB",
         "tRes",
         "tMoney",
         "marginStart",
@@ -69,10 +70,18 @@ object ViewBindingAdapter {
     )
     @JvmStatic
     fun TextView.setTVAttr(
-        dsRes: Int?,
-        dtRes: Int?,
-        deRes: Int?,
-        dbRes: Int?,
+        dsRes: Int = 0,
+        dtRes: Int = 0,
+        deRes: Int = 0,
+        dbRes: Int = 0,
+        dsDraw: Drawable?,
+        dtDraw: Drawable?,
+        deDraw: Drawable?,
+        dbDraw: Drawable?,
+        pS: Float = 0f,
+        pT: Float = 0f,
+        pE: Float = 0f,
+        pB: Float = 0f,
         tRes: Int?,
         tMoney: Double?,
         mS: Float?,
@@ -82,12 +91,17 @@ object ViewBindingAdapter {
         txtStyle: Int?,
         txtBgRes: Int?
     ) {
-        setCompoundDrawablesWithIntrinsicBounds(
-            dsRes ?: 0,
-            dtRes ?: 0,
-            deRes ?: 0,
-            dbRes ?: 0
-        )
+
+        if (dsRes != 0 || dtRes != 0 || deRes != 0 || dbRes != 0) {
+            setCompoundDrawablesWithIntrinsicBounds(dsRes, dtRes, deRes, dbRes)
+        }
+
+        if (null != dsDraw || null != dtDraw || null != deDraw || null != dbDraw) {
+            setCompoundDrawablesWithIntrinsicBounds(dsDraw, dtDraw, deDraw, dbDraw)
+        }
+        if (pS != 0f || pT != 0f || pE != 0f || pB != 0f) {
+            setPadding(pS.toInt(), pT.toInt(), pE.toInt(), pB.toInt())
+        }
         tRes?.let {
             setText(tRes)
         }
@@ -150,6 +164,22 @@ object ViewBindingAdapter {
         }
         imgHeadUrl?.let {
             GlideUtils.loadImage(this, imgHeadUrl, RequestOptions.centerCropTransform())
+        }
+    }
+
+    /**
+     * LinearLayoutCompat 属性
+     */
+    @BindingAdapter("paddingS", "paddingT", "paddingE", "paddingB", requireAll = false)
+    @JvmStatic
+    fun LinearLayoutCompat.setLLCAttr(
+        pS: Float = 0f,
+        pT: Float = 0f,
+        pE: Float = 0f,
+        pB: Float = 0f
+    ) {
+        if (pS != 0f || pT != 0f || pE != 0f || pB != 0f) {
+            setPadding(pS.toInt(), pT.toInt(), pE.toInt(), pB.toInt())
         }
     }
 }

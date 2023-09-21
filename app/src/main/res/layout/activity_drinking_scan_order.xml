@@ -32,13 +32,33 @@
             android:background="@drawable/shape_sffffff_r12"
             android:paddingBottom="16dp">
 
+            <include
+                android:id="@+id/include_drinking_scan_order_device_info"
+                layout="@layout/include_scan_order_device_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:deviceCode='@{vm.deviceDetail.id+""}'
+                app:deviceImei="@{vm.deviceDetail.imei}"
+                app:deviceName="@{vm.deviceDetail.name}"
+                app:deviceType="@{0}"
+                app:hasToggle="@{false}"
+                app:isHide="@{false}"
+                app:shopName="@{vm.deviceDetail.shopName}" />
+
+            <View
+                style="@style/DividingStyle"
+                android:layout_marginHorizontal="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/include_drinking_scan_order_device_info"
+                tools:ignore="MissingConstraints" />
+
             <HorizontalScrollView
                 android:id="@+id/sv_drinking_scan_order_configure"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:visibility="@{(null == vm.deviceDetail.items || 0 == vm.deviceDetail.items.size())?View.GONE:View.VISIBLE}"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/include_drinking_scan_order_device_info">
 
                 <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
                     android:id="@+id/ll_drinking_scan_order_configure"

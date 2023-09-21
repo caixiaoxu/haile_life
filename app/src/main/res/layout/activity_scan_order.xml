@@ -15,20 +15,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         tools:context=".ui.activity.order.ScanOrderActivity">
 
         <com.yunshang.haile_life.ui.view.CommonTitleActionBar
             android:id="@+id/bar_scan_order_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
+            android:background="@drawable/shape_bottom_stroke_dividing_efefef"
             app:layout_constraintTop_toTopOf="parent"
             app:title="@{vm.goodsScan.categoryName}" />
-
-        <View
-            style="@style/DividingStyle"
-            app:layout_constraintTop_toBottomOf="@id/bar_scan_order_title"
-            tools:ignore="MissingConstraints" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_scan_order_hint"
@@ -49,39 +44,61 @@
             app:layout_constraintBottom_toTopOf="@id/cl_scan_recharge_starfish"
             app:layout_constraintTop_toBottomOf="@id/tv_scan_order_hint">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/ll_scan_order_configs"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="12dp"
-                app:divider="@drawable/divder_efefef"
-                app:dividerPadding="12dp"
-                app:showDividers="middle">
+                android:orientation="vertical">
 
                 <include
-                    android:id="@+id/include_scan_order_config"
-                    layout="@layout/item_scan_order_model"
-                    android:visibility="@{(null == vm.deviceDetail || 0 == vm.deviceDetail.items.size())?View.GONE:View.VISIBLE}"
-                    app:desc="@{vm.selectDeviceConfig.feature}"
-                    app:modelTitle="@{vm.modelTitle}" />
-
-                <include
-                    android:id="@+id/include_scan_order_time"
-                    layout="@layout/item_scan_order_model"
-                    android:visibility="@{(null == vm.selectDeviceConfig)?View.GONE:View.VISIBLE}"
-                    app:modelTitle="@{vm.timeTitle}" />
-
-                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
-                    android:id="@+id/ll_scan_order_configs_attr_sku"
+                    android:id="@+id/include_scan_order_device_info"
+                    layout="@layout/include_scan_order_device_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    app:deviceCode='@{vm.deviceDetail.id+""}'
+                    app:deviceImei="@{vm.deviceDetail.imei}"
+                    app:deviceName="@{vm.deviceDetail.name}"
+                    app:hasToggle="@{true}"
+                    app:deviceType="@{vm.isDryer()?1:2}"
+                    app:isHide="@{vm.isHideDeviceInfo()}"
+                    app:shopName="@{vm.deviceDetail.shopName}" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ll_scan_order_configs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:orientation="vertical"
-                    app:visibility="@{vm.needAttach}"
+                    android:paddingHorizontal="12dp"
                     app:divider="@drawable/divder_efefef"
-                    app:itemLayout="@layout/item_scan_order_model"
-                    app:showDividers="middle" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    app:dividerPadding="12dp"
+                    app:showDividers="middle">
+
+                    <include
+                        android:id="@+id/include_scan_order_config"
+                        layout="@layout/item_scan_order_model"
+                        android:visibility="@{(null == vm.deviceDetail || 0 == vm.deviceDetail.items.size())?View.GONE:View.VISIBLE}"
+                        app:desc="@{vm.selectDeviceConfig.feature}"
+                        app:modelTitle="@{vm.modelTitle}" />
+
+                    <include
+                        android:id="@+id/include_scan_order_time"
+                        layout="@layout/item_scan_order_model"
+                        android:visibility="@{(null == vm.selectDeviceConfig)?View.GONE:View.VISIBLE}"
+                        app:modelTitle="@{vm.timeTitle}" />
+
+                    <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                        android:id="@+id/ll_scan_order_configs_attr_sku"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:divider="@drawable/divder_efefef"
+                        app:itemLayout="@layout/item_scan_order_model"
+                        app:showDividers="middle"
+                        app:visibility="@{vm.needAttach}" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -108,6 +125,7 @@
             android:id="@+id/view_scan_order_bottom"
             android:layout_width="match_parent"
             android:layout_height="92dp"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <View
