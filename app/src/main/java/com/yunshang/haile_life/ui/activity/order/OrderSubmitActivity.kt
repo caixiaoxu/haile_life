@@ -355,10 +355,10 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                         mViewModel.balance.value!!.amount,
                         mViewModel.tradePreview.value!!.realPrice
                     ) {
-                        mViewModel.requestPrePay()
+                        mViewModel.requestPrePay(this)
                     }.show(supportFragmentManager)
                 }
-            } else mViewModel.requestPrePay()
+            } else mViewModel.requestPrePay(this)
         }
     }
 

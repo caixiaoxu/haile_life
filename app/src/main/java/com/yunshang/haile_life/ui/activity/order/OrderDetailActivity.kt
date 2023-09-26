@@ -177,7 +177,7 @@ class OrderDetailActivity :
                             detail.orderNo,
                             if (DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)) "" else detail.invalidTime,
                             detail.realPrice,
-                            detail.orderItemList.firstOrNull()?.categoryCode
+                            detail.orderItemList,
                         )
                     )
                 })

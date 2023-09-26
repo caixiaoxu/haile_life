@@ -54,4 +54,10 @@ interface DeviceService {
     @POST("/card/bind/code")
     suspend fun sendBindCode(@Body body: RequestBody): ResponseWrapper<Any>
 
+    /**
+     * 下单前验证设备接口
+     */
+    @POST("/goods/verify")
+    suspend fun verifyGoods(@Body body: RequestBody): ResponseWrapper<GoodsVerify>
+
 }
