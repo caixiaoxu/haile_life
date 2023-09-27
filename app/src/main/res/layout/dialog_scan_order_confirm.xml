@@ -24,7 +24,7 @@
         style="@style/Font_18_black_85_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/scan_order_tips_hint"
+        android:text="@string/friendly_reminder"
         app:layout_constraintBottom_toBottomOf="@id/btn_scan_order_confirm_next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

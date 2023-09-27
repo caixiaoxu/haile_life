@@ -3,11 +3,10 @@ package com.yunshang.haile_life.business.vm
 import android.content.Context
 import android.util.SparseArray
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
-import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.AppPackageUtils
-import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.CommonService
@@ -21,6 +20,7 @@ import com.yunshang.haile_life.ui.fragment.HomeFragment
 import com.yunshang.haile_life.ui.fragment.MineFragment
 import com.yunshang.haile_life.ui.fragment.OrderFragment
 import com.yunshang.haile_life.ui.fragment.StoreFragment
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.string.StringUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -112,6 +112,7 @@ class MainViewModel : BaseViewModel() {
 
     fun requestScanResult(
         code: String,
+        supportFragmentManager: FragmentManager,
         callBack: (scanEntity: GoodsScanEntity, detailEntity: DeviceDetailEntity, appointEntity: GoodsAppointmentEntity?) -> Unit
     ) {
         launch({
@@ -124,7 +125,8 @@ class MainViewModel : BaseViewModel() {
                 // goodsId为空，提示设备末绑定
                 if (null == scan.goodsId || 0 == scan.goodsId) {
                     withContext(Dispatchers.Main) {
-                        SToast.showToast(Constants.APP_CONTEXT, "设备未激活，请换一台设备使用或联系商家")
+                        Hint3SecondDialog.Builder("设备未激活，请换一台设备使用或联系商家")
+                            .build().show(supportFragmentManager)
                     }
                     return@let
                 }
@@ -144,6 +146,10 @@ class MainViewModel : BaseViewModel() {
                             callBack(scan, deviceDetail, appointEntity)
                         }
                     }
+            }
+        },{
+            withContext(Dispatchers.Main) {
+                it.message?.let { msg -> Hint3SecondDialog.Builder(msg).build().show(supportFragmentManager) }
             }
         })
     }
