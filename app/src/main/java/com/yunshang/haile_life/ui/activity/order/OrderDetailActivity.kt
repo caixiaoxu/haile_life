@@ -104,7 +104,7 @@ class OrderDetailActivity :
 
         mViewModel.orderDetail.observe(this) {
             it?.let {
-                mViewModel.getOrderStatusVal(it)
+//                mViewModel.getOrderStatusVal(it)
                 // 是否只有一个sku
                 val isSingle = 1 == it.orderItemList.size
                 // sku 列表

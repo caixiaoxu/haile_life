@@ -1,5 +1,8 @@
 package com.yunshang.haile_life.business.vm
 
+import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.view.View
 import androidx.lifecycle.LiveData
@@ -8,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
+import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
@@ -39,7 +43,6 @@ class OrderDetailViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-
     val formScan: MutableLiveData<Boolean> by lazy {
         MutableLiveData()
     }
@@ -56,6 +59,28 @@ class OrderDetailViewModel : BaseViewModel() {
                 false
             else
                 detail.serviceTelephone.isNotEmpty()
+        } ?: false
+    }
+
+    val showCoerceDevice: LiveData<Boolean> = orderDetail.map {
+        it?.let { detail ->
+            if (true == formScan.value)
+                false
+            else
+                (DeviceCategory.isWashingOrShoes(detail.orderItemList.firstOrNull()?.categoryCode)
+                        || DeviceCategory.isDryer(detail.orderItemList.firstOrNull()?.categoryCode))
+                        && 500 == detail.state
+        } ?: false
+    }
+
+    val showFinishOrder: LiveData<Boolean> = orderDetail.map {
+        it?.let { detail ->
+            if (true == formScan.value)
+                false
+            else
+                (DeviceCategory.isWashingOrShoes(detail.orderItemList.firstOrNull()?.categoryCode)
+                        || DeviceCategory.isDryer(detail.orderItemList.firstOrNull()?.categoryCode))
+                        && 500 == detail.state
         } ?: false
     }
 
@@ -241,9 +266,32 @@ class OrderDetailViewModel : BaseViewModel() {
                             e.printStackTrace()
                         }
                     }
+            } else if (500 == detail.state && DeviceCategory.isWashingOrShoes(detail.orderItemList.firstOrNull()?.categoryCode)
+                || DeviceCategory.isDryer(detail.orderItemList.firstOrNull()?.categoryCode)
+            ) {
+                showRemnantTime(detail)
             } else {
                 orderStatusDesc.postValue(detail.getOrderDetailFinishTimePrompt())
             }
+        }
+    }
+
+    /**
+     * 显示剩余时间
+     */
+    private fun showRemnantTime(detail: OrderEntity) {
+        orderStatusDesc.postValue(detail.calculateRemnantTime())
+        if (500 == detail.state) {
+            DateTimeUtils.formatDateFromString(detail.orderItemList.firstOrNull()?.finishTime)
+                ?.let {
+                    if ((it.time - System.currentTimeMillis()) > 0) {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            showRemnantTime(detail)
+                        }, 1000)
+                    } else {
+                        requestOrderDetailAsync()
+                    }
+                }
         }
     }
 
@@ -271,5 +319,41 @@ class OrderDetailViewModel : BaseViewModel() {
             orderStateTimer?.cancel()
             orderStateTimer = null
         }
+    }
+
+    private var coerceDeviceTime = 0L
+
+    fun coerceDevice(v: View) {
+        orderDetail.value?.let { detail ->
+            var diff = System.currentTimeMillis() - coerceDeviceTime
+            if (diff / 1000 > 2 * 60) {
+                launch({
+                    ApiRepository.dealApiResult(
+                        mOrderRepo.startByOrder(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "orderNo" to detail.orderNo
+                                )
+                            )
+                        )
+                    )
+                    coerceDeviceTime = System.currentTimeMillis()
+                    withContext(Dispatchers.Main) {
+                        showCoerceDevicePrompt(v.context, 2 * 60 * 1000)
+                    }
+                })
+            } else {
+                showCoerceDevicePrompt(v.context, diff)
+            }
+        }
+    }
+
+    private fun showCoerceDevicePrompt(context: Context, diff: Long) {
+        val minute = diff / 1000 / 60
+        val second = diff / 1000 % 60
+        SToast.showToast(
+            context,
+            "强启设备间隔时间还需要${minute}分" + if (second > 0) "${second}秒" else ""
+        )
     }
 }

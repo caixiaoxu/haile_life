@@ -276,6 +276,29 @@
                 android:visibility="@{vm.showContactShop?View.VISIBLE:View.GONE}" />
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_order_detail_coerce_device"
+                style="@style/Font_14_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_s979797_r23"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:onClick="@{vm::coerceDevice}"
+                android:text="@string/coerce_device"
+                app:visibility="@{vm.showCoerceDevice}" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_order_detail_finish_order"
+                style="@style/Font_14_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_s979797_r23"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/finish_order"
+                app:visibility="@{vm.showFinishOrder}" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_cancel"
                 style="@style/Font_14_black_85"
                 android:layout_width="wrap_content"

@@ -190,7 +190,10 @@
     <string name="cancel_order">取消订单</string>
     <string name="delete_order">删除订单</string>
     <string name="contact_shop">联系商家</string>
+    <string name="coerce_device">强启设备</string>
+    <string name="finish_order">结束订单</string>
     <string name="predict_finish_time">预计完成时间</string>
+    <string name="predict_remnant_time">预计剩余时间</string>
     <string name="order_submit_used_time_prompt">请在 %1$s 到店使用</string>
     <string name="no_use_appoint_order">不使用预约单</string>
     <string name="use_appoint_order">使用预约单</string>

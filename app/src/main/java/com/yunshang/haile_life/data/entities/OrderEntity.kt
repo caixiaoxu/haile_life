@@ -110,7 +110,11 @@ data class OrderEntity(
         ) else SpannableString("订单待付款")
         401 -> SpannableString("订单超时关闭，请重新下单～")
         411 -> SpannableString("订单已取消，请重新下单～")
-        500 -> StringUtils.getString(R.string.predict_finish_time).let { prefix ->
+        500 -> if (DeviceCategory.isWashingOrShoes(orderItemList.firstOrNull()?.categoryCode) || DeviceCategory.isDryer(
+                orderItemList.firstOrNull()?.categoryCode
+            )
+        ) calculateRemnantTime()
+        else StringUtils.getString(R.string.predict_finish_time).let { prefix ->
             (DateTimeUtils.formatDateFromString(orderItemList.firstOrNull()?.finishTime)?.let {
                 val calendar = Calendar.getInstance().apply {
                     time = it
@@ -127,7 +131,10 @@ data class OrderEntity(
                         content,
                         arrayOf(
                             ForegroundColorSpan(
-                                ContextCompat.getColor(Constants.APP_CONTEXT, R.color.color_ff630e)
+                                ContextCompat.getColor(
+                                    Constants.APP_CONTEXT,
+                                    R.color.color_ff630e
+                                )
                             )
                         ),
                         prefix.length, content.length
@@ -140,6 +147,29 @@ data class OrderEntity(
         2099 -> SpannableString("订单已退款，祝您生活愉快～")
         else -> SpannableString("祝您生活愉快～")
     }
+
+    fun calculateRemnantTime() =
+        StringUtils.getString(R.string.predict_remnant_time).let { prefix ->
+            (DateTimeUtils.formatDateFromString(orderItemList.firstOrNull()?.finishTime)?.let {
+                val diff = it.time - System.currentTimeMillis()
+                "$prefix ${if (diff <= 0) "即将完成" else diff / 1000 / 60}分钟"
+            } ?: "").let { content ->
+                if (content.isNotEmpty()) {
+                    com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+                        content,
+                        arrayOf(
+                            ForegroundColorSpan(
+                                ContextCompat.getColor(
+                                    Constants.APP_CONTEXT,
+                                    R.color.color_ff630e
+                                )
+                            )
+                        ),
+                        prefix.length, content.length
+                    )
+                } else SpannableString("")
+            }
+        }
 
     fun getOrderDetailAppointTimePrompt(): SpannableString = when (appointmentState) {
         0 -> SpannableString("订单待付款")
