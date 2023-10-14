@@ -303,12 +303,12 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
         // 附近门店
         mBinding.clNearByShop.setOnClickListener {
-            mViewModel.nearStoreEntity.value?.let { nearStore ->
+            mViewModel.nearStoreEntity.value?.id?.let { nearStoreId ->
                 startActivity(Intent(
                     requireContext(),
                     ShopDetailActivity::class.java
                 ).apply {
-                    putExtras(IntentParams.IdParams.pack(nearStore.id))
+                    putExtras(IntentParams.IdParams.pack(nearStoreId))
                 })
             }
         }

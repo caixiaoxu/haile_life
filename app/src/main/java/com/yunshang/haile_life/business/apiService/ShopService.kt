@@ -21,6 +21,9 @@ interface ShopService {
     @POST("/shop/nearShop")
     suspend fun requestNearStores(@Body body: RequestBody): ResponseWrapper<ResponseList<NearStoreEntity>>
 
+    @POST("/position/nearPosition")
+    suspend fun requestNearStorePositions(@Body body: RequestBody): ResponseWrapper<ResponseList<NearStorePositionEntity>>
+
     @GET("/shop/shopDevice")
     suspend fun requestShopDevice(@Query("id") id: Int): ResponseWrapper<MutableList<StoreDeviceEntity>>
 
