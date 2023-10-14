@@ -1,19 +1,26 @@
 package com.yunshang.haile_life.data.entities
 
+import android.text.Spannable
 import android.text.SpannableString
+import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.ImageSpan
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.gson.annotations.SerializedName
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.extend.toDefaultDouble
 import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 import com.yunshang.haile_life.utils.DateTimeUtils
 import java.util.*
+import kotlin.math.ceil
 
 /**
  * Title :
@@ -150,23 +157,36 @@ data class OrderEntity(
 
     fun calculateRemnantTime() =
         StringUtils.getString(R.string.predict_remnant_time).let { prefix ->
-            (DateTimeUtils.formatDateFromString(orderItemList.firstOrNull()?.finishTime)?.let {
+            ((DateTimeUtils.formatDateFromString(orderItemList.firstOrNull()?.finishTime)?.let {
                 val diff = it.time - System.currentTimeMillis()
-                "$prefix ${if (diff <= 0) "即将完成" else diff / 1000 / 60}分钟"
-            } ?: "").let { content ->
+                "$prefix ${if (diff <= 0) "即将完成" else ceil(diff * 1.0 / 1000 / 60).toInt()}分钟"
+            } ?: "") + " 图").let { content ->
                 if (content.isNotEmpty()) {
-                    com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
-                        content,
-                        arrayOf(
+                    SpannableString(content).apply {
+                        setSpan(
                             ForegroundColorSpan(
                                 ContextCompat.getColor(
                                     Constants.APP_CONTEXT,
                                     R.color.color_ff630e
                                 )
-                            )
-                        ),
-                        prefix.length, content.length
-                    )
+                            ), prefix.length, content.length - 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                        setSpan(
+                            object : ClickableSpan() {
+                                override fun onClick(v: View) {
+                                    LiveDataBus.post(BusEvents.PROMPT_POPUP, true)
+                                }
+                            }, content.length - 1,
+                            content.length,
+                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                        setSpan(
+                            ImageSpan(Constants.APP_CONTEXT, R.mipmap.icon_order_desc_prompt),
+                            content.length - 1,
+                            content.length,
+                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                    }
                 } else SpannableString("")
             }
         }
