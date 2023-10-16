@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import kotlin.math.roundToInt
