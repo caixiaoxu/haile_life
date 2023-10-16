@@ -1,11 +1,14 @@
 package com.yunshang.haile_life.ui.activity.shop
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
@@ -15,18 +18,26 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.ShopPositionDetailViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
-import com.yunshang.haile_life.data.entities.StoreDeviceEntity
+import com.yunshang.haile_life.data.entities.ShopPositionDeviceEntity
 import com.yunshang.haile_life.data.entities.TimeMarketVO
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityShopPositionDetailBinding
-import com.yunshang.haile_life.databinding.ItemHomeNearStoresBinding
+import com.yunshang.haile_life.databinding.ItemShopPositionDetailDeviceBinding
 import com.yunshang.haile_life.databinding.ItemShopPositionDetailTagsBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
+import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
+import com.yunshang.haile_life.ui.view.refresh.CustomDividerItemDecoration
 import com.yunshang.haile_life.utils.MapManagerUtils
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 
 
 class ShopPositionDetailActivity :
@@ -48,6 +59,12 @@ class ShopPositionDetailActivity :
             }
         }
 
+    private val mAdapter by lazy {
+        CommonRecyclerAdapter<ItemShopPositionDetailDeviceBinding, ShopPositionDeviceEntity>(
+            R.layout.item_shop_position_detail_device, BR.item
+        ) { _, _, _ -> }
+    }
+
     override fun layoutId(): Int = R.layout.activity_shop_position_detail
 
     override fun backBtn(): View = mBinding.barShopDetailTitle.getBackBtn()
@@ -64,11 +81,17 @@ class ShopPositionDetailActivity :
                 ShopNoticeDialog(it).show(supportFragmentManager)
             }
         }
+
+        mViewModel.curDeviceCategory.observe(this) {
+            mViewModel.requestDeviceList(it) { list ->
+                mAdapter.refreshList(list, true)
+            }
+        }
     }
 
     override fun initIntent() {
         super.initIntent()
-        mViewModel.shopId = IntentParams.IdParams.parseId(intent)
+        mViewModel.positionId = IntentParams.IdParams.parseId(intent)
 
         mViewModel.shopDetail.observe(this) {
             it?.let { detail ->
@@ -83,21 +106,53 @@ class ShopPositionDetailActivity :
                         mS
                 }
 
-                mBinding.llShopDetailDevices.buildChild<ItemHomeNearStoresBinding, StoreDeviceEntity>(
-                    detail.positionDeviceDetailList,
-                    LinearLayoutCompat.LayoutParams(
-                        LinearLayoutCompat.LayoutParams.MATCH_PARENT,
-                        DimensionUtils.dip2px(this@ShopPositionDetailActivity, 34f)
-                    ), 1
-                ) { _, childBinding, data ->
-                    childBinding.name = data.categoryName
-                    childBinding.num = "${data.total}"
-                    childBinding.status = "${data.idleCount}"
-                    childBinding.nameIcon = data.shopIcon()
-                }
-
                 mBinding.tvShopDetailRecharge.visibility =
                     if (detail.rechargeFlag) View.VISIBLE else View.GONE
+
+                if (!detail.positionDeviceDetailList.isNullOrEmpty()) {
+                    mBinding.indicatorShopPositionDetailDeviceCategory.navigator =
+                        CommonNavigator(this@ShopPositionDetailActivity).apply {
+                            adapter = object : CommonNavigatorAdapter() {
+                                override fun getCount(): Int = detail.positionDeviceDetailList.size
+
+                                override fun getTitleView(
+                                    context: Context?,
+                                    index: Int
+                                ): IPagerTitleView {
+                                    return SimplePagerTitleView(context).apply {
+                                        normalColor = ContextCompat.getColor(
+                                            this@ShopPositionDetailActivity,
+                                            R.color.color_black_65
+                                        )
+                                        selectedColor = ContextCompat.getColor(
+                                            this@ShopPositionDetailActivity,
+                                            R.color.color_black_85
+                                        )
+                                        detail.positionDeviceDetailList[index].let { category ->
+                                            text = category.categoryName
+                                            setOnClickListener {
+                                                mViewModel.curDeviceCategory.value = category
+                                                onPageSelected(index)
+                                                notifyDataSetChanged()
+                                            }
+                                        }
+                                    }
+                                }
+
+                                override fun getIndicator(context: Context?): IPagerIndicator {
+                                    return LinePagerIndicator(context).apply {
+                                        mode = LinePagerIndicator.MODE_WRAP_CONTENT
+                                        setColors(
+                                            ContextCompat.getColor(
+                                                this@ShopPositionDetailActivity,
+                                                R.color.colorPrimary
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                }
             }
         }
     }
@@ -181,9 +236,23 @@ class ShopPositionDetailActivity :
                     this@ShopPositionDetailActivity,
                     RechargeStarfishActivity::class.java
                 ).apply {
-                    putExtras(IntentParams.RechargeStarfishParams.pack(mViewModel.shopId))
+                    putExtras(IntentParams.RechargeStarfishParams.pack(mViewModel.positionId))
                 })
         }
+
+        mBinding.rvShopPositionDetailDevices.layoutManager = LinearLayoutManager(this)
+        ContextCompat.getDrawable(this, R.drawable.divide_size12)?.let {
+            mBinding.rvShopPositionDetailDevices.addItemDecoration(
+                CustomDividerItemDecoration(
+                    this@ShopPositionDetailActivity,
+                    CustomDividerItemDecoration.VERTICAL
+                ).apply {
+                    setDrawable(it)
+                }
+            )
+        }
+        mBinding.rvShopPositionDetailDevices.adapter = mAdapter
+
         mBinding.btnShopDetailAppoint.setOnClickListener {
             if (!checkLogin()) {
                 return@setOnClickListener

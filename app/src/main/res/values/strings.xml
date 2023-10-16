@@ -9,10 +9,12 @@
     <string name="cancel">取消</string>
     <string name="i_know">知道了</string>
     <string name="more">更多</string>
+    <string name="load_more">加载更多</string>
     <string name="view_more">查看更多</string>
     <string name="device">设备</string>
     <string name="num">数量</string>
     <string name="idle">空闲</string>
+    <string name="occupy">占用</string>
     <string name="distance">距离</string>
     <string name="you">您</string>
     <string name="selected">选好了</string>
@@ -101,6 +103,7 @@
     <string name="select_work_model">请选择%1$s功能</string>
     <string name="select_work_time">请选择%1$s时长</string>
     <string name="shop">门店</string>
+    <string name="device_idle_num_prompt">设备（空闲%1$d/共%2$d）</string>
     <string name="device_code">设备编号</string>
     <string name="imei">IMEI</string>
     <string name="use_time">使用时长</string>

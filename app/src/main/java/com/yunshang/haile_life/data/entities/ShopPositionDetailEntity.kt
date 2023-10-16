@@ -33,7 +33,7 @@ data class ShopPositionDetailEntity(
     val name: String,
     val rechargeFlag: Boolean,
     val serviceTelephone: String,
-    val positionDeviceDetailList: List<StoreDeviceEntity>,
+    val positionDeviceDetailList: List<StoreDeviceEntity>?,
     val state: Int,
     val timeMarketVOList: List<TimeMarketVO>,
     val workTime: String,

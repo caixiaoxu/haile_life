@@ -18,7 +18,7 @@ import androidx.databinding.ViewDataBinding
 open class CommonRecyclerAdapter<T : ViewDataBinding, D>(
     private val layoutId: Int,
     private val br: Int,
-    private val onItemBind: ((mItemBinding: T?, pos: Int, item: D) -> Unit)?,
+    private val onItemBind: ((mItemBinding: T?, pos: Int, item: D) -> Unit),
 ) : BaseRecyclerAdapter<D>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

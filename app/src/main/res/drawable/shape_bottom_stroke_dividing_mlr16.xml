@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item> <!--设置底部有边框-->
+        <shape>
+            <solid android:color="@color/white" />  <!-- 主体背景颜色 -->
+        </shape>
+    </item>
+    <item
+        android:left="16dp"
+        android:right="16dp"> <!-- 格子间的连接处颜色 -->
+        <shape>
+            <solid android:color="@color/dividing_line_color" />
+        </shape>
+    </item>
+    <item android:bottom="0.5dp"> <!--设置底部有边框-->
+        <shape>
+            <solid android:color="@color/white" />  <!-- 主体背景颜色 -->
+        </shape>
+    </item>
+</layer-list>
