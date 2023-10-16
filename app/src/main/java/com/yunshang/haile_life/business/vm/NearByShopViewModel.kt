@@ -7,6 +7,7 @@ import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.NearStoreEntity
+import com.yunshang.haile_life.data.entities.NearStorePositionEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.rule.IndicatorEntity
 import kotlinx.coroutines.Dispatchers
@@ -49,13 +50,13 @@ class NearByShopViewModel : BaseViewModel() {
     fun requestNearByStores(
         page: Int,
         pageSize: Int,
-        callBack: (responseList: ResponseList<out NearStoreEntity>?) -> Unit
+        callBack: (responseList: ResponseList<out NearStorePositionEntity>?) -> Unit
     ) {
         if (null == curCategoryCode.value || null == location) return
 
         launch({
             ApiRepository.dealApiResult(
-                mShopRepo.requestNearStores(
+                mShopRepo.requestNearStorePositions(
                     ApiRepository.createRequestBody(
                         hashMapOf(
                             "page" to page,

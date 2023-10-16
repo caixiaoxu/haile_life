@@ -148,6 +148,7 @@
     <string name="actually_paid">小记</string>
     <string name="order_discount_coupon">优惠红包</string>
     <string name="limited_time_offer">限时优惠</string>
+    <string name="limited_time_offer_prompt">限时%1$s折</string>
     <string name="shop_coupon">商家优惠红包</string>
     <string name="platform_coupon">平台优惠红包</string>
     <string name="starfish">海星</string>
@@ -200,7 +201,7 @@
     <string name="appoint_order_use_prompt">请开启舱门，放入衣物</string>
     <string name="appoint_order_use_start_prompt">已放入衣物，启动设备</string>
 
-    <string name="shop_detail">门店详情</string>
+    <string name="shop_detail">营业点详情</string>
     <string name="business_time">营业时间</string>
     <string name="starfish_recharge">海星充值</string>
     <string name="starfish_detail">海星明细</string>
@@ -221,7 +222,7 @@
     <string name="recharge">充值</string>
     <string name="recharge_agreement">去支付即代表您同意《海星购买协议》</string>
     <string name="reward_num">送%1$s海星</string>
-    <string name="recharge_shop_title">附近可充值门店</string>
+    <string name="recharge_shop_title">附近可充值点位</string>
     <string name="total">合计</string>
 
     <string name="empty_content">暂无内容信息</string>
@@ -247,6 +248,8 @@
     <string name="oncode">条形码</string>
 
     <string name="shop_info">商户信息</string>
+
+    <string name="navigation">导航</string>
 
     <string name="card_manager">卡管理</string>
     <string name="consumption_order">消费订单</string>

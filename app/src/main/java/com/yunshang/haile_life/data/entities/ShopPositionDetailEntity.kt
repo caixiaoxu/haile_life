@@ -24,7 +24,7 @@ import java.util.Calendar
  * <author> <time> <version> <desc>
  * 作者姓名 修改时间 版本号 描述
  */
-data class ShopDetailEntity(
+data class ShopPositionDetailEntity(
     val address: String,
     val appointment: Boolean,
     val area: String,
@@ -33,11 +33,16 @@ data class ShopDetailEntity(
     val name: String,
     val rechargeFlag: Boolean,
     val serviceTelephone: String,
-    val shopDeviceDetailList: List<StoreDeviceEntity>,
+    val positionDeviceDetailList: List<StoreDeviceEntity>,
     val state: Int,
     val timeMarketVOList: List<TimeMarketVO>,
     val workTime: String,
     val workTimeStr: String,
+
+    val gpsList: List<Gps>? = null,
+    val lat: Double? = null,
+    val lng: Double? = null,
+    val shopId: Int? = null,
 ) : IMultiTypeEntity {
 
     fun formatDistance(): String =
@@ -69,6 +74,8 @@ data class ShopDetailEntity(
         }
 
     fun getBusinessTimeVal(): String {
+        if (2 == state) return "休息中"
+
         var weekNum = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
         if (weekNum == 0) {
             weekNum = 7
@@ -80,9 +87,11 @@ data class ShopDetailEntity(
                 sb.append(" ${hour.workTime}")
             }
         }
-        return "${StringUtils.getString(R.string.business_time)} " + if (sb.isNotEmpty()) sb.substring(
-            1
-        ) else ""
+        return if (sb.isNotEmpty()) "${StringUtils.getString(R.string.business_time)} ${
+            sb.substring(
+                1
+            )
+        }" else "休息中"
     }
 
     fun getAddressVal(): SpannableString {
@@ -112,55 +121,8 @@ data class ShopDetailEntity(
     )
 }
 
-data class BusinessHourEntity(
-    var _weekDays: List<ActiveDayParam> = listOf(),
-    var workTime: String = ""
-) : BaseObservable() {
-
-    val hourWeekVal: String
-        get() = if (_weekDays.isEmpty()) "" else {
-            val first = _weekDays.first()
-            val last = _weekDays.last()
-            val temp = last.id - first.id
-            if (_weekDays.size == (temp + 1) && temp > 2) {
-                "${first.name}至${last.name}"
-            } else {
-                val sb = StringBuilder()
-                _weekDays.forEachIndexed { index, activeDayParam ->
-                    if (index % 2 != 0) {
-                        sb.append("${activeDayParam.name}\n")
-                    } else {
-                        sb.append("${activeDayParam.name}、")
-                    }
-                }
-                if (sb.isNotEmpty()) {
-                    sb.substring(0, sb.length - 1)
-                } else ""
-            }
-        }
-
-    fun isEmpty(): Boolean = _weekDays.isEmpty() && workTime.isEmpty()
-
-    fun formatData(days: List<Int>, time: String) {
-        _weekDays = ShopParam.businessDay.filter { item -> item.id in days }
-        workTime = time
-    }
-}
-
-data class BusinessHourParams(
-    val weekDays: List<Int>,
-    val workTime: String
-)
-
-data class TimeMarketVO(
-    val categoryList: List<Category>,
-    val discount: String
-)
-
-data class ActiveDayParam(val name: String, val id: Int)
-
-data class Category(
-    val categoryCode: String,
-    val categoryId: Int,
-    val categoryName: String
+data class Gps(
+    val lat: Int? = null,
+    val lng: Int? = null,
+    val type: Int? = null
 )

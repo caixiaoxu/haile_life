@@ -13,7 +13,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.NearByShopViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
-import com.yunshang.haile_life.data.entities.NearStoreEntity
+import com.yunshang.haile_life.data.entities.NearStorePositionEntity
 import com.yunshang.haile_life.databinding.ActivityNearByShopBinding
 import com.yunshang.haile_life.databinding.ItemNearByShopBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
@@ -31,14 +31,18 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
 ) {
 
     private val mAdapter by lazy {
-        CommonRecyclerAdapter<ItemNearByShopBinding, NearStoreEntity>(
+        CommonRecyclerAdapter<ItemNearByShopBinding, NearStorePositionEntity>(
             R.layout.item_near_by_shop, BR.item
         ) { mItemBinding, _, item ->
             mItemBinding?.root?.setOnClickListener {
-                startActivity(Intent(this@NearByShopActivity, ShopDetailActivity::class.java)
-                    .apply {
-                        putExtras(IntentParams.IdParams.pack(item.id))
+                item.id?.let { positionId ->
+                    startActivity(Intent(
+                        this@NearByShopActivity,
+                        ShopPositionDetailActivity::class.java
+                    ).apply {
+                        putExtras(IntentParams.IdParams.pack(positionId))
                     })
+                }
             }
         }
     }
@@ -136,12 +140,12 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
         }
         mBinding.includeIndicatorList.rvIndicatorListList.adapter = mAdapter
         mBinding.includeIndicatorList.rvIndicatorListList.requestData =
-            object : CommonRefreshRecyclerView.OnRequestDataListener<NearStoreEntity>() {
+            object : CommonRefreshRecyclerView.OnRequestDataListener<NearStorePositionEntity>() {
                 override fun requestData(
                     isRefresh: Boolean,
                     page: Int,
                     pageSize: Int,
-                    callBack: (responseList: ResponseList<out NearStoreEntity>?) -> Unit
+                    callBack: (responseList: ResponseList<out NearStorePositionEntity>?) -> Unit
                 ) {
                     mViewModel.requestNearByStores(page, pageSize, callBack)
                 }

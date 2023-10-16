@@ -30,6 +30,9 @@ interface ShopService {
     @GET("/shop/shopDetail")
     suspend fun requestShopDetail(@Query("id") id: Int): ResponseWrapper<ShopDetailEntity>
 
+    @GET("/position/positionDetail")
+    suspend fun requestShopPositionDetail(@Query("id") id: Int): ResponseWrapper<ShopPositionDetailEntity>
+
     @POST("/tokenCoin/shop/goods")
     suspend fun requestShopRechargeList(@Body body: RequestBody): ResponseWrapper<ShopStarfishListEntity>
 

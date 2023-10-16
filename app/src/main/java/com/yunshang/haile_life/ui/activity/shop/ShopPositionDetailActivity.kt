@@ -8,23 +8,31 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.business.vm.ShopDetailViewModel
+import com.yunshang.haile_life.business.vm.ShopPositionDetailViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
+import com.yunshang.haile_life.data.entities.TimeMarketVO
 import com.yunshang.haile_life.data.model.SPRepository
-import com.yunshang.haile_life.databinding.ActivityShopDetailBinding
+import com.yunshang.haile_life.databinding.ActivityShopPositionDetailBinding
 import com.yunshang.haile_life.databinding.ItemHomeNearStoresBinding
+import com.yunshang.haile_life.databinding.ItemShopPositionDetailTagsBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
+import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
+import com.yunshang.haile_life.utils.MapManagerUtils
 
-class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopDetailViewModel>(
-    ShopDetailViewModel::class.java, BR.vm
-) {
+
+class ShopPositionDetailActivity :
+    BaseBusinessActivity<ActivityShopPositionDetailBinding, ShopPositionDetailViewModel>(
+        ShopPositionDetailViewModel::class.java, BR.vm
+    ) {
 
     // 拨打电话权限
     private val requestPermission =
@@ -40,12 +48,16 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
             }
         }
 
-    override fun layoutId(): Int = R.layout.activity_shop_detail
+    override fun layoutId(): Int = R.layout.activity_shop_position_detail
 
     override fun backBtn(): View = mBinding.barShopDetailTitle.getBackBtn()
 
     override fun initEvent() {
         super.initEvent()
+        mSharedViewModel.mSharedLocation.observe(this) {
+            mViewModel.location = it
+            mViewModel.requestData()
+        }
 
         mViewModel.shopNotice.observe(this) {
             if (!it.isNullOrEmpty()) {
@@ -60,11 +72,22 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
 
         mViewModel.shopDetail.observe(this) {
             it?.let { detail ->
+                val mS = DimensionUtils.dip2px(this@ShopPositionDetailActivity, 4f)
+                mBinding.llShopPositionDetailTags.buildChild<ItemShopPositionDetailTagsBinding, TimeMarketVO>(
+                    it.timeMarketVOList,
+                    start = 1
+                ) { _, childBinding, data ->
+                    childBinding.tvShopPositionDetailTag.text =
+                        StringUtils.getString(R.string.limited_time_offer_prompt, data.discount)
+                    (childBinding.tvShopPositionDetailTag.layoutParams as? LinearLayoutCompat.LayoutParams)?.marginStart =
+                        mS
+                }
+
                 mBinding.llShopDetailDevices.buildChild<ItemHomeNearStoresBinding, StoreDeviceEntity>(
-                    detail.shopDeviceDetailList,
+                    detail.positionDeviceDetailList,
                     LinearLayoutCompat.LayoutParams(
                         LinearLayoutCompat.LayoutParams.MATCH_PARENT,
-                        DimensionUtils.dip2px(this@ShopDetailActivity, 34f)
+                        DimensionUtils.dip2px(this@ShopPositionDetailActivity, 34f)
                     ), 1
                 ) { _, childBinding, data ->
                     childBinding.name = data.categoryName
@@ -82,12 +105,63 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
     override fun initView() {
         window.statusBarColor = Color.WHITE
 
+        val list = listOf(
+            SearchSelectParam(
+                0,
+                "腾讯地图${if (MapManagerUtils.checkTencentMapEInstall(this)) "" else "（安装）"}"
+            ),
+            SearchSelectParam(
+                1,
+                "高德地图${if (MapManagerUtils.checkGeoMapEInstall(this)) "" else "（安装）"}"
+            ),
+            SearchSelectParam(
+                2,
+                "百度地图${if (MapManagerUtils.checkBaiduMapEInstall(this)) "" else "（安装）"}"
+            ),
+        )
+
+        //导航
+        mBinding.tvShopPositionDetailNavigation.setOnClickListener {
+            mViewModel.shopDetail.value?.let { detail ->
+                if (null != detail.lat && null != detail.lng) {
+                    CommonBottomSheetDialog.Builder("", list).apply {
+                        selectModel = 1
+                        onValueSureListener = object :
+                            CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
+                            override fun onValue(data: SearchSelectParam?) {
+                                when (data?.id) {
+                                    0 -> MapManagerUtils.goToTencentMap(
+                                        this@ShopPositionDetailActivity,
+                                        detail.lat,
+                                        detail.lng,
+                                        detail.name
+                                    )
+                                    1 -> MapManagerUtils.goToGeoMap(
+                                        this@ShopPositionDetailActivity,
+                                        detail.lat,
+                                        detail.lng,
+                                        detail.name
+                                    )
+                                    2 -> MapManagerUtils.goToBaiduMap(
+                                        this@ShopPositionDetailActivity,
+                                        detail.lat,
+                                        detail.lng,
+                                        detail.name
+                                    )
+                                }
+                            }
+                        }
+                    }.build().show(supportFragmentManager)
+                }
+            }
+        }
+
         // 营业时间
         mBinding.tvShopDetailWorkTime.setOnClickListener {
             mViewModel.shopDetail.value?.let { detail ->
                 startActivity(
                     Intent(
-                        this@ShopDetailActivity,
+                        this@ShopPositionDetailActivity,
                         ShopBusinessWorkTimeActivity::class.java
                     ).apply {
                         putExtras(IntentParams.ShopWorkTimeParams.pack(detail.workTimeArr()))
@@ -104,7 +178,7 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
             }
             startActivity(
                 Intent(
-                    this@ShopDetailActivity,
+                    this@ShopPositionDetailActivity,
                     RechargeStarfishActivity::class.java
                 ).apply {
                     putExtras(IntentParams.RechargeStarfishParams.pack(mViewModel.shopId))
@@ -129,12 +203,11 @@ class ShopDetailActivity : BaseBusinessActivity<ActivityShopDetailBinding, ShopD
      */
     private fun checkLogin(): Boolean =
         if (!SPRepository.isLogin()) {
-            startActivity(Intent(this@ShopDetailActivity, LoginActivity::class.java))
+            startActivity(Intent(this@ShopPositionDetailActivity, LoginActivity::class.java))
             false
         } else true
 
 
     override fun initData() {
-        mViewModel.requestData()
     }
 }

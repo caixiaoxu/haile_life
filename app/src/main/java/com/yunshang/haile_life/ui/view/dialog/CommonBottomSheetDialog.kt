@@ -167,7 +167,7 @@ class CommonBottomSheetDialog<D : ICommonBottomItemEntity> private constructor(p
         // 选择监听
         var onValueSureListener: OnValueSureListener<D>? = null
 
-        // 是否可不选
+        // 是否必选
         var mustSelect = true
 
         // 已选择的数据

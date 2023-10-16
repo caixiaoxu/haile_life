@@ -18,6 +18,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
 
     <queries>
         <package android:name="com.tencent.mm" />
@@ -109,7 +112,7 @@
             android:name=".ui.activity.shop.RechargeStarfishActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.shop.ShopDetailActivity"
+            android:name=".ui.activity.shop.ShopPositionDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.shop.NearByShopActivity"
