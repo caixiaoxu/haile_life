@@ -255,6 +255,14 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Water))
                             })
+                    R.mipmap.icon_home_shower ->
+                        startActivity(
+                            Intent(
+                                requireContext(),
+                                DeviceNavigationActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Shower))
+                            })
                     else -> SToast.showToast(requireContext(), R.string.coming_soon)
                 }
             }

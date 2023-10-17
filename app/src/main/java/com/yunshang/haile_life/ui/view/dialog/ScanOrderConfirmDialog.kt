@@ -63,6 +63,8 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
 
         val isDryer = DeviceCategory.isDryerOrHair(builder.deviceCategoryCode)
 
+//        mBinding.tvScanOrderConfirmPrompt.visibility(DeviceCategory.isWashingOrShoes())
+
         val color = ColorStateList.valueOf(
             ContextCompat.getColor(
                 requireContext(),

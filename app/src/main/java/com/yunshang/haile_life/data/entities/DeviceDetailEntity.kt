@@ -51,8 +51,13 @@ data class DeviceDetailEntity(
     val attachItems: List<DeviceDetailItemEntity>,
     val isShowDispenser: Boolean,
     val hideDispenserTips: String,
-    val advancedSettingVOS: List<AdvancedSettingVOS>
+    val advancedSettingVOS: List<AdvancedSettingVOS>,
+    val positionId: Int? = null,
+    val positionName: String? = null
 ) {
+    val shopPositionName: String
+        get() = shopName +  if (positionName.isNullOrEmpty()) "" else ("-$positionName")
+
     fun drinkingOverTime() =
         advancedSettingVOS.find { item -> item.modelFunctionCode == "030D" }?.settingValue?.firstOrNull()
 

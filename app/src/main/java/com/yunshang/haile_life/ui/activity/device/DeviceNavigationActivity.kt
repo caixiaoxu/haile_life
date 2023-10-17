@@ -6,7 +6,9 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import com.king.camera.scan.CameraScan
 import com.lsy.framelib.async.LiveDataBus
+import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.ScreenUtils
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.youth.banner.indicator.CircleIndicator
 import com.yunshang.haile_life.BR
@@ -111,34 +113,30 @@ class DeviceNavigationActivity :
                                         )
                                     })
                             } else {
-                                if (DeviceCategory.isDrinking(detail.categoryCode))
-                                    startActivity(
+                                startActivity(
+                                    if (DeviceCategory.isDrinkingOrShower(detail.categoryCode))
                                         Intent(
                                             this@DeviceNavigationActivity,
                                             DrinkingScanOrderActivity::class.java
                                         ).apply {
                                             putExtras(
                                                 IntentParams.ScanOrderParams.pack(
-                                                    code,
-                                                    scan,
-                                                    detail
+                                                    code, scan, detail
                                                 )
                                             )
-                                        })
-                                else
-                                    startActivity(
+                                        }
+                                    else
                                         Intent(
                                             this@DeviceNavigationActivity,
                                             ScanOrderActivity::class.java
                                         ).apply {
                                             putExtras(
                                                 IntentParams.ScanOrderParams.pack(
-                                                    code,
-                                                    scan,
-                                                    detail
+                                                    code, scan, detail
                                                 )
                                             )
                                         })
+
                             }
                         }
                     } ?: run {
@@ -180,6 +178,11 @@ class DeviceNavigationActivity :
 
     override fun backBtn(): View = mBinding.barDeviceNavigationTitle.getBackBtn()
 
+    override fun initIntent() {
+        super.initIntent()
+        mViewModel.categoryCode = IntentParams.DeviceParams.parseCategoryCode(intent)
+    }
+
     override fun initEvent() {
         super.initEvent()
 
@@ -207,6 +210,9 @@ class DeviceNavigationActivity :
     override fun initView() {
         window.statusBarColor = Color.WHITE
 
+        val itemWH = (ScreenUtils.screenWidth - 2 * DimensionUtils.dip2px(this, 12f)) / 4
+        mBinding.itemWH = itemWH
+
         mBinding.btnDeviceNavigationScan.setOnClickListener {
             if (checkLogin())
                 requestMultiplePermission.launch(
@@ -225,12 +231,20 @@ class DeviceNavigationActivity :
             }
         }
 
+        mBinding.btnDeviceNavigationControlCode.setOnClickListener {
+            if (checkLogin())
+                startActivity(
+                    Intent(this@DeviceNavigationActivity, WaterControlCodeActivity::class.java)
+                )
+        }
+        mBinding.btnDeviceNavigationAppoint.setOnClickListener {
+            SToast.showToast(this@DeviceNavigationActivity, R.string.coming_soon)
+        }
+
         mBinding.btnDeviceNavigationOrder.setOnClickListener {
             if (checkLogin())
                 startActivity(
-                    Intent(this@DeviceNavigationActivity, OrderListActivity::class.java).apply {
-                        putExtras(IntentParams.OrderListParams.pack())
-                    }
+                    Intent(this@DeviceNavigationActivity, OrderListActivity::class.java)
                 )
         }
 

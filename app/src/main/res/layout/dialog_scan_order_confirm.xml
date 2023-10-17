@@ -42,6 +42,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_scan_order_confirm_prompt"
+        android:layout_width="match_parent"
+        android:background="@color/color_e5fafc"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:visibility="gone"
+        style="@style/font_12_04d1e5"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/btn_scan_order_confirm_next"
+        android:text="@string/scan_order_confirm_prompt"/>
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_scan_order_confirm_main"
         android:layout_width="wrap_content"
@@ -49,7 +62,7 @@
         android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_scan_order_confirm_next"
+        app:layout_constraintTop_toBottomOf="@id/tv_scan_order_confirm_prompt"
         tools:src="@mipmap/icon_scan_order_tips_main" />
 
     <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout

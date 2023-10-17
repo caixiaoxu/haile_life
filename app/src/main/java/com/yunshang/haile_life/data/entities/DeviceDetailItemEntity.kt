@@ -45,19 +45,21 @@ data class DeviceDetailItemEntity(
     val extAttrDto: ExtAttrDto
 ) : IOrderConfigEntity {
 
-    val drinkingTitle: SpannableString
-        get() = com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
-            "$name ${
-                extAttrDto.items.firstOrNull()?.let { it.unitPrice + "元/" + it.getTitle("") } ?: ""
-            }",
+    fun drinkingTitle(isShower: Boolean): SpannableString = "${
+        extAttrDto.items.firstOrNull()?.let { it.unitPrice + "元/" + it.getTitle("") } ?: ""
+    }".let { price ->
+        val content = price + "\n${if (isShower) "单价" else name}"
+        com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+            content,
             arrayOf(
                 AbsoluteSizeSpan(DimensionUtils.sp2px(14f)),
                 StyleSpan(Typeface.NORMAL)
-            ), 0, name.length
+            ), 0, price.length
         )
+    }
 
-    val drinkingIcon: Int
-        get() = if (1 == extAttrDto.items.firstOrNull()?.goodsType) R.mipmap.icon_drinking_configure_normal else R.mipmap.icon_drinking_configure_hot
+    fun drinkingIcon(isShower: Boolean): Int =
+        if (isShower) R.mipmap.icon_shower_configure else if (1 == extAttrDto.items.firstOrNull()?.goodsType) R.mipmap.icon_drinking_configure_normal else R.mipmap.icon_drinking_configure_hot
 
     override fun getTitle(code: String?): String =
         if (DeviceCategory.isHair(code) && 0 == amount) "使用中..." else name

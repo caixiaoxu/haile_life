@@ -60,4 +60,22 @@ interface DeviceService {
     @POST("/goods/verify")
     suspend fun verifyGoods(@Body body: RequestBody): ResponseWrapper<GoodsVerify>
 
+    /**
+     * 水控码生成带状态接口
+     */
+    @POST("/waterCode/WaterCodeGenerateWithState")
+    suspend fun generateWaterCode(@Body body: RequestBody): ResponseWrapper<WaterControlCodeEntity>
+
+    /**
+     * 修改水控码状态接口
+     */
+    @POST("/waterCode/updateWaterCodeState")
+    suspend fun updateWaterCode(@Body body: RequestBody): ResponseWrapper<Any>
+
+    /**
+     * 修改水控码状态接口
+     */
+    @GET("/waterCode/getWaterCodeByUserId")
+    suspend fun requestWaterCode(): ResponseWrapper<WaterControlCodeEntity>
+
 }

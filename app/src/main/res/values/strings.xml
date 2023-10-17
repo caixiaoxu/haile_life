@@ -143,6 +143,7 @@
 
     <string name="next_step">下一步</string>
     <string name="friendly_reminder">温馨提示</string>
+    <string name="scan_order_confirm_prompt">在提交订单后，按洗衣机上的桶自洁按键，会导致设备不能正常使用。若需要桶自洁，请在提交订单前操作。</string>
     <string name="go_buy">去购买</string>
     <string name="no_prompt">不再提示</string>
     <string name="submit_order">提交订单</string>
@@ -255,6 +256,14 @@
     <string name="navigation">导航</string>
 
     <string name="card_manager">卡管理</string>
+    <string name="water_control_code">水控码</string>
+    <string name="water_control_code_prompt">水控码前四位为您的手机尾号，水控码后四位会随机生成</string>
+    <string name="generate_water_control_code">生成水控码</string>
+    <string name="update_water_control_code">修改水控码</string>
+    <string name="close_water_control_code">关闭水控码功能</string>
+    <string name="open_water_control_code">开启水控码功能</string>
+    <string name="water_control_code_reminder">您的手机尾号为“XXXX”，系统会随机生成四位数后缀如“1123”，则水控码为“88881123”，使用该水控码，在平台上任意支持水控码的水控设备上都可取水</string>
+    <string name="appointment">预约</string>
     <string name="consumption_order">消费订单</string>
     <string name="faq">常见问题</string>
     <string name="drinking_device_name">您要使用的是%1$s</string>

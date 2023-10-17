@@ -233,7 +233,7 @@ data class OrderEntity(
         }
 
     fun getGoodInfo(): String = if (orderItemList.isNotEmpty()) orderItemList.first()
-        .run { "${shopName}\n${area}${address}\n${goodsName}" } else ""
+        .run { "${shopName}${if (positionName.isNotEmpty()) "\npositionName" else ""}\n${area}${address}\n${goodsName}" } else ""
 
     fun getOrderDeviceUnit(): String =
         if (orderItemList.isNotEmpty()) "${orderItemList.first().unit}分钟" else ""
@@ -286,7 +286,9 @@ data class OrderItem(
     val originUnitPrice: String,
     val realUnitPrice: String,
     val volumeVisibleState: Int,
-    val goodsItemInfoDto: GoodsItemInfoDto?
+    val goodsItemInfoDto: GoodsItemInfoDto?,
+    val positionId: Int,
+    val positionName: String,
 ) {
 
     val goodsItemInfo: GoodsItemInfoEntity?

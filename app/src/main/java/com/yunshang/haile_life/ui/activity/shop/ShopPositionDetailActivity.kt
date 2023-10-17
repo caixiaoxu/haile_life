@@ -231,13 +231,15 @@ class ShopPositionDetailActivity :
             if (!checkLogin()) {
                 return@setOnClickListener
             }
-            startActivity(
-                Intent(
-                    this@ShopPositionDetailActivity,
-                    RechargeStarfishActivity::class.java
-                ).apply {
-                    putExtras(IntentParams.RechargeStarfishParams.pack(mViewModel.positionId))
-                })
+            mViewModel.shopDetail.value?.shopId?.let {
+                startActivity(
+                    Intent(
+                        this@ShopPositionDetailActivity,
+                        RechargeStarfishActivity::class.java
+                    ).apply {
+                        putExtras(IntentParams.RechargeStarfishParams.pack(it))
+                    })
+            }
         }
 
         mBinding.rvShopPositionDetailDevices.layoutManager = LinearLayoutManager(this)
@@ -257,10 +259,10 @@ class ShopPositionDetailActivity :
             if (!checkLogin()) {
                 return@setOnClickListener
             }
-            mViewModel.shopDetail.value?.let {
+            mViewModel.shopDetail.value?.shopId?.let {
                 startActivity(Intent(this, AppointmentSubmitActivity::class.java).apply {
                     putExtras(
-                        IntentParams.ShopParams.pack(it.id)
+                        IntentParams.ShopParams.pack(it)
                     )
                 })
             }
