@@ -57,10 +57,15 @@ class ShopPositionDetailViewModel : BaseViewModel() {
             ApiRepository.dealApiResult(
                 mShopRepo.requestShopPositionDetail(params)
             )?.let {
-                shopDetail.postValue(it)
-                it.positionDeviceDetailList?.firstOrNull()?.let { first ->
-                    curDeviceCategory.postValue(first)
-                }
+                ApiRepository.dealApiResult(mShopRepo.requestPositionDeviceFloorList(positionId))
+                    ?.let { floors ->
+                        it.refreshFloorList(floors)
+                        shopDetail.postValue(it)
+
+                        it.positionDeviceDetailList?.firstOrNull()?.let { first ->
+                            curDeviceCategory.postValue(first)
+                        }
+                    }
                 ApiRepository.dealApiResult(
                     mShopRepo.requestShopNotice(
                         ApiRepository.createRequestBody(
@@ -77,32 +82,34 @@ class ShopPositionDetailViewModel : BaseViewModel() {
     }
 
     fun requestDeviceList(
+        refresh: Boolean,
         storeDevice: StoreDeviceEntity?,
         callback: (list: MutableList<ShopPositionDeviceEntity>) -> Unit
     ) {
         if (null == storeDevice) return
-        if (storeDevice.deviceList.isEmpty()) {
-            launch({
-                ApiRepository.dealApiResult(
-                    mShopRepo.requestPositionDeviceList(
-                        ApiRepository.createRequestBody(
-                            hashMapOf(
-                                "page" to storeDevice.page,
-                                "pageSize" to 20,
-                                "positionId" to positionId,
-                                "categoryCode" to storeDevice.categoryCode
-                            )
+        launch({
+            if (refresh) {
+                storeDevice.page = 1
+            }
+
+            ApiRepository.dealApiResult(
+                mShopRepo.requestPositionDeviceList(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "page" to storeDevice.page,
+                            "pageSize" to 20,
+                            "positionId" to positionId,
+                            "categoryCode" to storeDevice.categoryCode,
+                            "floorCode" to storeDevice.selectFloor?.value
                         )
                     )
-                )?.let {
-                    storeDevice.refreshDeviceList(it.items)
-                    withContext(Dispatchers.Main){
-                        callback(storeDevice.deviceList)
-                    }
+                )
+            )?.let {
+                storeDevice.refreshDeviceList(refresh, it.items, it.total)
+                withContext(Dispatchers.Main) {
+                    callback(storeDevice.deviceList)
                 }
-            })
-        } else {
-            callback(storeDevice.deviceList)
-        }
+            }
+        })
     }
 }

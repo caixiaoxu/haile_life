@@ -166,9 +166,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:visibility="@{null != vm.shopDetail.positionDeviceDetailList &amp;&amp; vm.shopDetail.positionDeviceDetailList.size() > 0}"
                     android:background="@color/white"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    app:visibility="@{null != vm.shopDetail.positionDeviceDetailList &amp;&amp; vm.shopDetail.positionDeviceDetailList.size() > 0}">
 
                     <net.lucode.hackware.magicindicator.MagicIndicator
                         android:id="@+id/indicator_shop_position_detail_device_category"
@@ -186,14 +186,35 @@
                         android:text="@{@string/device_idle_num_prompt(vm.curDeviceCategory.idleCount,vm.curDeviceCategory.total)}"
                         tools:text="设备（空闲2/共4）" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_shop_position_detail_devices"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
-                        android:paddingVertical="12dp"
                         android:layout_marginBottom="12dp"
-                        android:background="@drawable/shape_sf5f5f5_r8" />
+                        android:background="@drawable/shape_s2e3d3e_r8"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/rg_shop_position_detail_floor"
+                            android:layout_width="54dp"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="6dp"
+                            android:orientation="vertical"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/color_black_5"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_shop_position_detail_devices"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="12dp" />
+
+                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_shop_position_detail_device_load_more"
@@ -201,11 +222,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        app:visibility="@{vm.curDeviceCategory.hasMore}"
-                        android:paddingBottom="12dp"
                         android:drawableEnd="@mipmap/icon_small_arrow_down"
                         android:drawablePadding="8dp"
                         android:gravity="center"
+                        android:paddingBottom="12dp"
+                        app:visibility="@{vm.curDeviceCategory.hasMore}"
                         tools:text="@string/load_more" />
                 </LinearLayout>
             </LinearLayout>

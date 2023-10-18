@@ -6,9 +6,11 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.core.content.ContextCompat
 import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
+import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.ShopParam
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
@@ -44,6 +46,19 @@ data class ShopPositionDetailEntity(
     val lng: Double? = null,
     val shopId: Int? = null,
 ) : IMultiTypeEntity {
+
+    var floorList: MutableList<FloorParam>? = mutableListOf()
+
+    fun refreshFloorList(list: MutableList<String>) {
+        if (null == floorList) {
+            floorList = mutableListOf()
+        }
+        floorList?.clear()
+        floorList?.add(FloorParam("全部", ""))
+        floorList?.addAll(list.map {
+            FloorParam(it, it)
+        })
+    }
 
     fun formatDistance(): String =
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +
@@ -125,4 +140,9 @@ data class Gps(
     val lat: Int? = null,
     val lng: Int? = null,
     val type: Int? = null
+)
+
+data class FloorParam(
+    val name: String,
+    val value: String
 )

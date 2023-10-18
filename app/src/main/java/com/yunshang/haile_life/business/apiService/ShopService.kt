@@ -31,7 +31,7 @@ interface ShopService {
     suspend fun requestShopDetail(@Query("id") id: Int): ResponseWrapper<ShopDetailEntity>
 
     @GET("/position/positionDetail")
-    suspend fun requestShopPositionDetail(@QueryMap params:HashMap<String,Any>): ResponseWrapper<ShopPositionDetailEntity>
+    suspend fun requestShopPositionDetail(@QueryMap params: HashMap<String, Any>): ResponseWrapper<ShopPositionDetailEntity>
 
     @POST("/tokenCoin/shop/goods")
     suspend fun requestShopRechargeList(@Body body: RequestBody): ResponseWrapper<ShopStarfishListEntity>
@@ -71,4 +71,7 @@ interface ShopService {
 
     @POST("/position/deviceDetailPage")
     suspend fun requestPositionDeviceList(@Body body: RequestBody): ResponseWrapper<ResponseList<ShopPositionDeviceEntity>>
+
+    @GET("/position/floorCodeList")
+    suspend fun requestPositionDeviceFloorList(@Query("positionId") positionId: Int): ResponseWrapper<MutableList<String>>
 }

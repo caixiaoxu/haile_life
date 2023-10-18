@@ -60,6 +60,9 @@ data class OrderEntity(
     val state: Int,
     val stateDesc: String,
     val viewReply: Boolean,
+    val payTime: String? = null,
+    val reserveAutoRefund: Int? = null,
+    val timesOfRestart: Int? = null
 ) : IMultiTypeEntity {
     override fun getMultiType(): Int = when (state) {
         100, 500 -> 0

@@ -196,7 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:text="@string/appoint_order_detail_prompt"
+                    android:text='@{@string/appoint_order_detail_prompt + (1 == vm.orderDetail.timesOfRestart)?"":@string/appoint_order_detail_prompt}'
                     android:visibility="@{(!vm.isAppoint || vm.formScan)?View.GONE:View.VISIBLE}" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout

@@ -223,7 +223,7 @@ class OrderDetailActivity :
                     } ?: -1
 
                 CommonDialog.Builder(
-                    if (true == mViewModel.isAppoint.value)
+                    if (true == mViewModel.isAppoint.value && 1 != detail.timesOfRestart)
                         if (overTime > 10)
                             com.lsy.framelib.utils.StringUtils.getString(
                                 R.string.over_time_prompt2

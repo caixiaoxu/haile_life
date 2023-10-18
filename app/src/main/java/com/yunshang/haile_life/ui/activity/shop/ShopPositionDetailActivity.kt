@@ -4,10 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
@@ -19,10 +22,14 @@ import com.yunshang.haile_life.business.vm.ShopPositionDetailViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.ShopPositionDeviceEntity
+import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.data.entities.TimeMarketVO
+import com.yunshang.haile_life.data.extend.hasVal
+import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityShopPositionDetailBinding
 import com.yunshang.haile_life.databinding.ItemShopPositionDetailDeviceBinding
+import com.yunshang.haile_life.databinding.ItemShopPositionDetailFloorBinding
 import com.yunshang.haile_life.databinding.ItemShopPositionDetailTagsBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
@@ -83,9 +90,20 @@ class ShopPositionDetailActivity :
         }
 
         mViewModel.curDeviceCategory.observe(this) {
-            mViewModel.requestDeviceList(it) { list ->
-                mAdapter.refreshList(list, true)
+            if (mBinding.rgShopPositionDetailFloor.childCount > 0) {
+                var index =
+                    mViewModel.shopDetail.value?.floorList?.indexOfFirst { item -> item.value == it.selectFloor?.value || (item.value.isNullOrEmpty() && it.selectFloor?.value.isNullOrEmpty()) }
+                if (index.hasVal()) {
+                    mBinding.rgShopPositionDetailFloor.check(mBinding.rgShopPositionDetailFloor[index!!].id)
+                }
             }
+            refreshDeviceList(true, it)
+        }
+    }
+
+    private fun refreshDeviceList(refresh: Boolean, device: StoreDeviceEntity?) {
+        mViewModel.requestDeviceList(refresh, device) { list ->
+            mAdapter.refreshList(list, true)
         }
     }
 
@@ -152,6 +170,35 @@ class ShopPositionDetailActivity :
                                 }
                             }
                         }
+                }
+
+                mBinding.rgShopPositionDetailFloor.removeAllViews()
+                val inflater = LayoutInflater.from(this@ShopPositionDetailActivity)
+                detail.floorList?.forEachIndexed { index, floor ->
+                    val itemFloorBinding =
+                        DataBindingUtil.inflate<ItemShopPositionDetailFloorBinding>(
+                            inflater,
+                            R.layout.item_shop_position_detail_floor,
+                            null,
+                            false
+                        )
+                    itemFloorBinding.root.id = index + 1
+                    itemFloorBinding.rbShopPositionDetailFloor.setOnCheckedChangeListener { _, b ->
+                        if (b) {
+                            mViewModel.curDeviceCategory.value?.let { device ->
+                                device.selectFloor = floor
+                                refreshDeviceList(true, device)
+                            }
+                        }
+                    }
+                    itemFloorBinding.item = floor
+                    mBinding.rgShopPositionDetailFloor.addView(itemFloorBinding.root)
+                }
+
+                mBinding.tvShopPositionDetailDeviceLoadMore.setOnClickListener {
+                    mViewModel.curDeviceCategory.value?.let { device ->
+                        refreshDeviceList(false, device)
+                    }
                 }
             }
         }

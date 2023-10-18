@@ -25,17 +25,30 @@ data class StoreDeviceEntity(
 
     var page: Int = 1
 
+    var selectFloor: FloorParam? = null
+
     var deviceList: MutableList<ShopPositionDeviceEntity> = mutableListOf()
 
+    @Transient
     @get:Bindable
-    val hasMore: Boolean
-        get() = deviceList.size < (total ?: 0)
+    var hasMore: Boolean = true
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.hasMore)
+        }
 
-    fun refreshDeviceList(items: MutableList<ShopPositionDeviceEntity>?) {
+    fun refreshDeviceList(
+        refresh: Boolean,
+        items: MutableList<ShopPositionDeviceEntity>?,
+        total: Int
+    ) {
+        if (refresh){
+            deviceList.clear()
+        }
         items?.let {
             deviceList.addAll(items)
         }
-        notifyPropertyChanged(BR.hasMore)
+        hasMore = deviceList.size < total
     }
 
     init {

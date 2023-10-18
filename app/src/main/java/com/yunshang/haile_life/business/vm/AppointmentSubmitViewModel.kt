@@ -36,6 +36,10 @@ class AppointmentSubmitViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     var shopId: Int = -1
 
+    val autoRefund: MutableLiveData<Boolean> by lazy {
+        MutableLiveData()
+    }
+
     val categoryList: MutableLiveData<List<AppointCategory>> by lazy {
         MutableLiveData()
     }
@@ -142,6 +146,7 @@ class AppointmentSubmitViewModel : BaseViewModel() {
                     )
                 )
             )?.let {
+                autoRefund.postValue(1 == it.autoRefund)
                 categoryList.postValue(it.categoryList)
                 it.categoryList.firstOrNull()?.let { first ->
                     selectCategory.postValue(first)
