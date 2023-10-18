@@ -40,12 +40,6 @@ object ViewBindingAdapter {
         }
     }
 
-    @BindingAdapter("title")
-    @JvmStatic
-    fun CommonTitleActionBar.setAttr(title: String?) {
-        setTitle(title)
-    }
-
     /**
      * 显示标题
      */

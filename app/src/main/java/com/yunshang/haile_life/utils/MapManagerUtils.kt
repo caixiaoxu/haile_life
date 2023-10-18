@@ -38,7 +38,7 @@ object MapManagerUtils {
         //判断是否安装高德地图
         if (checkGeoMapEInstall(context)) {
             val uri =
-                Uri.parse("amapuri://route/plan/?sourceApplication=haile_life&dlat=${lat}&dlon=${lng}&dname=${name}&dev=1&t=0")
+                Uri.parse("amapuri://route/plan/?sourceApplication=haile_life&dlat=${lat}&dlon=${lng}&dname=${name}&dev=0&t=0")
             val intent = Intent(Intent.ACTION_VIEW, uri)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)

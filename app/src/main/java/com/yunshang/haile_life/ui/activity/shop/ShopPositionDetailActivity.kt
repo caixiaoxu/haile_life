@@ -25,7 +25,6 @@ import com.yunshang.haile_life.data.entities.ShopPositionDeviceEntity
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.data.entities.TimeMarketVO
 import com.yunshang.haile_life.data.extend.hasVal
-import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityShopPositionDetailBinding
 import com.yunshang.haile_life.databinding.ItemShopPositionDetailDeviceBinding

@@ -5,16 +5,13 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.core.content.ContextCompat
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
-import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.ShopParam
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
-import java.util.Calendar
+import java.util.*
 
 /**
  * Title :
