@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
@@ -191,7 +192,12 @@ class ShopPositionDetailActivity :
                         }
                     }
                     itemFloorBinding.item = floor
-                    mBinding.rgShopPositionDetailFloor.addView(itemFloorBinding.root)
+                    mBinding.rgShopPositionDetailFloor.addView(
+                        itemFloorBinding.root, ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            DimensionUtils.dip2px(this@ShopPositionDetailActivity, 32f)
+                        )
+                    )
                 }
 
                 mBinding.tvShopPositionDetailDeviceLoadMore.setOnClickListener {
@@ -289,16 +295,6 @@ class ShopPositionDetailActivity :
         }
 
         mBinding.rvShopPositionDetailDevices.layoutManager = LinearLayoutManager(this)
-        ContextCompat.getDrawable(this, R.drawable.divide_size12)?.let {
-            mBinding.rvShopPositionDetailDevices.addItemDecoration(
-                CustomDividerItemDecoration(
-                    this@ShopPositionDetailActivity,
-                    CustomDividerItemDecoration.VERTICAL
-                ).apply {
-                    setDrawable(it)
-                }
-            )
-        }
         mBinding.rvShopPositionDetailDevices.adapter = mAdapter
 
         mBinding.btnShopDetailAppoint.setOnClickListener {

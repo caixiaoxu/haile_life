@@ -11,9 +11,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="12dp">
+        android:layout_height="32dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/Font_14_black_65"

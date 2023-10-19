@@ -249,7 +249,7 @@ class HomeViewModel : BaseViewModel() {
 
         launch({
             ApiRepository.dealApiResult(
-                mShopRepo.requestShopDevice(nearStoreEntity.value!!.id!!)
+                mShopRepo.requestShopPositionDevice(nearStoreEntity.value!!.id!!)
             )?.let {
                 storeDevices.postValue(it)
             }

@@ -27,6 +27,9 @@ interface ShopService {
     @GET("/shop/shopDevice")
     suspend fun requestShopDevice(@Query("id") id: Int): ResponseWrapper<MutableList<StoreDeviceEntity>>
 
+    @GET("/position/positionDevice")
+    suspend fun requestShopPositionDevice(@Query("id") id: Int): ResponseWrapper<MutableList<StoreDeviceEntity>>
+
     @GET("/shop/shopDetail")
     suspend fun requestShopDetail(@Query("id") id: Int): ResponseWrapper<ShopDetailEntity>
 

@@ -88,7 +88,7 @@ data class ShopPositionDetailEntity(
     fun getBusinessTimeVal(): String {
         if (2 == state) return "休息中"
 
-        var weekNum = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+        var weekNum = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
         if (weekNum == 0) {
             weekNum = 7
         }

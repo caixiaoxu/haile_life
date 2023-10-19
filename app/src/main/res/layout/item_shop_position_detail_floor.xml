@@ -12,12 +12,12 @@
     <androidx.appcompat.widget.AppCompatRadioButton
         android:id="@+id/rb_shop_position_detail_floor"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:background="@drawable/selector_shop_position_detail_floor_bg"
         android:button="@null"
         android:gravity="center"
-        android:paddingVertical="6dp"
         android:textSize="14sp"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:text="@{item.name}"
         android:textColor="@color/selector_black85_04d1e5"
         tools:text="全部" />

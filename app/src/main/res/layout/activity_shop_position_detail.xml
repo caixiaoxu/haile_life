@@ -212,7 +212,7 @@
                             android:layout_weight="1"
                             android:layout_marginStart="10dp"
                             android:layout_height="wrap_content"
-                            android:paddingVertical="12dp" />
+                            android:paddingVertical="6dp" />
 
                     </LinearLayout>
 
