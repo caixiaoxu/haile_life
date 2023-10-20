@@ -222,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/water_control_code_reminder"
+                android:text="@{@string/water_control_code_reminder(vm.waterControlCode.accountPrefix)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_water_control_code_friendly_reminder" />
