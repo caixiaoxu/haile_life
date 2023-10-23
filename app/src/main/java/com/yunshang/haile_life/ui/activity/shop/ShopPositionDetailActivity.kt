@@ -37,7 +37,6 @@ import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
-import com.yunshang.haile_life.ui.view.refresh.CustomDividerItemDecoration
 import com.yunshang.haile_life.utils.MapManagerUtils
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter

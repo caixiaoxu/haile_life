@@ -24,9 +24,17 @@
             tools:text="1号楼一号设备" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Font_14_black_65"
+            style="@style/Font_14_black_45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="@{item.floorCodeVal}"
+            tools:text="1F" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="空闲"
             android:text="@{1 == item.state?@string/idle:@string/occupy}"
             android:textColor="@{1 == item.state?@color/secondColorPrimary:@color/color_black_85}"
             android:textSize="14sp" />

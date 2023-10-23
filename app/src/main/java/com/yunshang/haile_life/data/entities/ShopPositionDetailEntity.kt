@@ -53,7 +53,7 @@ data class ShopPositionDetailEntity(
         floorList?.clear()
         floorList?.add(FloorParam("全部", ""))
         floorList?.addAll(list.map {
-            FloorParam(it, it)
+            FloorParam(if (it.last() == 'F' || it == "其它") it else "${it}F", it)
         })
     }
 
