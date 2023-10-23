@@ -235,7 +235,7 @@ class HomeViewModel : BaseViewModel() {
                     )
                 )
             )?.let {
-                it.items.firstOrNull()?.let { e ->
+                it.items?.firstOrNull()?.let { e ->
                     nearStoreEntity.postValue(e)
                 }
             }

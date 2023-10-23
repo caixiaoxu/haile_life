@@ -49,7 +49,8 @@ data class DeviceDetailEntity(
     val attachItems: List<DeviceDetailItemEntity>,
     val isShowDispenser: Boolean,
     val hideDispenserTips: String,
-    val advancedSettingVOS: List<AdvancedSettingVOS>
+    val advancedSettingVOS: List<AdvancedSettingVOS>,
+    val spuCode:String
 ) {
     fun drinkingOverTime() =
         advancedSettingVOS.find { item -> item.modelFunctionCode == "030D" }?.settingValue?.firstOrNull()

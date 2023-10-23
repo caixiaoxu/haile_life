@@ -70,6 +70,8 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
             )
         )
 
+        mBinding.tvScanOrderConfirmPrompt.visibility = if (builder.isSpecialDevice) View.VISIBLE else View.GONE
+
         mBinding.btnScanOrderConfirmNext.backgroundTintList = color
         mBinding.ivScanOrderConfirmMain.setImageResource(if (isDryer) R.mipmap.icon_scan_order_tips_dryer_main else R.mipmap.icon_scan_order_tips_main)
         mBinding.llScanOrderConfirmItems.buildChild<ItemScanOrderConfirmItemBinding, String>(
@@ -92,6 +94,8 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
             if (isDryer) R.drawable.selector_orange_check else R.drawable.selector_cyan_check,
             0, 0, 0
         )
+        mBinding.cbScanOrderConfirmNoPrompt.visibility =
+            if (builder.isSpecialDevice) View.GONE else View.VISIBLE
 
         mBinding.btnScanOrderConfirmCancel.setOnClickListener {
             dismiss()
@@ -112,7 +116,11 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
         show(manager, SCAN_ORDER_CONFIRM_TAG)
     }
 
-    internal class Builder(val deviceCategoryCode: String, val callBack: (() -> Unit)? = null) {
+    internal class Builder(
+        val deviceCategoryCode: String,
+        val isSpecialDevice: Boolean,
+        val callBack: (() -> Unit)? = null
+    ) {
         /**
          * 构建
          */

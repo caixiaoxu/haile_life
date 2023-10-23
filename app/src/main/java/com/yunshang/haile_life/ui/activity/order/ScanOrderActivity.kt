@@ -124,7 +124,8 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
 
                 val inflater = LayoutInflater.from(this@ScanOrderActivity)
 
-                val list: List<ExtAttrDtoItem> = it.extAttrDto.items.filter { item -> item.isEnabled }
+                val list: List<ExtAttrDtoItem> =
+                    it.extAttrDto.items.filter { item -> item.isEnabled }
                 if (list.isNotEmpty()) {
                     list.forEachIndexed { index, item ->
                         DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
@@ -217,7 +218,10 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         } else {
                             val list = arrayListOf<ExtAttrDtoItem>()
                             list.addAll(items)
-                            list.add(items.first().copy(unitAmount = "", isDefault = false, unitPrice = ""))
+                            list.add(
+                                items.first()
+                                    .copy(unitAmount = "", isDefault = false, unitPrice = "")
+                            )
                             list.forEachIndexed { index, item ->
                                 DataBindingUtil.inflate<ItemScanOrderModelItemBinding>(
                                     inflater, R.layout.item_scan_order_model_item, null, false
@@ -303,10 +307,16 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                     }
                     return@setOnClickListener
                 }
-                if (!SPRepository.isNoPrompt && null != mViewModel.goodsScan.value
-                    && !DeviceCategory.isHair(mViewModel.goodsScan.value!!.categoryCode)
+
+                val isSpecialDevice = mViewModel.deviceDetail.value?.spuCode == "04001030"
+                if ((!SPRepository.isNoPrompt && null != mViewModel.goodsScan.value
+                            && !DeviceCategory.isHair(mViewModel.goodsScan.value!!.categoryCode))
+                    || isSpecialDevice
                 ) {
-                    ScanOrderConfirmDialog.Builder(mViewModel.goodsScan.value!!.categoryCode) {
+                    ScanOrderConfirmDialog.Builder(
+                        mViewModel.goodsScan.value!!.categoryCode,
+                        isSpecialDevice
+                    ) {
                         jumpOrderSubmit()
                     }.build().show(supportFragmentManager)
                 } else {
