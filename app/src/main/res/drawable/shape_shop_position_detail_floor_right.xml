@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item> <!-- 格子间的连接处颜色 -->
+        <shape>
+            <solid android:color="@color/secondColorPrimary" />
+        </shape>
+    </item>
+    <item android:right="3dp"> <!--设置右边有边框-->
+        <shape>
+            <solid android:color="#F8F9F9" />  <!-- 主体背景颜色 -->
+        </shape>
+    </item>
+</layer-list>

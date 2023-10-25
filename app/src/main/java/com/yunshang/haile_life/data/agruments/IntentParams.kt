@@ -433,6 +433,7 @@ object IntentParams {
 
     object OrderPayParams {
         private const val TimeRemaining = "timeRemaining"
+        private const val OrderItems = "orderItems"
         private const val Price = "price"
 
         /**
@@ -442,19 +443,23 @@ object IntentParams {
             orderNo: String,
             timeRemaining: String,
             price: String,
-            categoryCode: String? = null
+            orderItems: List<OrderItem>? = null
         ): Bundle =
             Bundle().apply {
                 putAll(OrderParams.pack(orderNo))
                 putString(TimeRemaining, timeRemaining)
                 putString(Price, price)
-                putAll(DeviceParams.pack(categoryCode))
+                orderItems?.let {
+                    putString(OrderItems, GsonUtils.any2Json(orderItems))
+                }
             }
 
         fun parseOrderNo(intent: Intent): String? = OrderParams.parseOrderNo(intent)
-
         fun parseTimeRemaining(intent: Intent): String? = intent.getStringExtra(TimeRemaining)
         fun parsePrice(intent: Intent): String? = intent.getStringExtra(Price)
+        fun parseOrderItems(intent: Intent): MutableList<OrderItem>? = GsonUtils.json2List(
+            intent.getStringExtra(OrderItems), OrderItem::class.java
+        )
     }
 
     object WebViewParams {

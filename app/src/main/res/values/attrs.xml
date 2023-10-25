@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="title" format="string" />
+    <attr name="bgColor" format="color" />
     <declare-styleable name="CommonTitleActionBar">
         <attr name="canBack" format="boolean" />
-        <attr name="bgColor" format="color" />
+        <attr name="bgColor" />
         <attr name="android:background" />
         <attr name="title" />
         <attr name="rightModel" format="enum">
-            <enum name="text" value="0"/>
-            <enum name="area" value="1"/>
+            <enum name="text" value="0" />
+            <enum name="area" value="1" />
         </attr>
     </declare-styleable>
 
@@ -28,17 +29,17 @@
     <!-- 垂直方向的虚线 -->
     <declare-styleable name="DividerView">
         <!-- 虚线颜色 -->
-        <attr name="divider_line_color" format="color"/>
+        <attr name="divider_line_color" format="color" />
         <!-- 虚线宽度 -->
-        <attr name="dashThickness" format="dimension"/>
+        <attr name="dashThickness" format="dimension" />
         <!-- 虚线dash宽度 -->
-        <attr name="dashLength" format="dimension"/>
+        <attr name="dashLength" format="dimension" />
         <!-- 虚线dash间隔 -->
-        <attr name="dashGap" format="dimension"/>
+        <attr name="dashGap" format="dimension" />
         <!-- 虚线朝向 -->
         <attr name="divider_orientation" format="enum">
-            <enum name="horizontal" value="0"/>
-            <enum name="vertical" value="1"/>
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
         </attr>
     </declare-styleable>
     <declare-styleable name="MaxHeightScrollView">
@@ -61,5 +62,14 @@
         <attr name="emptyTxtRes" />
         <attr name="emptyImgRes" />
         <attr name="enableEmptyStatus" />
+    </declare-styleable>
+    <declare-styleable name="UpTriangleBackgroundLinearLayout">
+        <attr name="triangle_lr" format="enum">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <attr name="triangle_margin" format="dimension" />
+        <attr name="triangle_shadow_w" format="dimension" />
+        <attr name="bgColor" />
     </declare-styleable>
 </resources>

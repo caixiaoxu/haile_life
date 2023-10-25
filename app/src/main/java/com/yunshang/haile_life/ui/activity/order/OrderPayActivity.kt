@@ -31,8 +31,9 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
         mViewModel.orderNo = IntentParams.OrderPayParams.parseOrderNo(intent)
         mViewModel.timeRemaining = IntentParams.OrderPayParams.parseTimeRemaining(intent)
         mViewModel.price = IntentParams.OrderPayParams.parsePrice(intent) ?: ""
+        mViewModel.orderItems = IntentParams.OrderPayParams.parseOrderItems(intent)
         mViewModel.isDrinking =
-            DeviceCategory.isDrinking(IntentParams.DeviceParams.parseCategoryCode(intent))
+            DeviceCategory.isDrinking(mViewModel.orderItems?.firstOrNull()?.categoryCode)
     }
 
     override fun initEvent() {
@@ -115,10 +116,10 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
                         mViewModel.balance.value!!.amount,
                         mViewModel.price
                     ) {
-                        mViewModel.requestPrePay()
+                        mViewModel.requestPrePay(this)
                     }.show(supportFragmentManager)
                 }
-            } else mViewModel.requestPrePay()
+            } else mViewModel.requestPrePay(this)
         }
     }
 

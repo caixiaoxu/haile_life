@@ -1,22 +1,26 @@
 package com.yunshang.haile_life.business.vm
 
 import android.app.Activity
+import android.content.Context
 import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
-import com.lsy.framelib.utils.StringUtils
-import com.yunshang.haile_life.R
+import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.business.apiService.CapitalService
+import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.BalanceEntity
+import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.thrid.AlipayHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
 
@@ -32,6 +36,7 @@ import java.util.*
  */
 class OrderPayViewModel : BaseViewModel() {
     private val mCapitalRepo = ApiRepository.apiClient(CapitalService::class.java)
+    private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
     var orderNo: String? = null
 
@@ -59,6 +64,8 @@ class OrderPayViewModel : BaseViewModel() {
     }
 
     var price: String = ""
+
+    var orderItems: MutableList<OrderItem>? = null
 
     val balance: MutableLiveData<BalanceEntity> by lazy {
         MutableLiveData()
@@ -114,11 +121,17 @@ class OrderPayViewModel : BaseViewModel() {
         }, showLoading = false)
     }
 
-    fun requestPrePay() {
+    fun requestPrePay(context: Context) {
         if (-1 == payMethod) return
         if (orderNo.isNullOrEmpty()) return
 
         launch({
+            orderItems?.forEach {
+                if (!verifyGoods(context, it)) {
+                    return@launch
+                }
+            }
+
             ApiRepository.dealApiResult(
                 mOrderRepo.prePay(
                     ApiRepository.createRequestBody(
@@ -186,5 +199,36 @@ class OrderPayViewModel : BaseViewModel() {
         )?.let {
             LiveDataBus.post(BusEvents.PAY_SUCCESS_STATUS, true)
         }
+    }
+
+    private suspend fun verifyGoods(
+        context: Context,
+        orderItem: OrderItem
+    ): Boolean {
+
+        // 如果是饮水、沐浴或投放器，跳过验证
+        if (DeviceCategory.isDrinkingOrShower(orderItem.categoryCode)
+            || DeviceCategory.isDispenser(orderItem.categoryCode)
+        ) {
+            return true
+        }
+
+        val result = ApiRepository.dealApiResult(
+            mDeviceRepo.verifyGoods(
+                ApiRepository.createRequestBody(
+                    hashMapOf(
+                        "goodsId" to orderItem.goodsId,
+                        "categoryCode" to orderItem.categoryCode,
+                    )
+                )
+            )
+        )
+
+        return if (false == result?.isSuccess) {
+            withContext(Dispatchers.Main){
+                SToast.showToast(context, result.msg)
+            }
+            false
+        } else true
     }
 }

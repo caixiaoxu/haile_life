@@ -1,8 +1,10 @@
 package com.yunshang.haile_life.ui.activity.order
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.text.SpannableString
+import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
+import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
@@ -22,12 +25,9 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
-import com.yunshang.haile_life.databinding.ActivityOrderDetailBinding
-import com.yunshang.haile_life.databinding.ItemOrderDetailSkuBinding
-import com.yunshang.haile_life.databinding.ItemOrderDetailSkuDispenserBinding
-import com.yunshang.haile_life.databinding.ItemOrderDetailSkuGoodBinding
-import com.yunshang.haile_life.databinding.ItemTitleValueLrBinding
+import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.view.TranslucencePopupWindow
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.string.StringUtils
@@ -52,6 +52,8 @@ class OrderDetailActivity :
                 SToast.showToast(this, R.string.empty_permission)
             }
         }
+
+    private var popupWindow: TranslucencePopupWindow? = null
 
     override fun layoutId(): Int = R.layout.activity_order_detail
 
@@ -104,7 +106,7 @@ class OrderDetailActivity :
 
         mViewModel.orderDetail.observe(this) {
             it?.let {
-                mViewModel.getOrderStatusVal(it)
+//                mViewModel.getOrderStatusVal(it)
                 // 是否只有一个sku
                 val isSingle = 1 == it.orderItemList.size
                 // sku 列表
@@ -163,9 +165,38 @@ class OrderDetailActivity :
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
             mViewModel.requestOrderDetailAsync()
         }
+
+        LiveDataBus.with(BusEvents.PROMPT_POPUP, Boolean::class.java)?.observe(this) {
+            if (it) {
+                val mPopupBinding =
+                    PopupPromptBinding.inflate(LayoutInflater.from(this))
+                popupWindow = TranslucencePopupWindow(
+                    mPopupBinding.root, window,
+                    DimensionUtils.dip2px(this@OrderDetailActivity, 210f),
+                    alpha = 1f
+                )
+                mPopupBinding.llPopupPrompt.setContextBg(Color.parseColor("#45484A"))
+
+                mPopupBinding.tvPromptContext.text =
+                    if (DeviceCategory.isShoes(mViewModel.orderDetail.value?.orderItemList?.firstOrNull()?.categoryCode)
+                    ) "订单结束后，请尽快取走鞋子\n鞋子面料、鞋子量等会影响运行时长，预计剩余时间仅供参考，请以实际时间为准！"
+                    else "订单结束后，请尽快取走衣物\n衣物面料、衣物量等会影响运行时长，预计剩余时间仅供参考，请以实际时间为准！"
+                popupWindow?.showAsDropDown(
+                    mBinding.tvOrderDetailDesc,
+                    mBinding.tvOrderDetailDesc.width - DimensionUtils.dip2px(
+                        this@OrderDetailActivity,
+                        34f
+                    ), 0
+                )
+            } else {
+                popupWindow?.dismiss()
+            }
+        }
     }
 
     override fun initView() {
+        mBinding.tvOrderDetailDesc.movementMethod = LinkMovementMethod.getInstance()
+
         mBinding.tvOrderDetailContact.setOnClickListener {
             requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
         }
@@ -177,7 +208,7 @@ class OrderDetailActivity :
                             detail.orderNo,
                             if (DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)) "" else detail.invalidTime,
                             detail.realPrice,
-                            detail.orderItemList.firstOrNull()?.categoryCode
+                            detail.orderItemList,
                         )
                     )
                 })
@@ -192,7 +223,7 @@ class OrderDetailActivity :
                     } ?: -1
 
                 CommonDialog.Builder(
-                    if (true == mViewModel.isAppoint.value)
+                    if (true == mViewModel.isAppoint.value && 1 != detail.timesOfRestart)
                         if (overTime > 10)
                             com.lsy.framelib.utils.StringUtils.getString(
                                 R.string.over_time_prompt2

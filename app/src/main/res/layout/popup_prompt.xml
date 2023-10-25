@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yunshang.haile_life.ui.view.UpTriangleBackgroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_popup_prompt"
+    android:layout_width="277dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:triangle_lr="left">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_prompt_context"
+        style="@style/Font_14_ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp" />
+
+</com.yunshang.haile_life.ui.view.UpTriangleBackgroundLinearLayout>

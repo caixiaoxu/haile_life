@@ -9,7 +9,7 @@
 
         <variable
             name="item"
-            type="com.yunshang.haile_life.data.entities.NearStoreEntity" />
+            type="com.yunshang.haile_life.data.entities.NearStorePositionEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="6dp"
                 android:paddingVertical="2dp"
-                android:text="@string/in_operation"
+                android:text="@{item.stateVal()}"
                 app:bgResIds="@{item.multiTypeBgRes}"
                 app:txtColors="@{item.multiTypeTxtColors}"
                 app:type="@{1}"

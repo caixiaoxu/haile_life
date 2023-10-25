@@ -154,7 +154,7 @@ data class BusinessHourParams(
 
 data class TimeMarketVO(
     val categoryList: List<Category>,
-    val discount: Int
+    val discount: String
 )
 
 data class ActiveDayParam(val name: String, val id: Int)

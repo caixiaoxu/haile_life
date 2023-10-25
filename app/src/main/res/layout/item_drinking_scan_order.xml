@@ -8,18 +8,22 @@
         <variable
             name="item"
             type="com.yunshang.haile_life.data.entities.DeviceDetailItemEntity" />
+
+        <variable
+            name="isShower"
+            type="java.lang.Boolean" />
     </data>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_drinking_scan_order_configure"
         style="@style/Font_18_black_65_bold"
-        app:drawTop="@{item.drinkingIcon}"
+        app:drawTop="@{item.drinkingIcon(isShower)}"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="12dp"
         android:gravity="center"
-        android:text="@{item.drinkingTitle}"
-        tools:text="常温 1.00元/L">
+        android:text="@{item.drinkingTitle(isShower)}"
+        tools:text="1.00元/L\n常温">
 
     </androidx.appcompat.widget.AppCompatTextView>
 </layout>

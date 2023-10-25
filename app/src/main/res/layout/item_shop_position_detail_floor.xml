@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.FloorParam" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/rb_shop_position_detail_floor"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@drawable/selector_shop_position_detail_floor_bg"
+        android:button="@null"
+        android:gravity="center"
+        android:textSize="14sp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:text="@{item.name}"
+        android:textColor="@color/selector_black85_04d1e5"
+        tools:text="全部" />
+</layout>

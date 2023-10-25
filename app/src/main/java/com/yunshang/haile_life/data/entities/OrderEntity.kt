@@ -1,19 +1,26 @@
 package com.yunshang.haile_life.data.entities
 
+import android.text.Spannable
 import android.text.SpannableString
+import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.ImageSpan
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.gson.annotations.SerializedName
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.extend.toDefaultDouble
 import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 import com.yunshang.haile_life.utils.DateTimeUtils
 import java.util.*
+import kotlin.math.ceil
 
 /**
  * Title :
@@ -53,6 +60,9 @@ data class OrderEntity(
     val state: Int,
     val stateDesc: String,
     val viewReply: Boolean,
+    val payTime: String? = null,
+    val reserveAutoRefund: Int? = null,
+    val timesOfRestart: Int? = null
 ) : IMultiTypeEntity {
     override fun getMultiType(): Int = when (state) {
         100, 500 -> 0
@@ -110,7 +120,11 @@ data class OrderEntity(
         ) else SpannableString("订单待付款")
         401 -> SpannableString("订单超时关闭，请重新下单～")
         411 -> SpannableString("订单已取消，请重新下单～")
-        500 -> StringUtils.getString(R.string.predict_finish_time).let { prefix ->
+        500 -> if (DeviceCategory.isWashingOrShoes(orderItemList.firstOrNull()?.categoryCode) || DeviceCategory.isDryer(
+                orderItemList.firstOrNull()?.categoryCode
+            )
+        ) calculateRemnantTime()
+        else StringUtils.getString(R.string.predict_finish_time).let { prefix ->
             (DateTimeUtils.formatDateFromString(orderItemList.firstOrNull()?.finishTime)?.let {
                 val calendar = Calendar.getInstance().apply {
                     time = it
@@ -127,7 +141,10 @@ data class OrderEntity(
                         content,
                         arrayOf(
                             ForegroundColorSpan(
-                                ContextCompat.getColor(Constants.APP_CONTEXT, R.color.color_ff630e)
+                                ContextCompat.getColor(
+                                    Constants.APP_CONTEXT,
+                                    R.color.color_ff630e
+                                )
                             )
                         ),
                         prefix.length, content.length
@@ -140,6 +157,42 @@ data class OrderEntity(
         2099 -> SpannableString("订单已退款，祝您生活愉快～")
         else -> SpannableString("祝您生活愉快～")
     }
+
+    fun calculateRemnantTime() =
+        StringUtils.getString(R.string.predict_remnant_time).let { prefix ->
+            ((DateTimeUtils.formatDateFromString(orderItemList.firstOrNull()?.finishTime)?.let {
+                val diff = it.time - System.currentTimeMillis()
+                "$prefix ${if (diff <= 0) "即将完成" else ceil(diff * 1.0 / 1000 / 60).toInt()}分钟"
+            } ?: "") + " 图").let { content ->
+                if (content.isNotEmpty()) {
+                    SpannableString(content).apply {
+                        setSpan(
+                            ForegroundColorSpan(
+                                ContextCompat.getColor(
+                                    Constants.APP_CONTEXT,
+                                    R.color.color_ff630e
+                                )
+                            ), prefix.length, content.length - 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                        setSpan(
+                            object : ClickableSpan() {
+                                override fun onClick(v: View) {
+                                    LiveDataBus.post(BusEvents.PROMPT_POPUP, true)
+                                }
+                            }, content.length - 1,
+                            content.length,
+                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                        setSpan(
+                            ImageSpan(Constants.APP_CONTEXT, R.mipmap.icon_order_desc_prompt),
+                            content.length - 1,
+                            content.length,
+                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                } else SpannableString("")
+            }
+        }
 
     fun getOrderDetailAppointTimePrompt(): SpannableString = when (appointmentState) {
         0 -> SpannableString("订单待付款")
@@ -183,7 +236,7 @@ data class OrderEntity(
         }
 
     fun getGoodInfo(): String = if (orderItemList.isNotEmpty()) orderItemList.first()
-        .run { "${shopName}\n${area}${address}\n${goodsName}" } else ""
+        .run { "${shopName}${if (positionName.isNotEmpty()) "\npositionName" else ""}\n${area}${address}\n${goodsName}" } else ""
 
     fun getOrderDeviceUnit(): String =
         if (orderItemList.isNotEmpty()) "${orderItemList.first().unit}分钟" else ""
@@ -236,7 +289,9 @@ data class OrderItem(
     val originUnitPrice: String,
     val realUnitPrice: String,
     val volumeVisibleState: Int,
-    val goodsItemInfoDto: GoodsItemInfoDto?
+    val goodsItemInfoDto: GoodsItemInfoDto?,
+    val positionId: Int,
+    val positionName: String,
 ) {
 
     val goodsItemInfo: GoodsItemInfoEntity?

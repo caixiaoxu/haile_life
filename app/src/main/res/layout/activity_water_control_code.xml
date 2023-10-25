@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.WaterControlCodeViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        tools:context=".ui.activity.device.WaterControlCodeActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_water_control_code_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@string/water_control_code" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/shape_sffffff_r12"
+            android:paddingBottom="16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code_title"
+                style="@style/Font_24_black_85_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/water_control_code"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code_prompt"
+                style="@style/Font_16_black_65_bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/water_control_code_prompt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_water_control_code_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+                android:fontFamily="@font/money"
+                android:paddingHorizontal="6dp"
+                android:paddingBottom="8dp"
+                android:text="@{vm.waterControlCode.codeIndex(0)}"
+                android:textColor="@{vm.waterControlCode.hasState?@color/color_black_85:@color/color_black_25}"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_water_control_code2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_water_control_code_prompt"
+                tools:text="2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+                android:fontFamily="@font/money"
+                android:paddingHorizontal="6dp"
+                android:paddingBottom="8dp"
+                android:text="@{vm.waterControlCode.codeIndex(1)}"
+                android:textColor="@{vm.waterControlCode.hasState?@color/color_black_85:@color/color_black_25}"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_water_control_code3"
+                app:layout_constraintStart_toEndOf="@id/tv_water_control_code1"
+                app:layout_constraintTop_toTopOf="@id/tv_water_control_code1"
+                tools:text="2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+                android:fontFamily="@font/money"
+                android:paddingHorizontal="6dp"
+                android:paddingBottom="8dp"
+                android:text="@{vm.waterControlCode.codeIndex(2)}"
+                android:textColor="@{vm.waterControlCode.hasState?@color/color_black_85:@color/color_black_25}"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_water_control_code4"
+                app:layout_constraintStart_toEndOf="@id/tv_water_control_code2"
+                app:layout_constraintTop_toTopOf="@id/tv_water_control_code1"
+                tools:text="2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+                android:fontFamily="@font/money"
+                android:paddingHorizontal="6dp"
+                android:paddingBottom="8dp"
+                android:text="@{vm.waterControlCode.codeIndex(3)}"
+                android:textColor="@{vm.waterControlCode.hasState?@color/color_black_85:@color/color_black_25}"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_water_control_code5"
+                app:layout_constraintStart_toEndOf="@id/tv_water_control_code3"
+                app:layout_constraintTop_toTopOf="@id/tv_water_control_code1"
+                tools:text="2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+                android:fontFamily="@font/money"
+                android:paddingHorizontal="6dp"
+                android:paddingBottom="8dp"
+                android:text="@{vm.waterControlCode.codeIndex(4)}"
+                android:textColor="@{vm.waterControlCode.hasState?@color/color_black_85:@color/color_black_25}"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_water_control_code6"
+                app:layout_constraintStart_toEndOf="@id/tv_water_control_code4"
+                app:layout_constraintTop_toTopOf="@id/tv_water_control_code1"
+                tools:text="2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+                android:fontFamily="@font/money"
+                android:paddingHorizontal="6dp"
+                android:paddingBottom="8dp"
+                android:text="@{vm.waterControlCode.codeIndex(5)}"
+                android:textColor="@{vm.waterControlCode.hasState?@color/color_black_85:@color/color_black_25}"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_water_control_code7"
+                app:layout_constraintStart_toEndOf="@id/tv_water_control_code5"
+                app:layout_constraintTop_toTopOf="@id/tv_water_control_code1"
+                tools:text="2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+                android:fontFamily="@font/money"
+                android:paddingHorizontal="6dp"
+                android:paddingBottom="8dp"
+                android:text="@{vm.waterControlCode.codeIndex(6)}"
+                android:textColor="@{vm.waterControlCode.hasState?@color/color_black_85:@color/color_black_25}"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_water_control_code8"
+                app:layout_constraintStart_toEndOf="@id/tv_water_control_code6"
+                app:layout_constraintTop_toTopOf="@id/tv_water_control_code1"
+                tools:text="2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+                android:fontFamily="@font/money"
+                android:paddingHorizontal="6dp"
+                android:paddingBottom="8dp"
+                android:text="@{vm.waterControlCode.codeIndex(7)}"
+                android:textColor="@{vm.waterControlCode.hasState?@color/color_black_85:@color/color_black_25}"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_water_control_code7"
+                app:layout_constraintTop_toTopOf="@id/tv_water_control_code1"
+                tools:text="2" />
+
+            <com.lsy.framelib.ui.weight.SingleTapButton
+                android:id="@+id/btn_water_control_code_generate"
+                style="@style/CommonMatchBtnStyle1"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="40dp"
+                android:onClick="@{vm::generateWaterControlCode}"
+                android:enabled="@{vm.waterControlCode.hasState}"
+                android:text="@{vm.waterControlCode.hasCode?@string/update_water_control_code:@string/generate_water_control_code}"
+                app:layout_constraintTop_toBottomOf="@id/tv_water_control_code1" />
+
+            <View
+                style="@style/DividingStyle"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_water_control_code_generate" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_water_control_code_friendly_reminder"
+                style="@style/Font_14_black_65_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="58dp"
+                android:text="@string/friendly_reminder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_water_control_code_generate" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_14_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@{@string/water_control_code_reminder(vm.waterControlCode.accountPrefix)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_water_control_code_friendly_reminder" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:id="@+id/btn_water_control_code_enable"
+            style="@style/font_14_04cee5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            tools:text="@string/open_water_control_code"
+            android:text="@{vm.waterControlCode.hasState?@string/close_water_control_code:@string/open_water_control_code}" />
+    </LinearLayout>
+</layout>

@@ -1,5 +1,8 @@
 package com.yunshang.haile_life.business.vm
 
+import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.view.View
 import androidx.lifecycle.LiveData
@@ -8,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
+import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
@@ -39,7 +43,6 @@ class OrderDetailViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-
     val formScan: MutableLiveData<Boolean> by lazy {
         MutableLiveData()
     }
@@ -56,6 +59,28 @@ class OrderDetailViewModel : BaseViewModel() {
                 false
             else
                 detail.serviceTelephone.isNotEmpty()
+        } ?: false
+    }
+
+    val showCoerceDevice: LiveData<Boolean> = orderDetail.map {
+        it?.let { detail ->
+            if (true == formScan.value)
+                false
+            else
+                (DeviceCategory.isWashingOrShoes(detail.orderItemList.firstOrNull()?.categoryCode)
+                        || DeviceCategory.isDryer(detail.orderItemList.firstOrNull()?.categoryCode))
+                        && 500 == detail.state
+        } ?: false
+    }
+
+    val showFinishOrder: LiveData<Boolean> = orderDetail.map {
+        it?.let { detail ->
+            if (true == formScan.value)
+                false
+            else
+                (DeviceCategory.isWashingOrShoes(detail.orderItemList.firstOrNull()?.categoryCode)
+                        || DeviceCategory.isDryer(detail.orderItemList.firstOrNull()?.categoryCode))
+                        && 500 == detail.state
         } ?: false
     }
 
@@ -110,10 +135,10 @@ class OrderDetailViewModel : BaseViewModel() {
     private fun checkShowAnyBtn() =
         (((true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && true != formScan.value) || (true == formScan.value && false == changeUseModel.value))
 
-    fun requestOrderDetailAsync() {
+    fun requestOrderDetailAsync(showLoading: Boolean = true) {
         if (orderNo.isNullOrEmpty()) return
         timer?.cancel()
-        launch({ requestOrderDetail() })
+        launch({ requestOrderDetail() }, showLoading = showLoading)
     }
 
     private suspend fun requestOrderDetail() {
@@ -213,6 +238,7 @@ class OrderDetailViewModel : BaseViewModel() {
      * 订单状态描述
      */
     fun getOrderStatusVal(detail: OrderEntity) {
+        stopShowRemnantTime = false
         if (true == isAppoint.value) {
             orderStatusDesc.postValue(detail.getOrderDetailAppointTimePrompt())
         } else {
@@ -241,9 +267,38 @@ class OrderDetailViewModel : BaseViewModel() {
                             e.printStackTrace()
                         }
                     }
+            } else if (500 == detail.state && DeviceCategory.isWashingOrShoes(detail.orderItemList.firstOrNull()?.categoryCode)
+                || DeviceCategory.isDryer(detail.orderItemList.firstOrNull()?.categoryCode)
+            ) {
+                stopShowRemnantTime = true
+                showRemnantTime(detail)
             } else {
                 orderStatusDesc.postValue(detail.getOrderDetailFinishTimePrompt())
             }
+        }
+    }
+
+    private var stopShowRemnantTime = true
+
+    /**
+     * 显示剩余时间
+     */
+    private fun showRemnantTime(detail: OrderEntity) {
+        if (500 == detail.state && stopShowRemnantTime) {
+            orderStatusDesc.postValue(detail.calculateRemnantTime())
+            DateTimeUtils.formatDateFromString(detail.orderItemList.firstOrNull()?.finishTime)
+                ?.let {
+                    if ((it.time - System.currentTimeMillis()) > 0) {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            showRemnantTime(detail)
+                        }, 1000)
+                    } else {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            LiveDataBus.post(BusEvents.PROMPT_POPUP, false)
+                            requestOrderDetailAsync(false)
+                        }, 15000)
+                    }
+                }
         }
     }
 
@@ -270,6 +325,68 @@ class OrderDetailViewModel : BaseViewModel() {
         } else {
             orderStateTimer?.cancel()
             orderStateTimer = null
+        }
+    }
+
+    private var coerceDeviceTime = 0L
+    private val defaultDiff = 2 * 60 * 1000L
+    val coerceDeviceCount: MutableLiveData<Int> = MutableLiveData(0)
+
+    fun coerceDevice(v: View) {
+        orderDetail.value?.let { detail ->
+            var diff = System.currentTimeMillis() - coerceDeviceTime
+            if (0L == coerceDeviceTime || diff >= defaultDiff) {
+                launch({
+                    ApiRepository.dealApiResult(
+                        mOrderRepo.startByOrder(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "orderNo" to detail.orderNo
+                                )
+                            )
+                        )
+                    )
+                    coerceDeviceCount.postValue((coerceDeviceCount.value ?: 0) + 1)
+
+                    coerceDeviceTime = System.currentTimeMillis()
+                    withContext(Dispatchers.Main) {
+                        showCoerceDevicePrompt(v.context, defaultDiff)
+                    }
+                })
+            } else {
+                showCoerceDevicePrompt(v.context, defaultDiff - diff)
+            }
+        }
+    }
+
+    private fun showCoerceDevicePrompt(context: Context, diff: Long) {
+        val minute = diff / 1000 / 60
+        val second = diff / 1000 % 60
+        SToast.showToast(
+            context,
+            "强启设备间隔时间还需要${minute}分" + if (second > 0) "${second}秒" else "钟"
+        )
+    }
+
+    /**
+     * 结束订单
+     */
+    fun finishOrder(v: View) {
+        orderDetail.value?.let { detail ->
+            launch({
+                ApiRepository.dealApiResult(
+                    mOrderRepo.finishByOrder(
+                        ApiRepository.createRequestBody(
+                            hashMapOf(
+                                "orderNo" to detail.orderNo
+                            )
+                        )
+                    )
+                )
+                Handler(Looper.getMainLooper()).postDelayed({
+                    requestOrderDetailAsync(false)
+                }, 1000)
+            })
         }
     }
 }

@@ -272,6 +272,10 @@
         <item name="android:textColor">@color/color_black_65</item>
     </style>
 
+    <style name="Font_16_black_65_bold" parent="Font_16_black_65">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Font_16_black_85">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/color_black_85</item>

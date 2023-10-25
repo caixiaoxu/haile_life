@@ -10,10 +10,7 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.MarketingService
 import com.yunshang.haile_life.business.apiService.MessageService
 import com.yunshang.haile_life.business.apiService.ShopService
-import com.yunshang.haile_life.data.entities.ADEntity
-import com.yunshang.haile_life.data.entities.MessageEntity
-import com.yunshang.haile_life.data.entities.NearStoreEntity
-import com.yunshang.haile_life.data.entities.StoreDeviceEntity
+import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.model.SPRepository
 
@@ -80,7 +77,7 @@ class HomeViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    val nearStoreEntity: MutableLiveData<NearStoreEntity> by lazy {
+    val nearStoreEntity: MutableLiveData<NearStorePositionEntity> by lazy {
         MutableLiveData()
     }
 
@@ -224,7 +221,7 @@ class HomeViewModel : BaseViewModel() {
     fun requestNearByStore(location: Location) {
         launch({
             ApiRepository.dealApiResult(
-                mShopRepo.requestNearStores(
+                mShopRepo.requestNearStorePositions(
                     ApiRepository.createRequestBody(
                         hashMapOf(
                             "page" to 1,
@@ -235,7 +232,7 @@ class HomeViewModel : BaseViewModel() {
                     )
                 )
             )?.let {
-                it.items?.firstOrNull()?.let { e ->
+                it.items?.firstOrNull { item -> 1 == item.state }?.let { e ->
                     nearStoreEntity.postValue(e)
                 }
             }
@@ -252,7 +249,7 @@ class HomeViewModel : BaseViewModel() {
 
         launch({
             ApiRepository.dealApiResult(
-                mShopRepo.requestShopDevice(nearStoreEntity.value!!.id)
+                mShopRepo.requestShopPositionDevice(nearStoreEntity.value!!.id!!)
             )?.let {
                 storeDevices.postValue(it)
             }

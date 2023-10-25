@@ -1,6 +1,7 @@
 package com.yunshang.haile_life.business.vm
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.TextUtils
@@ -16,8 +17,10 @@ import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.DimensionUtils
+import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.CapitalService
+import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
@@ -29,6 +32,8 @@ import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 import com.yunshang.haile_life.utils.thrid.AlipayHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 
 /**
@@ -43,6 +48,7 @@ import java.util.*
  */
 class OrderSubmitViewModel : BaseViewModel() {
     private val mCapitalRepo = ApiRepository.apiClient(CapitalService::class.java)
+    private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
     val goods: MutableLiveData<MutableList<IntentParams.OrderSubmitParams.OrderSubmitGood>> =
@@ -192,10 +198,16 @@ class OrderSubmitViewModel : BaseViewModel() {
         })
     }
 
-    fun requestPrePay() {
+    fun requestPrePay(context: Context) {
         if (goods.value.isNullOrEmpty()) return
 
         launch({
+            goods.value!!.forEach {
+                if (!verifyGoods(context, it)) {
+                    return@launch
+                }
+            }
+
             ApiRepository.dealApiResult(
                 mOrderRepo.createTrade(
                     ApiRepository.createRequestBody(
@@ -282,5 +294,28 @@ class OrderSubmitViewModel : BaseViewModel() {
         )?.let {
             LiveDataBus.post(BusEvents.PAY_SUCCESS_STATUS, it.success)
         }
+    }
+
+    private suspend fun verifyGoods(
+        context: Context,
+        orderSubmitGood: IntentParams.OrderSubmitParams.OrderSubmitGood
+    ): Boolean {
+        val result = ApiRepository.dealApiResult(
+            mDeviceRepo.verifyGoods(
+                ApiRepository.createRequestBody(
+                    hashMapOf(
+                        "goodsId" to orderSubmitGood.goodId,
+                        "categoryCode" to orderSubmitGood.categoryCode,
+                    )
+                )
+            )
+        )
+
+        return if (false == result?.isSuccess) {
+            withContext(Dispatchers.Main) {
+                SToast.showToast(context, result.msg)
+            }
+            false
+        } else true
     }
 }

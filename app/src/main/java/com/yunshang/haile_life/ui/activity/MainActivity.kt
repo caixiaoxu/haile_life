@@ -30,6 +30,7 @@ import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
 import org.opencv.OpenCV
@@ -82,28 +83,22 @@ class MainActivity :
         }
 
         code?.let { code ->
-            mViewModel.requestScanResult(code) { scan, detail, appoint ->
+            mViewModel.requestScanResult(code,supportFragmentManager) { scan, detail, appoint ->
                 if (detail.deviceErrorCode > 0) {
-                    SToast.showToast(
-                        this@MainActivity,
-                        detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" }
-                    )
+                    Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" })
+                        .build().show(supportFragmentManager)
                     return@requestScanResult
                 } else if (2 == detail.soldState) {
-                    SToast.showToast(
-                        this@MainActivity,
-                        detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" }
-                    )
+                    Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" })
+                        .build().show(supportFragmentManager)
                     return@requestScanResult
                 } else if (0 == detail.amount) {
-                    SToast.showToast(
-                        this@MainActivity, "设备工作中,请稍后再试!"
-                    )
+                    Hint3SecondDialog.Builder("设备工作中,请稍后再试!")
+                        .build().show(supportFragmentManager)
                     return@requestScanResult
                 } else if (detail.shopClosed) {
-                    SToast.showToast(
-                        this@MainActivity, "门店不在营业时间内,请稍后再试!"
-                    )
+                    Hint3SecondDialog.Builder("门店不在营业时间内,请稍后再试!")
+                        .build().show(supportFragmentManager)
                     return@requestScanResult
                 }
                 if (!appoint?.orderNo.isNullOrEmpty()) {
@@ -164,6 +159,8 @@ class MainActivity :
             }
             if (null == rechargeCode && null == refundCode) {
                 SToast.showToast(this, R.string.pay_code_error)
+                Hint3SecondDialog.Builder(com.lsy.framelib.utils.StringUtils.getString(R.string.pay_code_error))
+                    .build().show(supportFragmentManager)
             }
         }
     }

@@ -175,6 +175,17 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
             }
         }
 
+        mViewModel.isHideDeviceInfo.observe(this) {
+            ContextCompat.getDrawable(
+                this@ScanOrderActivity,
+                if (it) R.mipmap.icon_info_open else R.mipmap.icon_info_hide
+            )?.let { draw ->
+                mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setImageDrawable(
+                    draw
+                )
+            }
+        }
+
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
             finish()
         }
@@ -291,7 +302,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                 if (true == mViewModel.shopConfig.value?.result) {
                     mViewModel.deviceDetail.value?.shopId?.let { shopId ->
                         CommonDialog.Builder("海星余额不足，请先购买海星后再使用").apply {
-                            title = StringUtils.getString(R.string.scan_order_tips_hint)
+                            title = StringUtils.getString(R.string.friendly_reminder)
                             isCancelable = mViewModel.shopConfig.value?.closable ?: true
                             isNegativeShow = false
                             setPositiveButton(StringUtils.getString(R.string.go_buy)) {
@@ -335,6 +346,10 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         putExtras(IntentParams.RechargeStarfishParams.pack(it.shopId))
                     })
             }
+        }
+
+        mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setOnClickListener {
+            mViewModel.isHideDeviceInfo.value = !mViewModel.isHideDeviceInfo.value!!
         }
     }
 

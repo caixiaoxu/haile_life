@@ -15,7 +15,8 @@ import com.yunshang.haile_life.data.rule.IOrderConfigEntity
  * 作者姓名 修改时间 版本号 描述
  */
 data class AppointCategoryListEntity(
-    val categoryList: List<AppointCategory>
+    val categoryList: List<AppointCategory>,
+    val autoRefund: Int? = null
 )
 
 data class AppointCategory(

@@ -9,10 +9,12 @@
     <string name="cancel">取消</string>
     <string name="i_know">知道了</string>
     <string name="more">更多</string>
+    <string name="load_more">加载更多</string>
     <string name="view_more">查看更多</string>
     <string name="device">设备</string>
     <string name="num">数量</string>
     <string name="idle">空闲</string>
+    <string name="occupy">占用</string>
     <string name="distance">距离</string>
     <string name="you">您</string>
     <string name="selected">选好了</string>
@@ -72,7 +74,7 @@
     <string name="home_category_cloth_care">衣物护理</string>
     <string name="home_category_cloth_manager">衣物管家</string>
     <string name="home_category_student_entrepreneurship">学生创业</string>
-    <string name="nearby_stores">附近门店</string>
+    <string name="nearby_stores">附近营业点</string>
     <string name="nearby_stores_desc">体验洗衣先生的专业洗护</string>
     <string name="home_guide">自助洗烘指南</string>
     <string name="home_guide_desc">遇到问题来这里快速解决</string>
@@ -100,6 +102,10 @@
     <string name="select_category_model">请选择设备类型</string>
     <string name="select_work_model">请选择%1$s功能</string>
     <string name="select_work_time">请选择%1$s时长</string>
+    <string name="shop">门店</string>
+    <string name="device_idle_num_prompt">设备（空闲%1$d/共%2$d）</string>
+    <string name="device_code">设备编号</string>
+    <string name="imei">IMEI</string>
     <string name="use_time">使用时长</string>
     <string name="use_quantity">使用量</string>
     <string name="select_work_device">请选择%1$s设备</string>
@@ -109,6 +115,7 @@
     <string name="appoint_use_time">预计使用时间</string>
     <string name="appoint_device_queue_use_time">%1$s排队%2$d人，预计使用时间</string>
     <string name="appoint_order_detail_prompt">温馨提示：\n1、到店后可用微信/支付宝/海乐生活APP扫码解锁设备。\n2、因自身原因超时未使用的订单将无法退款。</string>
+    <string name="appoint_order_detail_prompt2">\n2、因自身原因超时未使用的订单将无法退款。</string>
 
     <string name="refund_record">退款记录</string>
     <string name="recharge_record">充值记录</string>
@@ -124,6 +131,8 @@
     <string name="nickname">昵称</string>
     <string name="nickname_update">昵称修改</string>
     <string name="nickname_hint">请输入昵称</string>
+    <string name="contact_platform">联系平台</string>
+    <string name="platform_phone">400-015-5599</string>
     <string name="close_account">注销账户</string>
     <string name="logout">退出登录</string>
     <string name="version">版本</string>
@@ -136,7 +145,8 @@
     <string name="use_rule">使用规则</string>
 
     <string name="next_step">下一步</string>
-    <string name="scan_order_tips_hint">温馨提示</string>
+    <string name="friendly_reminder">温馨提示</string>
+    <string name="scan_order_confirm_prompt">在提交订单后，按洗衣机上的桶自洁按键，会导致设备不能正常使用。若需要桶自洁，请在提交订单前操作。</string>
     <string name="go_buy">去购买</string>
     <string name="no_prompt">不再提示</string>
     <string name="special_device_prompt">在提交订单后，按洗衣机上的桶自洁按键，会导致设备不能正常使用。若需要桶自洁，请在提交订单前操作。</string>
@@ -146,6 +156,7 @@
     <string name="actually_paid">小记</string>
     <string name="order_discount_coupon">优惠红包</string>
     <string name="limited_time_offer">限时优惠</string>
+    <string name="limited_time_offer_prompt">限时%1$s折</string>
     <string name="shop_coupon">商家优惠红包</string>
     <string name="platform_coupon">平台优惠红包</string>
     <string name="starfish">海星</string>
@@ -188,14 +199,17 @@
     <string name="cancel_order">取消订单</string>
     <string name="delete_order">删除订单</string>
     <string name="contact_shop">联系商家</string>
+    <string name="coerce_device">强启设备</string>
+    <string name="finish_order">结束订单</string>
     <string name="predict_finish_time">预计完成时间</string>
+    <string name="predict_remnant_time">预计剩余时间</string>
     <string name="order_submit_used_time_prompt">请在 %1$s 到店使用</string>
     <string name="no_use_appoint_order">不使用预约单</string>
     <string name="use_appoint_order">使用预约单</string>
     <string name="appoint_order_use_prompt">请开启舱门，放入衣物</string>
     <string name="appoint_order_use_start_prompt">已放入衣物，启动设备</string>
 
-    <string name="shop_detail">门店详情</string>
+    <string name="shop_detail">营业点详情</string>
     <string name="business_time">营业时间</string>
     <string name="starfish_recharge">海星充值</string>
     <string name="starfish_detail">海星明细</string>
@@ -216,7 +230,7 @@
     <string name="recharge">充值</string>
     <string name="recharge_agreement">去支付即代表您同意《海星购买协议》</string>
     <string name="reward_num">送%1$s海星</string>
-    <string name="recharge_shop_title">附近可充值门店</string>
+    <string name="recharge_shop_title">附近可充值点位</string>
     <string name="total">合计</string>
 
     <string name="empty_content">暂无内容信息</string>
@@ -243,7 +257,17 @@
 
     <string name="shop_info">商户信息</string>
 
+    <string name="navigation">导航</string>
+
     <string name="card_manager">卡管理</string>
+    <string name="water_control_code">水控码</string>
+    <string name="water_control_code_prompt">水控码前四位为您的手机尾号，水控码后四位会随机生成</string>
+    <string name="generate_water_control_code">生成水控码</string>
+    <string name="update_water_control_code">修改水控码</string>
+    <string name="close_water_control_code">关闭水控码功能</string>
+    <string name="open_water_control_code">开启水控码功能</string>
+    <string name="water_control_code_reminder">您的手机尾号为“%1$s”，系统会随机生成四位数后缀如“1123”，则水控码为“%1$s1123”，使用该水控码，在平台上任意支持水控码的水控设备上都可取水</string>
+    <string name="appointment">预约</string>
     <string name="consumption_order">消费订单</string>
     <string name="faq">常见问题</string>
     <string name="drinking_device_name">您要使用的是%1$s</string>

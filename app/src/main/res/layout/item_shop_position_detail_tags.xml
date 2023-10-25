@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_shop_position_detail_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="6dp"
+        android:background="@drawable/shape_strokeff630e_r4"
+        style="@style/Font_10_FF630E"
+        android:paddingVertical="2dp"
+        android:text="@string/shop_info"
+        tools:text="限时5折"/>
+</layout>

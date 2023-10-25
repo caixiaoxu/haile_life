@@ -62,8 +62,9 @@
                         tools:text="洗衣中" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_order_detail_desc"
                         style="@style/Font_14_black_85"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{vm.orderStatusDesc}"
                         tools:text="预计完成时间 下午16点47" />
@@ -195,7 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:text="@string/appoint_order_detail_prompt"
+                    android:text='@{@string/appoint_order_detail_prompt + ((1 == vm.orderDetail.timesOfRestart)?"":@string/appoint_order_detail_prompt2)}'
                     android:visibility="@{(!vm.isAppoint || vm.formScan)?View.GONE:View.VISIBLE}" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -211,7 +212,7 @@
                         style="@style/Font_14_black_65_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/scan_order_tips_hint"
+                        android:text="@string/friendly_reminder"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -243,8 +244,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:visibility="gone"
                         android:text="@string/drinking_order_tip3"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="@id/tv_drinking_scan_order_tip"
                         app:layout_constraintTop_toBottomOf="@id/tv_drinking_scan_order_tip2"
                         tools:text="先使用，订单结束后根据用水量扣费" />
@@ -274,6 +275,30 @@
                 android:paddingVertical="8dp"
                 android:text="@string/contact_shop"
                 android:visibility="@{vm.showContactShop?View.VISIBLE:View.GONE}" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_order_detail_coerce_device"
+                style="@style/Font_14_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_s979797_r23"
+                android:onClick="@{vm::coerceDevice}"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/coerce_device"
+                app:visibility="@{vm.showCoerceDevice &amp;&amp; 3 > vm.coerceDeviceCount}" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_order_detail_finish_order"
+                style="@style/Font_14_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_s979797_r23"
+                android:onClick="@{vm::finishOrder}"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/finish_order"
+                app:visibility="@{vm.showFinishOrder}" />
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_cancel"

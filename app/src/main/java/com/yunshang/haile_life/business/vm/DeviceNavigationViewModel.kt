@@ -5,6 +5,7 @@ import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.business.apiService.AppointmentService
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.MarketingService
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.ADEntity
 import com.yunshang.haile_life.data.entities.DeviceDetailEntity
 import com.yunshang.haile_life.data.entities.GoodsAppointmentEntity
@@ -28,6 +29,12 @@ class DeviceNavigationViewModel : BaseViewModel() {
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mAppointmentRepo = ApiRepository.apiClient(AppointmentService::class.java)
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
+
+    var categoryCode: String? = null
+
+    val isShower: Boolean
+        get() = DeviceCategory.isShower(categoryCode)
+
     val adEntity: MutableLiveData<ADEntity> by lazy {
         MutableLiveData()
     }

@@ -65,4 +65,10 @@ interface OrderService {
     @POST("/trade/queryUnPayOrder")
     suspend fun hasUnPayOrder(@Body body: RequestBody): ResponseWrapper<CreateTradeEntity>
 
+    @POST("/trade/startByOrder")
+    suspend fun startByOrder(@Body body: RequestBody): ResponseWrapper<Any>
+
+    @POST("/trade/finishByOrder")
+    suspend fun finishByOrder(@Body body: RequestBody): ResponseWrapper<Any>
+
 }

@@ -76,6 +76,7 @@ class DrinkingScanOrderActivity :
                     )
                 ) { _, childBinding, data ->
                     childBinding.item = data
+                    childBinding.isShower = false == mViewModel.isDrinking.value
                 }
             }
         }

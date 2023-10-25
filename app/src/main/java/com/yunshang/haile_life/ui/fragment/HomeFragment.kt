@@ -31,7 +31,7 @@ import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.device.DeviceNavigationActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
-import com.yunshang.haile_life.ui.activity.shop.ShopDetailActivity
+import com.yunshang.haile_life.ui.activity.shop.ShopPositionDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
@@ -255,6 +255,14 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Water))
                             })
+                    R.mipmap.icon_home_shower ->
+                        startActivity(
+                            Intent(
+                                requireContext(),
+                                DeviceNavigationActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Shower))
+                            })
                     else -> SToast.showToast(requireContext(), R.string.coming_soon)
                 }
             }
@@ -303,12 +311,12 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
         // 附近门店
         mBinding.clNearByShop.setOnClickListener {
-            mViewModel.nearStoreEntity.value?.let { nearStore ->
+            mViewModel.nearStoreEntity.value?.id?.let { nearStoreId ->
                 startActivity(Intent(
                     requireContext(),
-                    ShopDetailActivity::class.java
+                    ShopPositionDetailActivity::class.java
                 ).apply {
-                    putExtras(IntentParams.IdParams.pack(nearStore.id))
+                    putExtras(IntentParams.IdParams.pack(nearStoreId))
                 })
             }
         }

@@ -46,4 +46,6 @@ object BusEvents {
     const val CARD_BINDING_STATUS = "card_binding_status"
 
     const val SCAN_CHANGE_STATUS = "scan_change_status"
+
+    const val PROMPT_POPUP = "PROMPT_POPUP"
 }

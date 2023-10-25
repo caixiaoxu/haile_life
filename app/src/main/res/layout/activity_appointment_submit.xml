@@ -119,6 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingVertical="16dp"
+                    app:visibility="@{!vm.autoRefund}"
                     android:text="@string/appoint_submit_prompt" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
