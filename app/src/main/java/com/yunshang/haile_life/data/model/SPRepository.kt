@@ -31,6 +31,13 @@ object SPRepository {
     private val sp: SPUtils by lazy { SPUtils.getInstance(SP_NAME) }
 
     /**
+     * 判断是否同意了隐私协议
+     */
+    var isAgreeAgreement: Boolean
+        get() = sp.getBoolean(SP_AGREE_AGREEMENT, false)
+        set(value) = sp.put(SP_AGREE_AGREEMENT, value)
+
+    /**
      * 判断是否不再显示下单温馨提示
      */
     var isNoPrompt: Boolean
