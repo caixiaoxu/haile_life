@@ -131,6 +131,8 @@
     <string name="nickname">昵称</string>
     <string name="nickname_update">昵称修改</string>
     <string name="nickname_hint">请输入昵称</string>
+    <string name="contact_platform">联系平台</string>
+    <string name="platform_phone">400-015-5599</string>
     <string name="close_account">注销账户</string>
     <string name="logout">退出登录</string>
     <string name="version">版本</string>

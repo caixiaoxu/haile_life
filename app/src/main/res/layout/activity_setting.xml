@@ -73,6 +73,31 @@
                 tools:text="版本 1.0.4" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_contact_platform"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_16_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/contact_platform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_contact_platform"
+                style="@style/Font_16_black_45"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/platform_phone"
+                android:gravity="center_vertical|end" />
+        </LinearLayout>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_setting_close_account"
             style="@style/Font_16_black_85"

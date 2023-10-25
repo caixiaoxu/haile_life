@@ -2,6 +2,7 @@ package com.yunshang.haile_life.ui.activity.personal
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.View
 import com.lsy.framelib.utils.AppManager
 import com.lsy.framelib.utils.AppPackageUtils
@@ -55,6 +56,13 @@ class SettingActivity : BaseBusinessActivity<ActivitySettingBinding, SettingView
 
         mBinding.tvSettingCurVersion.text =
             "${StringUtils.getString(R.string.version)} ${AppPackageUtils.getVersionName(this)}"
+
+        mBinding.tvContactPlatform.setOnClickListener {
+            startActivity(Intent().apply {
+                action = Intent.ACTION_DIAL
+                data = Uri.parse("tel:${StringUtils.getString(R.string.platform_phone)}")
+            })
+        }
 
         mBinding.tvSettingCloseAccount.setOnClickListener {
             startActivity(Intent(this@SettingActivity, CloseAccountActivity::class.java))
