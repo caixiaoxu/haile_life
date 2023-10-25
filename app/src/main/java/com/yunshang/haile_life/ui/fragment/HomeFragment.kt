@@ -53,9 +53,6 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
 ) {
 
     private val permissions = SystemPermissionHelper.locationPermissions()
-        .plus(SystemPermissionHelper.readWritePermissions()).plus(
-            SystemPermissionHelper.phoneStatePermissions()
-        )
 
     // 权限
     private val requestMultiplePermission =
