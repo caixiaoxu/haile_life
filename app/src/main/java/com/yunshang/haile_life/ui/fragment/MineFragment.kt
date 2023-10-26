@@ -1,12 +1,15 @@
 package com.yunshang.haile_life.ui.fragment
 
 import android.content.Intent
+import android.net.Uri
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.StatusBarUtils
+import com.lsy.framelib.utils.ViewUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.MineViewModel
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.FragmentMineBinding
 import com.yunshang.haile_life.ui.activity.order.OrderListActivity
@@ -75,6 +78,25 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
         }
         mBinding.tvFunServiceWalletDiscounts.setOnClickListener {
             goDiscountCouponList()
+        }
+
+        mBinding.tvFunServiceService.setOnClickListener {
+            if (!ViewUtils.isFastDoubleClick()) {
+                // 调用系统浏览器
+                val uri: Uri = Uri.parse(Constants.SERVICE_URL)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+
+//                startActivity(Intent(requireContext(), WebViewActivity::class.java).apply {
+//                    putExtras(
+//                        IntentParams.WebViewParams.pack(
+//                            Constants.SERVICE_URL,
+//                            noCache = true
+//                        )
+//                    )
+//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                })
+            }
         }
 
         mBinding.btnMineRecharge.setOnClickListener {
