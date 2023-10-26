@@ -53,9 +53,6 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
 ) {
 
     private val permissions = SystemPermissionHelper.locationPermissions()
-        .plus(SystemPermissionHelper.readWritePermissions()).plus(
-            SystemPermissionHelper.phoneStatePermissions()
-        )
 
     // 权限
     private val requestMultiplePermission =
@@ -69,6 +66,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 }
             }
             if (isAllow) {
+                mViewModel.hasLocationPermission.value = true
                 mSharedViewModel.requestLocationInfo(requireContext())
             }
         }
@@ -107,6 +105,11 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
 
     override fun initEvent() {
         super.initEvent()
+
+        mViewModel.hasLocationPermission.observe(this) {
+            if (true == it)
+                mSharedViewModel.requestLocationInfo(requireContext())
+        }
 
         // banner
         mViewModel.adEntity.observe(this) { ad ->
@@ -309,6 +312,10 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         mBinding.clNearByShopMore.setOnClickListener {
             startActivity(Intent(requireContext(), NearByShopActivity::class.java))
         }
+        // 请求权限
+        mBinding.btnHomeNearStoresGetLocation.setOnClickListener {
+            requestMultiplePermission.launch(permissions)
+        }
         // 附近门店
         mBinding.clNearByShop.setOnClickListener {
             mViewModel.nearStoreEntity.value?.id?.let { nearStoreId ->
@@ -373,7 +380,8 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
     }
 
     override fun initData() {
-        requestMultiplePermission.launch(permissions)
+        mViewModel.hasLocationPermission.value =
+            SystemPermissionHelper.checkPermissions(requireContext(), permissions)
         mViewModel.requestData()
     }
 

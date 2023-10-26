@@ -29,6 +29,10 @@ class HomeViewModel : BaseViewModel() {
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
 
+    val hasLocationPermission: MutableLiveData<Boolean> by lazy {
+        MutableLiveData()
+    }
+
     val bigCategory = arrayListOf(
         HomeCategory(R.mipmap.icon_home_wash, R.string.home_category_wash),
         HomeCategory(R.mipmap.icon_home_hair, R.string.home_category_hair),

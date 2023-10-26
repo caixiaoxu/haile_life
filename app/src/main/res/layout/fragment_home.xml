@@ -117,8 +117,8 @@
                         android:layout_height="27dp"
                         android:layout_marginEnd="12dp"
                         android:layout_marginBottom="18dp"
-                        android:gravity="center"
                         android:background="@drawable/shape_04cee5_04dbe5_r14"
+                        android:gravity="center"
                         android:onClick="@{vm::readCurTaskMsg}"
                         android:text="@string/i_know"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -164,9 +164,25 @@
                             android:drawableEnd="@mipmap/icon_arrow_right"
                             android:gravity="center"
                             android:text="@string/more"
+                            app:visibility="@{vm.hasLocationPermission}"
                             app:layout_constraintBottom_toBottomOf="@id/tv_home_near_stores_title"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tv_home_near_stores_title" />
+
+                        <com.lsy.framelib.ui.weight.SingleTapTextView
+                            android:id="@+id/btn_home_near_stores_get_location"
+                            style="@style/Font_12_FFFFFF"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_04cee5_04dbe5_r14"
+                            android:gravity="center"
+                            app:visibility="@{!vm.hasLocationPermission}"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:text="@string/get_location"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -445,8 +461,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:visibility="gone"
-                    android:background="@drawable/shape_sffffff_r8">
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:visibility="gone">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="wrap_content"

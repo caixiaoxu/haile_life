@@ -19,4 +19,5 @@ object Constants {
 
     //海星购买协议
     val buyAgreement = "https://h5.haier-ioc.com/#/pages/private/coinPolicy"
+
 }

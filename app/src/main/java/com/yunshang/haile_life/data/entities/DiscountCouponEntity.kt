@@ -115,7 +115,7 @@ data class Promotion(
     val shopIds: List<Any>,
     val shopNames: List<Any>,
     val shopVOs: List<ShopVO>,
-    val specifiedPrice: String,
+    val specifiedPrice: Double,
     val startAt: String,
     val stock: Int,
     val title: String,
@@ -126,7 +126,13 @@ data class Promotion(
     fun discountCouponValue(): SpannableString = when (couponType) {
         1 -> "¥$reduce".let { formatValue(it, 1, it.length) }
         3 -> "${percentage}折".let { formatValue(it, 0, it.length - 1) }
-        4 -> "¥$specifiedPrice".let { formatValue(it, 1, it.length) }
+        4 -> if (0.0 == specifiedPrice) "免".let {
+            formatValue(
+                it,
+                0,
+                it.length
+            )
+        } else "¥$specifiedPrice".let { formatValue(it, 1, it.length) }
         else -> SpannableString("")
     }
 
@@ -151,7 +157,7 @@ data class Promotion(
         when (couponType) {
             1 -> "满${orderReachPrice}元可用"
             3 -> "最高抵扣${maxDiscountPrice}元"
-            4 -> if (specifiedPrice.isEmpty()) "全额减免" else "本次下单只需要支付${specifiedPrice}元"
+            4 -> if (0.0 == specifiedPrice) "全额减免" else "本次下单只需要支付${specifiedPrice}元"
             else -> ""
         }
 
