@@ -266,7 +266,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Shower))
                             })
-                    else -> SToast.showToast(requireContext(), R.string.coming_soon)
+                    else -> startActivity(Intent(requireContext(), NearByShopActivity::class.java))
                 }
             }
         }
@@ -283,7 +283,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         ) { _, childBinding, data ->
             childBinding.item = data
             childBinding.root.setOnClickListener {
-                SToast.showToast(requireContext(), "敬请期待")
+                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
             }
         }
 
