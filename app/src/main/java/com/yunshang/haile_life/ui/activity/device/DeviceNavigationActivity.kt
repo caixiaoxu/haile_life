@@ -51,7 +51,6 @@ class DeviceNavigationActivity :
             }
         }
 
-
     private fun startQRActivity(isOne: Boolean) {
         startQRCodeScan.launch(
             Intent(
@@ -69,8 +68,9 @@ class DeviceNavigationActivity :
                 // 扫码结果
                 CameraScan.parseScanResult(result.data)?.let {
                     Timber.i("二维码：$it")
+                    val originCodeTrim = it.trim()
                     val code =
-                        StringUtils.getPayCode(it) ?: if (StringUtils.isImeiCode(it)) it else null
+                        StringUtils.getPayCode(originCodeTrim) ?: if (StringUtils.isImeiCode(originCodeTrim)) it else null
                     code?.let {
                         mViewModel.requestScanResult(code) { scan, detail, appoint ->
                             if (detail.deviceErrorCode > 0) {
@@ -141,7 +141,7 @@ class DeviceNavigationActivity :
                         }
                     } ?: run {
                         // 充值码
-                        val rechargeCode = StringUtils.rechargeCode(it)
+                        val rechargeCode = StringUtils.rechargeCode(originCodeTrim)
                         rechargeCode?.let {
                             try {
                                 startActivity(
@@ -156,7 +156,7 @@ class DeviceNavigationActivity :
                             }
                         }
                         // 退款码
-                        val refundCode = StringUtils.refundCode(it)
+                        val refundCode = StringUtils.refundCode(originCodeTrim)
                         refundCode?.let {
                             startActivity(
                                 Intent(
