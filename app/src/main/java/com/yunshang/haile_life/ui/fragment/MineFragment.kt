@@ -18,6 +18,7 @@ import com.yunshang.haile_life.ui.activity.personal.SettingActivity
 import com.yunshang.haile_life.ui.activity.personal.WalletBalanceActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishShopListActivity
+import com.yunshang.haile_life.web.WebViewActivity
 
 /**
  * Title :
@@ -83,19 +84,19 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
         mBinding.tvFunServiceService.setOnClickListener {
             if (!ViewUtils.isFastDoubleClick()) {
                 // 调用系统浏览器
-                val uri: Uri = Uri.parse(Constants.SERVICE_URL)
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
+//                val uri: Uri = Uri.parse(Constants.SERVICE_URL)
+//                val intent = Intent(Intent.ACTION_VIEW, uri)
+//                startActivity(intent)
 
-//                startActivity(Intent(requireContext(), WebViewActivity::class.java).apply {
-//                    putExtras(
-//                        IntentParams.WebViewParams.pack(
-//                            Constants.SERVICE_URL,
-//                            noCache = true
-//                        )
-//                    )
-//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                })
+                startActivity(Intent(requireContext(), WebViewActivity::class.java).apply {
+                    putExtras(
+                        IntentParams.WebViewParams.pack(
+                            Constants.SERVICE_URL,
+                            noCache = true
+                        )
+                    )
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                })
             }
         }
 
