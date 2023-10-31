@@ -236,7 +236,7 @@ data class OrderEntity(
         }
 
     fun getGoodInfo(): String = if (orderItemList.isNotEmpty()) orderItemList.first()
-        .run { "${shopName}${if (positionName.isNotEmpty()) "\npositionName" else ""}\n${area}${address}\n${goodsName}" } else ""
+        .run { "${shopName}${if (positionName.isNotEmpty()) "\n${positionName}" else ""}\n${area}${address}\n${goodsName}" } else ""
 
     fun getOrderDeviceUnit(): String =
         if (orderItemList.isNotEmpty()) "${orderItemList.first().unit}分钟" else ""
