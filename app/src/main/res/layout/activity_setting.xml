@@ -36,6 +36,17 @@
             android:paddingHorizontal="16dp"
             android:text="@string/personal_info" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_setting_privacy_policy"
+            style="@style/Font_16_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@color/white"
+            android:drawableEnd="@mipmap/icon_small_arrow_right"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:text="@string/privacy_policy" />
+
         <LinearLayout
             android:id="@+id/ll_setting_version"
             android:layout_width="match_parent"
