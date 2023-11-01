@@ -184,7 +184,7 @@
     <string name="over_time_prompt1">距预约时间不足10分钟，取消后付款金额不退还，确认取消？</string>
     <string name="over_time_prompt2">距预约时间超过10分钟，取消后付款金额原路退回您的账户，已使用的优惠券等权益不返还，确认取消？</string>
     <string name="over_time_prompt3">已超过预约使用时间，取消后付款金额不退还，确认取消？</string>
-    <string name="cancel_order_prompt">您确定要取消订单吗？</string>
+    <string name="cancel_order_prompt">结束订单会导致设备停止运行，确定要停止设备运行吗？</string>
     <string name="user_account">用户账号</string>
     <string name="order_no">订单编号</string>
     <string name="go_use">去使用</string>
