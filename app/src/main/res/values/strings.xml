@@ -96,6 +96,7 @@
     <string name="mine_wallet">我的钱包</string>
     <string name="fun_service">功能服务</string>
     <string name="discount_coupon">优惠券</string>
+    <string name="online_service">在线客服</string>
     <string name="go_recharge">去充值</string>
     <string name="scan_order_wash_hint">温馨提示：请勿将宠物用品、鞋类、易损衣物放入洗衣机清洗。</string>
     <string name="scan_order_dryer_hint">温馨提示：烘干前请检查衣物是不遗留易燃易爆物品。</string>
@@ -128,6 +129,7 @@
     <string name="refund_detail">退款详情</string>
 
     <string name="system_setting">系统设置</string>
+    <string name="privacy_policy">隐私政策</string>
     <string name="personal_info">个人资料</string>
     <string name="mine_head_image">我的头像</string>
     <string name="nickname">昵称</string>

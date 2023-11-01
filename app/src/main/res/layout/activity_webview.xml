@@ -16,9 +16,14 @@
             android:layout_height="@dimen/title_action_bar_h"
             android:background="@color/white" />
 
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/webview"
+        <FrameLayout
+            android:id="@+id/fl_webview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
+
+        <!--        <com.github.lzyzsd.jsbridge.BridgeWebView-->
+        <!--            android:id="@+id/webview"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent" />-->
     </LinearLayout>
 </layout>

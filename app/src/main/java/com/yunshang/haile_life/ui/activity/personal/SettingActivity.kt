@@ -10,6 +10,7 @@ import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.SettingViewModel
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.AppVersionEntity
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
@@ -19,6 +20,7 @@ import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
+import com.yunshang.haile_life.web.WebViewActivity
 import timber.log.Timber
 import java.io.File
 
@@ -52,6 +54,12 @@ class SettingActivity : BaseBusinessActivity<ActivitySettingBinding, SettingView
 
         mBinding.tvSettingPersonalInfo.setOnClickListener {
             startActivity(Intent(this@SettingActivity, PersonalInfoActivity::class.java))
+        }
+
+        mBinding.tvSettingPrivacyPolicy.setOnClickListener {
+            startActivity(Intent(this@SettingActivity, WebViewActivity::class.java).apply {
+                putExtras(IntentParams.WebViewParams.pack(Constants.agreement))
+            })
         }
 
         mBinding.tvSettingCurVersion.text =

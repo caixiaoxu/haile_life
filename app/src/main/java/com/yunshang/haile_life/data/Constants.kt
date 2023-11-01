@@ -20,4 +20,8 @@ object Constants {
     //海星购买协议
     val buyAgreement = "https://h5.haier-ioc.com/#/pages/private/coinPolicy"
 
+    // 在线客服
+    var SERVICE_URL =
+        "https://channel-p05.xiaoshouyi.com/embeded/im/iframe-h5.html?tenantToken=a81b73704d0d2c2ba359af89a6931ef9&siteId=3003168414620269&webPageTitle=在线咨询"
+
 }

@@ -75,10 +75,11 @@ class MainActivity :
 
     private fun dealQrCode(originCode: String) {
         Timber.i("二维码：$originCode")
+        val originCodeTrim = originCode.trim()
         var code =
-            StringUtils.getPayCode(originCode)
-                ?: if (StringUtils.isImeiCode(originCode)) originCode else null
-        StringUtils.getPayImeiCode(originCode)?.let { imei ->
+            StringUtils.getPayCode(originCodeTrim)
+                ?: if (StringUtils.isImeiCode(originCodeTrim)) originCodeTrim else null
+        StringUtils.getPayImeiCode(originCodeTrim)?.let { imei ->
             code = imei
         }
 
@@ -132,7 +133,7 @@ class MainActivity :
             }
         } ?: run {
             // 充值码
-            val rechargeCode = StringUtils.rechargeCode(originCode)
+            val rechargeCode = StringUtils.rechargeCode(originCodeTrim)
             rechargeCode?.let {
                 try {
                     startActivity(
@@ -147,7 +148,7 @@ class MainActivity :
                 }
             }
             // 退款码
-            val refundCode = StringUtils.refundCode(originCode)
+            val refundCode = StringUtils.refundCode(originCodeTrim)
             refundCode?.let {
                 startActivity(
                     Intent(
