@@ -112,6 +112,8 @@ class MainActivity :
                             putExtras(IntentParams.ScanOrderParams.pack(code, scan))
                             putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo, true, 1))
                         })
+                } else if(true){ // TODO 判断是否有预约单，
+
                 } else {
                     if (DeviceCategory.isDrinkingOrShower(detail.categoryCode))
                         startActivity(

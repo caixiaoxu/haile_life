@@ -55,10 +55,18 @@
                 app:showDividers="middle">
 
                 <include
-                    android:id="@+id/include_appoint_submit_category"
-                    layout="@layout/item_scan_order_model"
-                    android:visibility="@{(null == vm.categoryList || 0 == vm.categoryList.size())?View.GONE:View.VISIBLE}"
-                    app:modelTitle="@{@string/select_category_model}" />
+                    android:id="@+id/include_scan_order_device_info"
+                    layout="@layout/include_scan_order_device_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    app:deviceCode='@{vm.deviceDetail.id+""}'
+                    app:deviceImei="@{vm.deviceDetail.imei}"
+                    app:deviceName="@{vm.deviceDetail.name}"
+                    app:hasToggle="@{true}"
+                    app:deviceType="@{vm.isDryer()?1:2}"
+                    app:isHide="@{vm.isHideDeviceInfo}"
+                    app:shopName="@{vm.deviceDetail.shopName}" />
 
                 <include
                     android:id="@+id/include_appoint_submit_spec"
@@ -72,55 +80,6 @@
                     layout="@layout/item_scan_order_model"
                     android:visibility="@{(null == vm.selectCategory)?View.GONE:View.VISIBLE}"
                     app:modelTitle="@{vm.timeTitle}" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_appoint_submit_select_devic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="16dp"
-                    android:visibility="@{(null == vm.selectCategory)?View.GONE:View.VISIBLE}">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_appoint_submit_select_device_title"
-                        style="@style/Font_14_black_85_bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{vm.deviceTitle}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="请选择洗衣设备" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Font_12_black_45"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:drawableEnd="@mipmap/icon_arrow_right"
-                        android:text="@string/please_select"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_appoint_submit_select_device_title"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tv_appoint_submit_select_device_title"
-                        tools:text="请选择" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_appoint_submit_select_device"
-                        style="@style/Font_12_black_85"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="@{vm.selectDeviceVal}"
-                        android:visibility="@{null == vm.selectDevice?View.GONE:View.VISIBLE}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_appoint_submit_select_device_title"
-                        tools:text="1号洗衣机排队10人，预计使用时间 今天16:00" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Font_12_black_45"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="16dp"
-                    app:visibility="@{!vm.autoRefund}"
-                    android:text="@string/appoint_submit_prompt" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.core.widget.NestedScrollView>

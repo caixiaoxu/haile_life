@@ -16,6 +16,7 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.AppointCategory
 import com.yunshang.haile_life.data.entities.AppointDevice
 import com.yunshang.haile_life.data.entities.AppointSpec
+import com.yunshang.haile_life.data.entities.DeviceDetailEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.rule.IOrderConfigEntity
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -59,6 +60,11 @@ class AppointmentSubmitViewModel : BaseViewModel() {
             DeviceCategory.Shoes -> com.lsy.framelib.utils.StringUtils.getString(R.string.scan_order_shoes_hint)
             else -> ""
         }
+    }
+
+    val isHideDeviceInfo:MutableLiveData<Boolean> = MutableLiveData(true)
+    val deviceDetail: MutableLiveData<DeviceDetailEntity> by lazy {
+        MutableLiveData()
     }
 
     val modelTitle: LiveData<String> = selectCategory.map {
