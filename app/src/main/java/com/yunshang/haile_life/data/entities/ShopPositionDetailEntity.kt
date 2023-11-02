@@ -10,6 +10,7 @@ import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.ShopParam
+import com.yunshang.haile_life.data.extend.hasVal
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 import java.util.*
 
@@ -26,6 +27,7 @@ import java.util.*
 data class ShopPositionDetailEntity(
     val address: String,
     val appointment: Boolean,
+    val appointmentNum: Int? = null,//TODO 可预约的数据
     val area: String,
     val distance: Double,
     val id: Int,
@@ -56,6 +58,10 @@ data class ShopPositionDetailEntity(
             FloorParam(if (it.last() == 'F' || it == "其它") it else "${it}F", it)
         })
     }
+
+    val appointmentNumVal: String
+        get() = StringUtils.getString(R.string.can_appointment) + if (appointmentNum.hasVal()) "${appointmentNum}${StringUtils.getString(R.string.unit_tai)}" else ""
+
 
     fun formatDistance(): String =
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +

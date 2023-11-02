@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.data.extend.hasVal
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 
 /**
@@ -23,6 +24,7 @@ import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 data class NearStorePositionEntity(
     val address: String? = null,
     val appointmentState: Int? = null,
+    val appointmentNum: Int? = null,//TODO 可预约的数据
     val area: String? = null,
     val distance: Double? = null,
     val id: Int? = null,
@@ -33,14 +35,22 @@ data class NearStorePositionEntity(
     val state: Int? = null,
     val workTime: String? = null
 ) : IMultiTypeEntity {
-    fun formatDistance(isJoin: Boolean = true): String =distance?.let {
+
+    val appointmentNumVal: String
+        get() = StringUtils.getString(R.string.can_appointment) + if (appointmentNum.hasVal()) "${appointmentNum}${
+            StringUtils.getString(
+                R.string.unit_tai
+            )
+        }" else ""
+
+    fun formatDistance(isJoin: Boolean = true): String = distance?.let {
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +
                 (if (distance >= 1000) String.format(
                     "%.2fkm", distance / 1000
                 ) else String.format(
                     "%.2fm", distance
                 ))
-    } ?:""
+    } ?: ""
 
     fun getAddressVal(): SpannableString {
         val distance = formatDistance()
@@ -63,10 +73,10 @@ data class NearStorePositionEntity(
     fun stateVal(): String =
         StringUtils.getString(if (1 == state) R.string.in_operation else R.string.stop_of_business)
 
-    override fun getMultiType(): Int = 0
+    override fun getMultiType(): Int = if (1 == state) 1 else 0
 
     override fun getMultiTypeBgRes(): IntArray = intArrayOf(
-        R.drawable.shape_s19ff630e_r4,
+        R.drawable.shape_s0c000000_r4,
         R.drawable.shape_s1904cee5_r4,
     )
 

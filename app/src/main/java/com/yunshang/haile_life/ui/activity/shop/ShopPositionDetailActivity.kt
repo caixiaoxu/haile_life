@@ -23,7 +23,6 @@ import com.yunshang.haile_life.business.vm.ShopPositionDetailViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.ShopPositionDeviceEntity
-import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.data.entities.TimeMarketVO
 import com.yunshang.haile_life.data.extend.hasVal
 import com.yunshang.haile_life.data.model.SPRepository
@@ -37,6 +36,7 @@ import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
+import com.yunshang.haile_life.ui.view.refresh.CommonLoadMoreRecyclerView
 import com.yunshang.haile_life.utils.MapManagerUtils
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -68,7 +68,22 @@ class ShopPositionDetailActivity :
     private val mAdapter by lazy {
         CommonRecyclerAdapter<ItemShopPositionDetailDeviceBinding, ShopPositionDeviceEntity>(
             R.layout.item_shop_position_detail_device, BR.item
-        ) { _, _, _ -> }
+        ) { mItemBinding, _, _ ->
+
+            mItemBinding?.root?.setOnClickListener {
+                if (!checkLogin()) {
+                    return@setOnClickListener
+                }
+                mViewModel.shopDetail.value?.shopId?.let {
+                    startActivity(Intent(this, AppointmentSubmitActivity::class.java).apply {
+                        putExtras(
+                            IntentParams.ShopParams.pack(it)
+                        )
+                    })
+                }
+            }
+
+        }
     }
 
     override fun layoutId(): Int = R.layout.activity_shop_position_detail
@@ -90,19 +105,13 @@ class ShopPositionDetailActivity :
 
         mViewModel.curDeviceCategory.observe(this) {
             if (mBinding.rgShopPositionDetailFloor.childCount > 0) {
-                var index =
-                    mViewModel.shopDetail.value?.floorList?.indexOfFirst { item -> item.value == it.selectFloor?.value || (item.value.isNullOrEmpty() && it.selectFloor?.value.isNullOrEmpty()) }
+                val index =
+                    mViewModel.shopDetail.value?.floorList?.indexOfFirst { item -> item.value == it.selectFloor?.value || (item.value.isEmpty() && it.selectFloor?.value.isNullOrEmpty()) }
                 if (index.hasVal()) {
                     mBinding.rgShopPositionDetailFloor.check(mBinding.rgShopPositionDetailFloor[index!!].id)
                 }
             }
-            refreshDeviceList(true, it)
-        }
-    }
-
-    private fun refreshDeviceList(refresh: Boolean, device: StoreDeviceEntity?) {
-        mViewModel.requestDeviceList(refresh, device) { list ->
-            mAdapter.refreshList(list, true)
+            mBinding.rvShopPositionDetailDevices.requestLoadMore(true)
         }
     }
 
@@ -186,23 +195,16 @@ class ShopPositionDetailActivity :
                         if (b) {
                             mViewModel.curDeviceCategory.value?.let { device ->
                                 device.selectFloor = floor
-                                refreshDeviceList(true, device)
+                                mBinding.rvShopPositionDetailDevices.requestLoadMore(true)
                             }
                         }
                     }
                     itemFloorBinding.item = floor
                     mBinding.rgShopPositionDetailFloor.addView(
                         itemFloorBinding.root, ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            DimensionUtils.dip2px(this@ShopPositionDetailActivity, 32f)
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
                         )
                     )
-                }
-
-                mBinding.tvShopPositionDetailDeviceLoadMore.setOnClickListener {
-                    mViewModel.curDeviceCategory.value?.let { device ->
-                        refreshDeviceList(false, device)
-                    }
                 }
             }
         }
@@ -295,17 +297,14 @@ class ShopPositionDetailActivity :
 
         mBinding.rvShopPositionDetailDevices.layoutManager = LinearLayoutManager(this)
         mBinding.rvShopPositionDetailDevices.adapter = mAdapter
-
-        mBinding.btnShopDetailAppoint.setOnClickListener {
-            if (!checkLogin()) {
-                return@setOnClickListener
-            }
-            mViewModel.shopDetail.value?.shopId?.let {
-                startActivity(Intent(this, AppointmentSubmitActivity::class.java).apply {
-                    putExtras(
-                        IntentParams.ShopParams.pack(it)
-                    )
-                })
+        mBinding.rvShopPositionDetailDevices.requestData = object :
+            CommonLoadMoreRecyclerView.OnRequestDataListener<ShopPositionDeviceEntity>() {
+            override fun requestData(
+                page: Int,
+                pageSize: Int,
+                callBack: (responseList: MutableList<out ShopPositionDeviceEntity>?) -> Unit
+            ) {
+                mViewModel.requestDeviceList(page, pageSize, callBack)
             }
         }
     }

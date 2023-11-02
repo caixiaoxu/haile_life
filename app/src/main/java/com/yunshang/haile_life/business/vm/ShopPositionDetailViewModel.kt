@@ -82,32 +82,42 @@ class ShopPositionDetailViewModel : BaseViewModel() {
     }
 
     fun requestDeviceList(
-        refresh: Boolean,
-        storeDevice: StoreDeviceEntity?,
-        callback: (list: MutableList<ShopPositionDeviceEntity>) -> Unit
+        page: Int,
+        pageSize: Int,
+        callback: ((responseList: MutableList<out ShopPositionDeviceEntity>?) -> Unit)? = null
     ) {
-        if (null == storeDevice) return
+        if (null == curDeviceCategory.value) return
         launch({
-            if (refresh) {
-                storeDevice.page = 1
-            }
-
             ApiRepository.dealApiResult(
                 mShopRepo.requestPositionDeviceList(
                     ApiRepository.createRequestBody(
                         hashMapOf(
-                            "page" to storeDevice.page,
-                            "pageSize" to 20,
+                            "page" to page,
+                            "pageSize" to pageSize,
                             "positionId" to positionId,
-                            "categoryCode" to storeDevice.categoryCode,
-                            "floorCode" to storeDevice.selectFloor?.value
+                            "categoryCode" to curDeviceCategory.value?.categoryCode,
+                            "floorCode" to curDeviceCategory.value?.selectFloor?.value
                         )
                     )
                 )
             )?.let {
-                storeDevice.refreshDeviceList(refresh, it.items, it.total)
+                val list = mutableListOf<ShopPositionDeviceEntity>()
+                it.items?.let {
+                    list.addAll(it)
+                    list.addAll(it)
+                    list.addAll(it)
+                    list.addAll(it)
+                    list.addAll(it)
+                    list.addAll(it)
+                    list.addAll(it)
+                    list.addAll(it)
+                    list.addAll(it)
+                    list.addAll(it)
+                    list.addAll(it)
+                }
+                curDeviceCategory.value?.refreshDeviceList(1 == page, list, it.total)
                 withContext(Dispatchers.Main) {
-                    callback(storeDevice.deviceList)
+                    callback?.invoke(list)
                 }
             }
         })

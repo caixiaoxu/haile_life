@@ -112,6 +112,7 @@ class CommonLoadMoreRecyclerView<D> @JvmOverloads constructor(
      */
     fun requestLoadMore(isRefresh: Boolean = false, isLoadMoreLayout: Boolean = true) {
         if (isRefresh) {
+            mBinding.refreshLayout.setEnableLoadMore(true)
             requestData(true)
         } else {
             if (isLoadMoreLayout) {

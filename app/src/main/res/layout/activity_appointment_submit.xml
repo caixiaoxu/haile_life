@@ -81,7 +81,6 @@
                     android:visibility="@{(null == vm.selectCategory)?View.GONE:View.VISIBLE}"
                     app:modelTitle="@{vm.timeTitle}" />
             </androidx.appcompat.widget.LinearLayoutCompat>
-
         </androidx.core.widget.NestedScrollView>
 
         <View

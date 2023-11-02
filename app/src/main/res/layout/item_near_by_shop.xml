@@ -73,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
             app:divider="@drawable/divide_size4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_near_by_shop_address"
@@ -85,19 +86,17 @@
                 android:src="@mipmap/icon_near_by_shop_starfish"
                 android:visibility="@{item.rechargeFlag?View.VISIBLE:View.GONE}" />
 
-            <com.yunshang.haile_life.ui.view.MultiTypeTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_near_by_shop_appoint"
                 style="@style/Font_10_FF630E"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="6dp"
                 android:paddingVertical="2dp"
-                android:text="@string/can_appointment"
-                android:visibility="@{1 == item.appointmentState?View.VISIBLE:View.GONE}"
-                app:bgResIds="@{item.multiTypeBgRes}"
-                app:txtColors="@{item.multiTypeTxtColors}"
-                app:type="@{0}"
-                tools:background="@drawable/shape_s19ff630e_r4" />
+                android:text="@{item.appointmentNumVal}"
+                app:visibility="@{1 == item.appointmentState}"
+                tools:text="可预约 2台"
+                android:background="@drawable/shape_strokeff630e_r4" />
 
             <com.yunshang.haile_life.ui.view.MultiTypeTextView
                 android:id="@+id/tv_near_by_shop_business"
@@ -109,7 +108,8 @@
                 android:text="@{item.stateVal()}"
                 app:bgResIds="@{item.multiTypeBgRes}"
                 app:txtColors="@{item.multiTypeTxtColors}"
-                app:type="@{1}"
+                app:type="@{item.multiType}"
+                tools:text="营业中"
                 tools:background="@drawable/shape_s1904cee5_r4" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
