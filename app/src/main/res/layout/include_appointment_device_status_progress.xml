@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/include_appointment_device_status">
+
+    <data>
+
+        <variable
+            name="index"
+            type="java.lang.Integer" />
+
+        <variable
+            name="status"
+            type="java.lang.String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="12dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text='@{"第" + index + "笔订单" + "（"+ status +"）"}'
+            app:visibility="@{null != index}"
+            tools:text="第1笔订单（正在进行）" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:background="@drawable/shape_sf9f9f9_r8">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_name1"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/orders"
+                app:layout_constraintBottom_toTopOf="@id/view_device_status_progress_dot1"
+                app:layout_constraintEnd_toStartOf="@id/tv_device_status_progress_name2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/color_d8d8d8"
+                app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot1"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name1"
+                app:layout_constraintStart_toEndOf="@id/view_device_status_progress_dot1"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot1"
+                tools:backgroundTint="@color/secondColorPrimary" />
+
+            <View
+                android:id="@+id/view_device_status_progress_dot1"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/shape_sd8d8d8_dot"
+                app:layout_constraintBottom_toTopOf="@id/tv_device_status_progress_time1"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name1"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name1"
+                app:layout_constraintTop_toBottomOf="@id/tv_device_status_progress_name1"
+                tools:backgroundTint="@color/secondColorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_time1"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name1"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name1"
+                app:layout_constraintTop_toBottomOf="@id/view_device_status_progress_dot1"
+                tools:text="17:00" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_name2"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/verify"
+                app:layout_constraintEnd_toStartOf="@id/tv_device_status_progress_name3"
+                app:layout_constraintStart_toEndOf="@id/tv_device_status_progress_name1"
+                app:layout_constraintTop_toTopOf="@id/tv_device_status_progress_name1" />
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/color_d8d8d8"
+                app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot2"
+                app:layout_constraintEnd_toStartOf="@id/view_device_status_progress_dot2"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name2"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot2" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/color_d8d8d8"
+                app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot2"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name2"
+                app:layout_constraintStart_toEndOf="@id/view_device_status_progress_dot2"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot2" />
+
+            <View
+                android:id="@+id/view_device_status_progress_dot2"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/shape_sd8d8d8_dot"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name2"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name2"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_time2"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name2"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name2"
+                app:layout_constraintTop_toTopOf="@id/tv_device_status_progress_time1"
+                tools:text="17:00" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_name3"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/canister_self_cleaning"
+                app:layout_constraintEnd_toStartOf="@id/tv_device_status_progress_name4"
+                app:layout_constraintStart_toEndOf="@id/tv_device_status_progress_name2"
+                app:layout_constraintTop_toTopOf="@id/tv_device_status_progress_name1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/color_d8d8d8"
+                app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot3"
+                app:layout_constraintEnd_toStartOf="@id/view_device_status_progress_dot3"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name3"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot3" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/color_d8d8d8"
+                app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot3"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name3"
+                app:layout_constraintStart_toEndOf="@id/view_device_status_progress_dot3"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot3" />
+
+            <View
+                android:id="@+id/view_device_status_progress_dot3"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/shape_sd8d8d8_dot"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name3"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name3"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_time3"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name3"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name3"
+                app:layout_constraintTop_toTopOf="@id/tv_device_status_progress_time1"
+                tools:text="17:00" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_name4"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/pay"
+                app:layout_constraintEnd_toStartOf="@id/tv_device_status_progress_name5"
+                app:layout_constraintStart_toEndOf="@id/tv_device_status_progress_name3"
+                app:layout_constraintTop_toTopOf="@id/tv_device_status_progress_name1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/color_d8d8d8"
+                app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot4"
+                app:layout_constraintEnd_toStartOf="@id/view_device_status_progress_dot4"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name4"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot4" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/color_d8d8d8"
+                app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot4"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name4"
+                app:layout_constraintStart_toEndOf="@id/view_device_status_progress_dot4"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot4" />
+
+            <View
+                android:id="@+id/view_device_status_progress_dot4"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/shape_sd8d8d8_dot"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name4"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name4"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_time4"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name4"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name4"
+                app:layout_constraintTop_toTopOf="@id/tv_device_status_progress_time1"
+                tools:text="17:00" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_name5"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/device_run"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_device_status_progress_name4"
+                app:layout_constraintTop_toTopOf="@id/tv_device_status_progress_name1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/color_d8d8d8"
+                app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot5"
+                app:layout_constraintEnd_toStartOf="@id/view_device_status_progress_dot5"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name5"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot5" />
+
+            <View
+                android:id="@+id/view_device_status_progress_dot5"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/shape_sd8d8d8_dot"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name5"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name5"
+                app:layout_constraintTop_toTopOf="@id/view_device_status_progress_dot1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_status_progress_time5"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name5"
+                app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name5"
+                app:layout_constraintTop_toTopOf="@id/tv_device_status_progress_time1"
+                tools:text="17:00" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.yunshang.haile_life.utils.string.StringUtils" />
+
+        <variable
+            name="title"
+            type="java.lang.String" />
+
+        <variable
+            name="content"
+            type="java.lang.String" />
+
+        <variable
+            name="tail"
+            type="java.lang.String" />
+
+        <variable
+            name="canCopy"
+            type="java.lang.Boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_45"
+            android:layout_width="wrap_content"
+            android:minWidth="58dp"
+            android:layout_height="wrap_content"
+            android:text="@{title}"
+            tools:text="订单号：" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@{content}"
+            tools:text="NOWNR124823840293849023" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:visibility="@{null != tail &amp;&amp; tail.length() > 0}"
+            android:text="@{tail}"
+            tools:text="¥5"
+            style="@style/Font_14_ff630e_bold"/>
+
+        <com.lsy.framelib.ui.weight.SingleTapTextView
+            style="@style/font_14_04D1E5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:visibility="gone"
+            android:onClick="@{v->StringUtils.copyToShear(content)}"
+            android:text="@string/copy"
+            app:visibility="@{canCopy}" />
+    </LinearLayout>
+</layout>

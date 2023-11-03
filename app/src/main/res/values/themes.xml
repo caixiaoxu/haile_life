@@ -137,6 +137,11 @@
         <item name="android:textColor">@color/color_333333</item>
     </style>
 
+    <style name="Font_12_72333333">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_72333333</item>
+    </style>
+
     <style name="Font_12_black_65">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/color_black_65</item>
@@ -314,6 +319,11 @@
     <style name="Font_16_ff630e">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/color_ff630e</item>
+    </style>
+
+    <style name="Font_17_black_85">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
     </style>
 
     <style name="Font_18_04cee5">

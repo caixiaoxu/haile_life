@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_appointment_submit">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/device_cur_status"
+            app:layout_constraintBottom_toBottomOf="@id/tv_device_status_refresh"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_device_status_refresh" />
+
+        <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:id="@+id/tv_device_status_refresh"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/icon_device_status_refresh"
+            android:drawablePadding="4dp"
+            android:text="@string/refresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_device_status_refresh">
+
+            <include
+                layout="@layout/include_appointment_device_status_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.yunshang.haile_life.ui.view.CustomChildListLinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

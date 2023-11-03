@@ -15,7 +15,9 @@
     <string name="device">设备</string>
     <string name="num">数量</string>
     <string name="idle">空闲</string>
+    <string name="copy">复制</string>
     <string name="in_use">使用中</string>
+    <string name="device_in_use">设备使用中</string>
     <string name="occupy">占用</string>
     <string name="distance">距离</string>
     <string name="you">您</string>
@@ -29,6 +31,19 @@
     <string name="scan">扫码</string>
     <string name="coming_soon">敬请期待</string>
     <string name="please_input">请输入</string>
+    <string name="refresh">刷新</string>
+    <string name="orders">下单</string>
+    <string name="verify">验证</string>
+    <string name="verify_device">验证机器</string>
+    <string name="canister_self_cleaning">筒自洁</string>
+    <string name="pay">支付</string>
+    <string name="device_run">设备运行</string>
+    <string name="device_running">设备运行中</string>
+    <string name="check_reason">查看原因</string>
+    <string name="appointment_success">预约成功</string>
+    <string name="already_appointment_success">已预约成功</string>
+    <string name="service">服务</string>
+    <string name="discounts">优惠</string>
 
     <string name="agreement_hint">根据国家法律法规的要求，我们更新了《隐私政策》，帮助您了解我们收集、使用、存储和共享个人信息的情况，特别是我们所采集的个人信息类型及用途，同时您还可以了解到您所共享的相关权利和实现途径，以及我们为了保护好您的个人信息安全所采取的相关策略。</string>
     <string name="login_title">登录海乐生活</string>
@@ -42,6 +57,7 @@
     <string name="send_code">发送验证码</string>
     <string name="send_again">再次发送</string>
     <string name="send_again1">重新获取</string>
+    <string name="send_again2">重新发送</string>
     <string name="phone_empty">请先输入手机号</string>
     <string name="password_empty">请先输入密码</string>
     <string name="code_empty">请先输入验证码</string>
@@ -78,11 +94,13 @@
     <string name="home_category_cloth_manager">衣物管家</string>
     <string name="home_category_student_entrepreneurship">学生创业</string>
     <string name="nearby_stores">附近营业点</string>
+    <string name="outlet">营业点</string>
     <string name="nearby_stores_desc">体验洗衣先生的专业洗护</string>
     <string name="home_guide">自助洗烘指南</string>
     <string name="home_guide_desc">遇到问题来这里快速解决</string>
     <string name="can_appointment">可预约</string>
     <string name="can_not_appointment">不可预约</string>
+    <string name="device_can_not_appointment">设备无法预约</string>
     <string name="in_operation">营业中</string>
     <string name="stop_of_business">停业中</string>
     <string name="wallet_balance">钱包余额</string>
@@ -120,6 +138,9 @@
     <string name="appoint_device_queue_use_time">%1$s排队%2$d人，预计使用时间</string>
     <string name="appoint_order_detail_prompt">温馨提示：\n1、到店后可用微信/支付宝/海乐生活APP扫码解锁设备。\n2、因自身原因超时未使用的订单将无法退款。</string>
     <string name="appoint_order_detail_prompt2">\n2、因自身原因超时未使用的订单将无法退款。</string>
+
+    <string name="device_cur_status">设备当前状态</string>
+    <string name="mine_order_status">我的订单状态</string>
 
     <string name="refund_record">退款记录</string>
     <string name="recharge_record">充值记录</string>
@@ -188,12 +209,16 @@
     <string name="cancel_order_prompt">结束订单会导致设备停止运行，确定要停止设备运行吗？</string>
     <string name="user_account">用户账号</string>
     <string name="order_no">订单编号</string>
+    <string name="order_no1">订单号</string>
     <string name="go_use">去使用</string>
     <string name="cutoff_prompt">%1$d天后到期</string>
     <string name="used">已使用</string>
     <string name="expired">已过期</string>
 
     <string name="appointment_order">预约订单</string>
+    <string name="order_info">订单信息</string>
+    <string name="appointment_success_prompt">前面订单结束，设备状态变为空闲时，预约订单方可进行验证，请注意查收消息，海乐会及时通知您使用哦</string>
+    <string name="appointment_order_verify_code_prompt">请输入机器屏幕上的验证码</string>
     <string name="order_detail">订单详情</string>
     <string name="copy_order_no">复制订单号</string>
     <string name="total_price">总金额</string>

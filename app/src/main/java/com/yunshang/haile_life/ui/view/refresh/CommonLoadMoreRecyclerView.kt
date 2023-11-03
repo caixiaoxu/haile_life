@@ -144,7 +144,7 @@ class CommonLoadMoreRecyclerView<D> @JvmOverloads constructor(
         }
 
         // 自定义处理
-        if (true == requestData?.onLoadMore(it)) {
+        if (true == requestData?.onLoadMore(isRefresh, it)) {
             return
         }
 
@@ -181,6 +181,6 @@ class CommonLoadMoreRecyclerView<D> @JvmOverloads constructor(
          * @param responseList 返回的列表数据
          * @return 是否拦截后续操作
          */
-        fun onLoadMore(responseList: MutableList<out D>): Boolean = false
+        open fun onLoadMore(isRefresh: Boolean, responseList: MutableList<out D>): Boolean = false
     }
 }

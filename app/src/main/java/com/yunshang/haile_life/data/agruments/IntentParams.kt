@@ -284,18 +284,25 @@ object IntentParams {
     }
 
     object DeviceParams {
+        private const val DeviceId = "deviceId"
         private const val CategoryCode = "categoryCode"
 
         /**
          * 包装参数
          */
-        fun pack(categoryCode: String?): Bundle =
+        fun pack(categoryCode: String? = null, deviceId: Int? = null): Bundle =
             Bundle().apply {
-                putString(CategoryCode, categoryCode)
+                categoryCode?.let {
+                    putString(CategoryCode, categoryCode)
+                }
+                deviceId?.let {
+                    putInt(DeviceId, deviceId)
+                }
             }
 
-
         fun parseCategoryCode(intent: Intent): String? = intent.getStringExtra(CategoryCode)
+
+        fun parseDeviceId(intent: Intent): Int = intent.getIntExtra(DeviceId, -1)
     }
 
     object DiscountCouponSelectorParams {

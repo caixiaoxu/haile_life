@@ -40,19 +40,15 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:overScrollMode="never"
-            app:layout_constraintBottom_toTopOf="@id/view_appoint_submit_bottom"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@id/view_no_appoint_bottom"
             app:layout_constraintTop_toBottomOf="@id/tv_appoint_submit_hint">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <LinearLayout
                 android:id="@+id/ll_appoint_submit_configs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                app:divider="@drawable/divder_efefef"
-                app:dividerPadding="12dp"
-                app:showDividers="middle">
+                android:orientation="vertical">
 
                 <include
                     android:id="@+id/include_scan_order_device_info"
@@ -60,28 +56,69 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
                     app:deviceCode='@{vm.deviceDetail.id+""}'
                     app:deviceImei="@{vm.deviceDetail.imei}"
                     app:deviceName="@{vm.deviceDetail.name}"
+                    app:deviceType="@{1}"
                     app:hasToggle="@{true}"
-                    app:deviceType="@{vm.isDryer()?1:2}"
                     app:isHide="@{vm.isHideDeviceInfo}"
                     app:shopName="@{vm.deviceDetail.shopName}" />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_marginHorizontal="16dp" />
+
+                <include
+                    android:id="@+id/include_appointment_device_status"
+                    layout="@layout/include_appointment_device_status" />
 
                 <include
                     android:id="@+id/include_appoint_submit_spec"
                     layout="@layout/item_scan_order_model"
-                    android:visibility="@{(null == vm.selectCategory)?View.GONE:View.VISIBLE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:desc="@{vm.selectSpec.feature}"
                     app:modelTitle="@{vm.modelTitle}" />
 
                 <include
                     android:id="@+id/include_appoint_submit_minute"
                     layout="@layout/item_scan_order_model"
-                    android:visibility="@{(null == vm.selectCategory)?View.GONE:View.VISIBLE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:modelTitle="@{vm.timeTitle}" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:id="@+id/view_no_appoint_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            app:layout_constraintBottom_toTopOf="@id/view_appoint_submit_bottom"
+            android:background="@color/color_appoint_bg"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:drawableStart="@mipmap/icon_refund_list_prompt"
+            android:drawablePadding="8dp"
+            app:layout_constraintStart_toStartOf="@id/view_no_appoint_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom"
+            app:layout_constraintBottom_toBottomOf="@id/view_no_appoint_bottom"
+            android:text="@string/device_can_not_appointment"
+            style="@style/Font_14_black_85"/>
+
+        <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Font_14_ff630e"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="@id/view_no_appoint_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom"
+            app:layout_constraintBottom_toBottomOf="@id/view_no_appoint_bottom"
+            android:text="@string/check_reason"/>
 
         <View
             android:id="@+id/view_appoint_submit_bottom"
@@ -120,13 +157,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/money"
-            android:visibility="@{null == vm.selectDevice?View.GONE:View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/view_appoint_submit_selected"
             app:layout_constraintEnd_toStartOf="@id/view_appoint_submit_selected"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/view_appoint_submit_selected"
             app:layout_constraintVertical_chainStyle="spread"
-            app:tMoney='@{vm.selectDevice.price}'
             tools:text="￥ 5.00" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

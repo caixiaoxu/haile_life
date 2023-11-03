@@ -14,6 +14,7 @@ data class DeviceDetailEntity(
     val amount: Int,
     val brandId: Int,
     val categoryCode: String,
+    val categoryCodeName: String,
     val categoryId: Int,
     val chargeUnit: Int,
     val code: String,

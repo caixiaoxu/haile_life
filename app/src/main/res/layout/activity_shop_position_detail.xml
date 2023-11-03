@@ -30,6 +30,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar_shop_position_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/page_bg"
@@ -39,6 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginBottom="8dp"
                     app:layout_scrollFlags="scroll">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -187,7 +189,6 @@
                     android:id="@+id/indicator_shop_position_detail_device_category"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    android:layout_marginTop="8dp"
                     android:background="@color/white"
                     android:paddingHorizontal="16dp"
                     app:visibility="@{null != vm.shopDetail.positionDeviceDetailList &amp;&amp; vm.shopDetail.positionDeviceDetailList.size() > 0}" />
@@ -224,9 +225,7 @@
                         android:id="@+id/rv_shop_position_detail_devices"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                        android:background="@color/white" />
+                        android:layout_weight="1" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

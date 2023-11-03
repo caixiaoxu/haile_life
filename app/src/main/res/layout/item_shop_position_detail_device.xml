@@ -18,7 +18,7 @@
         android:paddingVertical="16dp"
         android:paddingStart="12dp"
         android:paddingEnd="16dp"
-        tools:background="@color/white">
+        android:background="@drawable/shape_bottom_stroke_dividing_efefef">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_shop_position_detail_device_name"

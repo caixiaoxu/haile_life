@@ -214,6 +214,7 @@
             android:id="@+id/btn_device_navigation_faq"
             android:layout_width="88dp"
             android:layout_height="88dp"
+            android:visibility="gone"
             android:background="@drawable/shape_sffffff_r8"
             app:height="@{itemWH}"
             app:width="@{itemWH}" />
@@ -226,6 +227,7 @@
             android:drawablePadding="6dp"
             android:gravity="center"
             android:text="@string/faq"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/btn_device_navigation_faq"
             app:layout_constraintEnd_toEndOf="@id/btn_device_navigation_faq"
             app:layout_constraintStart_toStartOf="@id/btn_device_navigation_faq"

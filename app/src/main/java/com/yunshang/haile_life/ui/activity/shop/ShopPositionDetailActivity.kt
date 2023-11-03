@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.AppBarLayout
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
@@ -68,7 +70,7 @@ class ShopPositionDetailActivity :
     private val mAdapter by lazy {
         CommonRecyclerAdapter<ItemShopPositionDetailDeviceBinding, ShopPositionDeviceEntity>(
             R.layout.item_shop_position_detail_device, BR.item
-        ) { mItemBinding, _, _ ->
+        ) { mItemBinding, _, item ->
 
             mItemBinding?.root?.setOnClickListener {
                 if (!checkLogin()) {
@@ -77,12 +79,11 @@ class ShopPositionDetailActivity :
                 mViewModel.shopDetail.value?.shopId?.let {
                     startActivity(Intent(this, AppointmentSubmitActivity::class.java).apply {
                         putExtras(
-                            IntentParams.ShopParams.pack(it)
+                            IntentParams.DeviceParams.pack(deviceId = item.id)
                         )
                     })
                 }
             }
-
         }
     }
 
@@ -305,6 +306,20 @@ class ShopPositionDetailActivity :
                 callBack: (responseList: MutableList<out ShopPositionDeviceEntity>?) -> Unit
             ) {
                 mViewModel.requestDeviceList(page, pageSize, callBack)
+            }
+
+            override fun onLoadMore(
+                isRefresh: Boolean,
+                responseList: MutableList<out ShopPositionDeviceEntity>
+            ): Boolean {
+                if (isRefresh && responseList.isEmpty()) {
+                    val behavior =
+                        (mBinding.appbarShopPositionDetail.layoutParams as CoordinatorLayout.LayoutParams).behavior
+                    if (behavior is AppBarLayout.Behavior) {
+                        behavior.topAndBottomOffset = 0 //快熟滑动到顶部
+                    }
+                }
+                return false
             }
         }
     }
