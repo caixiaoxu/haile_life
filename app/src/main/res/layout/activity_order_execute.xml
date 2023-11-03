@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.OrderExecuteViewModel" />
@@ -12,8 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@drawable/bg_appointment_success"
+        android:orientation="vertical"
         tools:context=".ui.activity.order.OrderExecuteActivity">
 
         <com.yunshang.haile_life.ui.view.CommonTitleActionBar
@@ -26,6 +27,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:paddingHorizontal="16dp"
             android:scrollbars="none">
 
@@ -36,7 +38,95 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="42dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:paddingTop="58dp"
+                    android:paddingBottom="28dp">
+
+                    <com.yunshang.haile_life.ui.view.RingCountDown
+                        android:id="@+id/cd_order_execute_time"
+                        android:layout_width="144dp"
+                        android:layout_height="144dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:progressVal="75"
+                        app:totalVal="100" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_order_execute_time_prompt"
+                        style="@style/Font_20_black_85_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="42dp"
+                        android:text="@string/order_execute_time_prompt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cd_order_execute_time" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_order_execute_prompt"
+                        style="@style/Font_14_black_45"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="42dp"
+                        android:gravity="center"
+                        android:text="@string/order_execute_prompt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_order_execute_time_prompt" />
+
+                    <com.lsy.framelib.ui.weight.SingleTapTextView
+                        android:id="@+id/tv_order_execute_coerce_device"
+                        style="@style/font_14_04D1E5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="45dp"
+                        android:paddingHorizontal="19dp"
+                        android:text="@string/coerce_device"
+                        app:layout_constraintEnd_toStartOf="@id/tv_order_execute_contact_shop"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_order_execute_prompt" />
+
+                    <com.lsy.framelib.ui.weight.SingleTapTextView
+                        android:id="@+id/tv_order_execute_contact_shop"
+                        style="@style/font_14_04D1E5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="19dp"
+                        android:text="@string/contact_shop"
+                        app:layout_constraintEnd_toStartOf="@id/tv_order_execute_finish_order"
+                        app:layout_constraintStart_toEndOf="@id/tv_order_execute_coerce_device"
+                        app:layout_constraintTop_toTopOf="@id/tv_order_execute_coerce_device" />
+
+                    <com.lsy.framelib.ui.weight.SingleTapTextView
+                        android:id="@+id/tv_order_execute_finish_order"
+                        style="@style/font_14_04D1E5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="19dp"
+                        android:text="@string/finish_order"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_order_execute_contact_shop"
+                        app:layout_constraintTop_toTopOf="@id/tv_order_execute_coerce_device" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:background="@color/color_cccccc"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
+                        app:layout_constraintStart_toStartOf="@id/tv_order_execute_contact_shop"
+                        app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:background="@color/color_cccccc"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
+                        app:layout_constraintEnd_toEndOf="@id/tv_order_execute_contact_shop"
+                        app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

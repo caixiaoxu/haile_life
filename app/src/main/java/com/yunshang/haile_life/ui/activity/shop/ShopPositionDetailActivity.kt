@@ -37,6 +37,7 @@ import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
+import com.yunshang.haile_life.ui.view.dialog.OrderSelectorDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 import com.yunshang.haile_life.ui.view.refresh.CommonLoadMoreRecyclerView
 import com.yunshang.haile_life.utils.MapManagerUtils
@@ -76,13 +77,16 @@ class ShopPositionDetailActivity :
                 if (!checkLogin()) {
                     return@setOnClickListener
                 }
-                mViewModel.shopDetail.value?.shopId?.let {
-                    startActivity(Intent(this, AppointmentSubmitActivity::class.java).apply {
-                        putExtras(
-                            IntentParams.DeviceParams.pack(deviceId = item.id)
-                        )
-                    })
-                }
+
+                OrderSelectorDialog.Builder(){}.build().show(supportFragmentManager)
+
+//                mViewModel.shopDetail.value?.shopId?.let {
+//                    startActivity(Intent(this, AppointmentSubmitActivity::class.java).apply {
+//                        putExtras(
+//                            IntentParams.DeviceParams.pack(deviceId = item.id)
+//                        )
+//                    })
+//                }
             }
         }
     }

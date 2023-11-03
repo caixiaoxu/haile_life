@@ -177,6 +177,7 @@
     <string name="no_prompt">不再提示</string>
     <string name="special_device_prompt">在提交订单后，按洗衣机上的桶自洁按键，会导致设备不能正常使用。若需要桶自洁，请在提交订单前操作。</string>
     <string name="submit_order">提交订单</string>
+    <string name="submit_order_prompt">请在规定时间内支付，否则订单将会取消</string>
     <string name="go_pay">去支付</string>
     <string name="good_discount">分摊优惠</string>
     <string name="actually_paid">小记</string>
@@ -238,6 +239,9 @@
     <string name="use_appoint_order">使用预约单</string>
     <string name="appoint_order_use_prompt">请开启舱门，放入衣物</string>
     <string name="appoint_order_use_start_prompt">已放入衣物，启动设备</string>
+
+    <string name="order_execute_time_prompt">预计剩余时间（分钟）</string>
+    <string name="order_execute_prompt">衣物面料、衣物量等会影响运行失常，预计剩余时间仅供参考，请以实际时间为准！</string>
 
     <string name="shop_detail">营业点详情</string>
     <string name="business_time">营业时间</string>

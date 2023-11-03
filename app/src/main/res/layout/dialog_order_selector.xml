@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_rt8">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_selector_title"
+            style="@style/Font_18_black_85_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="浙传生活区1号洗衣机" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@color/white"
+            android:src="@mipmap/icon_close_x"
+            app:layout_constraintBottom_toBottomOf="@id/tv_order_selector_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_order_selector_title" />
+
+        <View
+            style="@style/DividingStyle"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_order_selector_title"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_order_selector_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="44dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_selector_title">
+
+            <include
+                android:id="@+id/include_order_selector_device_status"
+                layout="@layout/include_appointment_device_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_order_selector_title" />
+
+            <View
+                style="@style/DividingStyle"
+                android:layout_marginHorizontal="16dp" />
+
+            <include
+                android:id="@+id/include_order_selector_spec"
+                layout="@layout/item_scan_order_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                app:desc='@{"描述"}'
+                app:layout_constraintTop_toBottomOf="@id/include_order_selector_device_status"
+                app:modelTitle='@{"模式"}' />
+
+            <View
+                style="@style/DividingStyle"
+                android:layout_marginHorizontal="16dp" />
+
+            <include
+                android:id="@+id/include_appoint_submit_minute"
+                layout="@layout/item_scan_order_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                app:modelTitle='@{"时长"}' />
+
+            <View
+                style="@style/DividingStyle"
+                android:layout_marginHorizontal="16dp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <View
+            android:id="@+id/view_no_appoint_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@color/color_appoint_bg"
+            app:layout_constraintTop_toBottomOf="@id/ll_order_selector_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:drawableStart="@mipmap/icon_refund_list_prompt"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="@string/device_can_not_appointment"
+            app:layout_constraintBottom_toBottomOf="@id/view_no_appoint_bottom"
+            app:layout_constraintStart_toStartOf="@id/view_no_appoint_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom" />
+
+        <com.lsy.framelib.ui.weight.SingleTapTextView
+            style="@style/Font_14_ff630e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/check_reason"
+            app:layout_constraintBottom_toBottomOf="@id/view_no_appoint_bottom"
+            app:layout_constraintEnd_toEndOf="@id/view_no_appoint_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom" />
+
+        <View
+            android:id="@+id/view_appoint_submit_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            android:background="@drawable/shape_top_stroke_dividing"
+            app:layout_constraintTop_toBottomOf="@id/view_no_appoint_bottom" />
+
+        <View
+            android:id="@+id/view_order_select_submit_selected"
+            android:layout_width="132dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:background="@{false?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
+            app:layout_constraintEnd_toEndOf="@id/view_appoint_submit_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_appoint_submit_bottom" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_16_white_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@mipmap/icon_order_submit_right"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:text="@string/selected"
+            app:layout_constraintBottom_toBottomOf="@id/view_order_select_submit_selected"
+            app:layout_constraintEnd_toEndOf="@id/view_order_select_submit_selected"
+            app:layout_constraintStart_toStartOf="@id/view_order_select_submit_selected"
+            app:layout_constraintTop_toTopOf="@id/view_order_select_submit_selected" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_selector_submit_price"
+            style="@style/Font_20_black_85"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/money"
+            app:layout_constraintBottom_toBottomOf="@id/view_order_select_submit_selected"
+            app:layout_constraintEnd_toStartOf="@id/view_order_select_submit_selected"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_order_select_submit_selected"
+            app:layout_constraintVertical_chainStyle="spread"
+            tools:text="￥ 5.00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

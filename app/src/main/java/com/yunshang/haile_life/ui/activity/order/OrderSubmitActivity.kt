@@ -11,10 +11,7 @@ import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
-import com.lsy.framelib.utils.AppManager
-import com.lsy.framelib.utils.DimensionUtils
-import com.lsy.framelib.utils.SToast
-import com.lsy.framelib.utils.StringUtils
+import com.lsy.framelib.utils.*
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
@@ -58,6 +55,8 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                 mViewModel.requestData()
             }
         }
+
+    override fun isFullScreen(): Boolean  = true
 
     override fun layoutId(): Int = R.layout.activity_order_submit
 
@@ -329,7 +328,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
     }
 
     override fun initView() {
-        window.statusBarColor = Color.WHITE
+        mBinding.root.setPadding(0, StatusBarUtils.getStatusBarHeight(), 0, 0)
 
         mBinding.includeOrderSubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
             changePayWay()
