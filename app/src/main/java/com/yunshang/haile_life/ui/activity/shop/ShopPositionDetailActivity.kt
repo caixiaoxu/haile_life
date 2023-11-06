@@ -34,10 +34,9 @@ import com.yunshang.haile_life.databinding.ItemShopPositionDetailFloorBinding
 import com.yunshang.haile_life.databinding.ItemShopPositionDetailTagsBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
-import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
-import com.yunshang.haile_life.ui.view.dialog.OrderSelectorDialog
+import com.yunshang.haile_life.ui.view.dialog.AppointmentOrderSelectorDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 import com.yunshang.haile_life.ui.view.refresh.CommonLoadMoreRecyclerView
 import com.yunshang.haile_life.utils.MapManagerUtils
@@ -78,15 +77,15 @@ class ShopPositionDetailActivity :
                     return@setOnClickListener
                 }
 
-                OrderSelectorDialog.Builder(){}.build().show(supportFragmentManager)
-
-//                mViewModel.shopDetail.value?.shopId?.let {
-//                    startActivity(Intent(this, AppointmentSubmitActivity::class.java).apply {
-//                        putExtras(
-//                            IntentParams.DeviceParams.pack(deviceId = item.id)
-//                        )
-//                    })
-//                }
+                mViewModel.requestAppointmentInfo(item.id) { deviceDetail, stateList ->
+                    AppointmentOrderSelectorDialog.Builder(item, deviceDetail, stateList, { callback->
+                        mViewModel.requestDeviceStateListAsync(item.id){
+                            callback(it)
+                        }
+                    }, {})
+                        .build()
+                        .show(supportFragmentManager)
+                }
             }
         }
     }

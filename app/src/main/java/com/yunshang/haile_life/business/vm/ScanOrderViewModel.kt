@@ -31,7 +31,7 @@ class ScanOrderViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
 
-    val isHideDeviceInfo:MutableLiveData<Boolean> = MutableLiveData(true)
+    val isHideDeviceInfo: MutableLiveData<Boolean> = MutableLiveData(true)
 
     val goodsScan: MutableLiveData<GoodsScanEntity> by lazy {
         MutableLiveData()

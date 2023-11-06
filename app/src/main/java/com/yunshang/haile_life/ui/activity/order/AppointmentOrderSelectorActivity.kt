@@ -12,20 +12,20 @@ import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
-import com.yunshang.haile_life.business.vm.AppointmentSubmitViewModel
+import com.yunshang.haile_life.business.vm.AppointmentOrderSelectorViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
-import com.yunshang.haile_life.databinding.ActivityAppointmentSubmitBinding
+import com.yunshang.haile_life.databinding.ActivityAppointmentOrderSelectorBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 
-class AppointmentSubmitActivity :
-    BaseBusinessActivity<ActivityAppointmentSubmitBinding, AppointmentSubmitViewModel>(
-        AppointmentSubmitViewModel::class.java, BR.vm
+class AppointmentOrderSelectorActivity :
+    BaseBusinessActivity<ActivityAppointmentOrderSelectorBinding, AppointmentOrderSelectorViewModel>(
+        AppointmentOrderSelectorViewModel::class.java, BR.vm
     ) {
 
-    override fun layoutId(): Int = R.layout.activity_appointment_submit
+    override fun layoutId(): Int = R.layout.activity_appointment_order_selector
 
-    override fun backBtn(): View = mBinding.barAppointSubmitTitle.getBackBtn()
+    override fun backBtn(): View = mBinding.barAppointSelectorTitle.getBackBtn()
 
     override fun initIntent() {
         super.initIntent()
@@ -37,7 +37,7 @@ class AppointmentSubmitActivity :
 
         mViewModel.isHideDeviceInfo.observe(this) {
             ContextCompat.getDrawable(
-                this@AppointmentSubmitActivity,
+                this@AppointmentOrderSelectorActivity,
                 if (it) R.mipmap.icon_info_open else R.mipmap.icon_info_hide
             )?.let { draw ->
                 mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setImageDrawable(
@@ -46,12 +46,12 @@ class AppointmentSubmitActivity :
             }
         }
 
-        val inflater = LayoutInflater.from(this@AppointmentSubmitActivity)
+        val inflater = LayoutInflater.from(this@AppointmentOrderSelectorActivity)
 
         // 规格
         mViewModel.specList.observe(this) { specList ->
             if (specList.isNotEmpty()) {
-                mBinding.includeAppointSubmitSpec.clScanOrderConfig.let { cl ->
+                mBinding.includeAppointSelectorSpec.clScanOrderConfig.let { cl ->
                     if (cl.childCount > 3) {
                         cl.removeViews(3, cl.childCount - 3)
                     }
@@ -83,8 +83,8 @@ class AppointmentSubmitActivity :
                     }
                     // 设置id
                     val idList = IntArray(specList.size) { it + 1 }
-                    mBinding.includeAppointSubmitSpec.flowScanOrderItem.referencedIds = idList
-                    mBinding.includeAppointSubmitSpec.flowScanOrderItem.visibility = View.VISIBLE
+                    mBinding.includeAppointSelectorSpec.flowScanOrderItem.referencedIds = idList
+                    mBinding.includeAppointSelectorSpec.flowScanOrderItem.visibility = View.VISIBLE
                 }
             }
         }
@@ -93,7 +93,7 @@ class AppointmentSubmitActivity :
         mViewModel.minuteList.observe(this) { minuteList ->
             if (minuteList.isNotEmpty()) {
                 mViewModel.selectMinute.value = minuteList.firstOrNull()?.minute
-                mBinding.includeAppointSubmitMinute.clScanOrderConfig.let { cl ->
+                mBinding.includeAppointSelectorMinute.clScanOrderConfig.let { cl ->
                     if (cl.childCount > 3) {
                         cl.removeViews(3, cl.childCount - 3)
                     }
@@ -125,8 +125,8 @@ class AppointmentSubmitActivity :
                     }
                     // 设置id
                     val idList = IntArray(minuteList.size) { it + 1 }
-                    mBinding.includeAppointSubmitMinute.flowScanOrderItem.referencedIds = idList
-                    mBinding.includeAppointSubmitMinute.flowScanOrderItem.visibility = View.VISIBLE
+                    mBinding.includeAppointSelectorMinute.flowScanOrderItem.referencedIds = idList
+                    mBinding.includeAppointSelectorMinute.flowScanOrderItem.visibility = View.VISIBLE
                 }
             }
         }
@@ -147,14 +147,14 @@ class AppointmentSubmitActivity :
         mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setOnClickListener {
             mViewModel.isHideDeviceInfo.value = !mViewModel.isHideDeviceInfo.value!!
         }
-        val dimens12 = DimensionUtils.dip2px(this@AppointmentSubmitActivity, 12f)
+        val dimens12 = DimensionUtils.dip2px(this@AppointmentOrderSelectorActivity, 12f)
         mBinding.includeAppointmentDeviceStatus.root.setBackgroundColor(Color.WHITE)
-        mBinding.includeAppointSubmitSpec.root.setBackgroundResource(R.drawable.shape_bottom_stroke_dividing_mlr16)
-        mBinding.includeAppointSubmitSpec.root.let { specView ->
+        mBinding.includeAppointSelectorSpec.root.setBackgroundResource(R.drawable.shape_bottom_stroke_dividing_mlr16)
+        mBinding.includeAppointSelectorSpec.root.let { specView ->
             specView.setPadding(dimens12, specView.paddingTop, dimens12, specView.paddingBottom)
         }
-        mBinding.includeAppointSubmitMinute.root.setBackgroundColor(Color.WHITE)
-        mBinding.includeAppointSubmitMinute.root.let { minuteView ->
+        mBinding.includeAppointSelectorMinute.root.setBackgroundColor(Color.WHITE)
+        mBinding.includeAppointSelectorMinute.root.let { minuteView ->
             minuteView.setPadding(
                 dimens12,
                 minuteView.paddingTop,
@@ -163,7 +163,7 @@ class AppointmentSubmitActivity :
             )
         }
 
-        mBinding.viewAppointSubmitSelected.setOnClickListener {
+        mBinding.viewAppointSelectorSelected.setOnClickListener {
 //            startActivity(Intent(this, OrderSubmitActivity::class.java).apply {
 //                putExtras(
 //                    IntentParams.OrderSubmitParams.pack(

@@ -30,6 +30,9 @@ interface DeviceService {
     @GET("/goods/normal/details")
     suspend fun requestDeviceDetail(@Query("goodsId") goodsId: Int): ResponseWrapper<DeviceDetailEntity>
 
+    @POST("/goods/stateList")
+    suspend fun requestDeviceStateList(@Body body: RequestBody): ResponseWrapper<DeviceStateListEntity>
+
     /**
      * 卡片列表接口
      */

@@ -117,7 +117,7 @@
             android:name=".ui.activity.shop.SelectAppointmentDeviceActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.order.AppointmentSubmitActivity"
+            android:name=".ui.activity.order.AppointmentOrderSelectorActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.shop.RechargeStarfishActivity"

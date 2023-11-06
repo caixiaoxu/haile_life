@@ -208,7 +208,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
      * 构建关键sku的布局
      */
     private fun buildAttachSkuView(detail: DeviceDetailEntity) {
-        if (detail.hasAttachGoods && detail.attachItems.isNotEmpty()) {
+        if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
             val attachList = detail.attachItems.filter { item -> 1 == item.soldState }
             mBinding.llScanOrderConfigsAttrSku.buildChild<ItemScanOrderModelBinding, DeviceDetailItemEntity>(
                 if (detail.isShowDispenser)

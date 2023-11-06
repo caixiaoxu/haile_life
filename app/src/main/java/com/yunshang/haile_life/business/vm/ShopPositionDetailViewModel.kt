@@ -3,11 +3,10 @@ package com.yunshang.haile_life.business.vm
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.ui.base.BaseViewModel
+import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.ShopService
-import com.yunshang.haile_life.data.entities.ShopNoticeEntity
-import com.yunshang.haile_life.data.entities.ShopPositionDetailEntity
-import com.yunshang.haile_life.data.entities.ShopPositionDeviceEntity
-import com.yunshang.haile_life.data.entities.StoreDeviceEntity
+import com.yunshang.haile_life.data.entities.*
+import com.yunshang.haile_life.data.extend.hasVal
 import com.yunshang.haile_life.data.model.ApiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,6 +23,7 @@ import kotlinx.coroutines.withContext
  */
 class ShopPositionDetailViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
+    private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
 
     var positionId: Int = -1
 
@@ -101,24 +101,67 @@ class ShopPositionDetailViewModel : BaseViewModel() {
                     )
                 )
             )?.let {
-                val list = mutableListOf<ShopPositionDeviceEntity>()
-                it.items?.let {
-                    list.addAll(it)
-                    list.addAll(it)
-                    list.addAll(it)
-                    list.addAll(it)
-                    list.addAll(it)
-                    list.addAll(it)
-                    list.addAll(it)
-                    list.addAll(it)
-                    list.addAll(it)
-                    list.addAll(it)
-                    list.addAll(it)
-                }
-                curDeviceCategory.value?.refreshDeviceList(1 == page, list, it.total)
+//                val list = mutableListOf<ShopPositionDeviceEntity>()
+//                it.items?.let {
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                    list.addAll(it)
+//                }
+                curDeviceCategory.value?.refreshDeviceList(1 == page, it.items, it.total)
                 withContext(Dispatchers.Main) {
-                    callback?.invoke(list)
+                    callback?.invoke(it.items)
                 }
+            }
+        })
+    }
+
+    fun requestAppointmentInfo(
+        deviceId: Int?,
+        callback: (deviceDetail: DeviceDetailEntity, stateList: List<DeviceStateEntity>?) -> Unit
+    ) {
+        if (!deviceId.hasVal()) return
+        launch({
+            ApiRepository.dealApiResult(
+                mDeviceRepo.requestDeviceDetail(deviceId!!)
+            )?.also { deviceDetail ->
+                ApiRepository.dealApiResult(
+                    mDeviceRepo.requestDeviceStateList(
+                        ApiRepository.createRequestBody(
+                            hashMapOf("goodsId" to deviceId)
+                        )
+                    )
+                )?.let { deviceStateList ->
+                    requestDeviceStateList(deviceId)?.let {
+                        callback(deviceDetail, deviceStateList.stateList)
+                    }
+                }
+            }
+        })
+    }
+
+    private suspend fun requestDeviceStateList(deviceId: Int): DeviceStateListEntity? {
+        return ApiRepository.dealApiResult(
+            mDeviceRepo.requestDeviceStateList(
+                ApiRepository.createRequestBody(
+                    hashMapOf("goodsId" to deviceId)
+                )
+            )
+        )
+    }
+
+    fun requestDeviceStateListAsync(deviceId: Int?, callback: (stateList: List<DeviceStateEntity>?) -> Unit) {
+        if (!deviceId.hasVal()) return
+        launch({
+            requestDeviceStateList(deviceId!!)?.let {
+                callback(it.stateList)
             }
         })
     }

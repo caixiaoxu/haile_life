@@ -24,7 +24,6 @@ import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 data class NearStorePositionEntity(
     val address: String? = null,
     val appointmentState: Int? = null,
-    val appointmentNum: Int? = null,//TODO 可预约的数据
     val area: String? = null,
     val distance: Double? = null,
     val id: Int? = null,
@@ -33,15 +32,14 @@ data class NearStorePositionEntity(
     val rechargeFlag: Boolean? = null,
     val shopId: Int? = null,
     val state: Int? = null,
-    val workTime: String? = null
+    val workTime: String? = null,
+    val reserveNum: Int? = null,
 ) : IMultiTypeEntity {
 
     val appointmentNumVal: String
-        get() = StringUtils.getString(R.string.can_appointment) + if (appointmentNum.hasVal()) "${appointmentNum}${
-            StringUtils.getString(
+        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.hasVal()) "${reserveNum}${StringUtils.getString(
                 R.string.unit_tai
-            )
-        }" else ""
+            )}" else ""
 
     fun formatDistance(isJoin: Boolean = true): String = distance?.let {
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +

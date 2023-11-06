@@ -69,22 +69,23 @@
             android:paddingHorizontal="6dp"
             android:paddingVertical="2dp"
             android:text="@string/can_appointment"
+            app:visibility="@{1 == item.reserveState}"
             app:layout_constraintBottom_toBottomOf="@id/tv_shop_position_detail_device_state"
             app:layout_constraintStart_toEndOf="@id/tv_shop_position_detail_device_state"
             app:layout_constraintTop_toTopOf="@id/tv_shop_position_detail_device_state" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_shop_position_detail_device_appoint_time"
-            style="@style/Font_12_black_85"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/shape_s0c000000_r4"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="2dp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_shop_position_detail_device_can_appoint"
-            app:layout_constraintStart_toEndOf="@id/tv_shop_position_detail_device_can_appoint"
-            app:layout_constraintTop_toTopOf="@id/tv_shop_position_detail_device_can_appoint"
-            tools:text="预计时间9分钟" />
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tv_shop_position_detail_device_appoint_time"-->
+<!--            style="@style/Font_12_black_85"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="4dp"-->
+<!--            android:background="@drawable/shape_s0c000000_r4"-->
+<!--            android:paddingHorizontal="6dp"-->
+<!--            android:paddingVertical="2dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/tv_shop_position_detail_device_can_appoint"-->
+<!--            app:layout_constraintStart_toEndOf="@id/tv_shop_position_detail_device_can_appoint"-->
+<!--            app:layout_constraintTop_toTopOf="@id/tv_shop_position_detail_device_can_appoint"-->
+<!--            tools:text="预计时间9分钟" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

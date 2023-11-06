@@ -28,6 +28,12 @@ import kotlin.math.abs
  */
 object ViewBindingAdapter {
 
+    @BindingAdapter("visibility")
+    @JvmStatic
+    fun View.visibility(show: Boolean?) {
+        visibility = if (true == show) View.VISIBLE else View.GONE
+    }
+
     @BindingAdapter("width", "height")
     @JvmStatic
     fun View.setAttr(width: Int?, height: Int?) {

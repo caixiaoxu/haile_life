@@ -23,7 +23,7 @@ import com.yunshang.haile_life.data.rule.IOrderConfigEntity
  * <author> <time> <version> <desc>
  * 作者姓名 修改时间 版本号 描述
  */
-class AppointmentSubmitViewModel : BaseViewModel() {
+class AppointmentOrderSelectorViewModel : BaseViewModel() {
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     var deviceId: Int = -1

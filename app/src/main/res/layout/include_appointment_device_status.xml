@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/activity_appointment_submit">
+    tools:showIn="@layout/activity_appointment_order_selector">
 
     <data>
 
@@ -42,6 +42,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_device_status_refresh">
 
             <include
+                android:id="@+id/include_appointment_device_status_progress"
                 layout="@layout/include_appointment_device_status_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

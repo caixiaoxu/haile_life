@@ -9,24 +9,24 @@
 
         <variable
             name="vm"
-            type="com.yunshang.haile_life.business.vm.AppointmentSubmitViewModel" />
+            type="com.yunshang.haile_life.business.vm.AppointmentOrderSelectorViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.activity.order.AppointmentSubmitActivity">
+        tools:context=".ui.activity.order.AppointmentOrderSelectorActivity">
 
         <com.yunshang.haile_life.ui.view.CommonTitleActionBar
-            android:id="@+id/bar_appoint_submit_title"
+            android:id="@+id/bar_appoint_selector_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
             android:background="@color/white"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_appoint_submit_hint"
+            android:id="@+id/tv_appoint_selector_hint"
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:background="@{vm.isDryer?@color/color_ffefe6:@color/color_e5fafc}"
@@ -34,7 +34,7 @@
             android:text="@{vm.hint}"
             android:textColor="@{vm.isDryer?@color/color_ff630e:@color/colorPrimary}"
             android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@id/bar_appoint_submit_title" />
+            app:layout_constraintTop_toBottomOf="@id/bar_appoint_selector_title" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -42,10 +42,10 @@
             android:overScrollMode="never"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@id/view_no_appoint_bottom"
-            app:layout_constraintTop_toBottomOf="@id/tv_appoint_submit_hint">
+            app:layout_constraintTop_toBottomOf="@id/tv_appoint_selector_hint">
 
             <LinearLayout
-                android:id="@+id/ll_appoint_submit_configs"
+                android:id="@+id/ll_appoint_selector_configs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -74,7 +74,7 @@
                     layout="@layout/include_appointment_device_status" />
 
                 <include
-                    android:id="@+id/include_appoint_submit_spec"
+                    android:id="@+id/include_appoint_selector_spec"
                     layout="@layout/item_scan_order_model"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                     app:modelTitle="@{vm.modelTitle}" />
 
                 <include
-                    android:id="@+id/include_appoint_submit_minute"
+                    android:id="@+id/include_appoint_selector_minute"
                     layout="@layout/item_scan_order_model"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
             android:id="@+id/view_no_appoint_bottom"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            app:layout_constraintBottom_toTopOf="@id/view_appoint_submit_bottom"
+            app:layout_constraintBottom_toTopOf="@id/view_appoint_selector_bottom"
             android:background="@color/color_appoint_bg"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -121,21 +121,21 @@
             android:text="@string/check_reason"/>
 
         <View
-            android:id="@+id/view_appoint_submit_bottom"
+            android:id="@+id/view_appoint_selector_bottom"
             android:layout_width="match_parent"
             android:layout_height="92dp"
             android:background="@drawable/shape_top_stroke_dividing"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <View
-            android:id="@+id/view_appoint_submit_selected"
+            android:id="@+id/view_appoint_selector_selected"
             android:layout_width="132dp"
             android:layout_height="46dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:background="@{vm.isDryer?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
-            app:layout_constraintEnd_toEndOf="@id/view_appoint_submit_bottom"
-            app:layout_constraintTop_toTopOf="@id/view_appoint_submit_bottom" />
+            app:layout_constraintEnd_toEndOf="@id/view_appoint_selector_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_appoint_selector_bottom" />
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/Font_16_white_bold"
@@ -145,22 +145,22 @@
             android:drawablePadding="4dp"
             android:gravity="center"
             android:text="@string/selected"
-            app:layout_constraintBottom_toBottomOf="@id/view_appoint_submit_selected"
-            app:layout_constraintEnd_toEndOf="@id/view_appoint_submit_selected"
-            app:layout_constraintStart_toStartOf="@id/view_appoint_submit_selected"
-            app:layout_constraintTop_toTopOf="@id/view_appoint_submit_selected" />
+            app:layout_constraintBottom_toBottomOf="@id/view_appoint_selector_selected"
+            app:layout_constraintEnd_toEndOf="@id/view_appoint_selector_selected"
+            app:layout_constraintStart_toStartOf="@id/view_appoint_selector_selected"
+            app:layout_constraintTop_toTopOf="@id/view_appoint_selector_selected" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_appoint_submit_price"
+            android:id="@+id/tv_appoint_selector_price"
             style="@style/Font_20_black_85"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/money"
-            app:layout_constraintBottom_toBottomOf="@id/view_appoint_submit_selected"
-            app:layout_constraintEnd_toStartOf="@id/view_appoint_submit_selected"
+            app:layout_constraintBottom_toBottomOf="@id/view_appoint_selector_selected"
+            app:layout_constraintEnd_toStartOf="@id/view_appoint_selector_selected"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/view_appoint_submit_selected"
+            app:layout_constraintTop_toTopOf="@id/view_appoint_selector_selected"
             app:layout_constraintVertical_chainStyle="spread"
             tools:text="￥ 5.00" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.ui.view.dialog.AppointmentOrderSelectorDialog.Builder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,6 +26,7 @@
             tools:text="浙传生活区1号洗衣机" />
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_appointment_order_selector_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -83,12 +86,24 @@
             <View
                 style="@style/DividingStyle"
                 android:layout_marginHorizontal="16dp" />
+
+            <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                android:id="@+id/ll_scan_order_configs_attr_sku"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
+                app:divider="@drawable/divder_efefef"
+                app:itemLayout="@layout/item_scan_order_model"
+                app:showDividers="middle"
+                app:visibility="@{vm.needAttach}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
             android:id="@+id/view_no_appoint_bottom"
             android:layout_width="match_parent"
             android:layout_height="36dp"
+            app:visibility="@{0 == vm.deviceStatus.reserveState}"
             android:background="@color/color_appoint_bg"
             app:layout_constraintTop_toBottomOf="@id/ll_order_selector_content" />
 
@@ -128,7 +143,7 @@
             android:layout_height="46dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            android:background="@{false?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
+            android:background="@{vm.isDryerOrHair?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
             app:layout_constraintEnd_toEndOf="@id/view_appoint_submit_bottom"
             app:layout_constraintTop_toTopOf="@id/view_appoint_submit_bottom" />
 
@@ -152,6 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/money"
+            app:tMoney='@{vm.totalPriceVal}'
             app:layout_constraintBottom_toBottomOf="@id/view_order_select_submit_selected"
             app:layout_constraintEnd_toStartOf="@id/view_order_select_submit_selected"
             app:layout_constraintStart_toStartOf="parent"

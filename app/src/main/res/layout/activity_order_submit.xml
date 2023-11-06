@@ -15,7 +15,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_appointment_success"
         android:orientation="vertical"
         tools:context=".ui.activity.order.OrderSubmitActivity">
 
@@ -23,15 +22,13 @@
             android:id="@+id/bar_order_submit_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
             app:title="@string/submit_order" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:scrollbars="none">
-
+            android:layout_weight="1">
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,48 +37,76 @@
                 app:divider="@drawable/divide_size8"
                 app:showDividers="middle">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_order_submit_status_time_remaining"
-                        style="@style/Font_24_black_85_bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="待支付，剩余 02:55"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.lsy.framelib.ui.weight.SingleTapTextView
-                        style="@style/Font_12_black_85"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/shape_stroke26000000_r14"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="@string/cancel_order"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_order_submit_status_time_remaining"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tv_order_submit_status_time_remaining" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Font_12_72333333"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:layout_constraintTop_toBottomOf="@id/tv_order_submit_status_time_remaining"
-                        tools:text="@string/submit_order_prompt" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <include
-                    android:id="@+id/include_order_specs"
-                    layout="@layout/include_order_specs"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:total="@{vm.tradePreview.realPrice}" />
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:visibility="@{null != vm.reserveTime?View.VISIBLE:View.GONE}">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_14_black_65"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="16dp"
+                        android:text="@{vm.shopDeviceVal}"
+                        tools:text="10号洗衣机\n浙大紫荆港校区蓝田学园\n生公寓3区1号楼" />
+
+                    <View
+                        style="@style/DividingStyle"
+                        android:layout_marginHorizontal="3dp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_14_black_85"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="8dp"
+                        android:text="@{vm.reserveTimeVal}"
+                        tools:text="请在 今天10:00 到店使用" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ll_order_submit_good"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    app:divider="@color/dividing_line_color_efefef"
+                    app:showDividers="middle">
+
+                    <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                        android:id="@+id/ll_order_good_discounts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="12dp"
+                        android:orientation="vertical"
+                        app:divider="@drawable/divide_size8"
+                        app:itemLayout="@layout/item_order_submit_good_item"
+                        app:showDividers="middle" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom|end"
+                        android:orientation="horizontal"
+                        android:paddingVertical="12dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_12_black_85_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text='@{@string/actually_paid+" ¥ "}' />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_22_black_85_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.tradePreview.realPrice}"
+                            tools:text="0.00" />
+                    </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <include
                     android:id="@+id/include_order_submit_pay_way"
