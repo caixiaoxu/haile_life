@@ -15,6 +15,7 @@ data class ShopPositionDeviceEntity(
     val id: Int? = null,
     val name: String? = null,
     val state: Int? = null,
+    val enableReserve: Boolean? = null,
     val reserveState: Int? = null
 ) {
     val floorCodeVal: String

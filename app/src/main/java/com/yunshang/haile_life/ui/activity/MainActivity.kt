@@ -84,8 +84,8 @@ class MainActivity :
         }
 
         code?.let { code ->
-            mViewModel.requestScanResult(code,supportFragmentManager) { scan, detail, appoint ->
-                if (detail.deviceErrorCode > 0) {
+            mViewModel.requestScanResult(code, supportFragmentManager) { scan, detail, appoint ->
+                if (detail.deviceErrorCode > 0 || 3 == detail.deviceState) {
                     Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" })
                         .build().show(supportFragmentManager)
                     return@requestScanResult
@@ -112,8 +112,12 @@ class MainActivity :
                             putExtras(IntentParams.ScanOrderParams.pack(code, scan))
                             putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo, true, 1))
                         })
-                } else if(false){ // TODO 判断是否有预约单，
-
+                } else if (2 == detail.deviceState && 1 == detail.reserveState
+                    && true == detail.enableReserve
+                    && (DeviceCategory.isWashingOrShoes(detail.categoryCode)
+                            || DeviceCategory.isDryer(detail.categoryCode))
+                ) {
+                    // TODO 跳转预约下单，
                 } else {
                     if (DeviceCategory.isDrinkingOrShower(detail.categoryCode))
                         startActivity(

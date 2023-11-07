@@ -71,4 +71,13 @@ interface OrderService {
     @POST("/trade/finishByOrder")
     suspend fun finishByOrder(@Body body: RequestBody): ResponseWrapper<Any>
 
+    @POST("/trade/lockOrderCreate")
+    suspend fun lockOrderCreate(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
+
+    @POST("/trade/reserveCreate")
+    suspend fun reserveCreate(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
+
+    @POST("/appointment/order/stateList")
+    suspend fun requestAppointStateList(@Body body: RequestBody): ResponseWrapper<AppointmentStateListEntity>
+
 }

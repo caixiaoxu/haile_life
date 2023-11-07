@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.yunshang.haile_life.ui.view.dialog.AppointmentOrderSelectorDialog.Builder" />
@@ -29,8 +30,8 @@
             android:id="@+id/ib_appointment_order_selector_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:background="@color/white"
+            android:padding="16dp"
             android:src="@mipmap/icon_close_x"
             app:layout_constraintBottom_toBottomOf="@id/tv_order_selector_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +39,6 @@
 
         <View
             style="@style/DividingStyle"
-            android:layout_marginHorizontal="16dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_order_selector_title"
             tools:ignore="MissingConstraints" />
 
@@ -67,9 +67,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                app:desc='@{"描述"}'
+                app:desc='@{vm.selectDeviceConfig.feature}'
                 app:layout_constraintTop_toBottomOf="@id/include_order_selector_device_status"
-                app:modelTitle='@{"模式"}' />
+                app:modelTitle='@{vm.modelTitle}' />
 
             <View
                 style="@style/DividingStyle"
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                app:modelTitle='@{"时长"}' />
+                app:modelTitle="@{@string/use_time}" />
 
             <View
                 style="@style/DividingStyle"
@@ -91,8 +91,8 @@
                 android:id="@+id/ll_scan_order_configs_attr_sku"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
+                android:orientation="vertical"
                 app:divider="@drawable/divder_efefef"
                 app:itemLayout="@layout/item_scan_order_model"
                 app:showDividers="middle"
@@ -103,9 +103,9 @@
             android:id="@+id/view_no_appoint_bottom"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            app:visibility="@{0 == vm.deviceStatus.reserveState}"
             android:background="@color/color_appoint_bg"
-            app:layout_constraintTop_toBottomOf="@id/ll_order_selector_content" />
+            app:layout_constraintTop_toBottomOf="@id/ll_order_selector_content"
+            app:visibility="@{1 != vm.deviceDetail.deviceState &amp;&amp; (0 == vm.deviceDetail.reserveState || !vm.deviceDetail.enableReserve)}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/Font_14_black_85"
@@ -118,7 +118,8 @@
             android:text="@string/device_can_not_appointment"
             app:layout_constraintBottom_toBottomOf="@id/view_no_appoint_bottom"
             app:layout_constraintStart_toStartOf="@id/view_no_appoint_bottom"
-            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom" />
+            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom"
+            app:visibility="@{1 != vm.deviceDetail.deviceState &amp;&amp; (0 == vm.deviceDetail.reserveState || !vm.deviceDetail.enableReserve)}" />
 
         <com.lsy.framelib.ui.weight.SingleTapTextView
             style="@style/Font_14_ff630e"
@@ -128,7 +129,8 @@
             android:text="@string/check_reason"
             app:layout_constraintBottom_toBottomOf="@id/view_no_appoint_bottom"
             app:layout_constraintEnd_toEndOf="@id/view_no_appoint_bottom"
-            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom" />
+            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom"
+            app:visibility="@{1 != vm.deviceDetail.deviceState &amp;&amp; (0 == vm.deviceDetail.reserveState || !vm.deviceDetail.enableReserve)}" />
 
         <View
             android:id="@+id/view_appoint_submit_bottom"
@@ -137,28 +139,32 @@
             android:background="@drawable/shape_top_stroke_dividing"
             app:layout_constraintTop_toBottomOf="@id/view_no_appoint_bottom" />
 
-        <View
+        <com.lsy.framelib.ui.weight.SingleTapButton
             android:id="@+id/view_order_select_submit_selected"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="132dp"
             android:layout_height="46dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            android:background="@{vm.isDryerOrHair?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
+            android:background="@{vm.dryer?@drawable/selector_washing_order_selector_btn:@drawable/selector_dryer_order_selector_btn}"
+            android:enabled="@{1 == vm.deviceDetail.deviceState || (vm.deviceDetail.enableReserve &amp;&amp; 1 == vm.deviceDetail.reserveState)}"
             app:layout_constraintEnd_toEndOf="@id/view_appoint_submit_bottom"
-            app:layout_constraintTop_toTopOf="@id/view_appoint_submit_bottom" />
+            app:layout_constraintTop_toTopOf="@id/view_appoint_submit_bottom"
+            tools:background="@drawable/selector_washing_order_selector_btn" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_select_submit_selected"
             style="@style/Font_16_white_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableEnd="@mipmap/icon_order_submit_right"
             android:drawablePadding="4dp"
             android:gravity="center"
-            android:text="@string/selected"
             app:layout_constraintBottom_toBottomOf="@id/view_order_select_submit_selected"
             app:layout_constraintEnd_toEndOf="@id/view_order_select_submit_selected"
             app:layout_constraintStart_toStartOf="@id/view_order_select_submit_selected"
-            app:layout_constraintTop_toTopOf="@id/view_order_select_submit_selected" />
+            app:layout_constraintTop_toTopOf="@id/view_order_select_submit_selected"
+            tools:text="提前预约" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_order_selector_submit_price"
@@ -167,12 +173,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/money"
-            app:tMoney='@{vm.totalPriceVal}'
             app:layout_constraintBottom_toBottomOf="@id/view_order_select_submit_selected"
             app:layout_constraintEnd_toStartOf="@id/view_order_select_submit_selected"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/view_order_select_submit_selected"
             app:layout_constraintVertical_chainStyle="spread"
+            app:tMoney='@{vm.totalPriceVal}'
             tools:text="￥ 5.00" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

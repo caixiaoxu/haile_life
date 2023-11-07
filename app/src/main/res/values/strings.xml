@@ -101,6 +101,7 @@
     <string name="can_appointment">可预约</string>
     <string name="can_not_appointment">不可预约</string>
     <string name="device_can_not_appointment">设备无法预约</string>
+    <string name="can_not_appointment1">无法预约</string>
     <string name="in_operation">营业中</string>
     <string name="stop_of_business">停业中</string>
     <string name="wallet_balance">钱包余额</string>
@@ -218,6 +219,7 @@
 
     <string name="appointment_order">预约订单</string>
     <string name="order_info">订单信息</string>
+    <string name="appointment_success_rranking">您的预约订单排在第2位，请耐心等待</string>
     <string name="appointment_success_prompt">前面订单结束，设备状态变为空闲时，预约订单方可进行验证，请注意查收消息，海乐会及时通知您使用哦</string>
     <string name="appointment_order_verify_code_prompt">请输入机器屏幕上的验证码</string>
     <string name="order_detail">订单详情</string>
@@ -227,6 +229,8 @@
     <string name="need_pay">需支付</string>
     <string name="order_time">下单时间</string>
     <string name="pay_now">立即支付</string>
+    <string name="order_now">立即下单</string>
+    <string name="advance_reservation">提前预约</string>
     <string name="cancel_order">取消订单</string>
     <string name="delete_order">删除订单</string>
     <string name="contact_shop">联系商家</string>

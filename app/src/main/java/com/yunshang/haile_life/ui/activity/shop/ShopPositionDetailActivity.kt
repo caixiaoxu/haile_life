@@ -22,6 +22,7 @@ import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.ShopPositionDetailViewModel
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.ShopPositionDeviceEntity
@@ -34,6 +35,8 @@ import com.yunshang.haile_life.databinding.ItemShopPositionDetailFloorBinding
 import com.yunshang.haile_life.databinding.ItemShopPositionDetailTagsBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
+import com.yunshang.haile_life.ui.activity.order.AppointmentOrderVerifyActivity
+import com.yunshang.haile_life.ui.activity.order.AppointmentSuccessActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.AppointmentOrderSelectorDialog
@@ -67,6 +70,8 @@ class ShopPositionDetailActivity :
             }
         }
 
+    private var selectorDialog: AppointmentOrderSelectorDialog? = null
+
     private val mAdapter by lazy {
         CommonRecyclerAdapter<ItemShopPositionDetailDeviceBinding, ShopPositionDeviceEntity>(
             R.layout.item_shop_position_detail_device, BR.item
@@ -76,15 +81,35 @@ class ShopPositionDetailActivity :
                 if (!checkLogin()) {
                     return@setOnClickListener
                 }
-
-                mViewModel.requestAppointmentInfo(item.id) { deviceDetail, stateList ->
-                    AppointmentOrderSelectorDialog.Builder(item, deviceDetail, stateList, { callback->
-                        mViewModel.requestDeviceStateListAsync(item.id){
-                            callback(it)
-                        }
-                    }, {})
-                        .build()
-                        .show(supportFragmentManager)
+                if (true == item.enableReserve && DeviceCategory.isWashingOrShoes(mViewModel.curDeviceCategory.value?.categoryCode)
+                    || DeviceCategory.isDryer(mViewModel.curDeviceCategory.value?.categoryCode)
+                ) {
+                    // 请求弹窗信息
+                    mViewModel.requestAppointmentInfo(true, item.id) { deviceDetail, stateList ->
+                        // 打开预约弹窗
+                        selectorDialog = AppointmentOrderSelectorDialog.Builder(
+                            deviceDetail,
+                            stateList,
+                            { mViewModel.requestAppointmentInfo(false, item.id) }) { params ->
+                            mViewModel.submitOrder(params) { result ->
+                                selectorDialog?.dismiss()
+                                result.orderNo?.let { orderNo ->
+                                    startActivity(
+                                        Intent(
+                                            this@ShopPositionDetailActivity,
+                                            if (1 == item.state) AppointmentOrderVerifyActivity::class.java
+                                            else AppointmentSuccessActivity::class.java
+                                        ).apply {
+                                            putExtras(IntentParams.OrderParams.pack(orderNo))
+                                        }
+                                    )
+                                }
+                            }
+                        }.build()
+                        selectorDialog?.show(supportFragmentManager)
+                    }
+                } else {
+                    SToast.showToast(this@ShopPositionDetailActivity, "该设备类型无法预约")
                 }
             }
         }

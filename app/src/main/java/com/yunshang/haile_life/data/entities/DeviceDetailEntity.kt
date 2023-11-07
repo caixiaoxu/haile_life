@@ -14,7 +14,7 @@ data class DeviceDetailEntity(
     val amount: Int,
     val brandId: Int,
     val categoryCode: String,
-    val categoryCodeName: String,
+    val categoryName: String,
     val categoryId: Int,
     val chargeUnit: Int,
     val code: String,
@@ -56,7 +56,10 @@ data class DeviceDetailEntity(
     val positionId: Int? = null,
     val positionName: String? = null,
     val spuCode: String,
-    val reserveState: Int? = null
+    val reserveState: Int? = null,//设备状态, 0--不可预约, 1--可预约
+    val deviceState: Int? = null,// 设备状态 1:空闲；2占用, 3故障
+    val enableReserve: Boolean? = null,//是否支持预约, false--不支持, true--支持
+    val reserveMethod: Int? = null, //预约方式, 1--后付费预约, 1--先付费预约
 ) {
     val shopPositionName: String
         get() = shopName + if (positionName.isNullOrEmpty()) "" else ("-$positionName")

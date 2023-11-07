@@ -3,8 +3,11 @@ package com.yunshang.haile_life.business.vm
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.ui.base.BaseViewModel
+import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.business.apiService.DeviceService
+import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.apiService.ShopService
+import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.extend.hasVal
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -24,6 +27,7 @@ import kotlinx.coroutines.withContext
 class ShopPositionDetailViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
+    private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
     var positionId: Int = -1
 
@@ -123,15 +127,19 @@ class ShopPositionDetailViewModel : BaseViewModel() {
         })
     }
 
+    val deviceDetail: MutableLiveData<DeviceDetailEntity> = MutableLiveData()
+    val stateList: MutableLiveData<List<DeviceStateEntity>?> = MutableLiveData()
+
     fun requestAppointmentInfo(
+        isInit: Boolean,
         deviceId: Int?,
-        callback: (deviceDetail: DeviceDetailEntity, stateList: List<DeviceStateEntity>?) -> Unit
+        callback: ((deviceDetail: MutableLiveData<DeviceDetailEntity>, stateList: MutableLiveData<List<DeviceStateEntity>?>) -> Unit)? = null
     ) {
         if (!deviceId.hasVal()) return
         launch({
             ApiRepository.dealApiResult(
                 mDeviceRepo.requestDeviceDetail(deviceId!!)
-            )?.also { deviceDetail ->
+            )?.also { detail ->
                 ApiRepository.dealApiResult(
                     mDeviceRepo.requestDeviceStateList(
                         ApiRepository.createRequestBody(
@@ -139,29 +147,34 @@ class ShopPositionDetailViewModel : BaseViewModel() {
                         )
                     )
                 )?.let { deviceStateList ->
-                    requestDeviceStateList(deviceId)?.let {
-                        callback(deviceDetail, deviceStateList.stateList)
+                    deviceDetail.postValue(detail)
+                    stateList.postValue(deviceStateList.stateList)
+                    if (isInit) {
+                        withContext(Dispatchers.Main) {
+                            callback?.invoke(deviceDetail, stateList)
+                        }
                     }
                 }
             }
         })
     }
 
-    private suspend fun requestDeviceStateList(deviceId: Int): DeviceStateListEntity? {
-        return ApiRepository.dealApiResult(
-            mDeviceRepo.requestDeviceStateList(
-                ApiRepository.createRequestBody(
-                    hashMapOf("goodsId" to deviceId)
-                )
-            )
-        )
-    }
-
-    fun requestDeviceStateListAsync(deviceId: Int?, callback: (stateList: List<DeviceStateEntity>?) -> Unit) {
-        if (!deviceId.hasVal()) return
+    fun submitOrder(
+        params: AppointmentOrderParams,
+        callback: (result: OrderSubmitResultEntity) -> Unit
+    ) {
         launch({
-            requestDeviceStateList(deviceId!!)?.let {
-                callback(it.stateList)
+            val body = ApiRepository.createRequestBody(GsonUtils.any2Json(params))
+            ApiRepository.dealApiResult(
+                if (null == params.reserveMethod) {
+                    mOrderRepo.lockOrderCreate(body)
+                } else {
+                    mOrderRepo.reserveCreate(body)
+                }
+            )?.let {
+                withContext(Dispatchers.Main) {
+                    callback(it)
+                }
             }
         })
     }

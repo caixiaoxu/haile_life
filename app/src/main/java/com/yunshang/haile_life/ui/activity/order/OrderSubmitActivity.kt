@@ -59,8 +59,6 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
             }
         }
 
-    override fun isFullScreen(): Boolean  = true
-
     override fun layoutId(): Int = R.layout.activity_order_submit
 
     override fun activityTag(): String = ActivityTag.TAG_ORDER_PAY

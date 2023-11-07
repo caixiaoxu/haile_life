@@ -62,7 +62,11 @@ data class OrderEntity(
     val viewReply: Boolean,
     val payTime: String? = null,
     val reserveAutoRefund: Int? = null,
-    val timesOfRestart: Int? = null
+    val timesOfRestart: Int? = null,
+    val checkInfo: CheckInfo? = null,
+    val discountPrice: Double? = null,
+    val reserveInfo: ReserveInfo? = null,
+    val tipRemark: String? = null,
 ) : IMultiTypeEntity {
     override fun getMultiType(): Int = when (state) {
         100, 500 -> 0
@@ -378,3 +382,18 @@ data class PromotionParticipation(
     val promotionProduct: Int,
     val promotionProductName: String
 )
+
+data class CheckInfo(
+    val checkState: Int? = null,
+    val invalidTime: String? = null,
+    val invalidTimeStamp: Int? = null
+)
+
+data class ReserveInfo(
+    val appointmentReason: String? = null,
+    val appointmentState: Int? = null,
+    val appointmentTime: String? = null,
+    val appointmentUsageTime: String? = null,
+    val reserveAutoRefund: Int? = null
+)
+

@@ -8,6 +8,7 @@ import com.lsy.framelib.utils.StatusBarUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.AppointmentSuccessViewModel
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.ActivityAppointmentSuccessBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 
@@ -22,21 +23,37 @@ class AppointmentSuccessActivity :
 
     override fun backBtn(): View = mBinding.barAppointmentSuccessTitle.getBackBtn()
 
+    override fun initIntent() {
+        super.initIntent()
+        mViewModel.orderNo = IntentParams.OrderParams.parseOrderNo(intent)
+    }
+
+    override fun initEvent() {
+        super.initEvent()
+        mViewModel.jump.observe(this) {
+            when (it) {
+                1 -> {
+                    startActivity(
+                        Intent(
+                            this@AppointmentSuccessActivity,
+                            OrderDetailActivity::class.java
+                        )
+                    )
+                    finish()
+                }
+            }
+        }
+        mViewModel.orderDetails.observe(this) {
+
+        }
+    }
+
     override fun initView() {
         mBinding.root.setPadding(0, StatusBarUtils.getStatusBarHeight(), 0, 0)
         mBinding.includeAppointmentDeviceStatus.root.setBackgroundResource(R.drawable.shape_sffffff_r8)
-
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(
-                Intent(
-                    this@AppointmentSuccessActivity,
-                    AppointmentOrderVerifyActivity::class.java
-                )
-            )
-        }, 3000)
     }
 
     override fun initData() {
+        mViewModel.requestData()
     }
 }

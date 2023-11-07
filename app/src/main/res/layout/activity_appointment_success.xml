@@ -42,6 +42,7 @@
             android:background="@drawable/shape_stroke26000000_r14"
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"
+            android:onClick="@{vm::cancelOrder}"
             android:text="@string/cancel_order"
             app:layout_constraintBottom_toBottomOf="@id/tv_appointment_success_status"
             app:layout_constraintEnd_toEndOf="parent"

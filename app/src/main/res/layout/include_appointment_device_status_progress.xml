@@ -34,6 +34,7 @@
             android:id="@+id/ll_device_state_progress"
             android:layout_width="match_parent"
             android:layout_height="82dp"
+            android:gravity="center_vertical"
             app:itemLayout="@layout/item_device_status_progress"
             android:orientation="horizontal"
             android:background="@drawable/shape_sf9f9f9_r8"/>
