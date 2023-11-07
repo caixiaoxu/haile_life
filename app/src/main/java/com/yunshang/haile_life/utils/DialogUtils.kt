@@ -1,11 +1,15 @@
 package com.yunshang.haile_life.utils
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import com.lsy.framelib.utils.StringUtils
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.luck.picture.lib.entity.LocalMedia
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 
 /**
  * Title :
@@ -51,4 +55,31 @@ object DialogUtils {
             }
         }.build().show(activity.supportFragmentManager)
     }
+
+    /**
+     * 检测权限弹窗
+     */
+    fun checkPermissionDialog(
+        context: Context,
+        manager: FragmentManager,
+        permissions: Array<String>,
+        msg: String,
+        needSuccessCallBack: Boolean = true,
+        negativeCallback: (() -> Unit)? = null,
+        positiveCallback: () -> Unit
+    ): Boolean =
+        SystemPermissionHelper.checkPermissions(context, permissions).also { hasPermissions ->
+            if (!hasPermissions) {
+                CommonDialog.Builder(msg).apply {
+                    setNegativeButton(StringUtils.getString(R.string.reject)) {
+                        negativeCallback?.invoke()
+                    }
+                    setPositiveButton(StringUtils.getString(R.string.agree)) {
+                        positiveCallback()
+                    }
+                }.build().show(manager)
+            } else if (needSuccessCallBack) {
+                positiveCallback()
+            }
+        }
 }

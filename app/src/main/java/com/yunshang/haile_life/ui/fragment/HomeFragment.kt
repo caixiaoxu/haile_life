@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
-import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StatusBarUtils
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.youth.banner.indicator.CircleIndicator
@@ -34,6 +33,7 @@ import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.ShopPositionDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
+import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.web.WebViewActivity
 
@@ -57,7 +57,6 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
     // 权限
     private val requestMultiplePermission =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result: Map<String, Boolean> ->
-
             var isAllow = true
             for (permission in permissions) {
                 if (true != result[permission]) {
@@ -67,7 +66,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             }
             if (isAllow) {
                 mViewModel.hasLocationPermission.value = true
-                mSharedViewModel.requestLocationInfo(requireContext())
+//                mSharedViewModel.requestLocationInfo(requireContext())
             }
         }
 
@@ -234,7 +233,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             childBinding.item = data
             childBinding.root.setOnClickListener {
                 when (data.icon) {
-                    R.mipmap.icon_home_wash ->
+                    R.mipmap.icon_home_wash -> {
                         startActivity(
                             Intent(
                                 requireContext(),
@@ -242,6 +241,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DefaultPageParams.pack(1))
                             })
+                    }
                     R.mipmap.icon_home_hair ->
                         startActivity(
                             Intent(
@@ -272,20 +272,20 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
 
         // 分类2(小图)
-        mBinding.llHomeCategorySmall.buildChild<ItemHomeCategorySmallBinding, HomeCategory>(
-            mViewModel.smallCategory,
-            LinearLayoutCompat.LayoutParams(
-                0,
-                LinearLayoutCompat.LayoutParams.WRAP_CONTENT
-            ).apply {
-                weight = 1f
-            }
-        ) { _, childBinding, data ->
-            childBinding.item = data
-            childBinding.root.setOnClickListener {
-                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
-            }
-        }
+//        mBinding.llHomeCategorySmall.buildChild<ItemHomeCategorySmallBinding, HomeCategory>(
+//            mViewModel.smallCategory,
+//            LinearLayoutCompat.LayoutParams(
+//                0,
+//                LinearLayoutCompat.LayoutParams.WRAP_CONTENT
+//            ).apply {
+//                weight = 1f
+//            }
+//        ) { _, childBinding, data ->
+//            childBinding.item = data
+//            childBinding.root.setOnClickListener {
+//                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
+//            }
+//        }
 
         mBinding.clHomeCurTask.setOnClickListener {
             mViewModel.lastMessage.value?.let { msg ->
@@ -310,11 +310,19 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
 
         // 附近门店 更多
         mBinding.clNearByShopMore.setOnClickListener {
-            startActivity(Intent(requireContext(), NearByShopActivity::class.java))
-        }
-        // 请求权限
-        mBinding.btnHomeNearStoresGetLocation.setOnClickListener {
-            requestMultiplePermission.launch(permissions)
+            // 请求权限
+            if (true != mViewModel.hasLocationPermission.value) {
+                DialogUtils.checkPermissionDialog(
+                    requireContext(),
+                    childFragmentManager,
+                    permissions,
+                    "需要定位权限来寻找附近营业点", false
+                ) {
+                    requestMultiplePermission.launch(permissions)
+                }
+            } else {
+                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
+            }
         }
         // 附近门店
         mBinding.clNearByShop.setOnClickListener {

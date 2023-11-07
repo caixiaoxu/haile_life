@@ -46,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     app:itemLayout="@layout/item_home_category_small" />
 
                 <com.youth.banner.Banner
@@ -169,8 +170,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tv_home_near_stores_title" />
 
-                        <com.lsy.framelib.ui.weight.SingleTapTextView
-                            android:id="@+id/btn_home_near_stores_get_location"
+                        <androidx.appcompat.widget.AppCompatTextView
                             style="@style/Font_12_FFFFFF"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

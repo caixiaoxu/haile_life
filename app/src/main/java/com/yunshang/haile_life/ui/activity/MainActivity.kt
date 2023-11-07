@@ -30,7 +30,9 @@ import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
+import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
 import org.opencv.OpenCV
@@ -40,6 +42,9 @@ import java.util.*
 
 class MainActivity :
     BaseBusinessActivity<ActivityMainBinding, MainViewModel>(MainViewModel::class.java, BR.vm) {
+
+    private val permissions = SystemPermissionHelper.cameraPermissions()
+        .plus(SystemPermissionHelper.readWritePermissions())
 
     // 权限
     private val requestMultiplePermission =
@@ -84,7 +89,7 @@ class MainActivity :
         }
 
         code?.let { code ->
-            mViewModel.requestScanResult(code,supportFragmentManager) { scan, detail, appoint ->
+            mViewModel.requestScanResult(code, supportFragmentManager) { scan, detail, appoint ->
                 if (detail.deviceErrorCode > 0) {
                     Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" })
                         .build().show(supportFragmentManager)
@@ -218,10 +223,14 @@ class MainActivity :
     override fun initView() {
         mBinding.ivMainScan.setOnClickListener {
             if (checkLogin()) {
-                requestMultiplePermission.launch(
-                    SystemPermissionHelper.cameraPermissions()
-                        .plus(SystemPermissionHelper.readWritePermissions())
-                )
+                DialogUtils.checkPermissionDialog(
+                    this,
+                    supportFragmentManager,
+                    permissions,
+                    "需要相机权限和媒体读取权限来扫描或读取设备码"
+                ) {
+                    requestMultiplePermission.launch(permissions)
+                }
             }
         }
 

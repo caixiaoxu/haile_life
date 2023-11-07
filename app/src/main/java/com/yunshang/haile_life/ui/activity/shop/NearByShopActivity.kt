@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lsy.framelib.network.response.ResponseList
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.NearByShopViewModel
@@ -19,6 +21,7 @@ import com.yunshang.haile_life.databinding.ItemNearByShopBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
+import com.yunshang.haile_life.utils.DialogUtils
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
@@ -29,6 +32,22 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearByShopViewModel>(
     NearByShopViewModel::class.java, BR.vm
 ) {
+    private val permissions = SystemPermissionHelper.locationPermissions()
+
+    // 权限
+    private val requestMultiplePermission =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result: Map<String, Boolean> ->
+            var isAllow = true
+            for (permission in permissions) {
+                if (true != result[permission]) {
+                    isAllow = false
+                    break
+                }
+            }
+            if (isAllow) {
+                mSharedViewModel.requestLocationInfo(this)
+            }
+        }
 
     private val mAdapter by lazy {
         CommonRecyclerAdapter<ItemNearByShopBinding, NearStorePositionEntity>(
@@ -161,6 +180,15 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
             }
         } else {
             mViewModel.curCategoryCode.value = mViewModel.mNearByShopIndicators[0].value
+        }
+
+        DialogUtils.checkPermissionDialog(
+            this,
+            supportFragmentManager,
+            permissions,
+            "需要定位权限来寻找附近营业点"
+        ) {
+            requestMultiplePermission.launch(permissions)
         }
     }
 }

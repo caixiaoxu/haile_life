@@ -37,6 +37,7 @@ import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
+import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.MapManagerUtils
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -276,7 +277,14 @@ class ShopPositionDetailActivity :
         }
 
         mBinding.tvShopDetailContactPhone.setOnClickListener {
-            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            DialogUtils.checkPermissionDialog(
+                this,
+                supportFragmentManager,
+                SystemPermissionHelper.callPhonePermissions(),
+                "需要权限来拨打电话"
+            ) {
+                requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            }
         }
         mBinding.tvShopDetailRecharge.setOnClickListener {
             if (!checkLogin()) {

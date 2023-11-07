@@ -15,11 +15,15 @@ import com.yunshang.haile_life.business.vm.CardBindingViewModel
 import com.yunshang.haile_life.databinding.ActivityCardBindingBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
+import com.yunshang.haile_life.utils.DialogUtils
 import timber.log.Timber
 
 class CardBindingActivity : BaseBusinessActivity<ActivityCardBindingBinding, CardBindingViewModel>(
     CardBindingViewModel::class.java, BR.vm
 ) {
+
+    private val permissions = SystemPermissionHelper.cameraPermissions()
+        .plus(SystemPermissionHelper.readWritePermissions())
 
     // 权限
     private val requestMultiplePermission =
@@ -85,10 +89,14 @@ class CardBindingActivity : BaseBusinessActivity<ActivityCardBindingBinding, Car
     override fun initView() {
         window.statusBarColor = Color.WHITE
         mBinding.ibCardBindingScan.setOnClickListener {
-            requestMultiplePermission.launch(
-                SystemPermissionHelper.cameraPermissions()
-                    .plus(SystemPermissionHelper.readWritePermissions())
-            )
+            DialogUtils.checkPermissionDialog(
+                this,
+                supportFragmentManager,
+                permissions,
+                "需要相机权限和媒体读取权限来扫描或读取卡片码"
+            ) {
+                requestMultiplePermission.launch(permissions)
+            }
         }
     }
 

@@ -30,6 +30,7 @@ import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.TranslucencePopupWindow
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
+import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 
 
@@ -198,7 +199,14 @@ class OrderDetailActivity :
         mBinding.tvOrderDetailDesc.movementMethod = LinkMovementMethod.getInstance()
 
         mBinding.tvOrderDetailContact.setOnClickListener {
-            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            DialogUtils.checkPermissionDialog(
+                this,
+                supportFragmentManager,
+                SystemPermissionHelper.callPhonePermissions(),
+                "需要权限来拨打电话"
+            ) {
+                requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            }
         }
         mBinding.tvOrderDetailPay.setOnClickListener {
             mViewModel.orderDetail.value?.let { detail ->
