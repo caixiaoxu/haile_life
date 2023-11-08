@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.PersonalInfoViewModel
 import com.yunshang.haile_life.databinding.ActivityPersonalInfoBinding
@@ -22,13 +23,24 @@ class PersonalInfoActivity :
     override fun initView() {
         window.statusBarColor = Color.WHITE
         mBinding.clPersonalInfoHeadImage.setOnClickListener {
-            DialogUtils.showImgSelectorDialog(this@PersonalInfoActivity, 1) { isSuccess, result ->
-                if (isSuccess && !result.isNullOrEmpty()) {
-                    mViewModel.uploadHeadIcon(result[0].cutPath) {
-                        if (it) {
-                            mSharedViewModel.requestUserInfoAsync()
-                        } else {
-                            SToast.showToast(this@PersonalInfoActivity, R.string.update_failure)
+            DialogUtils.checkPermissionDialog(
+                this,
+                supportFragmentManager,
+                SystemPermissionHelper.cameraPermissions()
+                    .plus(SystemPermissionHelper.readWritePermissions()),
+                "需要相机和读写权限选择头像"
+            ) {
+                DialogUtils.showImgSelectorDialog(
+                    this@PersonalInfoActivity,
+                    1
+                ) { isSuccess, result ->
+                    if (isSuccess && !result.isNullOrEmpty()) {
+                        mViewModel.uploadHeadIcon(result[0].cutPath) {
+                            if (it) {
+                                mSharedViewModel.requestUserInfoAsync()
+                            } else {
+                                SToast.showToast(this@PersonalInfoActivity, R.string.update_failure)
+                            }
                         }
                     }
                 }
