@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/appointment_success" />
+            app:title="@string/verify" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_appointment_order_verify_status"
@@ -30,11 +30,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:text="@{vm.countDownTime}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bar_appointment_order_verify_title"
             tools:text="待验证，剩余 02:55" />
 
         <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:id="@+id/btn_appointment_order_verify_cancel"
             style="@style/Font_12_black_85"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

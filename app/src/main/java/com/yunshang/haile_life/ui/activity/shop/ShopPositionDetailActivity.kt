@@ -35,11 +35,11 @@ import com.yunshang.haile_life.databinding.ItemShopPositionDetailFloorBinding
 import com.yunshang.haile_life.databinding.ItemShopPositionDetailTagsBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
-import com.yunshang.haile_life.ui.activity.order.AppointmentOrderVerifyActivity
-import com.yunshang.haile_life.ui.activity.order.AppointmentSuccessActivity
+import com.yunshang.haile_life.ui.activity.order.AppointmentOrderActivity
+import com.yunshang.haile_life.ui.view.IndicatorPagerTitleView
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
-import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.AppointmentOrderSelectorDialog
+import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 import com.yunshang.haile_life.ui.view.refresh.CommonLoadMoreRecyclerView
 import com.yunshang.haile_life.utils.MapManagerUtils
@@ -48,7 +48,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 
 
 class ShopPositionDetailActivity :
@@ -97,8 +96,7 @@ class ShopPositionDetailActivity :
                                     startActivity(
                                         Intent(
                                             this@ShopPositionDetailActivity,
-                                            if (1 == item.state) AppointmentOrderVerifyActivity::class.java
-                                            else AppointmentSuccessActivity::class.java
+                                            AppointmentOrderActivity::class.java
                                         ).apply {
                                             putExtras(IntentParams.OrderParams.pack(orderNo))
                                         }
@@ -174,7 +172,7 @@ class ShopPositionDetailActivity :
                                     context: Context?,
                                     index: Int
                                 ): IPagerTitleView {
-                                    return SimplePagerTitleView(context).apply {
+                                    return IndicatorPagerTitleView(context).apply {
                                         normalColor = ContextCompat.getColor(
                                             this@ShopPositionDetailActivity,
                                             R.color.color_black_65
@@ -197,6 +195,12 @@ class ShopPositionDetailActivity :
                                 override fun getIndicator(context: Context?): IPagerIndicator {
                                     return LinePagerIndicator(context).apply {
                                         mode = LinePagerIndicator.MODE_WRAP_CONTENT
+                                        roundRadius =
+                                            DimensionUtils.dip2px(
+                                                this@ShopPositionDetailActivity,
+                                                2f
+                                            )
+                                                .toFloat()
                                         setColors(
                                             ContextCompat.getColor(
                                                 this@ShopPositionDetailActivity,

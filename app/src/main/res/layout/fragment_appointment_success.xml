@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="avm"
+            type="com.yunshang.haile_life.business.vm.AppointmentOrderViewModel" />
+
+        <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.AppointmentSuccessViewModel" />
     </data>
@@ -14,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_appointment_success"
-        tools:context=".ui.activity.order.AppointmentSuccessActivity">
+        tools:context=".ui.fragment.AppointmentSuccessActivity">
 
         <com.yunshang.haile_life.ui.view.CommonTitleActionBar
             android:id="@+id/bar_appointment_success_title"
@@ -35,6 +39,7 @@
             app:layout_constraintTop_toBottomOf="@id/bar_appointment_success_title" />
 
         <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:id="@+id/btn_appointment_success_cancel"
             style="@style/Font_12_black_85"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +47,6 @@
             android:background="@drawable/shape_stroke26000000_r14"
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"
-            android:onClick="@{vm::cancelOrder}"
             android:text="@string/cancel_order"
             app:layout_constraintBottom_toBottomOf="@id/tv_appointment_success_status"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="4dp"
+            android:text="@{@string/appointment_success_ranking(vm.appointStateList.lineOrder)}"
             app:layout_constraintTop_toBottomOf="@id/tv_appointment_success_status"
             tools:text="您的预约订单排在第2位，请耐心等待" />
 
@@ -70,14 +75,16 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_appointment_success_prompt">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,10 +113,9 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="-8dp"
                         android:background="@drawable/line_appointment_order_status"
-                        android:backgroundTint="@color/secondColorPrimary"
-                        app:layout_constraintEnd_toStartOf="@id/tv_appointment_success_order_status_appoint_success"
-                        app:layout_constraintStart_toEndOf="@id/tv_appointment_success_order_status_device_in_use"
-                        app:layout_constraintTop_toTopOf="@id/tv_appointment_success_order_status_device_in_use" />
+                        app:layout_constraintEnd_toStartOf="@id/tv_appointment_success_order_status_device_verify"
+                        app:layout_constraintStart_toEndOf="@id/tv_appointment_success_order_status_appoint_success"
+                        app:layout_constraintTop_toTopOf="@id/tv_appointment_success_order_status_appoint_success" />
 
                     <View
                         android:layout_width="0dp"
@@ -118,55 +124,54 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="-8dp"
                         android:background="@drawable/line_appointment_order_status"
-                        app:layout_constraintEnd_toStartOf="@id/tv_appointment_success_order_status_device_verify"
-                        app:layout_constraintStart_toEndOf="@id/tv_appointment_success_order_status_appoint_success"
-                        app:layout_constraintTop_toTopOf="@id/tv_appointment_success_order_status_device_in_use" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_appointment_success_order_status_device_in_use"
-                        style="@style/Font_14_black_85"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="18dp"
-                        android:drawableTop="@mipmap/icon_appointment_order_status_device_in_use"
-                        android:drawablePadding="6dp"
-                        android:gravity="center"
-                        android:text="@string/device_in_use"
-                        app:layout_constraintEnd_toStartOf="@id/tv_appointment_success_order_status_appoint_success"
-                        app:layout_constraintHorizontal_chainStyle="spread_inside"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_appointment_success_order_status_title" />
+                        app:layout_constraintEnd_toStartOf="@id/tv_appointment_success_order_status_device_in_use"
+                        app:layout_constraintStart_toEndOf="@id/tv_appointment_success_order_status_device_verify"
+                        app:layout_constraintTop_toTopOf="@id/tv_appointment_success_order_status_appoint_success" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_appointment_success_order_status_appoint_success"
                         style="@style/Font_14_black_85"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="18dp"
                         android:drawableTop="@mipmap/icon_appointment_order_status_appoint_success"
                         android:drawablePadding="6dp"
                         android:gravity="center"
                         android:text="@string/appointment_success"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_appointment_success_order_status_device_in_use"
                         app:layout_constraintEnd_toStartOf="@id/tv_appointment_success_order_status_device_verify"
-                        app:layout_constraintStart_toEndOf="@id/tv_appointment_success_order_status_device_in_use"
-                        app:layout_constraintTop_toTopOf="@id/tv_appointment_success_order_status_device_in_use" />
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_appointment_success_order_status_title" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_appointment_success_order_status_device_verify"
                         style="@style/Font_14_black_85"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
                         android:drawableTop="@mipmap/icon_appointment_order_status_device_verify"
                         android:drawablePadding="6dp"
                         android:gravity="center"
                         android:text="@string/verify_device"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_appointment_success_order_status_device_in_use"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_appointment_success_order_status_appoint_success"
+                        app:layout_constraintEnd_toStartOf="@id/tv_appointment_success_order_status_device_in_use"
                         app:layout_constraintStart_toEndOf="@id/tv_appointment_success_order_status_appoint_success"
-                        app:layout_constraintTop_toTopOf="@id/tv_appointment_success_order_status_device_in_use" />
+                        app:layout_constraintTop_toTopOf="@id/tv_appointment_success_order_status_appoint_success" />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_appointment_success_order_status_device_in_use"
+                        style="@style/Font_14_black_85"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:drawableTop="@mipmap/icon_appointment_order_status_device_in_use"
+                        android:drawablePadding="6dp"
+                        android:gravity="center"
+                        android:text="@string/device_in_use"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_appointment_success_order_status_appoint_success"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_appointment_success_order_status_device_verify"
+                        app:layout_constraintTop_toTopOf="@id/tv_appointment_success_order_status_appoint_success" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <include
@@ -178,11 +183,13 @@
                     android:layout_marginTop="8dp" />
 
                 <include
+                    android:id="@+id/include_order_info"
                     layout="@layout/include_order_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    app:order="@{avm.orderDetails}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

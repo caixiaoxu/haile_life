@@ -1,14 +1,17 @@
 package com.yunshang.haile_life.business.vm
 
 import androidx.lifecycle.MutableLiveData
+import com.lsy.framelib.network.exception.CommonCustomException
 import com.lsy.framelib.network.response.ResponseList
 import com.lsy.framelib.ui.base.BaseViewModel
+import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.rule.IndicatorEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * Title :
@@ -65,6 +68,17 @@ class OrderViewModel : BaseViewModel() {
                 withContext(Dispatchers.Main) {
                     callBack.invoke(it)
                 }
+            }
+        }, {
+            withContext(Dispatchers.Main) {
+                // 自己定义的错误显示报错提示
+                if (it is CommonCustomException) {
+                    it.message?.let { it1 -> SToast.showToast(msg = it1) }
+                } else {
+                    SToast.showToast(msg = "网络开小差~")
+                }
+                Timber.d("请求失败或异常$it")
+                callBack.invoke(null)
             }
         }, showLoading = 1 == page)
     }

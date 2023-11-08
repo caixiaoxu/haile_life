@@ -7,11 +7,14 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import com.google.gson.annotations.SerializedName
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
+import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
@@ -57,7 +60,7 @@ data class OrderEntity(
     val realPrice: String,
     val sellerId: Int,
     val serviceTelephone: String,
-    val state: Int,
+    var state: Int,
     val stateDesc: String,
     val viewReply: Boolean,
     val payTime: String? = null,
@@ -67,7 +70,17 @@ data class OrderEntity(
     val discountPrice: Double? = null,
     val reserveInfo: ReserveInfo? = null,
     val tipRemark: String? = null,
-) : IMultiTypeEntity {
+) : BaseObservable(), IMultiTypeEntity {
+
+    @Transient
+    @get:Bindable
+    var showDetail: Boolean = false
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.showDetail)
+        }
+
+
     override fun getMultiType(): Int = when (state) {
         100, 500 -> 0
         1000, 2099 -> 2
@@ -166,7 +179,7 @@ data class OrderEntity(
         StringUtils.getString(R.string.predict_remnant_time).let { prefix ->
             ((DateTimeUtils.formatDateFromString(orderItemList.firstOrNull()?.finishTime)?.let {
                 val diff = it.time - System.currentTimeMillis()
-                "$prefix ${if (diff <= 0) "即将完成" else ceil(diff * 1.0 / 1000 / 60).toInt()}分钟"
+                "$prefix ${if (diff <= 0) "即将完成" else "${ceil(diff * 1.0 / 1000 / 60).toInt()}分钟"}"
             } ?: "") + " 图").let { content ->
                 if (content.isNotEmpty()) {
                     SpannableString(content).apply {
@@ -227,6 +240,9 @@ data class OrderEntity(
 
     fun getOrderDeviceName(): String =
         if (orderItemList.isNotEmpty()) orderItemList.first().goodsName else ""
+
+    fun getOrderPositionName(): String =
+        if (orderItemList.isNotEmpty()) orderItemList.first().positionName else ""
 
     fun getOrderDeviceModel(): String = (orderItemList.firstOrNull()?.let {
         if (DeviceCategory.isDrinking(it.categoryCode)) {
@@ -381,12 +397,17 @@ data class PromotionParticipation(
     val discountPrice: String,
     val promotionProduct: Int,
     val promotionProductName: String
-)
+) {
+    fun getOrderDeviceDiscountPrice(): String =
+        com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
+            "-$discountPrice"
+        ) ?:""
+}
 
 data class CheckInfo(
     val checkState: Int? = null,
     val invalidTime: String? = null,
-    val invalidTimeStamp: Int? = null
+    val invalidTimeStamp: Long? = null
 )
 
 data class ReserveInfo(

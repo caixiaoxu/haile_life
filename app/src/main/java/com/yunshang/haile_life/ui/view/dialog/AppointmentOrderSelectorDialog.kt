@@ -93,7 +93,7 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
 
         val inflater = LayoutInflater.from(requireContext())
         builder.deviceDetail.observe(this) { detail ->
-            mBinding.includeOrderSelectorDeviceStatus.root.visibility(1 != detail.deviceState)
+            mBinding.includeOrderSelectorDeviceStatus.llDeviceStatusItems.visibility(1 != detail.deviceState)
             detail.items.filter { item -> 1 == item.soldState }.let { configs ->
                 if (configs.isNotEmpty()) {
                     mBinding.includeOrderSelectorSpec.clScanOrderConfig.let { cl ->

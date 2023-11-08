@@ -126,7 +126,8 @@ class AppointmentOrderSelectorActivity :
                     // 设置id
                     val idList = IntArray(minuteList.size) { it + 1 }
                     mBinding.includeAppointSelectorMinute.flowScanOrderItem.referencedIds = idList
-                    mBinding.includeAppointSelectorMinute.flowScanOrderItem.visibility = View.VISIBLE
+                    mBinding.includeAppointSelectorMinute.flowScanOrderItem.visibility =
+                        View.VISIBLE
                 }
             }
         }
@@ -182,7 +183,9 @@ class AppointmentOrderSelectorActivity :
 //                )
 //            })
 
-            startActivity(Intent(this, AppointmentSuccessActivity::class.java))
+            startActivity(Intent(this, AppointmentOrderActivity::class.java).apply {
+//                putExtras(IntentParams.OrderParams.pack(orderNo))
+            })
         }
     }
 

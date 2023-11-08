@@ -103,6 +103,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingHorizontal="6dp"
+                                android:layout_marginStart="4dp"
                                 android:paddingVertical="2dp"
                                 android:text="@{vm.shopDetail.appointmentNumVal}"
                                 app:bgResIds="@{vm.shopDetail.multiTypeBgRes}"
@@ -185,13 +186,18 @@
                         android:text="@string/starfish_recharge" />
                 </LinearLayout>
 
-                <net.lucode.hackware.magicindicator.MagicIndicator
-                    android:id="@+id/indicator_shop_position_detail_device_category"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:background="@color/white"
-                    android:paddingHorizontal="16dp"
-                    app:visibility="@{null != vm.shopDetail.positionDeviceDetailList &amp;&amp; vm.shopDetail.positionDeviceDetailList.size() > 0}" />
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+                    <net.lucode.hackware.magicindicator.MagicIndicator
+                        android:id="@+id/indicator_shop_position_detail_device_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingHorizontal="16dp"
+                        app:visibility="@{null != vm.shopDetail.positionDeviceDetailList &amp;&amp; vm.shopDetail.positionDeviceDetailList.size() > 0}" />
+                </FrameLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/Font_12_black_65"

@@ -80,4 +80,10 @@ interface OrderService {
     @POST("/appointment/order/stateList")
     suspend fun requestAppointStateList(@Body body: RequestBody): ResponseWrapper<AppointmentStateListEntity>
 
+    @POST("/appointment/order/stateQuery")
+    suspend fun requestAppointStateQuery(@Body body: RequestBody): ResponseWrapper<AppointmentStateEntity>
+
+    @POST("/trade/underway/preview")
+    suspend fun requestUnderWayOrderPreview(@Body body: RequestBody): ResponseWrapper<TradePreviewEntity>
+
 }

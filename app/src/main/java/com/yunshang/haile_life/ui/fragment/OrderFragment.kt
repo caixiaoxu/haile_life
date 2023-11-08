@@ -21,6 +21,7 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.databinding.FragmentOrderBinding
 import com.yunshang.haile_life.databinding.ItemMineOrderBinding
+import com.yunshang.haile_life.ui.activity.order.AppointmentOrderActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.order.OrderListActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
@@ -54,11 +55,92 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
                 it.topMargin = if (0 == pos) DimensionUtils.dip2px(requireContext(), 12f) else 0
             }
             mItemBinding?.root?.setOnClickListener {
-                startActivity(Intent(requireContext(), OrderDetailActivity::class.java).apply {
-                    putExtras(IntentParams.OrderParams.pack(item.orderNo, mViewModel.isAppoint))
-                })
+                when (item.orderSubType) {
+                    106 -> {
+                        if (50 == item.state) {
+                            when (item.checkInfo?.checkState) {
+                                1 -> {
+                                    // 待验证
+                                    goToAppointmentOrderPage(item.orderNo)
+                                }
+                                2 -> {
+                                    // 支付
+                                    goToAppointmentOrderPage(item.orderNo)
+                                }
+                                else -> goToNormalOrderPage(item.orderNo)
+                            }
+                        } else goToNormalOrderPage(item.orderNo)
+                    }
+                    301 -> {
+                        if (500 == item.state) {
+                            if (1 == item.appointmentState) {
+                                // 预约成功
+                                goToAppointmentOrderPage(item.orderNo)
+                            } else if (5 == item.appointmentState && 1 == item.checkInfo?.checkState) {
+                                // 待验证
+                            } else goToNormalOrderPage(item.orderNo)
+                        } else if (50 == item.state) {
+                            // 待支付
+                            goToAppointmentOrderPage(item.orderNo)
+                        } else goToNormalOrderPage(item.orderNo)
+                    }
+                    303 -> {
+                        if (50 == item.state) {
+                            // 待支付
+                            when (item.appointmentState) {
+                                1 -> {
+                                    // 预约成功
+                                    goToAppointmentOrderPage(item.orderNo)
+                                }
+                                5 -> {
+                                    when (item.checkInfo?.checkState) {
+                                        1 -> {
+                                            // 待验证
+                                            goToAppointmentOrderPage(item.orderNo)
+                                        }
+                                        2 -> {
+                                            // 待支付
+                                            goToAppointmentOrderPage(item.orderNo)
+                                        }
+                                        else -> goToNormalOrderPage(item.orderNo)
+                                    }
+                                }
+                                else -> goToNormalOrderPage(item.orderNo)
+                            }
+                        } else goToNormalOrderPage(item.orderNo)
+                    }
+                    else -> {
+                        goToNormalOrderPage(item.orderNo)
+                    }
+                }
             }
         }
+    }
+
+    private fun goToAppointmentOrderPage(orderNo: String) {
+        startActivity(
+            Intent(
+                requireContext(),
+                AppointmentOrderActivity::class.java
+            ).apply {
+                putExtras(IntentParams.OrderParams.pack(orderNo))
+            }
+        )
+    }
+
+    private fun goToNormalOrderPage(orderNo: String) {
+        startActivity(
+            Intent(
+                requireContext(),
+                OrderDetailActivity::class.java
+            ).apply {
+                putExtras(
+                    IntentParams.OrderParams.pack(
+                        orderNo,
+                        mViewModel.isAppoint
+                    )
+                )
+            })
     }
 
     override fun layoutId(): Int = R.layout.fragment_order
