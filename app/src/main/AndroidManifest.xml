@@ -41,9 +41,6 @@
             android:name=".ui.activity.order.AppointmentOrderActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.order.OrderExecuteActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.activity.device.WaterControlCodeActivity"
             android:exported="false" />
         <activity

@@ -4,14 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.lsy.framelib.ui.base.BaseViewModel
+import com.lsy.framelib.utils.StringUtils
+import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.DeviceService
-import com.yunshang.haile_life.business.apiService.ShopService
+import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
-import com.yunshang.haile_life.data.entities.AppointSpec
-import com.yunshang.haile_life.data.entities.DeviceDetailEntity
+import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
-import com.yunshang.haile_life.data.rule.IOrderConfigEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 
 /**
  * Title :
@@ -25,20 +29,90 @@ import com.yunshang.haile_life.data.rule.IOrderConfigEntity
  */
 class AppointmentOrderSelectorViewModel : BaseViewModel() {
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
-    private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
+    private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
     var deviceId: Int = -1
 
-    val isHideDeviceInfo:MutableLiveData<Boolean> = MutableLiveData(true)
-    val deviceDetail: MutableLiveData<DeviceDetailEntity> by lazy {
+    val isHideDeviceInfo: MutableLiveData<Boolean> = MutableLiveData(true)
+    val deviceDetail: MutableLiveData<DeviceDetailEntity> by lazy { MutableLiveData() }
+    val stateList: MutableLiveData<List<DeviceStateEntity>?> by lazy { MutableLiveData() }
+
+    // 选择的设备模式
+    val selectDeviceConfig: MutableLiveData<DeviceDetailItemEntity> by lazy {
         MutableLiveData()
     }
 
-    val autoRefund: MutableLiveData<Boolean> by lazy {
+    // 选择的设备属性
+    val selectExtAttr: MutableLiveData<ExtAttrDtoItem?> by lazy {
         MutableLiveData()
+    }
+
+    var selectAttachSku: MutableMap<Int, MutableLiveData<ExtAttrDtoItem?>> = mutableMapOf()
+
+    val needAttach: LiveData<Boolean> = selectDeviceConfig.map {
+        it?.let { item ->
+            !(item.name == "单脱" || item.name == "筒自洁")
+        } ?: false
     }
 
     val isDryer: LiveData<Boolean> = deviceDetail.map {
         DeviceCategory.isDryerOrHair(it.categoryCode)
+    }
+
+    val totalPriceVal: MutableLiveData<Double> by lazy {
+        MutableLiveData()
+    }
+
+    val attachConfigureVal: MutableLiveData<String> by lazy {
+        MutableLiveData()
+    }
+
+    val modelTitle: LiveData<String> = deviceDetail.map {
+        StringUtils.getString(
+            R.string.select_work_model,
+            it.categoryName.replace("机", "")
+        )
+    }
+
+    /**
+     * 切换选择功能的配置
+     */
+    fun changeDeviceConfig(itemEntity: DeviceDetailItemEntity) {
+        (itemEntity.extAttrDto.items.firstOrNull() { item ->
+            item.isEnabled && item.isDefault
+        }
+            ?: itemEntity.extAttrDto.items.firstOrNull { item -> item.isEnabled })?.let { firstAttr ->
+            selectExtAttr.value = firstAttr
+        }
+    }
+
+    fun totalPrice() {
+        var attachTotal = BigDecimal("0.0")
+        selectAttachSku.forEach { item ->
+            if (!item.value.value?.unitPrice.isNullOrEmpty()) {
+                attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
+            }
+        }
+        totalPriceVal.value =
+            BigDecimal(selectExtAttr.value?.unitPrice ?: "0.0").add(attachTotal).toDouble()
+    }
+
+    fun attachConfigure() {
+        var configure = ""
+        if (true == needAttach.value) {
+            selectAttachSku.forEach { item ->
+                val name = deviceDetail.value?.attachItems?.find { it -> it.id == item.key }?.name
+                if (!name.isNullOrEmpty()) {
+                    item.value.value?.let {
+                        if (it.unitPrice.isNotEmpty()) {
+                            configure += "+" + name + "￥" + it.unitPrice
+                        }
+                    }
+                }
+            }
+        }
+        attachConfigureVal.value = if (configure.isNotEmpty()) {
+            configure.substring(1)
+        } else configure
     }
 
     val hint: LiveData<String> = deviceDetail.map {
@@ -50,97 +124,67 @@ class AppointmentOrderSelectorViewModel : BaseViewModel() {
         }
     }
 
-    val modelTitle: LiveData<String> = deviceDetail.map {"模式"//TODO 后端加字段
-//        com.lsy.framelib.utils.StringUtils.getString(
-//            R.string.select_work_model,
-//            it.categoryCodeName.replace("机", "")
-//        )
-    }
-
-    val timeTitle: LiveData<String> = deviceDetail.map {"时长"//TODO 后端加字段
-//        com.lsy.framelib.utils.StringUtils.getString(
-//            R.string.select_work_time,
-//            it.categoryCodeName.replace("机", "")
-//        )
-    }
-
-    val specList: MutableLiveData<List<AppointSpec>> by lazy {
-        MutableLiveData()
-    }
-
-    val selectSpec: MutableLiveData<AppointSpec> by lazy {
-        MutableLiveData()
-    }
-
-    val minuteList: LiveData<List<MinuteEntity>> = selectSpec.map {
-        if (DeviceCategory.isDryerOrHair(deviceDetail.value?.categoryCode)) {
-            it.unitList.map { unit ->
-                MinuteEntity(unit)
-            }
-        } else {
-            listOf(MinuteEntity(it.extAttr.minutes))
-        }
-    }
-
-    val selectMinute: MutableLiveData<Int> by lazy {
-        MutableLiveData()
-    }
-
     fun requestData() {
         if (-1 == deviceId) return
         launch({
             ApiRepository.dealApiResult(
                 mDeviceRepo.requestDeviceDetail(deviceId)
-            )?.also {
-                deviceDetail.postValue(it)
-
+            )?.also { detail ->
                 ApiRepository.dealApiResult(
-                    mShopRepo.requestAppointSpecList(
+                    mDeviceRepo.requestDeviceStateList(
                         ApiRepository.createRequestBody(
-                            hashMapOf(
-                                "shopId" to it.shopId,
-                                "goodsCategoryId" to it.categoryId,
-                            )
+                            hashMapOf("goodsId" to deviceId)
                         )
                     )
-                )?.let {appointSpecList->
-                    specList.postValue(appointSpecList.specValueList)
-                    appointSpecList.specValueList.firstOrNull()?.let { first ->
-                        selectSpec.postValue(first)
+                )?.let { deviceStateList ->
+                    deviceDetail.postValue(detail)
+                    stateList.postValue(deviceStateList.stateList)
+                }
+
+                val list = detail.items.filter { item -> 1 == item.soldState }
+                //如果没有默认，就显示第一个
+                (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
+                    ?: run { list.firstOrNull() })?.let { first ->
+                    selectDeviceConfig.postValue(first)
+                    withContext(Dispatchers.Main) {
+                        changeDeviceConfig(first)
                     }
                 }
 
-//                ApiRepository.dealApiResult(
-//                    mShopRepo.requestAppointCategoryList(
-//                        ApiRepository.createRequestBody(
-//                            hashMapOf(
-//                                "shopId" to it.shopId
-//                            )
-//                        )
-//                    )
-//                )?.let {
-//                    autoRefund.postValue(1 == it.autoRefund)
-//                    categoryList.postValue(it.categoryList)
-//                    it.categoryList.firstOrNull()?.let { first ->
-//                        selectCategory.postValue(first)
-//                    }
-//                }
+                if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
+                    // 初始化关联的sku
+                    selectAttachSku = mutableMapOf()
+                    detail.attachItems.forEach { item ->
+                        if (item.extAttrDto.items.isNotEmpty()) {
+                            selectAttachSku[item.id] =
+                                item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
+                                    ?.let { default ->
+                                        MutableLiveData(default)
+                                    } ?: MutableLiveData(null)
+                        }
+                    }
+                }
             }
         })
     }
 
-    class MinuteEntity(val minute: Int) : IOrderConfigEntity {
-        override fun getTitle(code: String?): String =
-            "${minute}${com.lsy.framelib.utils.StringUtils.getString(R.string.minute)}"
-
-        override fun getTitleTxtColor(code: String?): Int =
-            if (DeviceCategory.isDryerOrHair(code)) R.color.selector_black85_ff630e
-            else R.color.selector_black85_04d1e5
-
-        override fun getTitleBg(code: String?): Int =
-            if (DeviceCategory.isDryerOrHair(code)) R.drawable.selector_device_model_item_dryer
-            else R.drawable.selector_device_model_item1
-
-        override fun defaultVal(): Boolean = false
+    fun submitOrder(
+        params: AppointmentOrderParams,
+        callback: (result: OrderSubmitResultEntity) -> Unit
+    ) {
+        launch({
+            val body = ApiRepository.createRequestBody(GsonUtils.any2Json(params))
+            ApiRepository.dealApiResult(
+                if (null == params.reserveMethod) {
+                    mOrderRepo.lockOrderCreate(body)
+                } else {
+                    mOrderRepo.reserveCreate(body)
+                }
+            )?.let {
+                withContext(Dispatchers.Main) {
+                    callback(it)
+                }
+            }
+        })
     }
 }

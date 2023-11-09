@@ -18,6 +18,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.agruments.OrderStatus
 import com.yunshang.haile_life.data.extend.toDefaultDouble
 import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
@@ -70,6 +71,11 @@ data class OrderEntity(
     val discountPrice: Double? = null,
     val reserveInfo: ReserveInfo? = null,
     val tipRemark: String? = null,
+    val refundTag: String? = null,
+    val refundTime: String? = null,
+    val refundCouponTime: String? = null,
+    val redirectWorking: Boolean? = false,
+    val fulfillInfo: FulfillInfo? = null
 ) : BaseObservable(), IMultiTypeEntity {
 
     @Transient
@@ -81,19 +87,18 @@ data class OrderEntity(
         }
 
 
-    override fun getMultiType(): Int = when (state) {
-        100, 500 -> 0
-        1000, 2099 -> 2
-        else -> 1
-    }
-
-    fun getMultiType(isAppoint: Boolean): Int = if (isAppoint) {
+    override fun getMultiType(): Int = if ("300" == orderType)
         when (appointmentState) {
             0, 1, 2 -> 0
             3, 4 -> 2
             else -> 1
         }
-    } else getMultiType()
+    else
+        when (state) {
+            100, 500 -> 0
+            1000, 2099 -> 2
+            else -> 1
+        }
 
     override fun getMultiTypeBgRes(): IntArray? = null
 
@@ -112,11 +117,12 @@ data class OrderEntity(
         ),
     )
 
-    fun getOrderStatusTitle(): String = when (state) {
-        500 -> orderItemList.firstOrNull()
+    fun getOrderStatusTitle(): String = if ("300" == orderType)
+        OrderStatus.getAppointStateName(appointmentState, false)
+    else if (500 == state) {
+        orderItemList.firstOrNull()
             ?.let { DeviceCategory.categoryName(it.categoryCode).replace("机", "中") } ?: ""
-        else -> stateDesc
-    }
+    } else stateDesc
 
     fun getOrderDetailFinishTimePrompt(): SpannableString = when (state) {
         50 -> com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
@@ -180,7 +186,7 @@ data class OrderEntity(
             ((DateTimeUtils.formatDateFromString(orderItemList.firstOrNull()?.finishTime)?.let {
                 val diff = it.time - System.currentTimeMillis()
                 "$prefix ${if (diff <= 0) "即将完成" else "${ceil(diff * 1.0 / 1000 / 60).toInt()}分钟"}"
-            } ?: "") + " 图").let { content ->
+            } ?: "$prefix") + " 图").let { content ->
                 if (content.isNotEmpty()) {
                     SpannableString(content).apply {
                         setSpan(
@@ -282,6 +288,13 @@ data class OrderEntity(
     fun drinkingPauseTime(): String = orderItemList.firstOrNull()?.let { first ->
         first.goodsItemInfoDto?.pauseTime ?: run { first.goodsItemInfo?.pauseTime }
     } ?: ""
+
+    val hasRefundMoney: Boolean
+        get() = refundTag?.split(",")?.contains("1") ?: false
+
+    val hasRefundCoupon: Boolean
+        get() = refundTag?.split(",")?.contains("2") ?: false
+
 }
 
 data class OrderItem(
@@ -312,6 +325,7 @@ data class OrderItem(
     val goodsItemInfoDto: GoodsItemInfoDto?,
     val positionId: Int,
     val positionName: String,
+    val spuCode: String
 ) {
 
     val goodsItemInfo: GoodsItemInfoEntity?
@@ -401,7 +415,7 @@ data class PromotionParticipation(
     fun getOrderDeviceDiscountPrice(): String =
         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
             "-$discountPrice"
-        ) ?:""
+        ) ?: ""
 }
 
 data class CheckInfo(
@@ -416,5 +430,9 @@ data class ReserveInfo(
     val appointmentTime: String? = null,
     val appointmentUsageTime: String? = null,
     val reserveAutoRefund: Int? = null
+)
+
+data class FulfillInfo(
+    val fulfill: Int = 0
 )
 

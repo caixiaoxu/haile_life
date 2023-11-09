@@ -62,7 +62,6 @@ class OrderDetailActivity :
     override fun initIntent() {
         super.initIntent()
         mViewModel.orderNo = IntentParams.OrderParams.parseOrderNo(intent)
-        mViewModel.isAppoint.value = IntentParams.OrderParams.parseIsAppoint(intent)
         mViewModel.formScan.value = 1 == IntentParams.OrderParams.parseFormScan(intent)
     }
 

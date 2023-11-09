@@ -35,8 +35,8 @@ class RingCountDown @JvmOverloads constructor(
     }
 
 
-    private var cur:Int = 0
-    private var total:Int = 0
+    private var cur: Int = 0
+    private var total: Int = 0
 
     init {
         val array = context.obtainStyledAttributes(attrs, R.styleable.RingCountDown)
@@ -45,9 +45,9 @@ class RingCountDown @JvmOverloads constructor(
         array.recycle()
     }
 
-    fun setData(total:Int,cur:Int){
-        this.total = total
-        this.cur = cur
+    fun setData(total: Int, cur: Int) {
+        this.total = if (0 < total) total else 1
+        this.cur = if (0 < total) cur else 0
         invalidate()
     }
 
@@ -58,7 +58,7 @@ class RingCountDown @JvmOverloads constructor(
         mPaint.color = ContextCompat.getColor(context, R.color.secondColorPrimaryBg)
         canvas?.drawArc(rectF, 0f, 360f, false, mPaint)
 
-        if (total > 0 && cur > 0 && cur < total){
+        if (total > 0 && cur >= 0 && cur < total) {
             val angle = cur * 1.0f / total * 360
             val start = 360 - angle + -90
             mPaint.color = ContextCompat.getColor(context, R.color.secondColorPrimary)

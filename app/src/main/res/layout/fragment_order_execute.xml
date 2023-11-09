@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="avm"
+            type="com.yunshang.haile_life.business.vm.AppointmentOrderViewModel" />
+
+        <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.OrderExecuteViewModel" />
     </data>
@@ -15,7 +19,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_appointment_success"
         android:orientation="vertical"
-        tools:context=".ui.activity.order.OrderExecuteActivity">
+        tools:context=".ui.fragment.OrderExecuteFragment">
 
         <com.yunshang.haile_life.ui.view.CommonTitleActionBar
             android:id="@+id/bar_order_execute_title"
@@ -39,8 +43,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="42dp"
                     android:background="@drawable/shape_sffffff_r8"
+                    android:paddingHorizontal="42dp"
                     android:paddingTop="58dp"
                     android:paddingBottom="28dp">
 
@@ -50,9 +54,7 @@
                         android:layout_height="144dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:progressVal="75"
-                        app:totalVal="100" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_order_execute_time_prompt"
@@ -134,7 +136,8 @@
                     layout="@layout/include_order_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    app:order="@{avm.orderDetails}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

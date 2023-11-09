@@ -30,6 +30,7 @@ import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
+import com.yunshang.haile_life.ui.activity.order.AppointmentOrderSelectorActivity
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
@@ -93,10 +94,6 @@ class MainActivity :
                     Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" })
                         .build().show(supportFragmentManager)
                     return@requestScanResult
-                } else if (0 == detail.amount) {
-                    Hint3SecondDialog.Builder("设备工作中,请稍后再试!")
-                        .build().show(supportFragmentManager)
-                    return@requestScanResult
                 } else if (detail.shopClosed) {
                     Hint3SecondDialog.Builder("门店不在营业时间内,请稍后再试!")
                         .build().show(supportFragmentManager)
@@ -114,11 +111,30 @@ class MainActivity :
                         })
                 } else if (2 == detail.deviceState && 1 == detail.reserveState
                     && true == detail.enableReserve
-                    && (DeviceCategory.isWashingOrShoes(detail.categoryCode)
-                            || DeviceCategory.isDryer(detail.categoryCode))
+                    && (DeviceCategory.isWashingOrShoes(detail.categoryCode) || DeviceCategory.isDryer(
+                        detail.categoryCode
+                    ))
                 ) {
-                    // TODO 跳转预约下单，
+                    // 跳转预约下单，
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            AppointmentOrderSelectorActivity::class.java
+                        ).apply {
+                            putExtras(
+                                IntentParams.DeviceParams.pack(
+                                    detail.categoryCode,
+                                    detail.id
+                                )
+                            )
+                        })
                 } else {
+                    if (0 == detail.amount) {
+                        Hint3SecondDialog.Builder("设备工作中,请稍后再试!")
+                            .build().show(supportFragmentManager)
+                        return@requestScanResult
+                    }
+
                     if (DeviceCategory.isDrinkingOrShower(detail.categoryCode))
                         startActivity(
                             Intent(

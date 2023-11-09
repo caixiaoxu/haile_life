@@ -23,6 +23,7 @@
     <string name="occupy">占用</string>
     <string name="distance">距离</string>
     <string name="you">您</string>
+    <string name="affirm">确认</string>
     <string name="selected">选好了</string>
     <string name="minute">分钟</string>
     <string name="finish">完成</string>
@@ -43,7 +44,7 @@
     <string name="device_running">设备运行中</string>
     <string name="check_reason">查看原因</string>
     <string name="appointment_success">预约成功</string>
-    <string name="page_time_prefix">待验证，剩余</string>
+    <string name="page_time_prefix">待支付，剩余</string>
     <string name="verify_time_prefix">待验证，剩余</string>
     <string name="already_appointment_success">已预约成功</string>
     <string name="service">服务</string>
@@ -250,6 +251,8 @@
 
     <string name="order_execute_time_prompt">预计剩余时间（分钟）</string>
     <string name="order_execute_prompt">衣物面料、衣物量等会影响运行失常，预计剩余时间仅供参考，请以实际时间为准！</string>
+    <string name="refund_coupon">已返券</string>
+    <string name="refund_money">已退款</string>
 
     <string name="shop_detail">营业点详情</string>
     <string name="business_time">营业时间</string>

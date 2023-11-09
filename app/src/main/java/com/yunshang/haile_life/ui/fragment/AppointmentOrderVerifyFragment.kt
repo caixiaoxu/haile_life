@@ -9,7 +9,6 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.AppointmentOrderVerifyViewModel
 import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
 import com.yunshang.haile_life.databinding.FragmentAppointmentOrderVerifyBinding
-import com.yunshang.haile_life.ui.activity.order.OrderExecuteActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 
 class AppointmentOrderVerifyFragment :
@@ -45,7 +44,7 @@ class AppointmentOrderVerifyFragment :
             startActivity(
                 Intent(
                     requireContext(),
-                    OrderExecuteActivity::class.java
+                    OrderExecuteFragment::class.java
                 )
             )
         }

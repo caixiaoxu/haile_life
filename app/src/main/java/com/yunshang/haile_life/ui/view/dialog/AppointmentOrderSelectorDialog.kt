@@ -83,7 +83,6 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             dismiss()
         }
         mBinding.tvOrderSelectorTitle.text = builder.deviceDetail.value?.name
-        // 空闲设备不显示
         mBinding.includeOrderSelectorDeviceStatus.tvDeviceStatusRefresh.setOnClickListener {
             builder.refreshStateList()
         }
@@ -205,7 +204,7 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             }
 
             val num =
-                (if (true == builder.isDryer.value) builder.selectExtAttr.value?.unitAmount else 1)
+                (if (DeviceCategory.isDryer(builder.deviceDetail.value?.categoryCode)) builder.selectExtAttr.value?.unitAmount else 1)
                     ?: return@setOnClickListener
 
             // 主商品

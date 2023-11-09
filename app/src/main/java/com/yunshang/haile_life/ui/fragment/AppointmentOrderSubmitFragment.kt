@@ -2,20 +2,20 @@ package com.yunshang.haile_life.ui.fragment
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
-import com.lsy.framelib.utils.DimensionUtils
-import com.lsy.framelib.utils.SToast
-import com.lsy.framelib.utils.StatusBarUtils
-import com.lsy.framelib.utils.StringUtils
+import com.lsy.framelib.utils.*
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.AppointmentOrderSubmitViewModel
 import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
+import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
@@ -25,6 +25,7 @@ import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
+import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 
@@ -256,64 +257,21 @@ class AppointmentOrderSubmitFragment :
                 changePayWay()
             }
         }
-//
-//        mViewModel.balance.observe(this) {
-//            try {
-//                mViewModel.tradePreview.value?.realPrice?.toDouble()?.let { price ->
-//                    if (it.amount.toDouble() < price) {
-//                        mBinding.includeAppointSubmitPayWay.rbOrderSubmitBalancePayWay.text =
-//                            com.yunshang.haile_life.utils.string.StringUtils.formatBalancePayStyleStr(
-//                                requireContext()
-//                            )
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//
-//        mViewModel.prepayParam.observe(this) {
-//            it?.let {
-//                if (103 == mViewModel.payMethod) {
-//                    mViewModel.alipay(requireActivity(), it)
-//                } else if (203 == mViewModel.payMethod) {
-//                    GsonUtils.json2Class(it, WxPrePayEntity::class.java)?.let { wxPrePayBean ->
-//                        WeChatHelper.openWeChatPay(
-//                            wxPrePayBean.appId,
-//                            wxPrePayBean.partnerId,
-//                            wxPrePayBean.prepayId,
-//                            wxPrePayBean.nonceStr,
-//                            wxPrePayBean.timeStamp,
-//                            wxPrePayBean.paySign
-//
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//
-//        LiveDataBus.with(BusEvents.WXPAY_STATUS)?.observe(this) {
-//            mViewModel.requestAsyncPayAsync()
-//        }
 
-//        LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS, Boolean::class.java)?.observe(this) {
-//            if (it) {
-//                startActivity(
-//                    Intent(
-//                        requireContext(),
-//                        OrderPaySuccessActivity::class.java
-//                    ).apply {
-//                        if (mViewModel.orderNo.isNotEmpty()) {
-//                            putExtras(
-//                                IntentParams.OrderParams.pack(
-//                                    mViewModel.orderNo,
-//                                    !(mViewModel.reserveTime.value.isNullOrEmpty())
-//                                )
-//                            )
-//                        }
-//                    })
-//            }
-//        }
+        mActivityViewModel.balance.observe(this) {
+            try {
+                mActivityViewModel.tradePreview.value?.realPrice?.toDouble()?.let { price ->
+                    if (it.amount.toDouble() < price) {
+                        mBinding.includeAppointSubmitPayWay.rbOrderSubmitBalancePayWay.text =
+                            com.yunshang.haile_life.utils.string.StringUtils.formatBalancePayStyleStr(
+                                requireContext()
+                            )
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 
         mViewModel.jump.observe(this) {
             when (it) {
@@ -324,6 +282,7 @@ class AppointmentOrderSubmitFragment :
     }
 
     override fun initView() {
+        mBinding.avm = mActivityViewModel
         mBinding.root.setPadding(0, StatusBarUtils.getStatusBarHeight(), 0, 0)
 
         mBinding.btnAppointmentOrderSubmitCancel.setOnClickListener {
@@ -335,80 +294,79 @@ class AppointmentOrderSubmitFragment :
             }.build().show(childFragmentManager)
         }
 
-
         mBinding.includeAppointSubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
             changePayWay()
         }
-//        mBinding.btnAppointSubmitPay.setOnClickListener {
-//            if (-1 == mViewModel.payMethod) {
-//                SToast.showToast(requireContext(), "请选择支付方式")
-//                return@setOnClickListener
-//            }
-//
-//            val noMoney = 1001 == mViewModel.payMethod && try {
-//                mViewModel.balance.value!!.amount.toDouble() < mViewModel.tradePreview.value!!.realPrice.toDouble()
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                false
-//            }
-//            if (noMoney) {
-//                SToast.showToast(requireContext(), "余额不足，先选择其他方式支付")
-//                return@setOnClickListener
-//            }
-//
-//            if (1001 == mViewModel.payMethod) {
-//                if (null != mViewModel.tradePreview.value && null != mViewModel.balance.value) {
-//                    BalancePaySureDialog(
-//                        mViewModel.balance.value!!.amount,
-//                        mViewModel.tradePreview.value!!.realPrice
-//                    ) {
-//                        mViewModel.requestPrePay(requireContext())
-//                    }.show(childFragmentManager)
-//                }
-//            } else mViewModel.requestPrePay(requireContext())
-//        }
+
+        mBinding.btnAppointSubmitPay.setOnClickListener {
+            if (-1 == mActivityViewModel.payMethod) {
+                SToast.showToast(requireContext(), "请选择支付方式")
+                return@setOnClickListener
+            }
+
+            val noMoney = 1001 == mActivityViewModel.payMethod && try {
+                mActivityViewModel.balance.value!!.amount.toDouble() < mActivityViewModel.tradePreview.value!!.realPrice.toDouble()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+            if (noMoney) {
+                SToast.showToast(requireContext(), "余额不足，先选择其他方式支付")
+                return@setOnClickListener
+            }
+
+            if (1001 == mActivityViewModel.payMethod) {
+                if (null != mActivityViewModel.tradePreview.value && null != mActivityViewModel.balance.value) {
+                    BalancePaySureDialog(
+                        mActivityViewModel.balance.value!!.amount,
+                        mActivityViewModel.tradePreview.value!!.realPrice
+                    ) {
+                        mActivityViewModel.requestPrePay(requireContext())
+                    }.show(childFragmentManager)
+                }
+            } else mActivityViewModel.requestPrePay(requireContext())
+        }
     }
 
     /**
      * 切换支付方式
      */
     private fun changePayWay() {
-//        mActivityViewModel.tradePreview.value?.let {
-//            mActivityViewModel.payMethod =
-//                if (it.isZero()) 1001 else when (mBinding.includeAppointSubmitPayWay.rgOrderSubmitPayWay.checkedRadioButtonId) {
-//                    R.id.rb_order_submit_balance_pay_way -> 1001
-//                    R.id.rb_order_submit_alipay_pay_way -> 103
-//                    R.id.rb_order_submit_wechat_pay_way -> 203
-//                    else -> -1
-//                }
-//        }
+        mActivityViewModel.tradePreview.value?.let {
+            mActivityViewModel.payMethod =
+                if (it.isZero()) 1001 else when (mBinding.includeAppointSubmitPayWay.rgOrderSubmitPayWay.checkedRadioButtonId) {
+                    R.id.rb_order_submit_balance_pay_way -> 1001
+                    R.id.rb_order_submit_alipay_pay_way -> 103
+                    R.id.rb_order_submit_wechat_pay_way -> 203
+                    else -> -1
+                }
+        }
     }
 
     override fun onStart() {
         super.onStart()
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            // 如果是未支付完成，并且订单不为空
-//            if (!mViewModel.isPayFinish && mViewModel.orderNo.isNotEmpty()) {
-//                goOrderDetail()
-//            }
-//        }, 300)
+        Handler(Looper.getMainLooper()).postDelayed({
+            // 如果是未支付完成，并且订单不为空
+            if (2 == mActivityViewModel.isPayFinish && !mActivityViewModel.orderNo.isNullOrEmpty()) {
+                goOrderDetail()
+            }
+        }, 300)
     }
 
     private fun goOrderDetail() {
-//        startActivity(
-//            Intent(
-//                requireContext(),
-//                OrderDetailActivity::class.java
-//            ).apply {
-//                putExtras(
-//                    IntentParams.OrderParams.pack(
-//                        mViewModel.orderNo,
-//                        !(mViewModel.reserveTime.value.isNullOrEmpty())
-//                    )
-//                )
-//            })
-//        AppManager.finishAllActivityForTag(ActivityTag.TAG_ORDER_PAY)
+        mActivityViewModel.orderNo?.let {orderNo->
+            startActivity(
+                Intent(
+                    requireContext(),
+                    OrderDetailActivity::class.java
+                ).apply {
+                    putExtras(
+                        IntentParams.OrderParams.pack(orderNo)
+                    )
+                })
+            AppManager.finishAllActivityForTag(ActivityTag.TAG_ORDER_PAY)
+        }
     }
 
     override fun initData() {

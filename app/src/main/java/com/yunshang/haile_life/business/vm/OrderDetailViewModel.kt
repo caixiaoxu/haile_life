@@ -39,9 +39,6 @@ class OrderDetailViewModel : BaseViewModel() {
 
     var orderNo: String? = null
 
-    val isAppoint: MutableLiveData<Boolean> by lazy {
-        MutableLiveData()
-    }
 
     val formScan: MutableLiveData<Boolean> by lazy {
         MutableLiveData()
@@ -52,6 +49,8 @@ class OrderDetailViewModel : BaseViewModel() {
     val orderDetail: MutableLiveData<OrderEntity> by lazy {
         MutableLiveData()
     }
+
+    val isAppoint: LiveData<Boolean> = orderDetail.map { "300" == it.orderType }
 
     val showContactShop: LiveData<Boolean> = orderDetail.map {
         it?.let { detail ->
@@ -213,8 +212,6 @@ class OrderDetailViewModel : BaseViewModel() {
                 )
             )
             LiveDataBus.post(BusEvents.APPOINT_ORDER_USE_STATUS, true)
-            // 转换为正常订单
-            isAppoint.postValue(false)
             formScan.postValue(false)
             changeUseModel.postValue(false)
 
