@@ -46,6 +46,7 @@
     <string name="appointment_success">预约成功</string>
     <string name="page_time_prefix">待支付，剩余</string>
     <string name="verify_time_prefix">待验证，剩余</string>
+    <string name="verify_order_prompt">请在规定时间内完成验证，否则订单将会取消设备内有衣物？</string>
     <string name="already_appointment_success">已预约成功</string>
     <string name="service">服务</string>
     <string name="discounts">优惠</string>
@@ -61,6 +62,7 @@
     <string name="getCode">获取验证码</string>
     <string name="send_code">发送验证码</string>
     <string name="send_again">再次发送</string>
+    <string name="send_success">发送成功</string>
     <string name="send_again1">重新获取</string>
     <string name="send_again2">重新发送</string>
     <string name="phone_empty">请先输入手机号</string>

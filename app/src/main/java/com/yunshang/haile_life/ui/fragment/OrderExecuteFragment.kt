@@ -6,17 +6,20 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import com.lsy.framelib.utils.*
+import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.StatusBarUtils
+import com.lsy.framelib.utils.StringUtils
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
 import com.yunshang.haile_life.business.vm.OrderExecuteViewModel
-import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.agruments.DeviceCategory
-import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.OrderItem
+import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
-import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
+import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -51,24 +54,34 @@ class OrderExecuteFragment :
     override fun initEvent() {
         super.initEvent()
 
-        mViewModel.remainingTime.observe(this) {
-            mBinding.cdOrderExecuteTime.setData(mViewModel.totalTime, it)
+        mActivityViewModel.orderDetails.observe(this) {detail->
+            mBinding.refreshView.finishRefresh()
+            detail?.let {
+                mBinding.includeOrderInfo.llOrderInfoItems.buildChild<IncludeOrderInfoItemBinding, OrderItem>(
+                    detail.orderItemList
+                ) { index, childBinding, data ->
+                    childBinding.title =
+                        if (0 == index) StringUtils.getString(R.string.service) + "：" else ""
+                    childBinding.content = "${data.goodsItemName} ${data.unit}${data.unitValue}"
+                    childBinding.tail =
+                        com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(data.originPrice)
+                }
+                mBinding.includeOrderInfo.llOrderInfoPromotions.buildChild<IncludeOrderInfoItemBinding, PromotionParticipation>(
+                    detail.promotionParticipationList
+                ) { index, childBinding, data ->
+                    childBinding.title =
+                        if (0 == index) StringUtils.getString(R.string.discounts) + "：" else ""
+                    childBinding.content = data.promotionProductName
+                    childBinding.tail = data.getOrderDeviceDiscountPrice()
+                }
+            }
         }
 
-        mViewModel.jump.observe(this) {
-            when (it) {
-                1 -> {
-                    startActivity(
-                        Intent(
-                            requireContext(),
-                            OrderDetailActivity::class.java
-                        ).apply {
-                            mActivityViewModel.orderNo?.let { orderNo ->
-                                putExtras(IntentParams.OrderParams.pack(orderNo))
-                            }
-                        })
-                    AppManager.finishAllActivityForTag(ActivityTag.TAG_ORDER_PAY)
-                }
+        mViewModel.remainingTime.observe(this) {
+            if (it > 0) {
+                mBinding.cdOrderExecuteTime.setData(mViewModel.totalTime, it)
+            } else {
+                mActivityViewModel.jump.value = 1
             }
         }
     }
@@ -77,8 +90,14 @@ class OrderExecuteFragment :
         mBinding.avm = mActivityViewModel
         mBinding.root.setPadding(0, StatusBarUtils.getStatusBarHeight(), 0, 0)
 
+        mBinding.refreshView.requestData = {
+            mActivityViewModel.requestData()
+        }
+
         mBinding.tvOrderExecuteCoerceDevice.setOnClickListener {
-            mViewModel.coerceDevice(requireContext(), mActivityViewModel.orderNo)
+            mViewModel.coerceDevice(requireContext(), mActivityViewModel.orderNo) {
+                mActivityViewModel.requestData()
+            }
         }
 
         mBinding.tvOrderExecuteContactShop.setOnClickListener {
@@ -89,7 +108,11 @@ class OrderExecuteFragment :
             CommonDialog.Builder("是否结束订单？").apply {
                 negativeTxt = StringUtils.getString(R.string.no)
                 setPositiveButton(StringUtils.getString(R.string.yes)) {
-                    mViewModel.finishOrder(mActivityViewModel.orderNo)
+                    mViewModel.finishOrder(mActivityViewModel.orderNo){
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            mActivityViewModel.jump.postValue(1)
+                        }, 1000)
+                    }
                 }
             }.build().show(childFragmentManager)
         }

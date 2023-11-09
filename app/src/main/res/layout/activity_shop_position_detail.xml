@@ -39,8 +39,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginBottom="8dp"
+                    android:orientation="vertical"
                     app:layout_scrollFlags="scroll">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -60,6 +60,7 @@
                             style="@style/Font_18_black_85_bold"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="32dp"
                             android:text="@{vm.shopDetail.name}"
                             app:layout_constraintEnd_toStartOf="@id/tv_shop_position_detail_navigation"
                             app:layout_constraintHorizontal_weight="1"
@@ -73,7 +74,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text='@{vm.shopDetail.getAddressVal()}'
+                            android:layout_marginEnd="32dp"
                             app:layout_constraintEnd_toStartOf="@id/tv_shop_position_detail_navigation"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_shop_detail_name"
@@ -97,20 +98,18 @@
                                 android:src="@mipmap/icon_near_by_shop_starfish"
                                 android:visibility="@{vm.shopDetail.rechargeFlag?View.VISIBLE:View.GONE}" />
 
-                            <com.yunshang.haile_life.ui.view.MultiTypeTextView
+                            <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tv_near_by_shop_appoint"
                                 style="@style/Font_10_FF630E"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="6dp"
                                 android:layout_marginStart="4dp"
+                                android:background="@drawable/shape_strokeff630e_r4"
+                                android:paddingHorizontal="6dp"
                                 android:paddingVertical="2dp"
                                 android:text="@{vm.shopDetail.appointmentNumVal}"
-                                app:bgResIds="@{vm.shopDetail.multiTypeBgRes}"
-                                app:txtColors="@{vm.shopDetail.multiTypeTxtColors}"
-                                app:type="@{0}"
                                 app:visibility="@{vm.shopDetail.appointment}"
-                                tools:background="@drawable/shape_s19ff630e_r4" />
+                                tools:background="@drawable/shape_strokeff630e_r4" />
 
                         </com.yunshang.haile_life.ui.view.CustomChildListLinearLayout>
 
@@ -190,6 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white">
+
                     <net.lucode.hackware.magicindicator.MagicIndicator
                         android:id="@+id/indicator_shop_position_detail_device_category"
                         android:layout_width="wrap_content"

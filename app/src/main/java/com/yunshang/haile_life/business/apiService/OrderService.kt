@@ -91,4 +91,8 @@ interface OrderService {
 
     @POST("/trade/fulfillment/start")
     suspend fun startAppointOrderDevice(@Body body: RequestBody): ResponseWrapper<Any>
+    @POST("/trade/check/reSendCode")
+    suspend fun sendDeviceVerifyCode(@Body body: RequestBody): ResponseWrapper<Any>
+    @POST("/trade/check/verify")
+    suspend fun verifyDeviceVerifyCode(@Body body: RequestBody): ResponseWrapper<Any>
 }

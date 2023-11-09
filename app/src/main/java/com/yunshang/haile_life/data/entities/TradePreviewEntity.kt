@@ -35,18 +35,18 @@ data class TradePreviewEntity(
 
 data class TradePreviewGoodItem(
     val discountAmount: String,
-    val goodsCategoryId: Int,
     val goodsCategoryCode: String,
     val goodsId: Int,
     val goodsItemId: Int,
     val goodsItemName: String,
     val goodsName: String,
-    val num: Int,
+    val num: String,
     val originAmount: String,
     val originUnitAmount: String,
     val realAmount: String,
     val realUnitAmount: String,
-    val shopId: Int
+    val shopId: Int? = null,
+    val goodsCategoryId: Int? = null
 ) {
     fun getCategoryIcon(): Int =
         if (goodsCategoryCode.isNullOrEmpty()) 0 else when (goodsCategoryCode) {

@@ -1,13 +1,21 @@
 package com.yunshang.haile_life.business.vm
 
 import android.text.SpannableString
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.TypefaceSpan
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
+import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.ui.base.BaseViewModel
-import com.lsy.framelib.utils.StringUtils
+import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.apiService.MessageService
 import com.yunshang.haile_life.business.apiService.OrderService
-import com.yunshang.haile_life.data.entities.OrderEntity
+import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.data.model.ApiRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -22,12 +30,68 @@ import java.util.*
  * 作者姓名 修改时间 版本号 描述
  */
 class AppointmentOrderVerifyViewModel : BaseViewModel() {
+    private val mMessageRepo = ApiRepository.apiClient(MessageService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
+    val checkCode: MutableLiveData<String> by lazy { MutableLiveData() }
 
-    val orderDetails: MutableLiveData<OrderEntity> by lazy { MutableLiveData() }
+    fun sendVerifyCode(orderNo: String?, callback: () -> Unit) {
+        if (orderNo.isNullOrEmpty()) return
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.sendDeviceVerifyCode(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "orderNo" to orderNo
+                        )
+                    )
+                )
+            )
+            withContext(Dispatchers.Main) {
+                callback()
+            }
+        })
+    }
 
-    var validTime: Long? = null
+    fun verifyDeviceCode(orderNo: String?, callback: () -> Unit) {
+        if (orderNo.isNullOrEmpty() || checkCode.value.isNullOrEmpty()) return
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.verifyDeviceVerifyCode(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "orderNo" to orderNo,
+                            "checkCode" to checkCode.value
+                        )
+                    )
+                )
+            )
+            withContext(Dispatchers.Main) {
+                callback()
+            }
+        })
+    }
 
+    fun sendTakeSms(orderNo: String?, callback: () -> Unit) {
+        if (orderNo.isNullOrEmpty()) return
+        launch({
+            ApiRepository.dealApiResult(
+                mMessageRepo.sendTakeSms(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "orderNo" to orderNo
+                        )
+                    )
+                )
+            )
+            withContext(Dispatchers.Main) {
+                callback()
+            }
+        })
+    }
+
+
+    val inValidOrder: MutableLiveData<Boolean> = MutableLiveData(false)
+    var validTime: Int? = null
     val countDownTime: MutableLiveData<SpannableString> by lazy {
         MutableLiveData()
     }
@@ -43,7 +107,35 @@ class AppointmentOrderVerifyViewModel : BaseViewModel() {
         timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
-                countDownTime.postValue(SpannableString(StringUtils.getString(R.string.verify_time_prefix) + countDownTime.value))
+                if (validTime.isGreaterThan0()) {
+                    inValidOrder.postValue(false)
+                    val time = "%02d:%02d".format(validTime!! / 60, validTime!! % 60)
+                    val content =
+                        com.lsy.framelib.utils.StringUtils.getString(
+                            R.string.verify_time_prefix
+                        ) + " " + time
+                    countDownTime.postValue(
+                        com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
+                            content,
+                            arrayOf(
+                                ForegroundColorSpan(
+                                    ContextCompat.getColor(
+                                        Constants.APP_CONTEXT,
+                                        R.color.color_ff630e,
+                                    )
+                                ),
+                                AbsoluteSizeSpan(DimensionUtils.sp2px(26f)),
+                                TypefaceSpan("money")
+                            ), content.length - time.length, content.length
+                        )
+                    )
+                    validTime = validTime!! - 1
+                } else {
+                    countDownTime.postValue(SpannableString("验证，已超时"))
+                    inValidOrder.postValue(true)
+                    jump.postValue(1)
+                    timer?.cancel()
+                }
             }
         }, 0, 1000)
     }

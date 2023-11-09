@@ -10,12 +10,14 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
-import com.lsy.framelib.utils.*
+import com.lsy.framelib.utils.DimensionUtils
+import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.StatusBarUtils
+import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.AppointmentOrderSubmitViewModel
 import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
-import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
@@ -25,7 +27,6 @@ import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
-import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 
@@ -202,23 +203,37 @@ class AppointmentOrderSubmitFragment :
                                 childBinding.endDraw = R.mipmap.icon_small_arrow_right
                             }
                             childBinding.tvOrderSubmitGoodValue.setOnClickListener {
-                                startDiscountCouponSelect.launch(
-                                    Intent(
-                                        requireContext(),
-                                        DiscountCouponSelectorActivity::class.java
-                                    ).apply {
-                                        putExtras(
-                                            IntentParams.DiscountCouponSelectorParams.pack(
-                                                promotion.participateList,
-                                                promotion.promotionProduct,
-                                                trade.promotionList.filter { item -> promotion.promotionProduct != item.promotionProduct }
-                                                    .flatMap { item ->
-                                                        item.participateList
-                                                    }
+                                if (false == mViewModel.inValidOrder.value) {
+                                    startDiscountCouponSelect.launch(
+                                        Intent(
+                                            requireContext(),
+                                            DiscountCouponSelectorActivity::class.java
+                                        ).apply {
+                                            putExtras(
+                                                IntentParams.OrderSubmitParams.pack(
+                                                    trade.itemList.map { item ->
+                                                        IntentParams.OrderSubmitParams.OrderSubmitGood(
+                                                            item.goodsCategoryCode,
+                                                            item.goodsId,
+                                                            item.goodsItemId,
+                                                            item.num
+                                                        )
+                                                    }.toList()
+                                                )
                                             )
-                                        )
-                                    }
-                                )
+                                            putExtras(
+                                                IntentParams.DiscountCouponSelectorParams.pack(
+                                                    promotion.participateList,
+                                                    promotion.promotionProduct,
+                                                    trade.promotionList.filter { item -> promotion.promotionProduct != item.promotionProduct }
+                                                        .flatMap { item ->
+                                                            item.participateList
+                                                        }
+                                                )
+                                            )
+                                        }
+                                    )
+                                }
                             }
                         } else if (5 == promotion.promotionProduct) {
                             childBinding.endDraw =
@@ -276,7 +291,7 @@ class AppointmentOrderSubmitFragment :
         mViewModel.jump.observe(this) {
             when (it) {
                 1 -> mActivityViewModel.requestPreview()
-                else -> goOrderDetail()
+                else -> mActivityViewModel.jump.postValue(1)
             }
         }
     }
@@ -349,24 +364,9 @@ class AppointmentOrderSubmitFragment :
         Handler(Looper.getMainLooper()).postDelayed({
             // 如果是未支付完成，并且订单不为空
             if (2 == mActivityViewModel.isPayFinish && !mActivityViewModel.orderNo.isNullOrEmpty()) {
-                goOrderDetail()
+                mActivityViewModel.jump.postValue(1)
             }
         }, 300)
-    }
-
-    private fun goOrderDetail() {
-        mActivityViewModel.orderNo?.let {orderNo->
-            startActivity(
-                Intent(
-                    requireContext(),
-                    OrderDetailActivity::class.java
-                ).apply {
-                    putExtras(
-                        IntentParams.OrderParams.pack(orderNo)
-                    )
-                })
-            AppManager.finishAllActivityForTag(ActivityTag.TAG_ORDER_PAY)
-        }
     }
 
     override fun initData() {

@@ -86,7 +86,6 @@ data class OrderEntity(
             notifyPropertyChanged(BR.showDetail)
         }
 
-
     override fun getMultiType(): Int = if ("300" == orderType)
         when (appointmentState) {
             0, 1, 2 -> 0
@@ -421,7 +420,7 @@ data class PromotionParticipation(
 data class CheckInfo(
     val checkState: Int? = null,
     val invalidTime: String? = null,
-    val invalidTimeStamp: Long? = null
+    val invalidTimeStamp: Int? = null
 )
 
 data class ReserveInfo(

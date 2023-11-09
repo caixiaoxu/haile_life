@@ -420,6 +420,11 @@
         <item name="android:textColor">@color/color_black_85</item>
     </style>
 
+    <style name="Font_64_black_85">
+        <item name="android:textSize">64sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
     <style name="Input_14_black_85_45">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/color_black_85</item>

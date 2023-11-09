@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="avm"
+            type="com.yunshang.haile_life.business.vm.AppointmentOrderViewModel" />
+
+        <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.AppointmentOrderVerifyViewModel" />
     </data>
@@ -55,20 +59,22 @@
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:text="@string/verify_order_prompt"
             app:layout_constraintStart_toStartOf="@id/tv_appointment_order_verify_status"
-            app:layout_constraintTop_toBottomOf="@id/tv_appointment_order_verify_status"
-            tools:text="请在规定时间内完成验证，否则订单将会取消设备内有衣物？ " />
+            app:layout_constraintTop_toBottomOf="@id/tv_appointment_order_verify_status" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_appointment_order_verify_prompt">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
                 android:orientation="vertical">
 
                 <include
@@ -76,7 +82,8 @@
                     layout="@layout/include_order_specs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp" />
+                    android:layout_marginHorizontal="12dp"
+                    app:total="@{avm.orderDetails.realPrice}" />
 
                 <LinearLayout
                     android:id="@+id/ll_appointment_order_verify"
@@ -88,23 +95,29 @@
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
                     android:paddingHorizontal="16dp"
-                    android:paddingVertical="32dp">
+                    android:paddingVertical="32dp"
+                    app:visibility="@{!vm.inValidOrder}">
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_appointment_order_verify"
                         style="@style/Font_16_black_85_45"
                         android:layout_width="match_parent"
                         android:layout_height="46dp"
                         android:background="@drawable/shape_sf5f5f5_r23"
                         android:gravity="center"
-                        android:hint="@string/appointment_order_verify_code_prompt" />
+                        android:inputType="number"
+                        android:hint="@string/appointment_order_verify_code_prompt"
+                        android:text="@={vm.checkCode}" />
 
                     <com.lsy.framelib.ui.weight.SingleTapButton
                         android:id="@+id/btn_appointment_order_verify"
                         style="@style/CommonMatchBtnStyle1"
                         android:layout_marginTop="24dp"
+                        android:enabled="@{null != vm.checkCode &amp;&amp; vm.checkCode.length() > 0}"
                         android:text="@string/verify" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_appointment_order_verify_device"
                         style="@style/Font_14_black_25"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -112,6 +125,7 @@
                         tools:text="验证码已发送至设备“xxxx”" />
 
                     <com.lsy.framelib.ui.weight.SingleTapTextView
+                        android:id="@+id/btn_appointment_order_verify_resend"
                         style="@style/font_14_04D1E5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -121,11 +135,13 @@
                 </LinearLayout>
 
                 <include
+                    android:id="@+id/include_order_info"
                     layout="@layout/include_order_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    app:order="@{avm.orderDetails}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

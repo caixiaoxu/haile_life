@@ -1,19 +1,17 @@
 package com.yunshang.haile_life.business.vm
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.text.SpannableString
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.SToast
-import com.lsy.framelib.utils.StringUtils
-import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.data.model.ApiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.math.ceil
 
 /**
  * Title :
@@ -50,7 +48,10 @@ class OrderExecuteViewModel : BaseViewModel() {
         })
     }
 
-    fun coerceDevice(context: Context, orderNo: String?) {
+    /**
+     * 强启设备
+     */
+    fun coerceDevice(context: Context, orderNo: String?, callback: () -> Unit) {
         if (orderNo.isNullOrEmpty()) return
 
         val diff = System.currentTimeMillis() - coerceDeviceTime
@@ -70,6 +71,7 @@ class OrderExecuteViewModel : BaseViewModel() {
                 coerceDeviceTime = System.currentTimeMillis()
                 withContext(Dispatchers.Main) {
                     showCoerceDevicePrompt(context, defaultDiff)
+                    callback()
                 }
             })
         } else {
@@ -89,7 +91,7 @@ class OrderExecuteViewModel : BaseViewModel() {
     /**
      * 结束订单
      */
-    fun finishOrder(orderNo: String?) {
+    fun finishOrder(orderNo: String?,callback: () -> Unit) {
         if (orderNo.isNullOrEmpty()) return
         launch({
             ApiRepository.dealApiResult(
@@ -99,15 +101,20 @@ class OrderExecuteViewModel : BaseViewModel() {
                     )
                 )
             )
-            Handler(Looper.getMainLooper()).postDelayed({
-                jump.postValue(1)
-            }, 1000)
+            withContext(Dispatchers.Main){
+                callback()
+            }
         })
     }
 
     var totalTime: Int = 0
     val remainingTime: MutableLiveData<Int> by lazy {
         MutableLiveData()
+    }
+    val remainingTimeVal: LiveData<String> = remainingTime.map {
+        remainingTime.value?.let { second ->
+            ceil(second * 1.0 / 60).toInt().toString()
+        } ?: ""
     }
 
     // 计时器
@@ -121,7 +128,13 @@ class OrderExecuteViewModel : BaseViewModel() {
         timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
-                remainingTime.value = remainingTime.value!! - 1
+                remainingTime.value?.let {time->
+                    if (time > 0){
+                        remainingTime.postValue(time - 1)
+                    } else {
+                        timer?.cancel()
+                    }
+                } ?: timer?.cancel()
             }
         }, 0, 1000)
     }

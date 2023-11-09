@@ -348,6 +348,7 @@ class AppointmentOrderSelectorActivity :
                             putExtras(IntentParams.OrderParams.pack(orderNo))
                         }
                     )
+                    finish()
                 }
             }
         }
