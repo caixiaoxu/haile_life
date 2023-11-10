@@ -21,6 +21,7 @@
     <string name="in_use">使用中</string>
     <string name="device_in_use">设备使用中</string>
     <string name="occupy">占用</string>
+    <string name="fault">故障</string>
     <string name="distance">距离</string>
     <string name="you">您</string>
     <string name="affirm">确认</string>
@@ -50,6 +51,7 @@
     <string name="already_appointment_success">已预约成功</string>
     <string name="service">服务</string>
     <string name="discounts">优惠</string>
+    <string name="close">关闭</string>
 
     <string name="agreement_hint">根据国家法律法规的要求，我们更新了《隐私政策》，帮助您了解我们收集、使用、存储和共享个人信息的情况，特别是我们所采集的个人信息类型及用途，同时您还可以了解到您所共享的相关权利和实现途径，以及我们为了保护好您的个人信息安全所采取的相关策略。</string>
     <string name="login_title">登录海乐生活</string>

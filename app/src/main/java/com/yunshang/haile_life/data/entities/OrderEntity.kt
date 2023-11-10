@@ -116,12 +116,14 @@ data class OrderEntity(
         ),
     )
 
-    fun getOrderStatusTitle(): String = if ("300" == orderType)
-        OrderStatus.getAppointStateName(appointmentState, false)
-    else if (500 == state) {
-        orderItemList.firstOrNull()
-            ?.let { DeviceCategory.categoryName(it.categoryCode).replace("机", "中") } ?: ""
-    } else stateDesc
+    fun getOrderStatusTitle(): String =
+//        if ("300" == orderType)
+//        OrderStatus.getAppointStateName(appointmentState, false)
+//    else if (500 == state) {
+//        orderItemList.firstOrNull()
+//            ?.let { DeviceCategory.categoryName(it.categoryCode).replace("机", "中") } ?: ""
+//    } else
+        stateDesc
 
     fun getOrderDetailFinishTimePrompt(): SpannableString = when (state) {
         50 -> com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
@@ -419,6 +421,7 @@ data class PromotionParticipation(
 
 data class CheckInfo(
     val checkState: Int? = null,
+    val enableCheck: Boolean = false,
     val invalidTime: String? = null,
     val invalidTimeStamp: Int? = null
 )

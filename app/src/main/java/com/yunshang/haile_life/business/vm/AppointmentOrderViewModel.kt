@@ -163,15 +163,18 @@ class AppointmentOrderViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    var isPayFinish:Int = -1
+    var isPayFinish: Int = -1
 
     fun requestPrePay(context: Context) {
         launch({
-            orderDetails.value?.orderItemList?.firstOrNull()?.let { item ->
-                if (!verifyGoods(context, item.goodsId, item.categoryCode)) {
-                    return@launch
-                }
-            }
+            // 暂时只有预约，如果后期普通订单也加入就放开
+//            if ("300" != orderDetails.value?.orderType) {
+//                orderDetails.value?.orderItemList?.firstOrNull()?.let { item ->
+//                    if (!verifyGoods(context, item.goodsId, item.categoryCode)) {
+//                        return@launch
+//                    }
+//                }
+//            }
 
             ApiRepository.dealApiResult(
                 mOrderRepo.createUnderWayOrder(
@@ -180,7 +183,7 @@ class AppointmentOrderViewModel : BaseViewModel() {
                     )
                 )
             )?.let {
-//                orderNo = it.orderNo
+                orderNo = it.orderNo
                 LiveDataBus.post(BusEvents.ORDER_SUBMIT_STATUS, true)
                 ApiRepository.dealApiResult(
                     mOrderRepo.prePay(

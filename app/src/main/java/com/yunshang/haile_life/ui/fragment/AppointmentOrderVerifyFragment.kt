@@ -206,7 +206,7 @@ class AppointmentOrderVerifyFragment :
                     object : ClickableSpan() {
                         override fun onClick(v: View) {
                             mViewModel.sendTakeSms(mActivityViewModel.orderNo) {
-                                SToast.showToast(requireContext(), "订单已结束，请取走衣物")
+                                SToast.showToast(requireContext(), "已发送信息，提醒用户取衣")
                             }
                         }
 
@@ -236,7 +236,7 @@ class AppointmentOrderVerifyFragment :
 
         mBinding.btnAppointmentOrderVerifyResend.setOnClickListener {
             mViewModel.sendVerifyCode(mActivityViewModel.orderNo) {
-                SToast.showToast(requireContext(), R.string.send_success)
+                SToast.showToast(requireContext(), "已重新下发验证码")
             }
         }
         mBinding.btnAppointmentOrderVerify.setOnClickListener {

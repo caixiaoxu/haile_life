@@ -122,6 +122,7 @@
             app:visibility="@{1 != vm.deviceDetail.deviceState &amp;&amp; (0 == vm.deviceDetail.reserveState || !vm.deviceDetail.enableReserve)}" />
 
         <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:id="@+id/btn_appointment_order_selector_not_reason"
             style="@style/Font_14_ff630e"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

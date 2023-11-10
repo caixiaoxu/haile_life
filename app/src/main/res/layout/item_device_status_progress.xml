@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="isDryer"
+            type="java.lang.Boolean" />
+
+        <variable
             name="isFirst"
             type="java.lang.Boolean" />
 
@@ -41,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="2dp"
             android:background="@color/color_d8d8d8"
-            android:backgroundTint="@{2 == item.state?@color/color_d8d8d8:@color/secondColorPrimary}"
+            android:backgroundTint="@{2 == item.state?@color/color_d8d8d8:isDryer?@color/color_ff630e:@color/secondColorPrimary}"
             app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot"
             app:layout_constraintEnd_toStartOf="@id/view_device_status_progress_dot"
             app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name"
@@ -53,7 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="2dp"
             android:background="@color/color_d8d8d8"
-            android:backgroundTint="@{0 == item.state?@color/secondColorPrimary:@color/color_d8d8d8}"
+            android:backgroundTint="@{0 == item.state?isDryer?@color/color_ff630e:@color/secondColorPrimary:@color/color_d8d8d8}"
             app:layout_constraintBottom_toBottomOf="@id/view_device_status_progress_dot"
             app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name"
             app:layout_constraintStart_toEndOf="@id/view_device_status_progress_dot"
@@ -66,7 +70,7 @@
             android:layout_height="8dp"
             android:background="@drawable/shape_sd8d8d8_dot"
             android:layout_marginTop="8dp"
-            android:backgroundTint="@{2 == item.state?@color/color_d8d8d8:@color/secondColorPrimary}"
+            android:backgroundTint="@{2 == item.state?@color/color_d8d8d8:isDryer?@color/color_ff630e:@color/secondColorPrimary}"
             app:layout_constraintBottom_toTopOf="@id/tv_device_status_progress_time"
             app:layout_constraintEnd_toEndOf="@id/tv_device_status_progress_name"
             app:layout_constraintStart_toStartOf="@id/tv_device_status_progress_name"

@@ -40,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone"
             app:itemLayout="@layout/include_appointment_device_status_progress"
             app:layout_constraintTop_toBottomOf="@id/tv_device_status_refresh">
 

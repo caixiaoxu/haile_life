@@ -18,6 +18,7 @@ import com.yunshang.haile_life.databinding.FragmentAppointmentSuccessBinding
 import com.yunshang.haile_life.databinding.IncludeAppointmentDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.databinding.ItemDeviceStatusProgressBinding
+import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 
 class AppointmentSuccessFragment :
@@ -69,6 +70,7 @@ class AppointmentSuccessFragment :
                 if (!stateList.inLineList.isNullOrEmpty()) {
                     list.add(stateList.inLineList)
                 }
+                mBinding.includeAppointmentDeviceStatus.root.visibility(list.isNotEmpty())
                 mBinding.includeAppointmentDeviceStatus.llDeviceStatusItems.buildChild<IncludeAppointmentDeviceStatusProgressBinding, List<DeviceStateEntity>>(
                     list
                 ) { index, childBinding, data ->

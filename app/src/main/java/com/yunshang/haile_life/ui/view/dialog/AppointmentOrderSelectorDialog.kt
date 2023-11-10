@@ -1,6 +1,7 @@
 package com.yunshang.haile_life.ui.view.dialog
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,8 +19,10 @@ import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.Purchase
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.databinding.DialogAppointmentOrderSelectorBinding
@@ -27,6 +30,7 @@ import com.yunshang.haile_life.databinding.ItemDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
+import com.yunshang.haile_life.web.WebViewActivity
 import java.math.BigDecimal
 
 /**
@@ -92,7 +96,7 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
 
         val inflater = LayoutInflater.from(requireContext())
         builder.deviceDetail.observe(this) { detail ->
-            mBinding.includeOrderSelectorDeviceStatus.llDeviceStatusItems.visibility(1 != detail.deviceState)
+            mBinding.includeOrderSelectorDeviceStatus.root.visibility(1 != detail.deviceState)
             detail.items.filter { item -> 1 == item.soldState }.let { configs ->
                 if (configs.isNotEmpty()) {
                     mBinding.includeOrderSelectorSpec.clScanOrderConfig.let { cl ->
@@ -192,6 +196,20 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             builder.totalPrice()
         }
 
+        mBinding.btnAppointmentOrderSelectorNotReason.setOnClickListener {
+            startActivity(
+                Intent(
+                    requireContext(),
+                    WebViewActivity::class.java
+                ).apply {
+                    putExtras(
+                        IntentParams.WebViewParams.pack(
+                            Constants.notAppointReason,
+                        )
+                    )
+                })
+        }
+
         mBinding.viewOrderSelectSubmitSelected.setOnClickListener {
             if (null == builder.selectDeviceConfig.value) {
                 SToast.showToast(requireContext(), "请先选择设备模式")
@@ -245,6 +263,7 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
                 weight = 1f
             }
         ) { index, childBinding, data ->
+            childBinding.isDryer = false//DeviceCategory.isDryer(builder.deviceDetail.value?.categoryCode)
             childBinding.isFirst = 0 == index
             childBinding.isLast = index == size
             childBinding.item = data

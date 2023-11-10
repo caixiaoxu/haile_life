@@ -17,6 +17,7 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.AppointmentOrderSelectorViewModel
 import com.yunshang.haile_life.data.ActivityTag
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
@@ -31,6 +32,7 @@ import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
+import com.yunshang.haile_life.web.WebViewActivity
 
 class AppointmentOrderSelectorActivity :
     BaseBusinessActivity<ActivityAppointmentOrderSelectorBinding, AppointmentOrderSelectorViewModel>(
@@ -74,6 +76,8 @@ class AppointmentOrderSelectorActivity :
                     weight = 1f
                 }
             ) { index, childBinding, data ->
+                childBinding.isDryer =
+                    false//DeviceCategory.isDryer(mViewModel.deviceDetail.value?.categoryCode)
                 childBinding.isFirst = 0 == index
                 childBinding.isLast = index == size
                 childBinding.item = data
@@ -298,6 +302,20 @@ class AppointmentOrderSelectorActivity :
 
         mBinding.includeAppointmentDeviceStatus.tvDeviceStatusRefresh.setOnClickListener {
             mViewModel.requestData()
+        }
+
+        mBinding.btnAppointSelectorNotReason.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@AppointmentOrderSelectorActivity,
+                    WebViewActivity::class.java
+                ).apply {
+                    putExtras(
+                        IntentParams.WebViewParams.pack(
+                            Constants.notAppointReason,
+                        )
+                    )
+                })
         }
 
         mBinding.viewAppointSelectorSelected.setOnClickListener {

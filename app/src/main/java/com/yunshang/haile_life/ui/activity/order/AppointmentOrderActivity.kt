@@ -43,20 +43,20 @@ class AppointmentOrderActivity :
                 if (true == detail.redirectWorking) {
                     // 待执行
                     showAppointmentPage(OrderExecuteFragment())
-                } else if ((301 == detail.orderSubType && 500 == detail.state && 1 == detail.appointmentState)// 后付费
-                    || (303 == detail.orderSubType && 50 == detail.state && 1 == detail.appointmentState)// 先付费
+                } else if ((301 == detail.orderSubType && 500 == detail.state && 1 == detail.appointmentState)// 先付费
+                    || (303 == detail.orderSubType && 50 == detail.state && 1 == detail.appointmentState)// 后付费
                 ) {
                     // 预约成功
                     showAppointmentPage(AppointmentSuccessFragment())
                 } else if ((106 == detail.orderSubType && 50 == detail.state && 1 == detail.checkInfo?.checkState)// 预定订单
-                    || (301 == detail.orderSubType && 500 == detail.state && 5 == detail.appointmentState && 1 == detail.checkInfo?.checkState) // 后付费
-                    || (303 == detail.orderSubType && 50 == detail.state && 5 == detail.appointmentState && 1 == detail.checkInfo?.checkState) // 先付费
+                    || (301 == detail.orderSubType && 500 == detail.state && 5 == detail.appointmentState && 1 == detail.checkInfo?.checkState) // 先付费
+                    || (303 == detail.orderSubType && 50 == detail.state && 5 == detail.appointmentState && 1 == detail.checkInfo?.checkState) // 后付费
                 ) {
                     // 待验证
                     showAppointmentPage(AppointmentOrderVerifyFragment())
                 } else if ((106 == detail.orderSubType && 50 == detail.state && 2 == detail.checkInfo?.checkState) // 预定订单
-                    || (301 == detail.orderSubType && 50 == detail.state)//后付费
-                    || (303 == detail.orderSubType && 50 == detail.state && 5 == detail.appointmentState && 2 == detail.checkInfo?.checkState) // 先付费
+                    || (301 == detail.orderSubType && 50 == detail.state)// 先付费
+                    || (303 == detail.orderSubType && 50 == detail.state && 5 == detail.appointmentState && 2 == detail.checkInfo?.checkState) //后付费
                 ) {
                     // 待支付
                     showAppointmentPage(AppointmentOrderSubmitFragment())

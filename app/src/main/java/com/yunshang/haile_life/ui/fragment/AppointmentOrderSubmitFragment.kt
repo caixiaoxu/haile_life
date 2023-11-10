@@ -330,17 +330,32 @@ class AppointmentOrderSubmitFragment :
                 return@setOnClickListener
             }
 
-            if (1001 == mActivityViewModel.payMethod) {
-                if (null != mActivityViewModel.tradePreview.value && null != mActivityViewModel.balance.value) {
-                    BalancePaySureDialog(
-                        mActivityViewModel.balance.value!!.amount,
-                        mActivityViewModel.tradePreview.value!!.realPrice
-                    ) {
-                        mActivityViewModel.requestPrePay(requireContext())
-                    }.show(childFragmentManager)
-                }
-            } else mActivityViewModel.requestPrePay(requireContext())
+            // 判断是否跳转验证
+            if (false == mActivityViewModel.orderDetails.value?.checkInfo?.enableCheck) {
+                CommonDialog.Builder("请确保您在设备面前，再进行支付。支付后会立即启动设备").apply {
+                    title = StringUtils.getString(R.string.friendly_reminder)
+                    negativeTxt = StringUtils.getString(R.string.close)
+                    setPositiveButton(StringUtils.getString(R.string.i_know)) {
+                        goPay()
+                    }
+                }.build().show(childFragmentManager)
+            } else {
+                goPay()
+            }
         }
+    }
+
+    private fun goPay() {
+        if (1001 == mActivityViewModel.payMethod) {
+            if (null != mActivityViewModel.tradePreview.value && null != mActivityViewModel.balance.value) {
+                BalancePaySureDialog(
+                    mActivityViewModel.balance.value!!.amount,
+                    mActivityViewModel.tradePreview.value!!.realPrice
+                ) {
+                    mActivityViewModel.requestPrePay(requireContext())
+                }.show(childFragmentManager)
+            }
+        } else mActivityViewModel.requestPrePay(requireContext())
     }
 
     /**

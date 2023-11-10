@@ -50,7 +50,7 @@
             android:background="@{1 == item.state?@drawable/shape_s1904cee5_r4:@drawable/shape_s0c000000_r4}"
             android:paddingHorizontal="6dp"
             android:paddingVertical="2dp"
-            android:text="@{1 == item.state?@string/idle:@string/in_use}"
+            android:text="@{1 == item.state?@string/idle:2 == item.state?@string/in_use:@string/fault}"
             android:textColor="@{1 == item.state?@color/secondColorPrimary:@color/color_black_85}"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"

@@ -49,6 +49,7 @@
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"
             android:text="@string/cancel_order"
+            app:visibility="@{!vm.inValidOrder}"
             app:layout_constraintBottom_toBottomOf="@id/tv_appointment_order_verify_status"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_appointment_order_verify_status" />

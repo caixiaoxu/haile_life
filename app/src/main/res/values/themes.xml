@@ -46,6 +46,7 @@
 
     <style name="BottomSheetStyleWrapper" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
+        <item name="behavior_peekHeight">800dp</item>
     </style>
 
     <style name="CommonBottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">

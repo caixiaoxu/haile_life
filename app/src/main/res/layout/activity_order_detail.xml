@@ -58,7 +58,7 @@
                         style="@style/Font_20_black_85_bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.isAppoint?OrderStatus.getAppointStateName(vm.orderDetail.appointmentState,vm.formScan):vm.orderDetail.getOrderStatusTitle}"
+                        android:text="@{vm.orderDetail.getOrderStatusTitle}"
                         tools:text="洗衣中" />
 
                     <androidx.appcompat.widget.AppCompatTextView

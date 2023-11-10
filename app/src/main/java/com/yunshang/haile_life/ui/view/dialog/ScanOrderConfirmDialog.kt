@@ -71,17 +71,15 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
         mBinding.tvScanOrderConfirmPrompt.visibility(
             builder.isAppoint || DeviceCategory.isWashingOrShoes(
                 builder.deviceCategoryCode
-            )
+            ) || builder.isSpecialDevice
         )
+
         val color = ColorStateList.valueOf(
             ContextCompat.getColor(
                 requireContext(),
                 if (isDryer) R.color.color_ff630e else R.color.colorPrimary
             )
         )
-
-        mBinding.tvScanOrderConfirmPrompt.visibility =
-            if (builder.isSpecialDevice) View.VISIBLE else View.GONE
 
         mBinding.btnScanOrderConfirmNext.backgroundTintList = color
         mBinding.ivScanOrderConfirmMain.setImageResource(if (isDryer) R.mipmap.icon_scan_order_tips_dryer_main else R.mipmap.icon_scan_order_tips_main)
