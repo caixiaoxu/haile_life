@@ -54,6 +54,8 @@ class OrderSubmitViewModel : BaseViewModel() {
     val goods: MutableLiveData<MutableList<IntentParams.OrderSubmitParams.OrderSubmitGood>> =
         MutableLiveData(mutableListOf())
 
+    var isAppoint: Boolean = false
+
     val reserveTime: MutableLiveData<String> by lazy {
         MutableLiveData()
     }
@@ -202,9 +204,11 @@ class OrderSubmitViewModel : BaseViewModel() {
         if (goods.value.isNullOrEmpty()) return
 
         launch({
-            goods.value!!.forEach {
-                if (!verifyGoods(context, it)) {
-                    return@launch
+            if (!isAppoint) {
+                goods.value!!.forEach {
+                    if (!verifyGoods(context, it)) {
+                        return@launch
+                    }
                 }
             }
 

@@ -267,7 +267,8 @@ class AppointmentSubmitActivity :
                         ),
                         mViewModel.selectDevice.value!!.appointmentTime,
                         mViewModel.selectDevice.value!!.goodsName,
-                        mViewModel.selectDevice.value!!.shopName
+                        mViewModel.selectDevice.value!!.shopName,
+                        true
                     )
                 )
             })

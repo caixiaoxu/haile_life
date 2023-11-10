@@ -112,6 +112,7 @@ object IntentParams {
         private const val ReserveTime = "reserveTime"
         private const val DeviceName = "deviceName"
         private const val ShopAddress = "shopAddress"
+        private const val IsAppoint = "isAppoint"
 
         /**
          * 包装参数
@@ -121,6 +122,7 @@ object IntentParams {
             reserveTime: String? = null,
             deviceName: String? = null,
             shopAddress: String? = null,
+            isAppoint: Boolean? = null,
         ): Bundle =
             Bundle().apply {
                 putString(Goods, GsonUtils.any2Json(goods))
@@ -133,6 +135,9 @@ object IntentParams {
                 shopAddress?.let {
                     putString(ShopAddress, shopAddress)
                 }
+                isAppoint?.let {
+                    putBoolean(IsAppoint, isAppoint)
+                }
             }
 
         /**
@@ -144,6 +149,7 @@ object IntentParams {
         fun parseReserveTime(intent: Intent): String? = intent.getStringExtra(ReserveTime)
         fun parseDeviceName(intent: Intent): String? = intent.getStringExtra(DeviceName)
         fun parseShopAddress(intent: Intent): String? = intent.getStringExtra(ShopAddress)
+        fun parseIsAppoint(intent: Intent): Boolean = intent.getBooleanExtra(IsAppoint, false)
 
         data class OrderSubmitGood(
             val categoryCode: String,
