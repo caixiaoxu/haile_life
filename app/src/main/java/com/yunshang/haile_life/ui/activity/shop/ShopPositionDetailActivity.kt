@@ -195,6 +195,10 @@ class ShopPositionDetailActivity :
                                 override fun getIndicator(context: Context?): IPagerIndicator {
                                     return LinePagerIndicator(context).apply {
                                         mode = LinePagerIndicator.MODE_WRAP_CONTENT
+                                        lineWidth = DimensionUtils.dip2px(
+                                            this@ShopPositionDetailActivity,
+                                            34f
+                                        ).toFloat()
                                         roundRadius =
                                             DimensionUtils.dip2px(
                                                 this@ShopPositionDetailActivity,
