@@ -281,6 +281,18 @@
                             app:status="@{@string/idle}" />
                     </com.yunshang.haile_life.ui.view.CustomChildListLinearLayout>
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_near_by_shop_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:gravity="center"
+                        app:visibility="@{null == vm.nearStoreEntity}"
+                        android:background="@drawable/shape_top_stroke_dividing"
+                        tools:text="定位失败，暂无位置权限"
+                        style="@style/Font_14_black_45"
+                        app:layout_constraintTop_toBottomOf="@id/cl_near_by_shop"/>
+
                     <androidx.constraintlayout.widget.Group
                         android:id="@+id/group_near_stores"
                         android:layout_width="0dp"

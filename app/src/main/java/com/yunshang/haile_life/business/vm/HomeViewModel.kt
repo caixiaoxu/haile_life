@@ -1,6 +1,7 @@
 package com.yunshang.haile_life.business.vm
 
 import android.location.Location
+import android.view.ScrollCaptureCallback
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -222,7 +223,7 @@ class HomeViewModel : BaseViewModel() {
     /**
      * 附近门店
      */
-    fun requestNearByStore(location: Location) {
+    fun requestNearByStore(location: Location, callback: (isEmpty: Boolean) -> Unit) {
         launch({
             ApiRepository.dealApiResult(
                 mShopRepo.requestNearStorePositions(
@@ -238,6 +239,9 @@ class HomeViewModel : BaseViewModel() {
             )?.let {
                 it.items?.firstOrNull { item -> 1 == item.state }?.let { e ->
                     nearStoreEntity.postValue(e)
+                    callback(false)
+                } ?: run {
+                    callback(true)
                 }
             }
         })

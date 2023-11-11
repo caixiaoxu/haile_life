@@ -20,6 +20,7 @@ import com.yunshang.haile_life.databinding.ActivityNearByShopBinding
 import com.yunshang.haile_life.databinding.ItemNearByShopBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
 import com.yunshang.haile_life.utils.DialogUtils
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -167,6 +168,15 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
                     callBack: (responseList: ResponseList<out NearStorePositionEntity>?) -> Unit
                 ) {
                     mViewModel.requestNearByStores(page, pageSize, callBack)
+                }
+
+                override fun onRefresh(responseList: ResponseList<out NearStorePositionEntity>): Boolean {
+                    if (0 == responseList.total){
+                        Hint3SecondDialog.Builder("附近2公里没有营业点").apply {
+                            dialogBgResource = R.drawable.shape_dialog_bg
+                        }.build().show(supportFragmentManager)
+                    }
+                    return super.onRefresh(responseList)
                 }
             }
     }

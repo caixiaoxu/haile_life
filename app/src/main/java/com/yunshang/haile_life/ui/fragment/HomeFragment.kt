@@ -33,6 +33,8 @@ import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.ShopPositionDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.web.WebViewActivity
@@ -106,6 +108,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         super.initEvent()
 
         mViewModel.hasLocationPermission.observe(this) {
+            changeNearByShopState(it)
             if (true == it)
                 mSharedViewModel.requestLocationInfo(requireContext())
         }
@@ -203,12 +206,37 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
 
         mSharedViewModel.mSharedLocation.observe(this) {
-            mViewModel.requestNearByStore(it)
+            if (!isHide){
+                mViewModel.requestNearByStore(it) { isEmpty ->
+                    if (isEmpty) {
+                        Hint3SecondDialog.Builder("附近2公里内没有营业点").apply {
+                            dialogBgResource = R.drawable.shape_dialog_bg
+                        }.build().show(childFragmentManager)
+                    }
+                }
+            }
         }
 
         LiveDataBus.with(BusEvents.LOGIN_STATUS)?.observe(this) {
             mViewModel.requestHomeMsgAsync()
         }
+    }
+
+    private var isHide:Boolean = false
+
+    override fun onResume() {
+        super.onResume()
+        isHide =false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isHide = true
+    }
+
+    private fun changeNearByShopState(it: Boolean) {
+        mBinding.tvNearByShopState.text =
+            if (it) "附近2公里内暂无营业点" else "定位失败，暂无位置权限"
     }
 
     override fun initView() {
@@ -242,6 +270,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                                 putExtras(IntentParams.DefaultPageParams.pack(1))
                             })
                     }
+
                     R.mipmap.icon_home_hair ->
                         startActivity(
                             Intent(
@@ -250,6 +279,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DefaultPageParams.pack(4))
                             })
+
                     R.mipmap.icon_home_drinking ->
                         startActivity(
                             Intent(
@@ -258,6 +288,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Water))
                             })
+
                     R.mipmap.icon_home_shower ->
                         startActivity(
                             Intent(
@@ -266,6 +297,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Shower))
                             })
+
                     else -> startActivity(Intent(requireContext(), NearByShopActivity::class.java))
                 }
             }
@@ -335,6 +367,13 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 })
             }
         }
+
+        changeNearByShopState(
+            SystemPermissionHelper.checkPermissions(
+                requireContext(),
+                permissions
+            )
+        )
 
         // 指南
         mBinding.clHomeGuideMain.setOnClickListener {
