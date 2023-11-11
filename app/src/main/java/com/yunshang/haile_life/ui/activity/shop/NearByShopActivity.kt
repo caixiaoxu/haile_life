@@ -172,7 +172,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
 
                 override fun onRefresh(responseList: ResponseList<out NearStorePositionEntity>): Boolean {
                     if (0 == responseList.total){
-                        Hint3SecondDialog.Builder("附近2公里没有营业点").apply {
+                        Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
                             dialogBgResource = R.drawable.shape_dialog_bg
                         }.build().show(supportFragmentManager)
                     }

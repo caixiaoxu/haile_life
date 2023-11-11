@@ -209,7 +209,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             if (!isHide){
                 mViewModel.requestNearByStore(it) { isEmpty ->
                     if (isEmpty) {
-                        Hint3SecondDialog.Builder("附近2公里内没有营业点").apply {
+                        Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
                             dialogBgResource = R.drawable.shape_dialog_bg
                         }.build().show(childFragmentManager)
                     }
