@@ -207,13 +207,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
 
         mSharedViewModel.mSharedLocation.observe(this) {
             if (!isHide){
-                mViewModel.requestNearByStore(it) { isEmpty ->
-                    if (isEmpty) {
-                        Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
-                            dialogBgResource = R.drawable.shape_dialog_bg
-                        }.build().show(childFragmentManager)
-                    }
-                }
+                mViewModel.requestNearByStore(it)
             }
         }
 
@@ -353,7 +347,13 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                     requestMultiplePermission.launch(permissions)
                 }
             } else {
-                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
+                if (null == mViewModel.nearStoreEntity.value){
+                    Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
+                        dialogBgResource = R.drawable.shape_dialog_bg
+                    }.build().show(childFragmentManager)
+                } else {
+                    startActivity(Intent(requireContext(), NearByShopActivity::class.java))
+                }
             }
         }
         // 附近门店

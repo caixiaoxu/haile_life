@@ -35,6 +35,8 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
 ) {
     private val permissions = SystemPermissionHelper.locationPermissions()
 
+    private var emptyShopDialog: Hint3SecondDialog? = null
+
     // 权限
     private val requestMultiplePermission =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result: Map<String, Boolean> ->
@@ -140,6 +142,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
                 1 -> mBinding.includeIndicatorList.indicatorIndicatorListStatus.navigator.onPageSelected(
                     1
                 )
+
                 4 -> mBinding.includeIndicatorList.indicatorIndicatorListStatus.navigator.onPageSelected(
                     4
                 )
@@ -171,10 +174,14 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
                 }
 
                 override fun onRefresh(responseList: ResponseList<out NearStorePositionEntity>): Boolean {
-                    if (0 == responseList.total){
-                        Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
-                            dialogBgResource = R.drawable.shape_dialog_bg
-                        }.build().show(supportFragmentManager)
+                    if (0 == responseList.total) {
+                        emptyShopDialog?.dismiss()
+                        emptyShopDialog =
+                            Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
+                                dialogBgResource = R.drawable.shape_dialog_bg
+                            }.build().apply {
+                                show(supportFragmentManager)
+                            }
                     }
                     return super.onRefresh(responseList)
                 }

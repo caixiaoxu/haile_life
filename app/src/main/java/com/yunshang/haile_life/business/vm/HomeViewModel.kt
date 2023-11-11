@@ -223,7 +223,7 @@ class HomeViewModel : BaseViewModel() {
     /**
      * 附近门店
      */
-    fun requestNearByStore(location: Location, callback: (isEmpty: Boolean) -> Unit) {
+    fun requestNearByStore(location: Location) {
         launch({
             ApiRepository.dealApiResult(
                 mShopRepo.requestNearStorePositions(
@@ -239,9 +239,6 @@ class HomeViewModel : BaseViewModel() {
             )?.let {
                 it.items?.firstOrNull { item -> 1 == item.state }?.let { e ->
                     nearStoreEntity.postValue(e)
-                    callback(false)
-                } ?: run {
-                    callback(true)
                 }
             }
         })
