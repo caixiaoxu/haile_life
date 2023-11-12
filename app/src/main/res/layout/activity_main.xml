@@ -45,10 +45,10 @@
                 android:text="@string/main_tab_home" />
 
             <com.yunshang.haile_life.ui.view.ClickRadioButton
-                android:id="@+id/rb_main_tab_store"
+                android:id="@+id/rb_main_tab_coupon"
                 style="@style/MainTab"
-                android:drawableTop="@drawable/selector_main_store"
-                android:text="@string/main_tab_store" />
+                android:drawableTop="@drawable/selector_main_coupon"
+                android:text="@string/discount_coupon" />
 
             <com.yunshang.haile_life.ui.view.ClickRadioButton
                 android:id="@+id/rb_main_tab_scan"

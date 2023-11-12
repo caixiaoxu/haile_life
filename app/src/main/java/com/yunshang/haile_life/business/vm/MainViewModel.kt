@@ -1,6 +1,8 @@
 package com.yunshang.haile_life.business.vm
 
 import android.content.Context
+import android.os.Build
+import android.os.Bundle
 import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -16,10 +18,10 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
+import com.yunshang.haile_life.ui.fragment.DiscountCouponFragment
 import com.yunshang.haile_life.ui.fragment.HomeFragment
 import com.yunshang.haile_life.ui.fragment.MineFragment
 import com.yunshang.haile_life.ui.fragment.OrderFragment
-import com.yunshang.haile_life.ui.fragment.StoreFragment
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.string.StringUtils
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +48,10 @@ class MainViewModel : BaseViewModel() {
 
     val fragments = SparseArray<Fragment>(5).apply {
         put(R.id.rb_main_tab_home, HomeFragment())
-        put(R.id.rb_main_tab_store, StoreFragment())
+//        put(R.id.rb_main_tab_store, StoreFragment())
+        put(R.id.rb_main_tab_coupon, DiscountCouponFragment().apply {
+            arguments = Bundle().apply { putBoolean(DiscountCouponFragment.ShowTitleTag, true) }
+        })
         put(R.id.rb_main_tab_scan, HomeFragment())
         put(R.id.rb_main_tab_order, OrderFragment().apply {
             arguments = IntentParams.OrderListParams.pack(true)
@@ -147,9 +152,11 @@ class MainViewModel : BaseViewModel() {
                         }
                     }
             }
-        },{
+        }, {
             withContext(Dispatchers.Main) {
-                it.message?.let { msg -> Hint3SecondDialog.Builder(msg).build().show(supportFragmentManager) }
+                it.message?.let { msg ->
+                    Hint3SecondDialog.Builder(msg).build().show(supportFragmentManager)
+                }
             }
         })
     }

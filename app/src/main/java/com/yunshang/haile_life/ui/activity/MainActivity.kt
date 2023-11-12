@@ -21,24 +21,22 @@ import com.yunshang.haile_life.data.entities.AppVersionEntity
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityMainBinding
+import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
 import com.yunshang.haile_life.ui.activity.order.DrinkingScanOrderActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
-import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
-import com.yunshang.haile_life.ui.view.dialog.CommonDialog
-import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.DialogUtils
-import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
 import org.opencv.OpenCV
 import timber.log.Timber
 import java.io.File
-import java.util.*
+import java.util.Date
 
 class MainActivity :
     BaseBusinessActivity<ActivityMainBinding, MainViewModel>(MainViewModel::class.java, BR.vm) {
@@ -202,7 +200,7 @@ class MainActivity :
     override fun initEvent() {
         super.initEvent()
         mViewModel.checkId.observe(this) {
-            if (it != R.id.rb_main_tab_scan && it != R.id.rb_main_tab_store) {
+            if (it != R.id.rb_main_tab_scan) {
                 showChildFragment(it)
             }
         }
@@ -234,20 +232,20 @@ class MainActivity :
             }
         }
 
-        mBinding.rbMainTabStore.setOnRadioClickListener {
-            if (checkLogin()) {
-                mViewModel.storeAdEntity.value?.let { ad ->
-                    ad.images.firstOrNull()?.let { image ->
-                        SchemeURLHelper.parseSchemeURL(
-                            this@MainActivity,
-                            image.linkUrl,
-                            image.linkType
-                        )
-                    }
-                }
-            }
-            true
-        }
+//        mBinding.rbMainTabStore.setOnRadioClickListener {
+//            if (checkLogin()) {
+//                mViewModel.storeAdEntity.value?.let { ad ->
+//                    ad.images.firstOrNull()?.let { image ->
+//                        SchemeURLHelper.parseSchemeURL(
+//                            this@MainActivity,
+//                            image.linkUrl,
+//                            image.linkType
+//                        )
+//                    }
+//                }
+//            }
+//            true
+//        }
 
         mBinding.rbMainTabOrder.setOnRadioClickListener {
             !checkLogin()

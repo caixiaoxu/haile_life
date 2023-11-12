@@ -290,7 +290,7 @@ object IntentParams {
     }
 
     object DeviceParams {
-        private const val CategoryCode = "categoryCode"
+        const val CategoryCode = "categoryCode"
 
         /**
          * 包装参数

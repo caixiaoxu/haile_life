@@ -71,7 +71,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
 
     override fun layoutId(): Int = R.layout.activity_near_by_shop
 
-    override fun backBtn(): View = mBinding.includeIndicatorList.barIndicatorListTitle.getBackBtn()
+    override fun backBtn(): View = mBinding.barNearByShopTitle.getBackBtn()
 
     override fun initIntent() {
         super.initIntent()
@@ -91,7 +91,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
 
     override fun initView() {
         window.statusBarColor = Color.WHITE
-        mBinding.includeIndicatorList.barIndicatorListTitle.setTitle(if (mViewModel.isRechargeShop) R.string.recharge_shop_title else R.string.nearby_stores)
+        mBinding.barNearByShopTitle.setTitle(if (mViewModel.isRechargeShop) R.string.recharge_shop_title else R.string.nearby_stores)
 
         if (mViewModel.isRechargeShop) {
             mBinding.includeIndicatorList.indicatorIndicatorListStatus.visibility = View.GONE
