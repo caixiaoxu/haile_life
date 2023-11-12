@@ -1,6 +1,8 @@
 package com.yunshang.haile_life.business.vm
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
@@ -91,7 +93,7 @@ class OrderExecuteViewModel : BaseViewModel() {
     /**
      * 结束订单
      */
-    fun finishOrder(orderNo: String?,callback: () -> Unit) {
+    fun finishOrder(orderNo: String?, callback: () -> Unit) {
         if (orderNo.isNullOrEmpty()) return
         launch({
             ApiRepository.dealApiResult(
@@ -101,10 +103,29 @@ class OrderExecuteViewModel : BaseViewModel() {
                     )
                 )
             )
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 callback()
             }
         })
+    }
+
+    /**
+     * 检测订单是否完成
+     */
+    fun checkOrderFinish(orderNo: String?) {
+        if (orderNo.isNullOrEmpty()) return
+        launch({
+            ApiRepository.dealApiResult(mOrderRepo.requestOrderDetailSimple(orderNo))
+                ?.let {
+                    if (it.state >= 1000) {
+                        jump.postValue(1)
+                    } else {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            checkOrderFinish(orderNo)
+                        }, 3000)
+                    }
+                }
+        }, {}, showLoading = false)
     }
 
     var totalTime: Int = 0
@@ -113,7 +134,9 @@ class OrderExecuteViewModel : BaseViewModel() {
     }
     val remainingTimeVal: LiveData<String> = remainingTime.map {
         remainingTime.value?.let { second ->
-            ceil(second * 1.0 / 60).toInt().toString()
+            if (second > 0) {
+                ceil(second * 1.0 / 60).toInt().toString()
+            } else "1"
         } ?: ""
     }
 
@@ -128,8 +151,8 @@ class OrderExecuteViewModel : BaseViewModel() {
         timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
-                remainingTime.value?.let {time->
-                    if (time > 0){
+                remainingTime.value?.let { time ->
+                    if (time > 0) {
                         remainingTime.postValue(time - 1)
                     } else {
                         timer?.cancel()

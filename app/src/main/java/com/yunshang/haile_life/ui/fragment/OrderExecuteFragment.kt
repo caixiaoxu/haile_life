@@ -54,7 +54,7 @@ class OrderExecuteFragment :
     override fun initEvent() {
         super.initEvent()
 
-        mActivityViewModel.orderDetails.observe(this) {detail->
+        mActivityViewModel.orderDetails.observe(this) { detail ->
             mBinding.refreshView.finishRefresh()
             detail?.let {
                 mBinding.includeOrderInfo.llOrderInfoItems.buildChild<IncludeOrderInfoItemBinding, OrderItem>(
@@ -79,10 +79,14 @@ class OrderExecuteFragment :
 
         mViewModel.remainingTime.observe(this) {
             if (it > 0) {
-                mBinding.cdOrderExecuteTime.setData(mViewModel.totalTime, it)
+                mBinding.cdOrderExecuteTime.setData(mViewModel.totalTime, if (it > 0) it else 1)
             } else {
-                mActivityViewModel.jump.value = 1
+                mViewModel.checkOrderFinish(mActivityViewModel.orderNo)
             }
+        }
+
+        mViewModel.jump.observe(this){
+            mActivityViewModel.jump.value = 1
         }
     }
 
@@ -108,7 +112,7 @@ class OrderExecuteFragment :
             CommonDialog.Builder("是否结束订单？").apply {
                 negativeTxt = StringUtils.getString(R.string.no)
                 setPositiveButton(StringUtils.getString(R.string.yes)) {
-                    mViewModel.finishOrder(mActivityViewModel.orderNo){
+                    mViewModel.finishOrder(mActivityViewModel.orderNo) {
                         Handler(Looper.getMainLooper()).postDelayed({
                             mActivityViewModel.jump.postValue(1)
                         }, 1000)
