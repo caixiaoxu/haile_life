@@ -1,6 +1,8 @@
 package com.yunshang.haile_life.ui.fragment
 
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
@@ -241,7 +243,10 @@ class AppointmentOrderVerifyFragment :
         }
         mBinding.btnAppointmentOrderVerify.setOnClickListener {
             mViewModel.verifyDeviceCode(mActivityViewModel.orderNo) {
-                mActivityViewModel.requestData()
+                SToast.showToast(requireContext(), "验证成功")
+                Handler(Looper.getMainLooper()).postDelayed({
+                    mActivityViewModel.requestData()
+                }, 3000)
             }
         }
     }
