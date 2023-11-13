@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnScrollChangedListener
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -25,15 +26,16 @@ import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.ADImage
+import com.yunshang.haile_life.data.entities.DeviceStateEntity
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.device.DeviceNavigationActivity
+import com.yunshang.haile_life.ui.activity.order.AppointmentOrderActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.ShopPositionDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
-import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
@@ -132,6 +134,26 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 mBinding.bannerHomeBanner.visibility = View.VISIBLE
             }
         }
+
+        mViewModel.orderStateList.observe(this) { stateList ->
+            stateList?.let {
+                val size = stateList.stateList?.size?.let { it - 1 } ?: 0
+                mBinding.llDeviceStateProgress.buildChild<ItemDeviceStatusProgressBinding, DeviceStateEntity>(
+                    stateList.stateList,
+                    LinearLayoutCompat.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ).apply {
+                        weight = 1f
+                    }
+                ) { progressIndex, childProgressBinding, state ->
+                    childProgressBinding.isFirst = 0 == progressIndex
+                    childProgressBinding.isLast = progressIndex == size
+                    childProgressBinding.item = state
+                }
+            }
+        }
+
         // 商城
         mViewModel.storeAdEntity.observe(this) { ad ->
             ad.images.firstOrNull()?.let { img ->
@@ -206,7 +228,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
 
         mSharedViewModel.mSharedLocation.observe(this) {
-            if (!isHide){
+            if (!isHide) {
                 mViewModel.requestNearByStore(it)
             }
         }
@@ -216,11 +238,35 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
     }
 
-    private var isHide:Boolean = false
+    /**
+     * 跳转到营业点列表
+     */
+    private fun goToPositionList() {
+        if (true != mViewModel.hasLocationPermission.value) {
+            DialogUtils.checkPermissionDialog(
+                requireContext(),
+                childFragmentManager,
+                permissions,
+                "需要定位权限来寻找附近营业点", false
+            ) {
+                requestMultiplePermission.launch(permissions)
+            }
+        } else {
+            if (null == mViewModel.nearStoreEntity.value) {
+                Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
+                    dialogBgResource = R.drawable.shape_dialog_bg
+                }.build().show(childFragmentManager)
+            } else {
+                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
+            }
+        }
+    }
+
+    private var isHide: Boolean = false
 
     override fun onResume() {
         super.onResume()
-        isHide =false
+        isHide = false
     }
 
     override fun onPause() {
@@ -312,49 +358,61 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
 //                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
 //            }
 //        }
+//        mBinding.clHomeCurTask.setOnClickListener {
+//            mViewModel.lastMessage.value?.let { msg ->
+//                msg.messageContent()?.let { content ->
+//                    if (content.orderNo.isNotEmpty()) {
+//                        startActivity(
+//                            Intent(
+//                                requireContext(),
+//                                OrderDetailActivity::class.java
+//                            ).apply {
+//                                putExtras(
+//                                    IntentParams.OrderParams.pack(
+//                                        content.orderNo,
+//                                        msg.subtype == "user:order:appoint"
+//                                    )
+//                                )
+//                            })
+//                    }
+//                }
+//            }
+//        }
 
-        mBinding.clHomeCurTask.setOnClickListener {
-            mViewModel.lastMessage.value?.let { msg ->
-                msg.messageContent()?.let { content ->
-                    if (content.orderNo.isNotEmpty()) {
-                        startActivity(
+        mBinding.clHomeOrderState.setOnClickListener {
+            mViewModel.orderStateList.value?.let {stateList->
+                if (!stateList.orderNo.isNullOrEmpty()) {
+                    startActivity(
+                        if (stateList.isAppoint) {
+                            Intent(
+                                requireContext(),
+                                AppointmentOrderActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.OrderParams.pack(stateList.orderNo))
+                            }
+                        } else {
                             Intent(
                                 requireContext(),
                                 OrderDetailActivity::class.java
                             ).apply {
                                 putExtras(
-                                    IntentParams.OrderParams.pack(
-                                        content.orderNo,
-                                        msg.subtype == "user:order:appoint"
-                                    )
+                                    IntentParams.OrderParams.pack(stateList.orderNo)
                                 )
-                            })
-                    }
+                            }
+                        }
+                    )
                 }
             }
         }
 
+        mBinding.btnHomeOrderEmpty.setOnClickListener {
+            // 请求权限
+            goToPositionList()
+        }
+
         // 附近门店 更多
         mBinding.clNearByShopMore.setOnClickListener {
-            // 请求权限
-            if (true != mViewModel.hasLocationPermission.value) {
-                DialogUtils.checkPermissionDialog(
-                    requireContext(),
-                    childFragmentManager,
-                    permissions,
-                    "需要定位权限来寻找附近营业点", false
-                ) {
-                    requestMultiplePermission.launch(permissions)
-                }
-            } else {
-                if (null == mViewModel.nearStoreEntity.value){
-                    Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
-                        dialogBgResource = R.drawable.shape_dialog_bg
-                    }.build().show(childFragmentManager)
-                } else {
-                    startActivity(Intent(requireContext(), NearByShopActivity::class.java))
-                }
-            }
+            goToPositionList()
         }
         // 附近门店
         mBinding.clNearByShop.setOnClickListener {

@@ -95,4 +95,6 @@ interface OrderService {
     suspend fun sendDeviceVerifyCode(@Body body: RequestBody): ResponseWrapper<Any>
     @POST("/trade/check/verify")
     suspend fun verifyDeviceVerifyCode(@Body body: RequestBody): ResponseWrapper<Any>
+    @POST("/trade/underway/stateList")
+    suspend fun requestOrderStateList(): ResponseWrapper<OrderStateListEntity>
 }

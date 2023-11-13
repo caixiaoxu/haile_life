@@ -91,7 +91,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
                 OrderDetailActivity::class.java
             ).apply {
                 putExtras(
-                    IntentParams.OrderParams.pack(orderNo,)
+                    IntentParams.OrderParams.pack(orderNo)
                 )
             })
     }

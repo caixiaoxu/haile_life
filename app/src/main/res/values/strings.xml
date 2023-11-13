@@ -334,6 +334,9 @@
     <string name="card_sn">卡编号</string>
     <string name="sure_binding">确认绑定</string>
 
+    <string name="order_in_progress">进行中订单</string>
+    <string name="order_in_progress_empty">暂无进行中的订单～</string>
+
     <string name="follow_the_wechat_official_account">关注公众号</string>
     <string name="follow_the_wechat_official_account_tip">保存二维码后打开微信识别关注公众号</string>
     <string name="save_qr_code">保存二维码</string>

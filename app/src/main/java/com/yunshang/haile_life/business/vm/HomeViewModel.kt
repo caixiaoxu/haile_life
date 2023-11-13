@@ -1,7 +1,6 @@
 package com.yunshang.haile_life.business.vm
 
 import android.location.Location
-import android.view.ScrollCaptureCallback
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +9,7 @@ import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.MarketingService
 import com.yunshang.haile_life.business.apiService.MessageService
+import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -29,6 +29,7 @@ class HomeViewModel : BaseViewModel() {
     private val mMessageRepo = ApiRepository.apiClient(MessageService::class.java)
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
+    private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
     val hasLocationPermission: MutableLiveData<Boolean> by lazy {
         MutableLiveData()
@@ -90,6 +91,10 @@ class HomeViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
+    val orderStateList: MutableLiveData<OrderStateListEntity> by lazy {
+        MutableLiveData()
+    }
+
     fun requestData() {
         launch({
             requestHomeMsg()
@@ -104,7 +109,20 @@ class HomeViewModel : BaseViewModel() {
      * 首页消息
      */
     fun requestHomeMsgAsync() {
-        launch({ requestHomeMsg() }, showLoading = false)
+        launch({
+            requestHomeMsg()
+            requestOrderState()
+        }, showLoading = false)
+    }
+
+    private suspend fun requestOrderState() {
+        if (SPRepository.isLogin()) {
+            ApiRepository.dealApiResult(
+                mOrderRepo.requestOrderStateList()
+            )?.let {
+                orderStateList.postValue(it)
+            }
+        }
     }
 
     /**
