@@ -108,18 +108,18 @@ class OrderExecuteFragment :
             requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
         }
 
-        mBinding.tvOrderExecuteFinishOrder.setOnClickListener {
-            CommonDialog.Builder("是否结束订单？").apply {
-                negativeTxt = StringUtils.getString(R.string.no)
-                setPositiveButton(StringUtils.getString(R.string.yes)) {
-                    mViewModel.finishOrder(mActivityViewModel.orderNo) {
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            mActivityViewModel.jump.postValue(1)
-                        }, 1000)
-                    }
-                }
-            }.build().show(childFragmentManager)
-        }
+//        mBinding.tvOrderExecuteFinishOrder.setOnClickListener {
+//            CommonDialog.Builder("是否结束订单？").apply {
+//                negativeTxt = StringUtils.getString(R.string.no)
+//                setPositiveButton(StringUtils.getString(R.string.yes)) {
+//                    mViewModel.finishOrder(mActivityViewModel.orderNo) {
+//                        Handler(Looper.getMainLooper()).postDelayed({
+//                            mActivityViewModel.jump.postValue(1)
+//                        }, 1000)
+//                    }
+//                }
+//            }.build().show(childFragmentManager)
+//        }
 
         // 没有启动设备就启动
         if (0 == mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfill) {
