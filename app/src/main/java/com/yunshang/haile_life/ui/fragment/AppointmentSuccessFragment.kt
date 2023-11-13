@@ -102,7 +102,7 @@ class AppointmentSuccessFragment :
         mBinding.includeAppointmentDeviceStatus.root.setBackgroundResource(R.drawable.shape_sffffff_r8)
 
         mBinding.btnAppointmentSuccessCancel.setOnClickListener {
-            CommonDialog.Builder("是否结束订单？").apply {
+            CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt)).apply {
                 negativeTxt = StringUtils.getString(R.string.no)
                 setPositiveButton(StringUtils.getString(R.string.yes)) {
                     mActivityViewModel.cancelOrder()

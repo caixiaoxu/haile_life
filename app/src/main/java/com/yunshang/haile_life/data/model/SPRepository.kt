@@ -19,6 +19,7 @@ object SPRepository {
     private const val SP_NAME: String = "default_name"
 
     private const val SP_SCAN_ORDER_CONFIG_NO_PROMPT = "sp_scan_order_config_no_prompt"
+    private const val SP_SCAN_APPOINT_ORDER_CONFIG_NO_PROMPT = "sp_scan_appoint_order_config_no_prompt"
 
     private const val SP_AGREE_AGREEMENT = "sp_agree_agreement"
 
@@ -43,6 +44,13 @@ object SPRepository {
     var isNoPrompt: Boolean
         get() = sp.getBoolean(SP_SCAN_ORDER_CONFIG_NO_PROMPT, false)
         set(value) = sp.put(SP_SCAN_ORDER_CONFIG_NO_PROMPT, value)
+
+    /**
+     * 判断是否不再显示预约下单温馨提示
+     */
+    var isNoAppointPrompt: Boolean
+        get() = sp.getBoolean(SP_SCAN_APPOINT_ORDER_CONFIG_NO_PROMPT, false)
+        set(value) = sp.put(SP_SCAN_APPOINT_ORDER_CONFIG_NO_PROMPT, value)
 
     /**
      * 判断检测更新时间

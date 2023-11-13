@@ -114,7 +114,10 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
             StringUtils.getString(if (builder.isAppoint) R.string.affirm else R.string.next_step)
         mBinding.btnScanOrderConfirmNext.setOnClickListener {
             if (mBinding.cbScanOrderConfirmNoPrompt.isChecked) {
-                SPRepository.isNoPrompt = true
+                if (builder.isAppoint)
+                    SPRepository.isNoAppointPrompt = true
+                else
+                    SPRepository.isNoPrompt = true
             }
             builder.callBack?.invoke()
             dismiss()

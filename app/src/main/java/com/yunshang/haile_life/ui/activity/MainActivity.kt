@@ -23,21 +23,21 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityMainBinding
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
+import com.yunshang.haile_life.ui.activity.order.AppointmentOrderActivity
+import com.yunshang.haile_life.ui.activity.order.AppointmentOrderSelectorActivity
+import com.yunshang.haile_life.ui.activity.order.DrinkingScanOrderActivity
+import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
-import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
-import com.yunshang.haile_life.ui.activity.order.*
-import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
-import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 import org.opencv.OpenCV
 import timber.log.Timber
 import java.io.File
-import java.util.Date
+import java.util.*
 
 class MainActivity :
     BaseBusinessActivity<ActivityMainBinding, MainViewModel>(MainViewModel::class.java, BR.vm) {

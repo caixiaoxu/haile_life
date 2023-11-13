@@ -124,7 +124,7 @@ class OrderExecuteFragment :
         if (0 == mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfill) {
             mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.let { firstItem ->
                 val isSpecialDevice = firstItem.spuCode == "04001030"
-                if ((!SPRepository.isNoPrompt && !DeviceCategory.isHair(firstItem.categoryCode))
+                if ((!SPRepository.isNoAppointPrompt && !DeviceCategory.isHair(firstItem.categoryCode))
                     || isSpecialDevice
                 ) {
                     ScanOrderConfirmDialog.Builder(firstItem.categoryCode, isSpecialDevice, true) {
