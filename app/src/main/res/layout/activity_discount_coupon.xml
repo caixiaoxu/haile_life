@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -12,8 +13,16 @@
         android:orientation="vertical"
         tools:context=".ui.activity.personal.DiscountCouponActivity">
 
-        <include
-            android:id="@+id/include_indicator_list"
-            layout="@layout/include_indicator_list" />
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_discount_coupon_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:title="@string/discount_coupon" />
+
+        <FrameLayout
+            android:id="@+id/fl_discount_coupon_control"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </layout>

@@ -19,6 +19,7 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.ActivityStarfishRefundDetailBinding
 import com.yunshang.haile_life.databinding.ItemStarfishRefundDetailListBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.utils.DialogUtils
 
 class StarfishRefundDetailActivity :
     BaseBusinessActivity<ActivityStarfishRefundDetailBinding, StarfishRefundDetailViewModel>(
@@ -84,7 +85,14 @@ class StarfishRefundDetailActivity :
     override fun initView() {
 
         mBinding.tvRefundDetailContact.setOnClickListener {
-            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            DialogUtils.checkPermissionDialog(
+                this,
+                supportFragmentManager,
+                SystemPermissionHelper.callPhonePermissions(),
+                "需要权限来拨打电话"
+            ) {
+                requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            }
         }
         val titleW = DimensionUtils.dip2px(this, 86f)
         unifyTitleW(mBinding.includeRefundDetailAccount.tvItemTitle, titleW)

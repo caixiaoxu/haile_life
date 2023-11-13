@@ -114,7 +114,7 @@
             android:id="@+id/flow_device_navigation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="btn_device_navigation_control_code,btn_device_navigation_appoint,btn_device_navigation_order,btn_device_navigation_coupon,btn_device_navigation_faq"
+            app:constraint_referenced_ids="btn_device_navigation_control_code,btn_device_navigation_order,btn_device_navigation_coupon,btn_device_navigation_faq"
             app:flow_horizontalBias="0"
             app:flow_horizontalStyle="packed"
             app:flow_wrapMode="chain"
@@ -145,28 +145,28 @@
             app:layout_constraintTop_toTopOf="@id/btn_device_navigation_control_code"
             app:visibility="@{vm.isShower}" />
 
-        <View
-            android:id="@+id/btn_device_navigation_appoint"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:background="@drawable/shape_sffffff_r8"
-            app:height="@{itemWH}"
-            app:visibility="@{vm.isShower}"
-            app:width="@{itemWH}" />
+<!--        <View-->
+<!--            android:id="@+id/btn_device_navigation_appoint"-->
+<!--            android:layout_width="88dp"-->
+<!--            android:layout_height="88dp"-->
+<!--            android:background="@drawable/shape_sffffff_r8"-->
+<!--            app:height="@{itemWH}"-->
+<!--            app:visibility="@{vm.isShower}"-->
+<!--            app:width="@{itemWH}" />-->
 
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Font_12_black_45"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@mipmap/icon_device_navigation_appoint"
-            android:drawablePadding="6dp"
-            android:gravity="center"
-            android:text="@string/appointment"
-            app:layout_constraintBottom_toBottomOf="@id/btn_device_navigation_appoint"
-            app:layout_constraintEnd_toEndOf="@id/btn_device_navigation_appoint"
-            app:layout_constraintStart_toStartOf="@id/btn_device_navigation_appoint"
-            app:layout_constraintTop_toTopOf="@id/btn_device_navigation_appoint"
-            app:visibility="@{vm.isShower}" />
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            style="@style/Font_12_black_45"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:drawableTop="@mipmap/icon_device_navigation_appoint"-->
+<!--            android:drawablePadding="6dp"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/appointment"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/btn_device_navigation_appoint"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/btn_device_navigation_appoint"-->
+<!--            app:layout_constraintStart_toStartOf="@id/btn_device_navigation_appoint"-->
+<!--            app:layout_constraintTop_toTopOf="@id/btn_device_navigation_appoint"-->
+<!--            app:visibility="@{vm.isShower}" />-->
 
         <View
             android:id="@+id/btn_device_navigation_order"

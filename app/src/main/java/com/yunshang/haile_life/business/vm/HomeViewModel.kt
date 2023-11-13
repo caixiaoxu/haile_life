@@ -1,6 +1,7 @@
 package com.yunshang.haile_life.business.vm
 
 import android.location.Location
+import android.view.ScrollCaptureCallback
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -38,7 +39,7 @@ class HomeViewModel : BaseViewModel() {
         HomeCategory(R.mipmap.icon_home_hair, R.string.home_category_hair),
         HomeCategory(R.mipmap.icon_home_drinking, R.string.home_category_drinking),
         HomeCategory(R.mipmap.icon_home_shower, R.string.home_category_shower),
-        HomeCategory(R.mipmap.icon_home_dry_cleaning, R.string.home_category_dry_cleaning),
+//        HomeCategory(R.mipmap.icon_home_dry_cleaning, R.string.home_category_dry_cleaning),
     )
     val smallCategory = arrayListOf(
         HomeCategory(R.mipmap.icon_home_cloth_recycle, R.string.home_category_cloth_recyce),

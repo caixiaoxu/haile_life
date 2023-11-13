@@ -46,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     app:itemLayout="@layout/item_home_category_small" />
 
                 <com.youth.banner.Banner
@@ -169,8 +170,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tv_home_near_stores_title" />
 
-                        <com.lsy.framelib.ui.weight.SingleTapTextView
-                            android:id="@+id/btn_home_near_stores_get_location"
+                        <androidx.appcompat.widget.AppCompatTextView
                             style="@style/Font_12_FFFFFF"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -185,13 +185,6 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <View
-                        android:id="@+id/view_near_store_dividing1"
-                        style="@style/DividingStyle1"
-                        android:layout_marginHorizontal="16dp"
-                        app:layout_constraintTop_toTopOf="@id/cl_near_by_shop"
-                        tools:ignore="MissingConstraints" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_near_by_shop"
@@ -281,12 +274,29 @@
                             app:status="@{@string/idle}" />
                     </com.yunshang.haile_life.ui.view.CustomChildListLinearLayout>
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_near_by_shop_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:gravity="center"
+                        app:visibility="@{null == vm.nearStoreEntity}"
+                        tools:text="定位失败，暂无位置权限"
+                        style="@style/Font_14_black_45"
+                        app:layout_constraintTop_toBottomOf="@id/cl_near_by_shop"/>
+
+                    <View
+                        style="@style/DividingStyle1"
+                        android:layout_marginHorizontal="16dp"
+                        app:layout_constraintBottom_toBottomOf="@id/cl_near_by_shop_more"
+                        tools:ignore="MissingConstraints" />
+
                     <androidx.constraintlayout.widget.Group
                         android:id="@+id/group_near_stores"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:visibility="gone"
-                        app:constraint_referenced_ids="cl_near_by_shop,ll_home_near_stores_devices,view_near_store_dividing1,view_near_store_dividing2" />
+                        app:constraint_referenced_ids="cl_near_by_shop,ll_home_near_stores_devices,view_near_store_dividing2" />
 
                     <androidx.constraintlayout.widget.Group
                         android:id="@+id/group_near_device"

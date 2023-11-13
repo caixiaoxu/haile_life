@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lsy.framelib.network.response.ResponseList
+import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.NearByShopViewModel
@@ -18,7 +20,9 @@ import com.yunshang.haile_life.databinding.ActivityNearByShopBinding
 import com.yunshang.haile_life.databinding.ItemNearByShopBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
+import com.yunshang.haile_life.utils.DialogUtils
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
@@ -29,6 +33,24 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearByShopViewModel>(
     NearByShopViewModel::class.java, BR.vm
 ) {
+    private val permissions = SystemPermissionHelper.locationPermissions()
+
+    private var emptyShopDialog: Hint3SecondDialog? = null
+
+    // 权限
+    private val requestMultiplePermission =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result: Map<String, Boolean> ->
+            var isAllow = true
+            for (permission in permissions) {
+                if (true != result[permission]) {
+                    isAllow = false
+                    break
+                }
+            }
+            if (isAllow) {
+                mSharedViewModel.requestLocationInfo(this)
+            }
+        }
 
     private val mAdapter by lazy {
         CommonRecyclerAdapter<ItemNearByShopBinding, NearStorePositionEntity>(
@@ -49,7 +71,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
 
     override fun layoutId(): Int = R.layout.activity_near_by_shop
 
-    override fun backBtn(): View = mBinding.includeIndicatorList.barIndicatorListTitle.getBackBtn()
+    override fun backBtn(): View = mBinding.barNearByShopTitle.getBackBtn()
 
     override fun initIntent() {
         super.initIntent()
@@ -69,7 +91,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
 
     override fun initView() {
         window.statusBarColor = Color.WHITE
-        mBinding.includeIndicatorList.barIndicatorListTitle.setTitle(if (mViewModel.isRechargeShop) R.string.recharge_shop_title else R.string.nearby_stores)
+        mBinding.barNearByShopTitle.setTitle(if (mViewModel.isRechargeShop) R.string.recharge_shop_title else R.string.nearby_stores)
 
         if (mViewModel.isRechargeShop) {
             mBinding.includeIndicatorList.indicatorIndicatorListStatus.visibility = View.GONE
@@ -120,6 +142,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
                 1 -> mBinding.includeIndicatorList.indicatorIndicatorListStatus.navigator.onPageSelected(
                     1
                 )
+
                 4 -> mBinding.includeIndicatorList.indicatorIndicatorListStatus.navigator.onPageSelected(
                     4
                 )
@@ -149,6 +172,19 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
                 ) {
                     mViewModel.requestNearByStores(page, pageSize, callBack)
                 }
+
+                override fun onRefresh(responseList: ResponseList<out NearStorePositionEntity>): Boolean {
+                    if (0 == responseList.total) {
+                        emptyShopDialog?.dismiss()
+                        emptyShopDialog =
+                            Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
+                                dialogBgResource = R.drawable.shape_dialog_bg
+                            }.build().apply {
+                                show(supportFragmentManager)
+                            }
+                    }
+                    return super.onRefresh(responseList)
+                }
             }
     }
 
@@ -161,6 +197,15 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
             }
         } else {
             mViewModel.curCategoryCode.value = mViewModel.mNearByShopIndicators[0].value
+        }
+
+        DialogUtils.checkPermissionDialog(
+            this,
+            supportFragmentManager,
+            permissions,
+            "需要定位权限来寻找附近营业点"
+        ) {
+            requestMultiplePermission.launch(permissions)
         }
     }
 }

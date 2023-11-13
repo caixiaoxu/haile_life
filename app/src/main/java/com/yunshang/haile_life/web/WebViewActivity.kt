@@ -15,6 +15,7 @@ import com.yunshang.haile_life.business.vm.WebViewViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.ActivityWebviewBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.utils.DialogUtils
 
 
 class WebViewActivity : BaseBusinessActivity<ActivityWebviewBinding, WebViewViewModel>(
@@ -129,7 +130,19 @@ class WebViewActivity : BaseBusinessActivity<ActivityWebviewBinding, WebViewView
                 ): Boolean {
                     this@WebViewActivity.fileChooserParams = fileChooserParams
                     fileCallback = filePathCallback
-                    requestMultiplePermission.launch(SystemPermissionHelper.readWritePermissions())
+                    DialogUtils.checkPermissionDialog(
+                        this@WebViewActivity,
+                        supportFragmentManager,
+                        SystemPermissionHelper.readWritePermissions(),
+                        "需要读写权限来选择照片或文件",
+                        negativeCallback = {
+                            this@WebViewActivity.fileChooserParams = null
+                            fileCallback?.onReceiveValue(null)
+                            fileCallback = null
+                        }
+                    ) {
+                        requestMultiplePermission.launch(SystemPermissionHelper.readWritePermissions())
+                    }
                     return true
                 }
             }

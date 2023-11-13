@@ -15,6 +15,7 @@ import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.entities.AppVersionEntity
 import com.yunshang.haile_life.databinding.DialogUpdateAppBinding
+import com.yunshang.haile_life.utils.DialogUtils
 import kotlin.math.roundToInt
 
 /**
@@ -31,6 +32,9 @@ class UpdateAppDialog private constructor(private val builder: Builder) :
     AppCompatDialogFragment() {
     private val UPDATE_TAG = "update_tag"
     private lateinit var mBinding: DialogUpdateAppBinding
+
+    private val permissions = SystemPermissionHelper.readWritePermissions()
+        .plus(SystemPermissionHelper.installPackagesPermissions())
 
     // 权限
     private val requestPermissions =
@@ -69,10 +73,14 @@ class UpdateAppDialog private constructor(private val builder: Builder) :
         mBinding.tvUpdateAppContent.text = builder.appVersion.updateLog
 
         mBinding.btnUpdateAppYes.setOnClickListener {
-            requestPermissions.launch(
-                SystemPermissionHelper.readWritePermissions()
-                    .plus(SystemPermissionHelper.installPackagesPermissions())
-            )
+            DialogUtils.checkPermissionDialog(
+                requireContext(),
+                childFragmentManager,
+                permissions,
+                "需要读写和安装权限来下载安装最新APP"
+            ) {
+                requestPermissions.launch(permissions)
+            }
         }
     }
 

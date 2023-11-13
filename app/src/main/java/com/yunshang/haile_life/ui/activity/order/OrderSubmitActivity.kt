@@ -73,6 +73,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
         mViewModel.reserveTime.value = IntentParams.OrderSubmitParams.parseReserveTime(intent)
         mViewModel.deviceName.value = IntentParams.OrderSubmitParams.parseDeviceName(intent) ?: ""
         mViewModel.shopAddress.value = IntentParams.OrderSubmitParams.parseShopAddress(intent) ?: ""
+        mViewModel.isAppoint = IntentParams.OrderSubmitParams.parseIsAppoint(intent)
     }
 
     override fun initEvent() {

@@ -15,6 +15,7 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.entities.OfficialAccountsEntity
 import com.yunshang.haile_life.databinding.DialogOfficialAccountsBinding
 import com.yunshang.haile_life.utils.BitmapUtils
+import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 /**
@@ -70,7 +71,14 @@ class OfficialAccountsDialog(private val officialAccounts: OfficialAccountsEntit
             mBinding.ivOfficialAccountsScanCode.setImageBitmap(bitmap)
             //点击保存
             mBinding.btnOfficialAccountsSaveQr.setOnClickListener {
-                requestPermissions.launch(SystemPermissionHelper.readWritePermissions())
+                DialogUtils.checkPermissionDialog(
+                    requireContext(),
+                    childFragmentManager,
+                    SystemPermissionHelper.callPhonePermissions(),
+                    "需要读写权限来保存二维码"
+                ) {
+                    requestPermissions.launch(SystemPermissionHelper.readWritePermissions())
+                }
             }
         }
 
