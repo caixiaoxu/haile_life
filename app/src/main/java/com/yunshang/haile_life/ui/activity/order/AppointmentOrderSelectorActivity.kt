@@ -88,7 +88,7 @@ class AppointmentOrderSelectorActivity :
 
         // 模式和关联
         mViewModel.deviceDetail.observe(this) { detail ->
-            mBinding.includeAppointmentDeviceStatus.llDeviceStatusItems.visibility(1 != detail.deviceState)
+            mBinding.includeAppointmentDeviceStatus.root.visibility(1 != detail.deviceState)
             detail.items.filter { item -> 1 == item.soldState }.let { configs ->
                 if (configs.isNotEmpty()) {
                     mBinding.includeAppointSelectorSpec.clScanOrderConfig.let { cl ->

@@ -118,19 +118,8 @@
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="19dp"
                             android:text="@string/contact_shop"
-                            app:layout_constraintEnd_toStartOf="@id/tv_order_execute_finish_order"
-                            app:layout_constraintStart_toEndOf="@id/tv_order_execute_coerce_device"
-                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_coerce_device" />
-
-                        <com.lsy.framelib.ui.weight.SingleTapTextView
-                            android:id="@+id/tv_order_execute_finish_order"
-                            style="@style/font_14_04D1E5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="19dp"
-                            android:text="@string/finish_order"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tv_order_execute_contact_shop"
+                            app:layout_constraintStart_toEndOf="@id/tv_order_execute_coerce_device"
                             app:layout_constraintTop_toTopOf="@id/tv_order_execute_coerce_device" />
 
                         <View
@@ -139,14 +128,6 @@
                             android:background="@color/color_cccccc"
                             app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
                             app:layout_constraintStart_toStartOf="@id/tv_order_execute_contact_shop"
-                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="0dp"
-                            android:background="@color/color_cccccc"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
-                            app:layout_constraintEnd_toEndOf="@id/tv_order_execute_contact_shop"
                             app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

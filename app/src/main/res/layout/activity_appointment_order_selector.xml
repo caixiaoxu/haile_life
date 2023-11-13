@@ -204,5 +204,14 @@
             app:layout_constraintStart_toStartOf="@id/tv_appoint_selector_price"
             app:layout_constraintTop_toBottomOf="@id/tv_appoint_selector_price"
             tools:text="+立白洗衣液" />
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/page_bg"
+            app:visibility="@{null == vm.deviceDetail}"
+            tools:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/bar_appoint_selector_title"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
