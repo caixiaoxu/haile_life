@@ -3,6 +3,8 @@ package com.yunshang.haile_life.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import com.github.penfeizhou.animation.apng.APNGDrawable
+import com.github.penfeizhou.animation.loader.AssetStreamLoader
 import com.king.camera.scan.CameraScan
 import com.king.wechat.qrcode.WeChatQRCodeDetector
 import com.lsy.framelib.async.LiveDataBus
@@ -241,6 +243,12 @@ class MainActivity :
     }
 
     override fun initView() {
+        // 从asset file中加载
+        val assetLoader = AssetStreamLoader(this, "icon_main_scan_anim.png")
+        // 创建APNG Drawable
+        val apngDrawable = APNGDrawable(assetLoader)
+        // 自动播放
+        mBinding.ivMainScan.setImageDrawable(apngDrawable)
         mBinding.ivMainScan.setOnClickListener {
             if (checkLogin()) {
                 DialogUtils.checkPermissionDialog(

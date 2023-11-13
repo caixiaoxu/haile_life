@@ -130,6 +130,8 @@ dependencies {
     implementation ThirdLibs.picture_compress
     implementation ThirdLibs.picture_ucrop
 
+    implementation ThirdLibs.apng
+
     implementation(ThirdLibs.jsBridge) {
         exclude group: 'com.github.lzyzsd.jsbridge', module: 'jsbridge-debug'
     }
