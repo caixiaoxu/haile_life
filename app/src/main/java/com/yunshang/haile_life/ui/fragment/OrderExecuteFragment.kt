@@ -20,7 +20,6 @@ import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
-import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 

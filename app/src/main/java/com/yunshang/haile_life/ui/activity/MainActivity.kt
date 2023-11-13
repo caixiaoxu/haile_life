@@ -22,15 +22,12 @@ import com.yunshang.haile_life.data.model.OnDownloadProgressListener
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityMainBinding
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
-import com.yunshang.haile_life.ui.activity.order.DrinkingScanOrderActivity
-import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
-import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
-import com.yunshang.haile_life.ui.activity.order.AppointmentOrderSelectorActivity
+import com.yunshang.haile_life.ui.activity.order.*
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
@@ -103,12 +100,12 @@ class MainActivity :
                     // 预约详情界面
                     startActivity(
                         Intent(
-                            this@MainActivity,
-                            OrderDetailActivity::class.java
+                            this,
+                            AppointmentOrderActivity::class.java
                         ).apply {
-                            putExtras(IntentParams.ScanOrderParams.pack(code, scan))
-                            putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo, true, 1))
-                        })
+                            putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo))
+                        }
+                    )
                 } else if (2 == detail.deviceState && 1 == detail.reserveState
                     && true == detail.enableReserve
                     && (DeviceCategory.isWashingOrShoes(detail.categoryCode) || DeviceCategory.isDryer(
