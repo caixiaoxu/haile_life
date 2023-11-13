@@ -32,6 +32,7 @@ import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.web.WebViewActivity
 import java.math.BigDecimal
+import kotlin.math.abs
 
 /**
  * Title :
@@ -97,6 +98,15 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
         val inflater = LayoutInflater.from(requireContext())
         builder.deviceDetail.observe(this) { detail ->
             mBinding.includeOrderSelectorDeviceStatus.root.visibility(1 != detail.deviceState)
+
+            val noAppoint =
+                1 != detail.deviceState && (0 == detail.reserveState || false == detail.enableReserve)
+            mBinding.viewNoAppointBottom.visibility(noAppoint)
+            mBinding.tvAppointmentOrderSelectorNotReason.visibility(noAppoint)
+            mBinding.btnAppointmentOrderSelectorNotReason.visibility(noAppoint)
+
+            mBinding.viewOrderSelectSubmitSelected.isEnabled = !noAppoint
+
             detail.items.filter { item -> 1 == item.soldState }.let { configs ->
                 if (configs.isNotEmpty()) {
                     mBinding.includeOrderSelectorSpec.clScanOrderConfig.let { cl ->
@@ -150,6 +160,9 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
 
         // 时长
         builder.selectDeviceConfig.observe(this) {
+            mBinding.includeOrderSelectorSpec.setVariable(
+                BR.desc,it.feature
+            )
             mBinding.includeAppointSubmitMinute.clScanOrderConfig.let { cl ->
                 if (cl.childCount > 3) {
                     cl.removeViews(3, cl.childCount - 3)
@@ -194,6 +207,14 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
 
         builder.selectExtAttr.observe(this) {
             builder.totalPrice()
+        }
+
+        builder.needAttach.observe(this) {
+            mBinding.llScanOrderConfigsAttrSku.visibility(it)
+        }
+
+        builder.totalPriceVal.observe(this) {
+            mBinding.tvOrderSelectorSubmitPrice.text = "${if (it < 0) "-" else ""}￥ ${abs(it)}"
         }
 
         mBinding.btnAppointmentOrderSelectorNotReason.setOnClickListener {
@@ -263,7 +284,8 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
                 weight = 1f
             }
         ) { index, childBinding, data ->
-            childBinding.isDryer = false//DeviceCategory.isDryer(builder.deviceDetail.value?.categoryCode)
+            childBinding.isDryer =
+                false//DeviceCategory.isDryer(builder.deviceDetail.value?.categoryCode)
             childBinding.isFirst = 0 == index
             childBinding.isLast = index == size
             childBinding.item = data

@@ -39,6 +39,7 @@ class OrderPayViewModel : BaseViewModel() {
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
     var orderNo: String? = null
+    var isAppoint: Boolean = false
 
     var timeRemaining: String? = null
 
@@ -225,7 +226,7 @@ class OrderPayViewModel : BaseViewModel() {
         )
 
         return if (false == result?.isSuccess) {
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 SToast.showToast(context, result.msg)
             }
             false

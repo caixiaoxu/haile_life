@@ -163,7 +163,11 @@ class OrderDetailActivity :
         }
 
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
-            mViewModel.requestOrderDetailAsync()
+            if ("300" == mViewModel.orderDetail.value?.orderType || 106 == mViewModel.orderDetail.value?.orderSubType) {
+                finish()
+            } else {
+                mViewModel.requestOrderDetailAsync()
+            }
         }
 
         LiveDataBus.with(BusEvents.PROMPT_POPUP, Boolean::class.java)?.observe(this) {
@@ -213,6 +217,8 @@ class OrderDetailActivity :
                     putExtras(
                         IntentParams.OrderPayParams.pack(
                             detail.orderNo,
+                            detail.orderType,
+                            detail.orderSubType,
                             if (DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)) "" else detail.invalidTime,
                             detail.realPrice,
                             detail.orderItemList,

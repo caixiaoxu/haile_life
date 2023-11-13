@@ -1,5 +1,6 @@
 package com.yunshang.haile_life.ui.activity.order
 
+import android.content.Intent
 import android.text.style.AbsoluteSizeSpan
 import android.view.View
 import com.lsy.framelib.async.LiveDataBus
@@ -29,6 +30,7 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
     override fun initIntent() {
         super.initIntent()
         mViewModel.orderNo = IntentParams.OrderPayParams.parseOrderNo(intent)
+        mViewModel.isAppoint = IntentParams.OrderParams.parseIsAppoint(intent)
         mViewModel.timeRemaining = IntentParams.OrderPayParams.parseTimeRemaining(intent)
         mViewModel.price = IntentParams.OrderPayParams.parsePrice(intent) ?: ""
         mViewModel.orderItems = IntentParams.OrderPayParams.parseOrderItems(intent)
@@ -75,7 +77,20 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
         }
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
             SToast.showToast(this@OrderPayActivity, R.string.pay_success)
-            finish()
+
+            if (mViewModel.isAppoint) {
+                mViewModel.orderNo?.let {orderNo->
+                    startActivity(
+                        Intent(
+                            this@OrderPayActivity,
+                            AppointmentOrderActivity::class.java
+                        ).apply {
+                            putExtras(IntentParams.OrderParams.pack(orderNo))
+                        })
+                }
+            } else {
+                finish()
+            }
         }
     }
 

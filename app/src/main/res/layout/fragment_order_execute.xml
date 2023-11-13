@@ -67,7 +67,6 @@
                             android:layout_height="0dp"
                             style="@style/Font_52_black_85"
                             android:fontFamily="@font/money"
-                            android:hint="--"
                             android:gravity="center"
                             android:text="@{vm.remainingTimeVal}"
                             app:layout_constraintTop_toTopOf="@id/cd_order_execute_time"

@@ -451,12 +451,19 @@ object IntentParams {
          */
         fun pack(
             orderNo: String,
+            orderType: String,
+            orderSubType: Int,
             timeRemaining: String,
             price: String,
             orderItems: List<OrderItem>? = null
         ): Bundle =
             Bundle().apply {
-                putAll(OrderParams.pack(orderNo))
+                putAll(
+                    OrderParams.pack(
+                        orderNo,
+                        "300" == orderType || 106 == orderSubType
+                    )
+                )
                 putString(TimeRemaining, timeRemaining)
                 putString(Price, price)
                 orderItems?.let {

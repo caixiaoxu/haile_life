@@ -243,6 +243,7 @@ class AppointmentOrderVerifyFragment :
         }
         mBinding.btnAppointmentOrderVerify.setOnClickListener {
             mViewModel.verifyDeviceCode(mActivityViewModel.orderNo) {
+                mBinding.btnAppointmentOrderVerify.isEnabled = false
                 SToast.showToast(requireContext(), "验证成功")
                 Handler(Looper.getMainLooper()).postDelayed({
                     mActivityViewModel.requestData()
