@@ -84,7 +84,7 @@ class OrderExecuteFragment :
             }
         }
 
-        mViewModel.jump.observe(this){
+        mViewModel.jump.observe(this) {
             mActivityViewModel.jump.value = 1
         }
     }
@@ -135,10 +135,19 @@ class OrderExecuteFragment :
                 }
             }
         } else {
+            mViewModel.totalTime = try {
+                mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.unit?.toDouble()
+                    ?.toInt()
+                    ?.let {
+                        it * 60
+                    } ?: 0
+            } catch (e: Exception) {
+                0
+            }
             DateTimeUtils.formatDateFromString(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.finishTime)
                 ?.let {
-                    mViewModel.totalTime = ((it.time - System.currentTimeMillis()) / 1000).toInt()
-                    mViewModel.remainingTime.value = mViewModel.totalTime
+                    val diff = ((it.time - System.currentTimeMillis()) / 1000).toInt()
+                    mViewModel.remainingTime.value = if (diff < 0) 0 else diff
                     mViewModel.checkValidTime()
                 }
         }
