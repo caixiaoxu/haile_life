@@ -97,6 +97,8 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
 
         val inflater = LayoutInflater.from(requireContext())
         builder.deviceDetail.observe(this) { detail ->
+            builder.initData(detail)
+
             mBinding.includeOrderSelectorDeviceStatus.root.visibility(1 != detail.deviceState)
 
             val noAppoint =
@@ -161,7 +163,7 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
         // 时长
         builder.selectDeviceConfig.observe(this) {
             mBinding.includeOrderSelectorSpec.setVariable(
-                BR.desc,it.feature
+                BR.desc, it.feature
             )
             mBinding.includeAppointSubmitMinute.clScanOrderConfig.let { cl ->
                 if (cl.childCount > 3) {
@@ -400,37 +402,36 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             } ?: false
         }
 
-        val isDryer: LiveData<Boolean> =
-            deviceDetail.map { DeviceCategory.isDryer(it.categoryCode) }
+        fun initData(detail: DeviceDetailEntity) {
+            val list = detail.items.filter { item -> 1 == item.soldState }
+            //如果没有默认，就显示第一个
+            (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
+                ?: run { list.firstOrNull() })?.let { first ->
+                selectDeviceConfig.value = first
+                changeDeviceConfig(first)
+            }
 
-        val totalPriceVal: MutableLiveData<Double> by lazy {
-            MutableLiveData()
-        }
-
-        init {
-            deviceDetail.value?.let { detail ->
-                val list = detail.items.filter { item -> 1 == item.soldState }
-                //如果没有默认，就显示第一个
-                (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
-                    ?: run { list.firstOrNull() })?.let { first ->
-                    selectDeviceConfig.value = first
-                    changeDeviceConfig(first)
-                }
-
-                if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
-                    // 初始化关联的sku
-                    selectAttachSku = mutableMapOf()
-                    detail.attachItems.forEach { item ->
-                        if (item.extAttrDto.items.isNotEmpty()) {
-                            selectAttachSku[item.id] =
-                                item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
-                                    ?.let { default ->
-                                        MutableLiveData(default)
-                                    } ?: MutableLiveData(null)
-                        }
+            if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
+                // 初始化关联的sku
+                selectAttachSku = mutableMapOf()
+                detail.attachItems.forEach { item ->
+                    if (item.extAttrDto.items.isNotEmpty()) {
+                        selectAttachSku[item.id] =
+                            item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
+                                ?.let { default ->
+                                    MutableLiveData(default)
+                                } ?: MutableLiveData(null)
                     }
                 }
             }
+        }
+
+        val isDryer: LiveData<Boolean> = deviceDetail.map {
+                DeviceCategory.isDryer(it.categoryCode)
+            }
+
+        val totalPriceVal: MutableLiveData<Double> by lazy {
+            MutableLiveData()
         }
 
         val modelTitle: String = StringUtils.getString(
