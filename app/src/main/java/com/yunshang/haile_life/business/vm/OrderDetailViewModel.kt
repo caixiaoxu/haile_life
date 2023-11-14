@@ -51,7 +51,7 @@ class OrderDetailViewModel : BaseViewModel() {
     }
 
     val isAppoint: LiveData<Boolean> =
-        orderDetail.map { "300" == it.orderType || 106 == it.orderSubType }
+        orderDetail.map { "300" == it.orderType }
 
     val showContactShop: LiveData<Boolean> = orderDetail.map {
         it?.let { detail ->

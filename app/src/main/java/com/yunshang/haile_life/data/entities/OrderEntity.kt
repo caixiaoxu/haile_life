@@ -86,7 +86,7 @@ data class OrderEntity(
             notifyPropertyChanged(BR.showDetail)
         }
 
-    override fun getMultiType(): Int = if ("300" == orderType || 106 == orderSubType)
+    override fun getMultiType(): Int = if ("300" == orderType)
         when (appointmentState) {
             0, 1, 2 -> 0
             3, 4 -> 2
