@@ -37,9 +37,11 @@ data class NearStorePositionEntity(
 ) : IMultiTypeEntity {
 
     val appointmentNumVal: String
-        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.hasVal()) "${reserveNum}${StringUtils.getString(
+        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.hasVal()) "${reserveNum}${
+            StringUtils.getString(
                 R.string.unit_tai
-            )}" else ""
+            )
+        }" else ""
 
     fun formatDistance(isJoin: Boolean = true): String = distance?.let {
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +
@@ -79,6 +81,13 @@ data class NearStorePositionEntity(
     )
 
     override fun getMultiTypeTxtColors(): IntArray = intArrayOf(
-
+        ContextCompat.getColor(
+            Constants.APP_CONTEXT,
+            R.color.color_black_45
+        ),
+        ContextCompat.getColor(
+            Constants.APP_CONTEXT,
+            R.color.colorPrimary
+        ),
     )
 }
