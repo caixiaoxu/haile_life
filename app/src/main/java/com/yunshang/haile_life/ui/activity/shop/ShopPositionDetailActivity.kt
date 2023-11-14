@@ -40,6 +40,7 @@ import com.yunshang.haile_life.ui.view.IndicatorPagerTitleView
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.dialog.AppointmentOrderSelectorDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 import com.yunshang.haile_life.ui.view.refresh.CommonLoadMoreRecyclerView
 import com.yunshang.haile_life.utils.DialogUtils
@@ -81,11 +82,28 @@ class ShopPositionDetailActivity :
                 if (!checkLogin()) {
                     return@setOnClickListener
                 }
+
                 if (true == item.enableReserve && DeviceCategory.isWashingOrShoes(mViewModel.curDeviceCategory.value?.categoryCode)
                     || DeviceCategory.isDryer(mViewModel.curDeviceCategory.value?.categoryCode)
                 ) {
                     // 请求弹窗信息
                     mViewModel.requestAppointmentInfo(true, item.id) { deviceDetail, stateList ->
+                        deviceDetail.value?.let {detail->
+                            if (detail.deviceErrorCode > 0 || 3 == detail.deviceState) {
+                                Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" })
+                                    .build().show(supportFragmentManager)
+                                return@requestAppointmentInfo
+                            } else if (2 == detail.soldState) {
+                                Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" })
+                                    .build().show(supportFragmentManager)
+                                return@requestAppointmentInfo
+                            } else if (detail.shopClosed) {
+                                Hint3SecondDialog.Builder("门店不在营业时间内,请稍后再试!")
+                                    .build().show(supportFragmentManager)
+                                return@requestAppointmentInfo
+                            }
+                        }
+
                         // 打开预约弹窗
                         selectorDialog = AppointmentOrderSelectorDialog.Builder(
                             deviceDetail,
