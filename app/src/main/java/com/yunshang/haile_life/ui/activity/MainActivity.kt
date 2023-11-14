@@ -93,15 +93,20 @@ class MainActivity :
             mViewModel.requestScanResult(code, supportFragmentManager) { scan, detail, appoint ->
                 if (detail.deviceErrorCode > 0 || 3 == detail.deviceState) {
                     Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" })
-                        .build().show(supportFragmentManager)
+                        .apply {
+                            dialogBgResource = R.drawable.shape_dialog_bg
+                        }.build().show(supportFragmentManager)
                     return@requestScanResult
                 } else if (2 == detail.soldState) {
                     Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" })
-                        .build().show(supportFragmentManager)
+                        .apply {
+                            dialogBgResource = R.drawable.shape_dialog_bg
+                        }.build().show(supportFragmentManager)
                     return@requestScanResult
                 } else if (detail.shopClosed) {
-                    Hint3SecondDialog.Builder("门店不在营业时间内,请稍后再试!")
-                        .build().show(supportFragmentManager)
+                    Hint3SecondDialog.Builder("门店不在营业时间内,请稍后再试!").apply {
+                        dialogBgResource = R.drawable.shape_dialog_bg
+                    }.build().show(supportFragmentManager)
                     return@requestScanResult
                 }
                 if (!appoint?.orderNo.isNullOrEmpty()) {

@@ -88,18 +88,23 @@ class ShopPositionDetailActivity :
                 ) {
                     // 请求弹窗信息
                     mViewModel.requestAppointmentInfo(true, item.id) { deviceDetail, stateList ->
-                        deviceDetail.value?.let {detail->
+                        deviceDetail.value?.let { detail ->
                             if (detail.deviceErrorCode > 0 || 3 == detail.deviceState) {
                                 Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" })
-                                    .build().show(supportFragmentManager)
+                                    .apply {
+                                        dialogBgResource = R.drawable.shape_dialog_bg
+                                    }.build().show(supportFragmentManager)
                                 return@requestAppointmentInfo
                             } else if (2 == detail.soldState) {
                                 Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" })
-                                    .build().show(supportFragmentManager)
+                                    .apply {
+                                        dialogBgResource = R.drawable.shape_dialog_bg
+                                    }.build().show(supportFragmentManager)
                                 return@requestAppointmentInfo
                             } else if (detail.shopClosed) {
-                                Hint3SecondDialog.Builder("门店不在营业时间内,请稍后再试!")
-                                    .build().show(supportFragmentManager)
+                                Hint3SecondDialog.Builder("门店不在营业时间内,请稍后再试!").apply {
+                                    dialogBgResource = R.drawable.shape_dialog_bg
+                                }.build().show(supportFragmentManager)
                                 return@requestAppointmentInfo
                             }
                         }
