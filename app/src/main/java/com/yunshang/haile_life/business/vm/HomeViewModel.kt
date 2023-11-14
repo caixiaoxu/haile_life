@@ -97,8 +97,9 @@ class HomeViewModel : BaseViewModel() {
 
     fun requestData() {
         launch({
-            requestHomeMsg()
+            requestOrderState()
             requestAD()
+            requestHomeMsg()
             requestGoodsRecommendAD()
             requestStoreAD()
             requestStudentRecommendAD()
@@ -111,6 +112,14 @@ class HomeViewModel : BaseViewModel() {
     fun requestHomeMsgAsync() {
         launch({
             requestHomeMsg()
+        }, showLoading = false)
+    }
+
+    /**
+     * 订单状态信息
+     */
+    fun requestHomeOrderStateAsync() {
+        launch({
             requestOrderState()
         }, showLoading = false)
     }

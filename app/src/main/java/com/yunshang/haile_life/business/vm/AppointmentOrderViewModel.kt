@@ -184,7 +184,6 @@ class AppointmentOrderViewModel : BaseViewModel() {
                 )
             )?.let {
                 orderNo = it.orderNo
-                LiveDataBus.post(BusEvents.ORDER_SUBMIT_STATUS, true)
                 ApiRepository.dealApiResult(
                     mOrderRepo.prePay(
                         ApiRepository.createRequestBody(

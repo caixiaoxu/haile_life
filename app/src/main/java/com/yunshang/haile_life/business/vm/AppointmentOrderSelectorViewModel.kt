@@ -3,12 +3,14 @@ package com.yunshang.haile_life.business.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.*
@@ -181,6 +183,7 @@ class AppointmentOrderSelectorViewModel : BaseViewModel() {
                     mOrderRepo.reserveCreate(body)
                 }
             )?.let {
+                LiveDataBus.post(BusEvents.ORDER_SUBMIT_STATUS, true)
                 withContext(Dispatchers.Main) {
                     callback(it)
                 }

@@ -235,6 +235,11 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
 
         LiveDataBus.with(BusEvents.LOGIN_STATUS)?.observe(this) {
             mViewModel.requestHomeMsgAsync()
+            mViewModel.requestHomeOrderStateAsync()
+        }
+
+        LiveDataBus.with(BusEvents.ORDER_SUBMIT_STATUS)?.observe(this) {
+            mViewModel.requestHomeOrderStateAsync()
         }
     }
 
@@ -494,6 +499,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         super.onHiddenChanged(hidden)
         if (!hidden) {
             mViewModel.requestHomeMsgAsync()
+            mViewModel.requestHomeOrderStateAsync()
         }
     }
 
