@@ -140,8 +140,9 @@ class MainActivity :
                         })
                 } else {
                     if (0 == detail.amount) {
-                        Hint3SecondDialog.Builder("设备工作中,请稍后再试!")
-                            .build().show(supportFragmentManager)
+                        Hint3SecondDialog.Builder("设备工作中,请稍后再试!").apply {
+                            dialogBgResource = R.drawable.shape_dialog_bg
+                        }.build().show(supportFragmentManager)
                         return@requestScanResult
                     }
 

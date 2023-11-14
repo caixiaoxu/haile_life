@@ -22,6 +22,7 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 
@@ -165,6 +166,10 @@ class OrderExecuteFragment :
 
     private fun startOrderDevice() {
         mViewModel.startOrderDevice(mActivityViewModel.orderNo) {
+            Hint3SecondDialog.Builder("设备已启动").apply {
+                dialogBgResource = R.drawable.shape_dialog_bg
+            }.build().show(childFragmentManager)
+
             Handler(Looper.getMainLooper()).postDelayed({
                 mActivityViewModel.requestData()
             }, 2000)
