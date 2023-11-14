@@ -15,11 +15,13 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
 import com.yunshang.haile_life.business.vm.OrderExecuteViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
+import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 
@@ -49,6 +51,13 @@ class OrderExecuteFragment :
     override fun layoutId(): Int = R.layout.fragment_order_execute
 
     override fun backBtn(): View = mBinding.barOrderExecuteTitle.getBackBtn()
+
+    override fun onBackListener() {
+        requireActivity().finish()
+        startActivity(Intent(requireContext(), MainActivity::class.java).apply {
+            putExtras(IntentParams.DefaultPageParams.pack(3))
+        })
+    }
 
     override fun initEvent() {
         super.initEvent()

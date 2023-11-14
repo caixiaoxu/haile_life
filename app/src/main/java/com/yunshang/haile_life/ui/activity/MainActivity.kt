@@ -219,6 +219,8 @@ class MainActivity :
     private fun changeDefaultPage(parseDefaultPage: Int) {
         if (0 == parseDefaultPage) {
             mViewModel.checkId.value = R.id.rb_main_tab_home
+        } else if(3 == parseDefaultPage){
+            mViewModel.checkId.value = R.id.rb_main_tab_order
         }
     }
 
