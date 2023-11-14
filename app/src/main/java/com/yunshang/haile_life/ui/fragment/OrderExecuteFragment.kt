@@ -120,8 +120,18 @@ class OrderExecuteFragment :
 //            }.build().show(childFragmentManager)
 //        }
 
+        mViewModel.totalTime = try {
+            mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.unit?.toDouble()
+                ?.toInt()
+                ?.let {
+                    it * 60
+                } ?: 0
+        } catch (e: Exception) {
+            0
+        }
         // 没有启动设备就启动
         if (0 == mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfill) {
+            mViewModel.remainingTime.value = mViewModel.totalTime
             mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.let { firstItem ->
                 val isSpecialDevice = firstItem.spuCode == "04001030"
                 if ((!SPRepository.isNoAppointPrompt && !DeviceCategory.isHair(firstItem.categoryCode))
@@ -135,15 +145,6 @@ class OrderExecuteFragment :
                 }
             }
         } else {
-            mViewModel.totalTime = try {
-                mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.unit?.toDouble()
-                    ?.toInt()
-                    ?.let {
-                        it * 60
-                    } ?: 0
-            } catch (e: Exception) {
-                0
-            }
             DateTimeUtils.formatDateFromString(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.finishTime)
                 ?.let {
                     val diff = ((it.time - System.currentTimeMillis()) / 1000).toInt()

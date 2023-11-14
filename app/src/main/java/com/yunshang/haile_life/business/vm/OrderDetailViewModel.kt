@@ -89,8 +89,9 @@ class OrderDetailViewModel : BaseViewModel() {
             if (true == formScan.value) {
                 false
             } else {
-                if (true == isAppoint.value) 0 == detail.appointmentState || 1 == detail.appointmentState
-                else 100 == detail.state && !DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)
+                detail.state < 1000 && detail.state != 401 && detail.state != 411 && detail.state != 421 && !DeviceCategory.isDrinking(
+                    detail.orderItemList.firstOrNull()?.categoryCode
+                )
             }
         } ?: false
     }
@@ -100,8 +101,7 @@ class OrderDetailViewModel : BaseViewModel() {
             if (true == formScan.value) {
                 false
             } else {
-                if (true == isAppoint.value) false
-                else 1000 == detail.state || 2099 == detail.state
+                1000 <= detail.state
             }
         } ?: false
     }

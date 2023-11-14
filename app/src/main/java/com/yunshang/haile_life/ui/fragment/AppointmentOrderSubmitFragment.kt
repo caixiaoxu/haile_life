@@ -301,12 +301,13 @@ class AppointmentOrderSubmitFragment :
         mBinding.root.setPadding(0, StatusBarUtils.getStatusBarHeight(), 0, 0)
 
         mBinding.btnAppointmentOrderSubmitCancel.setOnClickListener {
-            CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt)).apply {
-                negativeTxt = StringUtils.getString(R.string.no)
-                setPositiveButton(StringUtils.getString(R.string.yes)) {
-                    mActivityViewModel.cancelOrder()
-                }
-            }.build().show(childFragmentManager)
+            CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt))
+                .apply {
+                    negativeTxt = StringUtils.getString(R.string.no)
+                    setPositiveButton(StringUtils.getString(R.string.yes)) {
+                        mActivityViewModel.cancelOrder()
+                    }
+                }.build().show(childFragmentManager)
         }
 
         mBinding.includeAppointSubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
@@ -331,7 +332,9 @@ class AppointmentOrderSubmitFragment :
             }
 
             // 判断是否跳转验证
-            if (false == mActivityViewModel.orderDetails.value?.checkInfo?.enableCheck) {
+            if (false == mActivityViewModel.orderDetails.value?.checkInfo?.enableCheck
+                && !(301 == mActivityViewModel.orderDetails.value?.orderSubType && 50 == mActivityViewModel.orderDetails.value?.state)
+            ) {
                 CommonDialog.Builder("请确保您在设备面前，再进行支付。支付后会立即启动设备").apply {
                     title = StringUtils.getString(R.string.friendly_reminder)
                     negativeTxt = StringUtils.getString(R.string.close)
