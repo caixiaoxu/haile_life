@@ -22,6 +22,7 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -108,9 +109,15 @@ class OrderExecuteFragment :
         }
 
         mBinding.tvOrderExecuteCoerceDevice.setOnClickListener {
-            mViewModel.coerceDevice(requireContext(), mActivityViewModel.orderNo) {
-                mActivityViewModel.requestData()
-            }
+            CommonDialog.Builder("您确定要强制启动该设备？").apply {
+                dialogBgResource = R.drawable.shape_dialog_bg
+                negativeTxt = StringUtils.getString(R.string.cancel)
+                setPositiveButton(StringUtils.getString(R.string.sure)) {
+                    mViewModel.coerceDevice(requireContext(), mActivityViewModel.orderNo) {
+                        mActivityViewModel.requestData()
+                    }
+                }
+            }.build().show(childFragmentManager)
         }
 
         mBinding.tvOrderExecuteContactShop.setOnClickListener {
