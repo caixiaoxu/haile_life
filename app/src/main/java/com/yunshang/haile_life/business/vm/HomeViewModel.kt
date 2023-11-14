@@ -112,7 +112,7 @@ class HomeViewModel : BaseViewModel() {
     fun requestHomeMsgAsync() {
         launch({
             requestHomeMsg()
-        }, showLoading = false)
+        }, {}, showLoading = false)
     }
 
     /**
@@ -121,7 +121,7 @@ class HomeViewModel : BaseViewModel() {
     fun requestHomeOrderStateAsync() {
         launch({
             requestOrderState()
-        }, showLoading = false)
+        }, {}, showLoading = false)
     }
 
     private suspend fun requestOrderState() {

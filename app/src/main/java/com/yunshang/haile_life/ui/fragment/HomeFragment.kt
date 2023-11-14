@@ -237,10 +237,6 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             mViewModel.requestHomeMsgAsync()
             mViewModel.requestHomeOrderStateAsync()
         }
-
-        LiveDataBus.with(BusEvents.ORDER_SUBMIT_STATUS)?.observe(this) {
-            mViewModel.requestHomeOrderStateAsync()
-        }
     }
 
     /**
@@ -272,6 +268,8 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
     override fun onResume() {
         super.onResume()
         isHide = false
+        mViewModel.requestHomeMsgAsync()
+        mViewModel.requestHomeOrderStateAsync()
     }
 
     override fun onPause() {
@@ -493,14 +491,6 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         mViewModel.hasLocationPermission.value =
             SystemPermissionHelper.checkPermissions(requireContext(), permissions)
         mViewModel.requestData()
-    }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        if (!hidden) {
-            mViewModel.requestHomeMsgAsync()
-            mViewModel.requestHomeOrderStateAsync()
-        }
     }
 
     //方法一：自己控制banner的生命周期
