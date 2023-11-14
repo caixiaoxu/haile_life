@@ -18,7 +18,7 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.DiscountCouponEntity
 import com.yunshang.haile_life.databinding.FragmentCouponBinding
 import com.yunshang.haile_life.databinding.ItemDiscountCouponListBinding
-import com.yunshang.haile_life.ui.activity.MainActivity
+import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.setVisibility
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
@@ -65,9 +65,10 @@ class DiscountCouponFragment :
                 }
             }
             mItemBinding?.btnDiscountCouponUse?.setOnClickListener {
-                startActivity(Intent(requireContext(), MainActivity::class.java).apply {
-                    putExtras(IntentParams.DefaultPageParams.pack(0))
-                })
+//                startActivity(Intent(requireContext(), MainActivity::class.java).apply {
+//                    putExtras(IntentParams.DefaultPageParams.pack(0))
+//                })
+                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
             }
         }
     }
