@@ -357,12 +357,12 @@ data class OrderItem(
 
     fun getOrderDeviceUnit(state: Int): String = goodsItemInfoDto?.let {
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState && 50 != state) " X ${goodsItemInfoDto.unit.toRemove0Str()}${unitValue}" else ""}"
-        } else "${goodsItemInfoDto.unit}${unitValue}"
+            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount.toRemove0Str()}${unitValue}${if (1 == volumeVisibleState && 50 != state) " X ${goodsItemInfoDto.unit.toRemove0Str()}${unitValue}" else ""}"
+        } else "${goodsItemInfoDto.unit.toRemove0Str()}${unitValue}"
     } ?: run {
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-            "${originUnitPrice}元/${unitValue}${if (50 != state) " X ${unit}${unitValue}" else ""}"
-        } else "${unit}${unitValue}"
+            "${originUnitPrice}元/${unitValue}${if (50 != state) " X ${unit.toRemove0Str()}${unitValue}" else ""}"
+        } else "${unit.toRemove0Str()}${unitValue}"
     }
 
     fun getOrderDeviceOriginPrice(state: Int): String = if (50 == state) ""
