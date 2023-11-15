@@ -1,5 +1,6 @@
 package com.yunshang.haile_life.ui.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
@@ -20,10 +21,12 @@ import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.AppointmentOrderVerifyViewModel
 import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
 import com.yunshang.haile_life.databinding.*
+import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 
@@ -39,6 +42,13 @@ class AppointmentOrderVerifyFragment :
     override fun layoutId(): Int = R.layout.fragment_appointment_order_verify
 
     override fun backBtn(): View = mBinding.barAppointmentOrderVerifyTitle.getBackBtn()
+
+    override fun onBackListener() {
+        requireActivity().finish()
+        startActivity(Intent(requireContext(), MainActivity::class.java).apply {
+            putExtras(IntentParams.DefaultPageParams.pack(3))
+        })
+    }
 
     override fun initEvent() {
         super.initEvent()

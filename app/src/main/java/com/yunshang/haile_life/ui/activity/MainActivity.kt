@@ -192,8 +192,9 @@ class MainActivity :
             }
             if (null == rechargeCode && null == refundCode) {
                 SToast.showToast(this, R.string.pay_code_error)
-                Hint3SecondDialog.Builder(com.lsy.framelib.utils.StringUtils.getString(R.string.pay_code_error))
-                    .build().show(supportFragmentManager)
+                Hint3SecondDialog.Builder(com.lsy.framelib.utils.StringUtils.getString(R.string.pay_code_error)).apply {
+                    dialogBgResource = R.drawable.shape_dialog_bg
+                }.build().show(supportFragmentManager)
             }
         }
     }

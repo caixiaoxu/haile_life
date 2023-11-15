@@ -1,5 +1,6 @@
 package com.yunshang.haile_life.ui.fragment
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -11,6 +12,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
 import com.yunshang.haile_life.business.vm.AppointmentSuccessViewModel
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.DeviceStateEntity
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
@@ -18,6 +20,7 @@ import com.yunshang.haile_life.databinding.FragmentAppointmentSuccessBinding
 import com.yunshang.haile_life.databinding.IncludeAppointmentDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.databinding.ItemDeviceStatusProgressBinding
+import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 
@@ -33,6 +36,13 @@ class AppointmentSuccessFragment :
     override fun layoutId(): Int = R.layout.fragment_appointment_success
 
     override fun backBtn(): View = mBinding.barAppointmentSuccessTitle.getBackBtn()
+
+    override fun onBackListener() {
+        requireActivity().finish()
+        startActivity(Intent(requireContext(), MainActivity::class.java).apply {
+            putExtras(IntentParams.DefaultPageParams.pack(3))
+        })
+    }
 
     override fun initEvent() {
         super.initEvent()

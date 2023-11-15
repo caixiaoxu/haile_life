@@ -26,6 +26,7 @@ import com.yunshang.haile_life.databinding.FragmentAppointmentOrderSubmitBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
+import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
@@ -62,6 +63,13 @@ class AppointmentOrderSubmitFragment :
     override fun layoutId(): Int = R.layout.fragment_appointment_order_submit
 
     override fun backBtn(): View = mBinding.barAppointSubmitTitle.getBackBtn()
+
+    override fun onBackListener() {
+        requireActivity().finish()
+        startActivity(Intent(requireContext(), MainActivity::class.java).apply {
+            putExtras(IntentParams.DefaultPageParams.pack(3))
+        })
+    }
 
     override fun initEvent() {
         super.initEvent()
