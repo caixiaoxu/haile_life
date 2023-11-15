@@ -37,6 +37,8 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
 
     private var emptyShopDialog: Hint3SecondDialog? = null
 
+    private var curLocationRequest = false
+
     // 权限
     private val requestMultiplePermission =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result: Map<String, Boolean> ->
@@ -48,6 +50,7 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
                 }
             }
             if (isAllow) {
+                curLocationRequest = true
                 mSharedViewModel.requestLocationInfo(this)
             }
         }
@@ -81,8 +84,10 @@ class NearByShopActivity : BaseBusinessActivity<ActivityNearByShopBinding, NearB
     override fun initEvent() {
         super.initEvent()
         mSharedViewModel.mSharedLocation.observe(this) {
-            mViewModel.location = it
-            mBinding.includeIndicatorList.rvIndicatorListList.requestRefresh()
+            if (curLocationRequest) {
+                mViewModel.location = it
+                mBinding.includeIndicatorList.rvIndicatorListList.requestRefresh()
+            }
         }
         mViewModel.curCategoryCode.observe(this) {
             mBinding.includeIndicatorList.rvIndicatorListList.requestRefresh()

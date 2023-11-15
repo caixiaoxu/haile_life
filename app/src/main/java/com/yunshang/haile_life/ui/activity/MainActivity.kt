@@ -119,8 +119,7 @@ class MainActivity :
                             putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo))
                         }
                     )
-                } else if (2 == detail.deviceState && 1 == detail.reserveState
-                    && true == detail.enableReserve
+                } else if (2 == detail.deviceState && true == detail.enableReserve
                     && (DeviceCategory.isWashingOrShoes(detail.categoryCode) || DeviceCategory.isDryer(
                         detail.categoryCode
                     ))
@@ -220,7 +219,7 @@ class MainActivity :
     private fun changeDefaultPage(parseDefaultPage: Int) {
         if (0 == parseDefaultPage) {
             mViewModel.checkId.value = R.id.rb_main_tab_home
-        } else if(3 == parseDefaultPage){
+        } else if (3 == parseDefaultPage) {
             mViewModel.checkId.value = R.id.rb_main_tab_order
         }
     }

@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.data.extend.hasVal
+import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 
 /**
@@ -37,7 +37,7 @@ data class NearStorePositionEntity(
 ) : IMultiTypeEntity {
 
     val appointmentNumVal: String
-        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.hasVal()) "${reserveNum}${
+        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.isGreaterThan0()) "${reserveNum}${
             StringUtils.getString(
                 R.string.unit_tai
             )

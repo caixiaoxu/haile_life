@@ -83,7 +83,7 @@ class ShopPositionDetailActivity :
                     return@setOnClickListener
                 }
 
-                if (true == item.enableReserve && DeviceCategory.isWashingOrShoes(mViewModel.curDeviceCategory.value?.categoryCode)
+                if (DeviceCategory.isWashingOrShoes(mViewModel.curDeviceCategory.value?.categoryCode)
                     || DeviceCategory.isDryer(mViewModel.curDeviceCategory.value?.categoryCode)
                 ) {
                     // 请求弹窗信息

@@ -42,67 +42,74 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_order_selector_title"
             tools:ignore="MissingConstraints" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/ll_order_selector_content"
+        <com.yunshang.haile_life.ui.view.MaxHeightScrollView
+            android:id="@+id/sv_order_selector_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="44dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_selector_title">
+            app:layout_constraintTop_toBottomOf="@id/tv_order_selector_title"
+            app:maxHeight="360dp">
 
-            <include
-                android:id="@+id/include_order_selector_device_status"
-                layout="@layout/include_appointment_device_status"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_order_selector_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_order_selector_title" />
-
-            <View
-                style="@style/DividingStyle"
-                android:layout_marginHorizontal="16dp" />
-
-            <include
-                android:id="@+id/include_order_selector_spec"
-                layout="@layout/item_scan_order_model"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                app:layout_constraintTop_toBottomOf="@id/include_order_selector_device_status"
-                app:modelTitle='@{vm.modelTitle}' />
-
-            <View
-                style="@style/DividingStyle"
-                android:layout_marginHorizontal="16dp" />
-
-            <include
-                android:id="@+id/include_appoint_submit_minute"
-                layout="@layout/item_scan_order_model"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                app:modelTitle="@{@string/use_time}" />
-
-            <View
-                style="@style/DividingStyle"
-                android:layout_marginHorizontal="16dp" />
-
-            <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
-                android:id="@+id/ll_scan_order_configs_attr_sku"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
                 android:orientation="vertical"
-                app:divider="@drawable/divder_efefef"
-                app:itemLayout="@layout/item_scan_order_model"
-                app:showDividers="middle" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                android:paddingBottom="44dp">
+
+                <include
+                    android:id="@+id/include_order_selector_device_status"
+                    layout="@layout/include_appointment_device_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_order_selector_title" />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_marginHorizontal="16dp" />
+
+                <include
+                    android:id="@+id/include_order_selector_spec"
+                    layout="@layout/item_scan_order_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/include_order_selector_device_status"
+                    app:modelTitle='@{vm.modelTitle}' />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_marginHorizontal="16dp" />
+
+                <include
+                    android:id="@+id/include_appoint_submit_minute"
+                    layout="@layout/item_scan_order_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    app:modelTitle="@{@string/use_time}" />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_marginHorizontal="16dp" />
+
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_scan_order_configs_attr_sku"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
+                    android:orientation="vertical"
+                    app:divider="@drawable/divder_efefef"
+                    app:itemLayout="@layout/item_scan_order_model"
+                    app:showDividers="middle" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.yunshang.haile_life.ui.view.MaxHeightScrollView>
 
         <View
             android:id="@+id/view_no_appoint_bottom"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:background="@color/color_appoint_bg"
-            app:layout_constraintTop_toBottomOf="@id/ll_order_selector_content" />
+            app:layout_constraintTop_toBottomOf="@id/sv_order_selector_content" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_appointment_order_selector_not_reason"
@@ -127,7 +134,7 @@
             android:text="@string/check_reason"
             app:layout_constraintBottom_toBottomOf="@id/view_no_appoint_bottom"
             app:layout_constraintEnd_toEndOf="@id/view_no_appoint_bottom"
-            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom"/>
+            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom" />
 
         <View
             android:id="@+id/view_appoint_submit_bottom"
