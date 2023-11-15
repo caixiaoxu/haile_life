@@ -109,7 +109,7 @@
                                 android:paddingHorizontal="6dp"
                                 android:paddingVertical="2dp"
                                 android:text="@{vm.shopDetail.appointmentNumVal}"
-                                app:visibility="@{vm.shopDetail.appointment}"
+                                app:visibility="@{vm.shopDetail.appointment &amp;&amp; 0 == vm.shopDetail.reserveNum}"
                                 tools:background="@drawable/shape_strokeff630e_r4" />
 
                         </com.yunshang.haile_life.ui.view.CustomChildListLinearLayout>

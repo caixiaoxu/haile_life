@@ -33,7 +33,7 @@ data class NearStorePositionEntity(
     val shopId: Int? = null,
     val state: Int? = null,
     val workTime: String? = null,
-    val reserveNum: Int? = null,
+    val reserveNum: Int,
 ) : IMultiTypeEntity {
 
     val appointmentNumVal: String

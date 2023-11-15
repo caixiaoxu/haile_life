@@ -27,7 +27,7 @@ import java.util.*
 data class ShopPositionDetailEntity(
     val address: String,
     val appointment: Boolean,
-    val reserveNum: Int? = null,// 可预约的数据
+    val reserveNum: Int,// 可预约的数据
     val area: String,
     val distance: Double,
     val id: Int,

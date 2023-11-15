@@ -94,7 +94,7 @@
                 android:paddingHorizontal="6dp"
                 android:paddingVertical="2dp"
                 android:text="@{item.appointmentNumVal}"
-                app:visibility="@{1 == item.appointmentState}"
+                app:visibility="@{1 == item.appointmentState &amp;&amp; 0 == item.reserveNum}"
                 tools:text="可预约 2台"
                 android:background="@drawable/shape_strokeff630e_r4" />
 
