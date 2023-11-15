@@ -13,6 +13,7 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.WxPrePayEntity
 import com.yunshang.haile_life.databinding.ActivityAppointmentOrderBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.fragment.AppointmentOrderSubmitFragment
 import com.yunshang.haile_life.ui.fragment.AppointmentOrderVerifyFragment
 import com.yunshang.haile_life.ui.fragment.AppointmentSuccessFragment
@@ -29,6 +30,13 @@ class AppointmentOrderActivity :
     override fun isFullScreen(): Boolean = true
 
     override fun layoutId(): Int = R.layout.activity_appointment_order
+
+    override fun onBackListener() {
+        super.onBackListener()
+        startActivity(Intent(this, MainActivity::class.java).apply {
+            putExtras(IntentParams.DefaultPageParams.pack(3))
+        })
+    }
 
     override fun initIntent() {
         super.initIntent()
