@@ -182,22 +182,7 @@
                         layout="@layout/item_title_value"
                         app:title='@{@string/order_time +"："}'
                         app:value="@{vm.orderDetail.createTime}" />
-
-                    <include
-                        android:id="@+id/include_order_detail_appoint_time"
-                        layout="@layout/item_title_value"
-                        android:visibility="@{vm.isAppoint?View.VISIBLE:View.GONE}"
-                        app:title='@{@string/appoint_time +"："}'
-                        app:value="@{vm.orderDetail.appointmentUsageTime}" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Font_12_black_45"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:text='@{@string/appoint_order_detail_prompt + ((1 == vm.orderDetail.timesOfRestart)?"":@string/appoint_order_detail_prompt2)}'
-                    android:visibility="@{(!vm.isAppoint || vm.formScan)?View.GONE:View.VISIBLE}" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
