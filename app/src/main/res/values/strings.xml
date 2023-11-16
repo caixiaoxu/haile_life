@@ -128,6 +128,7 @@
     <string name="fun_service">功能服务</string>
     <string name="discount_coupon">优惠券</string>
     <string name="online_service">在线客服</string>
+    <string name="device_repairs">设备报修</string>
     <string name="go_recharge">去充值</string>
     <string name="scan_order_wash_hint">温馨提示：请勿将宠物用品、鞋类、易损衣物放入洗衣机清洗。</string>
     <string name="scan_order_dryer_hint">温馨提示：烘干前请检查衣物是不遗留易燃易爆物品。</string>

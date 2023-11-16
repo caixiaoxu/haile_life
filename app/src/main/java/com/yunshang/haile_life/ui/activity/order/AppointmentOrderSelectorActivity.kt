@@ -31,6 +31,7 @@ import com.yunshang.haile_life.databinding.ItemDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.web.WebViewActivity
 
@@ -281,6 +282,11 @@ class AppointmentOrderSelectorActivity :
 
     override fun initView() {
         window.statusBarColor = Color.WHITE
+
+        mBinding.includeScanOrderDeviceInfo.tvDeviceRepairs.setOnClickListener {
+            startActivity(Intent(this, FaultRepairsActivity::class.java))
+        }
+
         mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setOnClickListener {
             mViewModel.isHideDeviceInfo.value = !mViewModel.isHideDeviceInfo.value!!
         }
