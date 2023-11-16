@@ -51,7 +51,7 @@
             android:paddingHorizontal="6dp"
             android:paddingVertical="2dp"
             android:text="@{1 == item.state?@string/idle:2 == item.state?@string/in_use:@string/fault}"
-            android:textColor="@{1 == item.state?@color/secondColorPrimary:@color/color_black_85}"
+            android:textColor="@{1 == item.state?@color/secondColorPrimary:2 == item.state?@color/color_black_85:@color/color_appoint}"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_shop_position_detail_device_name"
