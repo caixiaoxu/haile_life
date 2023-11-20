@@ -31,6 +31,7 @@ object DialogUtils {
         maxNum: Int,
         showTake: Boolean = true,
         showAlbum: Boolean = true,
+        needCrop:Boolean = true,
         callback: (isSuccess: Boolean, result: ArrayList<LocalMedia>?) -> Unit
     ) {
         val list = arrayListOf<SearchSelectParam>()
@@ -49,7 +50,7 @@ object DialogUtils {
                     if (1 == data!!.id) {
                         PictureSelectUtils.takePicture(activity, callback)
                     } else {
-                        PictureSelectUtils.pictureForAlbum(activity, maxNum, callback = callback)
+                        PictureSelectUtils.pictureForAlbum(activity, maxNum, needCrop = needCrop, callback = callback)
                     }
                 }
             }

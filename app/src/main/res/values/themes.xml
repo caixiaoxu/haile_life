@@ -327,6 +327,10 @@
         <item name="android:textColor">@color/color_black_85</item>
     </style>
 
+    <style name="Font_17_black_85_45" parent="Font_17_black_85">
+        <item name="android:textColorHint">@color/color_black_45</item>
+    </style>
+
     <style name="Font_18_04cee5">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorPrimary</item>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="isAdd"
+            type="java.lang.Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.yunshang.haile_life.ui.view.RoundImageView
+            android:id="@+id/iv_fault_repairs_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@mipmap/icon_fault_add_pic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:radius="8dp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_fault_repairs_pic_del"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:visibility="@{!isAdd}"
+            android:backgroundTint="@color/transparent"
+            android:src="@mipmap/icon_fault_repairts_pic_del"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

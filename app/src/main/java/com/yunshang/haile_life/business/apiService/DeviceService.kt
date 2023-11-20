@@ -81,4 +81,16 @@ interface DeviceService {
     @GET("/waterCode/getWaterCodeByUserId")
     suspend fun requestWaterCode(): ResponseWrapper<WaterControlCodeEntity>
 
+    /**
+     * 错误列表接口
+     */
+    @POST("/deviceFix/getTypes/{goodsCategory}")
+    suspend fun requestFaultTypes(@Path("goodsCategory") goodsCategory: String): ResponseWrapper<MutableList<FaultCategoryEntity>>
+
+    /**
+     * 提交错误接口
+     */
+    @POST("/deviceFix/create")
+    suspend fun submitFaultRepairs(@Body body: RequestBody): ResponseWrapper<Any>
+
 }

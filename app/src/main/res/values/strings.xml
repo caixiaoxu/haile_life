@@ -128,7 +128,6 @@
     <string name="fun_service">功能服务</string>
     <string name="discount_coupon">优惠券</string>
     <string name="online_service">在线客服</string>
-    <string name="device_repairs">设备报修</string>
     <string name="go_recharge">去充值</string>
     <string name="scan_order_wash_hint">温馨提示：请勿将宠物用品、鞋类、易损衣物放入洗衣机清洗。</string>
     <string name="scan_order_dryer_hint">温馨提示：烘干前请检查衣物是不遗留易燃易爆物品。</string>
@@ -153,6 +152,14 @@
     <string name="appoint_order_detail_prompt2">\n2、因自身原因超时未使用的订单将无法退款。</string>
     <string name="select_model">选择模式</string>
     <string name="cancel_appoint_order_prompt">是否取消订单？</string>
+
+    <string name="device_repairs">设备报修</string>
+    <string name="device_info">设备信息</string>
+    <string name="device_info_hint">请扫描设备上的二维码</string>
+    <string name="device_type">设备类型</string>
+    <string name="fault_type">故障类型</string>
+    <string name="fault_desc">故障描述</string>
+    <string name="fault_desc_hint">请填写具体故障表现。</string>
 
     <string name="device_cur_status">设备当前状态</string>
     <string name="mine_order_status">我的订单状态</string>
