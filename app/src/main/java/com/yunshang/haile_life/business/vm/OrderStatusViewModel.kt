@@ -32,7 +32,7 @@ import kotlinx.coroutines.withContext
  * <author> <time> <version> <desc>
  * 作者姓名 修改时间 版本号 描述
  */
-class AppointmentOrderViewModel : BaseViewModel() {
+class OrderStatusViewModel : BaseViewModel() {
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mCapitalRepo = ApiRepository.apiClient(CapitalService::class.java)

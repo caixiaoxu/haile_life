@@ -10,5 +10,5 @@
         android:id="@+id/fl_appointment_order_control"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.activity.order.AppointmentOrderActivity"/>
+        tools:context=".ui.activity.order.OrderStatusActivity"/>
 </layout>

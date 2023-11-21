@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.DeviceSelfCleaningViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_appointment_success"
+        android:orientation="vertical"
+        tools:context=".ui.activity.order.DeviceSelfCleaningActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_order_execute_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/device_running" />
+
+        <com.yunshang.haile_life.ui.view.refresh.CommonRefreshView
+            android:id="@+id/refresh_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:paddingHorizontal="16dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_appointment_order_verify_status"
+                        style="@style/Font_24_black_85_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@{vm.countDownTime}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/bar_appointment_order_verify_title"
+                        tools:text="待启动，剩余 02:55" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_appointment_order_verify_prompt"
+                        style="@style/Font_12_72333333"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/order_device_self_cleaning_prompt1" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_sffffff_r8"
+                        android:layout_marginTop="20dp"
+                        android:paddingHorizontal="42dp"
+                        android:paddingTop="45dp"
+                        android:paddingBottom="28dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_device_self_cleaning_main"
+                            android:layout_width="144dp"
+                            android:layout_height="144dp"
+                            android:src="@mipmap/icon_device_self_cleaning_main"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="12dp"
+                            android:src="@mipmap/icon_device_self_cleaning_run"
+                            app:layout_constraintEnd_toEndOf="@id/iv_device_self_cleaning_main"
+                            app:layout_constraintTop_toTopOf="@id/iv_device_self_cleaning_main" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_device_self_cleaning_status"
+                            style="@style/Font_20_black_85_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/self_cleaning_run"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_device_self_cleaning_main" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_device_self_cleaning_time_prompt"
+                            style="@style/Font_20_black_85_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/predict_remnant"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_device_self_cleaning_status" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_device_self_cleaning_prompt"
+                            style="@style/Font_14_black_45"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:gravity="center"
+                            android:text="@string/order_device_self_cleaning_prompt2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_device_self_cleaning_time_prompt" />
+
+                        <com.lsy.framelib.ui.weight.SingleTapButton
+                            android:id="@+id/btn_device_self_cleaning_start"
+                            style="@style/CommonMatchBtnStyle1"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginTop="36dp"
+                            android:enabled="false"
+                            android:text="@string/start_washing"
+                            app:layout_constraintTop_toBottomOf="@id/tv_device_self_cleaning_prompt" />
+
+                        <com.lsy.framelib.ui.weight.SingleTapTextView
+                            android:id="@+id/tv_device_self_cleaning_coerce_device"
+                            style="@style/font_14_04D1E5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:paddingHorizontal="19dp"
+                            android:text="@string/coerce_device"
+                            app:layout_constraintEnd_toStartOf="@id/tv_device_self_cleaning_contact_shop"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/btn_device_self_cleaning_start" />
+
+                        <com.lsy.framelib.ui.weight.SingleTapTextView
+                            android:id="@+id/tv_device_self_cleaning_contact_shop"
+                            style="@style/font_14_04D1E5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="19dp"
+                            android:text="@string/contact_shop"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tv_device_self_cleaning_coerce_device"
+                            app:layout_constraintTop_toTopOf="@id/tv_device_self_cleaning_coerce_device" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:background="@color/color_cccccc"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_device_self_cleaning_contact_shop"
+                            app:layout_constraintStart_toStartOf="@id/tv_device_self_cleaning_contact_shop"
+                            app:layout_constraintTop_toTopOf="@id/tv_device_self_cleaning_contact_shop" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <include
+                        android:id="@+id/include_order_info"
+                        layout="@layout/include_order_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:order="@{vm.orderDetails}"
+                        app:showState="@{true}" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+        </com.yunshang.haile_life.ui.view.refresh.CommonRefreshView>
+    </LinearLayout>
+</layout>

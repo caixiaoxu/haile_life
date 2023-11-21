@@ -15,7 +15,7 @@ import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
-import com.yunshang.haile_life.business.vm.AppointmentOrderSelectorViewModel
+import com.yunshang.haile_life.business.vm.OrderSelectorViewModel
 import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
@@ -26,7 +26,7 @@ import com.yunshang.haile_life.data.entities.DeviceDetailEntity
 import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
 import com.yunshang.haile_life.data.entities.DeviceStateEntity
 import com.yunshang.haile_life.data.entities.ExtAttrDtoItem
-import com.yunshang.haile_life.databinding.ActivityAppointmentOrderSelectorBinding
+import com.yunshang.haile_life.databinding.ActivityOrderSelectorBinding
 import com.yunshang.haile_life.databinding.ItemDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
@@ -34,16 +34,16 @@ import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.web.WebViewActivity
 
-class AppointmentOrderSelectorActivity :
-    BaseBusinessActivity<ActivityAppointmentOrderSelectorBinding, AppointmentOrderSelectorViewModel>(
-        AppointmentOrderSelectorViewModel::class.java, BR.vm
+class OrderSelectorActivity :
+    BaseBusinessActivity<ActivityOrderSelectorBinding, OrderSelectorViewModel>(
+        OrderSelectorViewModel::class.java, BR.vm
     ) {
 
     override fun activityTag(): String = ActivityTag.TAG_ORDER_PAY
 
-    override fun layoutId(): Int = R.layout.activity_appointment_order_selector
+    override fun layoutId(): Int = R.layout.activity_order_selector
 
-    override fun backBtn(): View = mBinding.barAppointSelectorTitle.getBackBtn()
+    override fun backBtn(): View = mBinding.barSelectorTitle.getBackBtn()
 
     override fun initIntent() {
         super.initIntent()
@@ -55,7 +55,7 @@ class AppointmentOrderSelectorActivity :
 
         mViewModel.isHideDeviceInfo.observe(this) {
             ContextCompat.getDrawable(
-                this@AppointmentOrderSelectorActivity,
+                this@OrderSelectorActivity,
                 if (it) R.mipmap.icon_info_open else R.mipmap.icon_info_hide
             )?.let { draw ->
                 mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setImageDrawable(
@@ -67,7 +67,7 @@ class AppointmentOrderSelectorActivity :
         // 进度状态
         mViewModel.stateList.observe(this) { stateList ->
             val size = stateList?.let { it.size - 1 } ?: 0
-            mBinding.includeAppointmentDeviceStatus.includeAppointmentDeviceStatusProgress.llDeviceStateProgress.buildChild<ItemDeviceStatusProgressBinding, DeviceStateEntity>(
+            mBinding.includeDeviceStatus.includeAppointmentDeviceStatusProgress.llDeviceStateProgress.buildChild<ItemDeviceStatusProgressBinding, DeviceStateEntity>(
                 stateList,
                 LinearLayoutCompat.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -84,14 +84,14 @@ class AppointmentOrderSelectorActivity :
             }
         }
 
-        val inflater = LayoutInflater.from(this@AppointmentOrderSelectorActivity)
+        val inflater = LayoutInflater.from(this@OrderSelectorActivity)
 
         // 模式和关联
         mViewModel.deviceDetail.observe(this) { detail ->
-            mBinding.includeAppointmentDeviceStatus.root.visibility(1 != detail.deviceState)
+            mBinding.includeDeviceStatus.root.visibility(1 != detail.deviceState)
             detail.items.filter { item -> 1 == item.soldState }.let { configs ->
                 if (configs.isNotEmpty()) {
-                    mBinding.includeAppointSelectorSpec.clScanOrderConfig.let { cl ->
+                    mBinding.includeSelectorSpec.clScanOrderConfig.let { cl ->
                         if (cl.childCount > 3) {
                             cl.removeViews(3, cl.childCount - 3)
                         }
@@ -124,8 +124,8 @@ class AppointmentOrderSelectorActivity :
                         }
                         // 设置id
                         val idList = IntArray(configs.size) { it + 1 }
-                        mBinding.includeAppointSelectorSpec.flowScanOrderItem.referencedIds = idList
-                        mBinding.includeAppointSelectorSpec.flowScanOrderItem.visibility =
+                        mBinding.includeSelectorSpec.flowScanOrderItem.referencedIds = idList
+                        mBinding.includeSelectorSpec.flowScanOrderItem.visibility =
                             View.VISIBLE
                     }
                 }
@@ -142,7 +142,7 @@ class AppointmentOrderSelectorActivity :
 
         // 时长
         mViewModel.selectDeviceConfig.observe(this) {
-            mBinding.includeAppointSelectorMinute.clScanOrderConfig.let { cl ->
+            mBinding.includeSelectorMinute.clScanOrderConfig.let { cl ->
                 if (cl.childCount > 3) {
                     cl.removeViews(3, cl.childCount - 3)
                 }
@@ -178,8 +178,8 @@ class AppointmentOrderSelectorActivity :
                     }
                     // 设置id
                     val idList = IntArray(list.size) { it + 1 }
-                    mBinding.includeAppointSelectorMinute.flowScanOrderItem.referencedIds = idList
-                    mBinding.includeAppointSelectorMinute.flowScanOrderItem.visibility =
+                    mBinding.includeSelectorMinute.flowScanOrderItem.referencedIds = idList
+                    mBinding.includeSelectorMinute.flowScanOrderItem.visibility =
                         View.VISIBLE
                 }
             }
@@ -208,7 +208,7 @@ class AppointmentOrderSelectorActivity :
     private fun buildAttachSkuView(detail: DeviceDetailEntity) {
         if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
             val attachList = detail.attachItems.filter { item -> 1 == item.soldState }
-            mBinding.llAppointSelectorConfigsAttrSku.buildChild<ItemScanOrderModelBinding, DeviceDetailItemEntity>(
+            mBinding.llSelectorConfigsAttrSku.buildChild<ItemScanOrderModelBinding, DeviceDetailItemEntity>(
                 if (detail.isShowDispenser)
                     attachList
                 else
@@ -284,14 +284,14 @@ class AppointmentOrderSelectorActivity :
         mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setOnClickListener {
             mViewModel.isHideDeviceInfo.value = !mViewModel.isHideDeviceInfo.value!!
         }
-        val dimens12 = DimensionUtils.dip2px(this@AppointmentOrderSelectorActivity, 12f)
-        mBinding.includeAppointmentDeviceStatus.root.setBackgroundColor(Color.WHITE)
-        mBinding.includeAppointSelectorSpec.root.setBackgroundResource(R.drawable.shape_bottom_stroke_dividing_mlr16)
-        mBinding.includeAppointSelectorSpec.root.let { specView ->
+        val dimens12 = DimensionUtils.dip2px(this@OrderSelectorActivity, 12f)
+        mBinding.includeDeviceStatus.root.setBackgroundColor(Color.WHITE)
+        mBinding.includeSelectorSpec.root.setBackgroundResource(R.drawable.shape_bottom_stroke_dividing_mlr16)
+        mBinding.includeSelectorSpec.root.let { specView ->
             specView.setPadding(dimens12, specView.paddingTop, dimens12, specView.paddingBottom)
         }
-        mBinding.includeAppointSelectorMinute.root.setBackgroundColor(Color.WHITE)
-        mBinding.includeAppointSelectorMinute.root.let { minuteView ->
+        mBinding.includeSelectorMinute.root.setBackgroundColor(Color.WHITE)
+        mBinding.includeSelectorMinute.root.let { minuteView ->
             minuteView.setPadding(
                 dimens12,
                 minuteView.paddingTop,
@@ -300,14 +300,14 @@ class AppointmentOrderSelectorActivity :
             )
         }
 
-        mBinding.includeAppointmentDeviceStatus.tvDeviceStatusRefresh.setOnClickListener {
+        mBinding.includeDeviceStatus.tvDeviceStatusRefresh.setOnClickListener {
             mViewModel.requestData()
         }
 
-        mBinding.btnAppointSelectorNotReason.setOnClickListener {
+        mBinding.btnSelectorNotReason.setOnClickListener {
             startActivity(
                 Intent(
-                    this@AppointmentOrderSelectorActivity,
+                    this@OrderSelectorActivity,
                     WebViewActivity::class.java
                 ).apply {
                     putExtras(
@@ -318,7 +318,7 @@ class AppointmentOrderSelectorActivity :
                 })
         }
 
-        mBinding.viewAppointSelectorSelected.setOnClickListener {
+        mBinding.viewSelectorSelected.setOnClickListener {
             if (null == mViewModel.selectDeviceConfig.value) {
                 SToast.showToast(this, "请先选择设备模式")
                 return@setOnClickListener
@@ -361,7 +361,7 @@ class AppointmentOrderSelectorActivity :
                     startActivity(
                         Intent(
                             this,
-                            AppointmentOrderActivity::class.java
+                            OrderStatusActivity::class.java
                         ).apply {
                             putExtras(IntentParams.OrderParams.pack(orderNo))
                         }

@@ -12,7 +12,7 @@ import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
+import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.business.vm.OrderExecuteViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
@@ -33,7 +33,7 @@ class OrderExecuteFragment :
     ) {
 
     val mActivityViewModel by lazy {
-        getActivityViewModelProvider(requireActivity())[AppointmentOrderViewModel::class.java]
+        getActivityViewModelProvider(requireActivity())[OrderStatusViewModel::class.java]
     }
 
     // 拨打电话权限

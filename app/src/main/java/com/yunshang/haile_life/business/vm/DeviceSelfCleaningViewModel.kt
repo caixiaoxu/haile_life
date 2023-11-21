@@ -10,28 +10,47 @@ import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.extend.isGreaterThan0
-import com.yunshang.haile_life.utils.string.StringUtils
+import com.yunshang.haile_life.data.model.ApiRepository
 import java.util.*
 
 /**
  * Title :
  * Author: Lsy
- * Date: 2023/7/3 11:47
+ * Date: 2023/11/21 17:29
  * Version: 1
  * Description:
  * History:
  * <author> <time> <version> <desc>
  * 作者姓名 修改时间 版本号 描述
  */
-class AppointmentOrderSubmitViewModel : BaseViewModel() {
+class DeviceSelfCleaningViewModel : BaseViewModel() {
+    private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
+    var orderNo: String? = null
 
-    val isDryer: MutableLiveData<Boolean> by lazy { MutableLiveData() }
+    val orderDetails: MutableLiveData<OrderEntity> by lazy { MutableLiveData() }
+
+    fun requestData() {
+        if (orderNo.isNullOrEmpty()) return
+
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.requestOrderDetail(orderNo!!)
+            )?.let {
+                orderDetails.postValue(it)
+            }
+        })
+    }
+
 
     val inValidOrder: MutableLiveData<Boolean> = MutableLiveData(false)
     var validTime: Int? = null
-    val countDownTime: MutableLiveData<SpannableString> by lazy { MutableLiveData() }
+    val countDownTime: MutableLiveData<SpannableString> by lazy {
+        MutableLiveData()
+    }
 
     // 计时器
     var timer: Timer? = null
@@ -40,7 +59,6 @@ class AppointmentOrderSubmitViewModel : BaseViewModel() {
      * 检测有效时间
      */
     fun checkValidTime() {
-        if (!validTime.isGreaterThan0()) return
         timer?.cancel()
         timer = Timer()
         timer?.schedule(object : TimerTask() {
@@ -50,10 +68,10 @@ class AppointmentOrderSubmitViewModel : BaseViewModel() {
                     val time = "%02d:%02d".format(validTime!! / 60, validTime!! % 60)
                     val content =
                         com.lsy.framelib.utils.StringUtils.getString(
-                            R.string.page_time_prefix
+                            R.string.self_cleaning_prefix
                         ) + " " + time
                     countDownTime.postValue(
-                        StringUtils.formatMultiStyleStr(
+                        com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
                             content,
                             arrayOf(
                                 ForegroundColorSpan(
@@ -69,7 +87,7 @@ class AppointmentOrderSubmitViewModel : BaseViewModel() {
                     )
                     validTime = validTime!! - 1
                 } else {
-                    countDownTime.postValue(SpannableString("支付，已超时"))
+                    countDownTime.postValue(SpannableString("启动，已超时"))
                     inValidOrder.postValue(true)
                     jump.postValue(1)
                     timer?.cancel()

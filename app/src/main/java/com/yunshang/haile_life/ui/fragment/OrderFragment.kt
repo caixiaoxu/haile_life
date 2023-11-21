@@ -21,7 +21,7 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.databinding.FragmentOrderBinding
 import com.yunshang.haile_life.databinding.ItemMineOrderBinding
-import com.yunshang.haile_life.ui.activity.order.AppointmentOrderActivity
+import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
@@ -77,7 +77,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
         startActivity(
             Intent(
                 requireContext(),
-                AppointmentOrderActivity::class.java
+                OrderStatusActivity::class.java
             ).apply {
                 putExtras(IntentParams.OrderParams.pack(orderNo))
             }

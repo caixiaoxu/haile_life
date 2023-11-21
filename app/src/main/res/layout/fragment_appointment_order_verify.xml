@@ -7,7 +7,7 @@
 
         <variable
             name="avm"
-            type="com.yunshang.haile_life.business.vm.AppointmentOrderViewModel" />
+            type="com.yunshang.haile_life.business.vm.OrderStatusViewModel" />
 
         <variable
             name="vm"

@@ -16,13 +16,13 @@ import com.lsy.framelib.utils.StatusBarUtils
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.business.vm.AppointmentOrderSubmitViewModel
-import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
+import com.yunshang.haile_life.business.vm.OrderPaySubmitViewModel
+import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
-import com.yunshang.haile_life.databinding.FragmentAppointmentOrderSubmitBinding
+import com.yunshang.haile_life.databinding.FragmentOrderPaySubmitBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
@@ -31,13 +31,13 @@ import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActiv
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 
-class AppointmentOrderSubmitFragment :
-    BaseBusinessFragment<FragmentAppointmentOrderSubmitBinding, AppointmentOrderSubmitViewModel>(
-        AppointmentOrderSubmitViewModel::class.java, BR.vm
+class OrderPaySubmitFragment :
+    BaseBusinessFragment<FragmentOrderPaySubmitBinding, OrderPaySubmitViewModel>(
+        OrderPaySubmitViewModel::class.java, BR.vm
     ) {
 
     val mActivityViewModel by lazy {
-        getActivityViewModelProvider(requireActivity())[AppointmentOrderViewModel::class.java]
+        getActivityViewModelProvider(requireActivity())[OrderStatusViewModel::class.java]
     }
 
     // 优惠券选择界面
@@ -60,9 +60,9 @@ class AppointmentOrderSubmitFragment :
             }
         }
 
-    override fun layoutId(): Int = R.layout.fragment_appointment_order_submit
+    override fun layoutId(): Int = R.layout.fragment_order_pay_submit
 
-    override fun backBtn(): View = mBinding.barAppointSubmitTitle.getBackBtn()
+    override fun backBtn(): View = mBinding.barOrderPaySubmitTitle.getBackBtn()
 
     override fun onBackListener() {
         requireActivity().finish()
@@ -97,9 +97,9 @@ class AppointmentOrderSubmitFragment :
                         }
                     }
 
-                val count = mBinding.includeAppointOrderSpecs.llOrderSubmitGood.childCount
+                val count = mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.childCount
                 if (count > 2) {
-                    mBinding.includeAppointOrderSpecs.llOrderSubmitGood.removeViews(0, count - 2)
+                    mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.removeViews(0, count - 2)
                 }
                 val inflater = LayoutInflater.from(requireContext())
                 if (trade.itemList.isNotEmpty()) {
@@ -113,9 +113,9 @@ class AppointmentOrderSubmitFragment :
                         )
                         childGoodBinding.item = good
                         childGoodBinding.isSingle = isSingle
-                        mBinding.includeAppointOrderSpecs.llOrderSubmitGood.addView(
+                        mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.addView(
                             childGoodBinding.root,
-                            (mBinding.includeAppointOrderSpecs.llOrderSubmitGood.childCount - 2),
+                            (mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.childCount - 2),
                             ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -163,9 +163,9 @@ class AppointmentOrderSubmitFragment :
                             childDispenserGoodBinding.includeOrderSubmitGoodDiscount.root.visibility =
                                 View.GONE
                         }
-                        mBinding.includeAppointOrderSpecs.llOrderSubmitGood.addView(
+                        mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.addView(
                             childDispenserGoodBinding.root,
-                            (mBinding.includeAppointOrderSpecs.llOrderSubmitGood.childCount - 2),
+                            (mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.childCount - 2),
                             ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -175,8 +175,8 @@ class AppointmentOrderSubmitFragment :
                 }
 
                 if (trade.promotionList.isNotEmpty()) {
-                    if (mBinding.includeAppointOrderSpecs.llOrderGoodDiscounts.childCount > 0) {
-                        mBinding.includeAppointOrderSpecs.llOrderGoodDiscounts.removeAllViews()
+                    if (mBinding.includeOrderPaySubmitSpecs.llOrderGoodDiscounts.childCount > 0) {
+                        mBinding.includeOrderPaySubmitSpecs.llOrderGoodDiscounts.removeAllViews()
                     }
                     for (promotion in trade.promotionList.filter { item -> item.available }) {
                         val childBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodItemBinding>(
@@ -266,15 +266,16 @@ class AppointmentOrderSubmitFragment :
                             childBinding.endDraw = 0
                         }
 
-                        mBinding.includeAppointOrderSpecs.llOrderGoodDiscounts.addView(
+                        mBinding.includeOrderPaySubmitSpecs.llOrderGoodDiscounts.addView(
                             childBinding.root,
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT
                         )
                     }
-                    mBinding.includeAppointOrderSpecs.llOrderGoodDiscounts.visibility = View.VISIBLE
+                    mBinding.includeOrderPaySubmitSpecs.llOrderGoodDiscounts.visibility =
+                        View.VISIBLE
                 } else {
-                    mBinding.includeAppointOrderSpecs.llOrderGoodDiscounts.visibility = View.GONE
+                    mBinding.includeOrderPaySubmitSpecs.llOrderGoodDiscounts.visibility = View.GONE
                 }
 
                 changePayWay()
@@ -285,7 +286,7 @@ class AppointmentOrderSubmitFragment :
             try {
                 mActivityViewModel.tradePreview.value?.realPrice?.toDouble()?.let { price ->
                     if (it.amount.toDouble() < price) {
-                        mBinding.includeAppointSubmitPayWay.rbOrderSubmitBalancePayWay.text =
+                        mBinding.includeOrderPaySubmitPayWay.rbOrderSubmitBalancePayWay.text =
                             com.yunshang.haile_life.utils.string.StringUtils.formatBalancePayStyleStr(
                                 requireContext()
                             )
@@ -308,7 +309,7 @@ class AppointmentOrderSubmitFragment :
         mBinding.avm = mActivityViewModel
         mBinding.root.setPadding(0, StatusBarUtils.getStatusBarHeight(), 0, 0)
 
-        mBinding.btnAppointmentOrderSubmitCancel.setOnClickListener {
+        mBinding.btnOrderPaySubmitCancel.setOnClickListener {
             CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt))
                 .apply {
                     negativeTxt = StringUtils.getString(R.string.no)
@@ -318,11 +319,11 @@ class AppointmentOrderSubmitFragment :
                 }.build().show(childFragmentManager)
         }
 
-        mBinding.includeAppointSubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
+        mBinding.includeOrderPaySubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
             changePayWay()
         }
 
-        mBinding.btnAppointSubmitPay.setOnClickListener {
+        mBinding.btnOrderPaySubmitPay.setOnClickListener {
             if (-1 == mActivityViewModel.payMethod) {
                 SToast.showToast(requireContext(), "请选择支付方式")
                 return@setOnClickListener
@@ -374,7 +375,7 @@ class AppointmentOrderSubmitFragment :
     private fun changePayWay() {
         mActivityViewModel.tradePreview.value?.let {
             mActivityViewModel.payMethod =
-                if (it.isZero()) 1001 else when (mBinding.includeAppointSubmitPayWay.rgOrderSubmitPayWay.checkedRadioButtonId) {
+                if (it.isZero()) 1001 else when (mBinding.includeOrderPaySubmitPayWay.rgOrderSubmitPayWay.checkedRadioButtonId) {
                     R.id.rb_order_submit_balance_pay_way -> 1001
                     R.id.rb_order_submit_alipay_pay_way -> 103
                     R.id.rb_order_submit_wechat_pay_way -> 203

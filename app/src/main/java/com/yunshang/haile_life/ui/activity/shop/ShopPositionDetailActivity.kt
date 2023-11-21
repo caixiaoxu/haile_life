@@ -35,7 +35,7 @@ import com.yunshang.haile_life.databinding.ItemShopPositionDetailFloorBinding
 import com.yunshang.haile_life.databinding.ItemShopPositionDetailTagsBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
-import com.yunshang.haile_life.ui.activity.order.AppointmentOrderActivity
+import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.view.IndicatorPagerTitleView
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.dialog.AppointmentOrderSelectorDialog
@@ -120,7 +120,7 @@ class ShopPositionDetailActivity :
                                     startActivity(
                                         Intent(
                                             this@ShopPositionDetailActivity,
-                                            AppointmentOrderActivity::class.java
+                                            OrderStatusActivity::class.java
                                         ).apply {
                                             putExtras(IntentParams.OrderParams.pack(orderNo))
                                         }

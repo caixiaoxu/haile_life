@@ -29,7 +29,7 @@ import java.math.BigDecimal
  * <author> <time> <version> <desc>
  * 作者姓名 修改时间 版本号 描述
  */
-class AppointmentOrderSelectorViewModel : BaseViewModel() {
+class OrderSelectorViewModel : BaseViewModel() {
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
     var deviceId: Int = -1

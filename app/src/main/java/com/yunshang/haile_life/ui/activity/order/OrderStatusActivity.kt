@@ -7,29 +7,29 @@ import com.lsy.framelib.utils.AppManager
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
-import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
+import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.WxPrePayEntity
-import com.yunshang.haile_life.databinding.ActivityAppointmentOrderBinding
+import com.yunshang.haile_life.databinding.ActivityOrderStatusBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.MainActivity
-import com.yunshang.haile_life.ui.fragment.AppointmentOrderSubmitFragment
+import com.yunshang.haile_life.ui.fragment.OrderPaySubmitFragment
 import com.yunshang.haile_life.ui.fragment.AppointmentOrderVerifyFragment
 import com.yunshang.haile_life.ui.fragment.AppointmentSuccessFragment
 import com.yunshang.haile_life.ui.fragment.OrderExecuteFragment
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
-class AppointmentOrderActivity :
-    BaseBusinessActivity<ActivityAppointmentOrderBinding, AppointmentOrderViewModel>(
-        AppointmentOrderViewModel::class.java
+class OrderStatusActivity :
+    BaseBusinessActivity<ActivityOrderStatusBinding, OrderStatusViewModel>(
+        OrderStatusViewModel::class.java
     ) {
 
     override fun activityTag(): String = ActivityTag.TAG_ORDER_PAY
 
     override fun isFullScreen(): Boolean = true
 
-    override fun layoutId(): Int = R.layout.activity_appointment_order
+    override fun layoutId(): Int = R.layout.activity_order_status
 
     override fun onBackListener() {
         super.onBackListener()
@@ -67,7 +67,7 @@ class AppointmentOrderActivity :
                     || (303 == detail.orderSubType && 50 == detail.state && 5 == detail.appointmentState && 2 == detail.checkInfo?.checkState) //后付费
                 ) {
                     // 待支付
-                    showAppointmentPage(AppointmentOrderSubmitFragment())
+                    showAppointmentPage(OrderPaySubmitFragment())
                 } else goToNormalOrderPage(detail.orderNo)
             }
         }
@@ -112,7 +112,7 @@ class AppointmentOrderActivity :
     private fun goToNormalOrderPage(orderNo: String) {
         startActivity(
             Intent(
-                this@AppointmentOrderActivity,
+                this@OrderStatusActivity,
                 OrderDetailActivity::class.java
             ).apply {
                 putExtras(

@@ -30,7 +30,7 @@ import com.yunshang.haile_life.data.entities.DeviceStateEntity
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.device.DeviceNavigationActivity
-import com.yunshang.haile_life.ui.activity.order.AppointmentOrderActivity
+import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.ShopPositionDetailActivity
@@ -387,7 +387,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                         if (stateList.isAppoint) {
                             Intent(
                                 requireContext(),
-                                AppointmentOrderActivity::class.java
+                                OrderStatusActivity::class.java
                             ).apply {
                                 putExtras(IntentParams.OrderParams.pack(stateList.orderNo))
                             }

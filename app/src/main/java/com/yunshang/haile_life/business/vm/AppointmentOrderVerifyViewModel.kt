@@ -89,7 +89,6 @@ class AppointmentOrderVerifyViewModel : BaseViewModel() {
         })
     }
 
-
     val inValidOrder: MutableLiveData<Boolean> = MutableLiveData(false)
     var validTime: Int? = null
     val countDownTime: MutableLiveData<SpannableString> by lazy {

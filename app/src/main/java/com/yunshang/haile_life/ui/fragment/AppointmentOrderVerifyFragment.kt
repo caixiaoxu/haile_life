@@ -19,7 +19,7 @@ import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.AppointmentOrderVerifyViewModel
-import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
+import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderItem
@@ -36,7 +36,7 @@ class AppointmentOrderVerifyFragment :
     ) {
 
     val mActivityViewModel by lazy {
-        getActivityViewModelProvider(requireActivity())[AppointmentOrderViewModel::class.java]
+        getActivityViewModelProvider(requireActivity())[OrderStatusViewModel::class.java]
     }
 
     override fun layoutId(): Int = R.layout.fragment_appointment_order_verify

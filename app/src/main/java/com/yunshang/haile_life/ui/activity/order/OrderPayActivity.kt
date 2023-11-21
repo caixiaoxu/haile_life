@@ -83,7 +83,7 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
                     startActivity(
                         Intent(
                             this@OrderPayActivity,
-                            AppointmentOrderActivity::class.java
+                            OrderStatusActivity::class.java
                         ).apply {
                             putExtras(IntentParams.OrderParams.pack(orderNo))
                         })

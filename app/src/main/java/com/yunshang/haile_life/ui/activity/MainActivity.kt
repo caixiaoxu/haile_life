@@ -25,8 +25,8 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityMainBinding
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
-import com.yunshang.haile_life.ui.activity.order.AppointmentOrderActivity
-import com.yunshang.haile_life.ui.activity.order.AppointmentOrderSelectorActivity
+import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
+import com.yunshang.haile_life.ui.activity.order.OrderSelectorActivity
 import com.yunshang.haile_life.ui.activity.order.DrinkingScanOrderActivity
 import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
@@ -114,7 +114,7 @@ class MainActivity :
                     startActivity(
                         Intent(
                             this,
-                            AppointmentOrderActivity::class.java
+                            OrderStatusActivity::class.java
                         ).apply {
                             putExtras(IntentParams.OrderParams.pack(appoint!!.orderNo))
                         }
@@ -128,7 +128,7 @@ class MainActivity :
                     startActivity(
                         Intent(
                             this@MainActivity,
-                            AppointmentOrderSelectorActivity::class.java
+                            OrderSelectorActivity::class.java
                         ).apply {
                             putExtras(
                                 IntentParams.DeviceParams.pack(
@@ -145,22 +145,36 @@ class MainActivity :
                         return@requestScanResult
                     }
 
-                    if (DeviceCategory.isDrinkingOrShower(detail.categoryCode))
-                        startActivity(
+                    startActivity(
+                        if (DeviceCategory.isDrinkingOrShower(detail.categoryCode))
                             Intent(
                                 this@MainActivity,
                                 DrinkingScanOrderActivity::class.java
                             ).apply {
                                 putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
-                            })
-                    else
-                        startActivity(
+                            }
+                        else if (DeviceCategory.isWashingOrShoes(detail.categoryCode)
+                            || DeviceCategory.isDryer(detail.categoryCode)
+                        )
+                            Intent(
+                                this@MainActivity,
+                                OrderSelectorActivity::class.java
+                            ).apply {
+                                putExtras(
+                                    IntentParams.DeviceParams.pack(
+                                        detail.categoryCode,
+                                        detail.id
+                                    )
+                                )
+                            }
+                        else
                             Intent(
                                 this@MainActivity,
                                 ScanOrderActivity::class.java
                             ).apply {
                                 putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
-                            })
+                            }
+                    )
                 }
             }
         } ?: run {
@@ -192,9 +206,10 @@ class MainActivity :
             }
             if (null == rechargeCode && null == refundCode) {
                 SToast.showToast(this, R.string.pay_code_error)
-                Hint3SecondDialog.Builder(com.lsy.framelib.utils.StringUtils.getString(R.string.pay_code_error)).apply {
-                    dialogBgResource = R.drawable.shape_dialog_bg
-                }.build().show(supportFragmentManager)
+                Hint3SecondDialog.Builder(com.lsy.framelib.utils.StringUtils.getString(R.string.pay_code_error))
+                    .apply {
+                        dialogBgResource = R.drawable.shape_dialog_bg
+                    }.build().show(supportFragmentManager)
             }
         }
     }
