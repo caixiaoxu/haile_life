@@ -21,7 +21,11 @@ class RoundImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatImageView(context, attrs) {
     private val path = Path()
-    var radius: Float
+    var radius: Float = 0.0f
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.RoundImageView).let { array ->

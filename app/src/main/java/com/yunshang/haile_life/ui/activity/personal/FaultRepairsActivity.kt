@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.king.camera.scan.CameraScan
 import com.lsy.framelib.async.LiveDataBus
@@ -13,10 +14,12 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.FaultRepairsViewModel
+import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.FaultCategoryEntity
 import com.yunshang.haile_life.databinding.ActivityFaultRepairsBinding
 import com.yunshang.haile_life.databinding.ItemFaultRepairsBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.common.PicBrowseActivity
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.loadImage
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
@@ -143,6 +146,15 @@ class FaultRepairsActivity :
                         mViewModel.faultPics.value = picList
                     }
                 }
+                faultBinding.root.setOnClickListener {
+                    startActivity(
+                        Intent(
+                            this@FaultRepairsActivity,
+                            PicBrowseActivity::class.java
+                        ).apply {
+                            putExtras(IntentParams.PicParams.pack(url))
+                        })
+                }
                 faultBinding.root.id = index + 1
                 mBinding.clFaultRepairsPic.addView(faultBinding.root, picItemWH, picItemWH)
             }
@@ -173,14 +185,28 @@ class FaultRepairsActivity :
                 IntArray(it.size + 1) { item -> item + 1 }
         }
 
-        mViewModel.jump.observe(this){
+        mViewModel.jump.observe(this) {
             //报修列表界面
-
+            startActivity(Intent(this@FaultRepairsActivity, FaultRepairsRecordActivity::class.java))
+            finish()
         }
     }
 
     override fun initView() {
         window.statusBarColor = Color.WHITE
+        mBinding.barFaultRepairsTitle.getRightBtn().apply {
+            setText(R.string.repairs_record)
+            textSize = 14f
+            setTextColor(ContextCompat.getColor(this@FaultRepairsActivity, R.color.color_black_85))
+            setOnClickListener {
+                startActivity(
+                    Intent(
+                        this@FaultRepairsActivity,
+                        FaultRepairsRecordActivity::class.java
+                    )
+                )
+            }
+        }
 
         mBinding.llFaultRepairsImei.setOnClickListener {
             if (!ViewUtils.isFastDoubleClick()) {

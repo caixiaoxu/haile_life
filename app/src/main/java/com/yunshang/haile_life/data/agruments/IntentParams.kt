@@ -47,6 +47,22 @@ object IntentParams {
         fun parseId(intent: Intent): Int = intent.getIntExtra(Id, -1)
     }
 
+    object PicParams {
+        private const val Url = "url"
+
+        /**
+         * 包装参数
+         */
+        fun pack(url: String): Bundle = Bundle().apply {
+            putString(Url, url)
+        }
+
+        /**
+         * 解析Url
+         */
+        fun parseUrl(intent: Intent): String? = intent.getStringExtra(Url)
+    }
+
     object BindPhoneParams {
         private const val Code = "code"
         private const val LoginType = "loginType"

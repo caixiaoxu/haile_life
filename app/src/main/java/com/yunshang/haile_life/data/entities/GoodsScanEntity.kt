@@ -15,5 +15,7 @@ data class GoodsScanEntity(
     val categoryName: String,
     val goodsId: Int,
     val shopId: Int,
-    val shopType: Int
+    val shopType: Int,
+    val deviceId: Int? = null,
+    val deviceName: String? = null,
 )

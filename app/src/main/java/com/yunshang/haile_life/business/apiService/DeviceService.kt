@@ -93,4 +93,16 @@ interface DeviceService {
     @POST("/deviceFix/create")
     suspend fun submitFaultRepairs(@Body body: RequestBody): ResponseWrapper<Any>
 
+    /**
+     * 请求报修记录列表接口
+     */
+    @POST("/deviceFix/list")
+    suspend fun requestFaultRepairsRecordList(@Body body: RequestBody): ResponseWrapper<ResponseList<FaultRepairsRecordEntity>>
+
+    /**
+     * 请求报修记录详情接口
+     */
+    @POST("/deviceFix/detail/{id}")
+    suspend fun requestFaultRepairsRecordDetails(@Path("id") id: Int): ResponseWrapper<FaultRepairsRecordEntity>
+
 }

@@ -90,7 +90,7 @@ class FaultRepairsViewModel : BaseViewModel() {
     }
 
     fun submitFaultRepairs(context: Context) {
-        if (null == scanDevice.value?.goodsId) {
+        if (null == scanDevice.value?.deviceId) {
             SToast.showToast(context, "请选择选择设备")
             return
         }
@@ -108,7 +108,7 @@ class FaultRepairsViewModel : BaseViewModel() {
                 mDeviceRepo.submitFaultRepairs(
                     ApiRepository.createRequestBody(
                         hashMapOf(
-                            "deviceId" to scanDevice.value?.goodsId,
+                            "deviceId" to scanDevice.value?.deviceId,
                             "fixSubTypeCode" to faultType.value?.fixTypeCode,
                             "description" to faultDesc.value,
                             "pics" to faultPics.value

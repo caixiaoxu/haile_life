@@ -78,7 +78,7 @@
                             android:gravity="center_vertical"
                             android:hint="@string/device_info_hint"
                             android:paddingEnd="12dp"
-                            android:text="@{vm.scanDevice.categoryName}" />
+                            android:text="@{vm.scanDevice.deviceName}" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -185,6 +185,7 @@
                     android:background="@color/white"
                     android:gravity="top|start"
                     android:hint="@string/fault_desc_hint"
+                    android:maxLength="300"
                     android:paddingHorizontal="16dp"
                     android:paddingTop="16dp"
                     android:text="@={vm.faultDesc}"

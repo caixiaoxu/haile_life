@@ -229,6 +229,11 @@
         <item name="android:textColor">#666666</item>
     </style>
 
+    <style name="Font_14_999999">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#999999</item>
+    </style>
+
     <style name="Font_14_black_65">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/color_black_65</item>
@@ -329,6 +334,14 @@
 
     <style name="Font_17_black_85_45" parent="Font_17_black_85">
         <item name="android:textColorHint">@color/color_black_45</item>
+    </style>
+
+    <style name="Font_17_333333">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
+    <style name="Font_17_333333_bold" parent="Font_17_333333">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Font_18_04cee5">
