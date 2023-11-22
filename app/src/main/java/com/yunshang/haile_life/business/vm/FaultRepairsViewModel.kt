@@ -49,7 +49,8 @@ class FaultRepairsViewModel : BaseViewModel() {
             ApiRepository.dealApiResult(
                 mDeviceRepo.requestGoodsScan(
                     imei = if (StringUtils.isImeiCode(code)) code else null,
-                    n = if (StringUtils.isImeiCode(code)) null else code
+                    n = if (StringUtils.isImeiCode(code)) null else code,
+                    ifThrowException = false
                 )
             )?.let {
                 scanDevice.postValue(it)
@@ -108,6 +109,7 @@ class FaultRepairsViewModel : BaseViewModel() {
                 mDeviceRepo.submitFaultRepairs(
                     ApiRepository.createRequestBody(
                         hashMapOf(
+                            "goodsId" to scanDevice.value?.goodsId,
                             "deviceId" to scanDevice.value?.deviceId,
                             "fixSubTypeCode" to faultType.value?.fixTypeCode,
                             "description" to faultDesc.value,

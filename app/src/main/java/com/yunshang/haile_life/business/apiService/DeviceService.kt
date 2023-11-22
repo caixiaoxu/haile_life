@@ -21,7 +21,8 @@ interface DeviceService {
     suspend fun requestGoodsScan(
         @Query("imei") imei: String? = null,
         @Query("sn") sn: String? = null,
-        @Query("n") n: String? = null
+        @Query("n") n: String? = null,
+        @Query("ifThrowException") ifThrowException:Boolean = true
     ): ResponseWrapper<GoodsScanEntity>
 
     @GET("/goods/normal/items")

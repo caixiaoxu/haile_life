@@ -22,7 +22,9 @@ data class FaultRepairsRecordEntity(
     val pics: List<String>? = null,
     val pointName: String? = null,
     val replyDTOS: List<ReplyDTOS>? = null,
-    val userAccount: String? = null
+    val userAccount: String? = null,
+    val goodsCategoryCode: String? = null,
+    val goodsCategoryName: String? = null
 ) {
     val hasReply: Boolean
         get() = !replyDTOS.isNullOrEmpty()

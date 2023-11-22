@@ -61,7 +61,7 @@
             style="@style/Font_14_999999"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{item.pointName}"
+            android:text="@{item.goodsCategoryName}"
             app:layout_constraintTop_toTopOf="@id/tv_fault_repairs_record_device_category_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_fault_repairs_record_device_category_title"

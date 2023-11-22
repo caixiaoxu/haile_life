@@ -27,6 +27,7 @@ import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.TranslucencePopupWindow
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -200,6 +201,10 @@ class OrderDetailActivity :
 
     override fun initView() {
         mBinding.tvOrderDetailDesc.movementMethod = LinkMovementMethod.getInstance()
+
+        mBinding.tvOrderDetailRepairs.setOnClickListener {
+            startActivity(Intent(this, FaultRepairsActivity::class.java))
+        }
 
         mBinding.tvOrderDetailContact.setOnClickListener {
             DialogUtils.checkPermissionDialog(

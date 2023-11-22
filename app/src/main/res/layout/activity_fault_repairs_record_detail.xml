@@ -83,7 +83,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:text="@{vm.recordDetail.deviceName}"
+                    android:text="@{vm.recordDetail.goodsCategoryName}"
                     app:layout_constraintStart_toEndOf="@id/tv_fault_repairs_record_detail_device_category_title"
                     app:layout_constraintTop_toTopOf="@id/tv_fault_repairs_record_detail_device_category_title"
                     tools:text="洗衣机" />
