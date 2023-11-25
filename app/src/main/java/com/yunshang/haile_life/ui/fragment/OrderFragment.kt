@@ -185,7 +185,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
     }
 
     override fun initView() {
-        val isMain = arguments?.let { IntentParams.OrderListParams.parseIsMain(it) } != false
+        val isMain = arguments?.let { IntentParams.OrderListParams.parseIsMain(it) } ?:false
         if (isMain) {
             (mBinding.viewOrderPadding.layoutParams as ViewGroup.LayoutParams).height =
                 StatusBarUtils.getStatusBarHeight()
