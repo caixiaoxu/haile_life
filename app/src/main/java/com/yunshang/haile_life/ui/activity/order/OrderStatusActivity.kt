@@ -1,6 +1,8 @@
 package com.yunshang.haile_life.ui.activity.order
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.AppManager
@@ -14,10 +16,7 @@ import com.yunshang.haile_life.data.entities.WxPrePayEntity
 import com.yunshang.haile_life.databinding.ActivityOrderStatusBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.MainActivity
-import com.yunshang.haile_life.ui.fragment.OrderPaySubmitFragment
-import com.yunshang.haile_life.ui.fragment.AppointmentOrderVerifyFragment
-import com.yunshang.haile_life.ui.fragment.AppointmentSuccessFragment
-import com.yunshang.haile_life.ui.fragment.OrderExecuteFragment
+import com.yunshang.haile_life.ui.fragment.*
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 class OrderStatusActivity :
@@ -49,20 +48,25 @@ class OrderStatusActivity :
         mViewModel.orderDetails.observe(this) { detail ->
             detail?.let {
                 if (true == detail.redirectWorking) {
-                    // 待执行
-                    showAppointmentPage(OrderExecuteFragment())
+                    if (1 == detail.fulfillInfo?.fulfill) {
+                        // 桶自洁
+                        showAppointmentPage(DeviceSelfCleaningFragment())
+                    } else {
+                        // 待执行
+                        showAppointmentPage(OrderExecuteFragment())
+                    }
                 } else if ((301 == detail.orderSubType && 500 == detail.state && 1 == detail.appointmentState)// 先付费
                     || (303 == detail.orderSubType && 50 == detail.state && 1 == detail.appointmentState)// 后付费
                 ) {
                     // 预约成功
                     showAppointmentPage(AppointmentSuccessFragment())
-                } else if ((106 == detail.orderSubType && 50 == detail.state && 1 == detail.checkInfo?.checkState)// 预定订单
+                } else if (((101 == detail.orderSubType || 106 == detail.orderSubType) && 50 == detail.state && 1 == detail.checkInfo?.checkState)// 预定订单
                     || (301 == detail.orderSubType && 500 == detail.state && 5 == detail.appointmentState && 1 == detail.checkInfo?.checkState) // 先付费
                     || (303 == detail.orderSubType && 50 == detail.state && 5 == detail.appointmentState && 1 == detail.checkInfo?.checkState) // 后付费
                 ) {
                     // 待验证
                     showAppointmentPage(AppointmentOrderVerifyFragment())
-                } else if ((106 == detail.orderSubType && 50 == detail.state && 2 == detail.checkInfo?.checkState) // 预定订单
+                } else if (((101 == detail.orderSubType || 106 == detail.orderSubType) && 50 == detail.state && 2 == detail.checkInfo?.checkState) // 预定订单
                     || (301 == detail.orderSubType && 50 == detail.state)// 先付费
                     || (303 == detail.orderSubType && 50 == detail.state && 5 == detail.appointmentState && 2 == detail.checkInfo?.checkState) //后付费
                 ) {
@@ -98,7 +102,9 @@ class OrderStatusActivity :
 
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS, Boolean::class.java)?.observe(this) {
             if (it) {
-                mViewModel.requestData()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    mViewModel.requestData()
+                }, 1000)
             }
         }
 

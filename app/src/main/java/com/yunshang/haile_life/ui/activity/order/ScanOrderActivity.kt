@@ -209,14 +209,14 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
      */
     private fun buildAttachSkuView(detail: DeviceDetailEntity) {
         if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
-            val attachList = detail.attachItems.filter { item -> 1 == item.soldState }
+            val attachList = detail.attachItems?.filter { item -> 1 == item.soldState }
             mBinding.llScanOrderConfigsAttrSku.buildChild<ItemScanOrderModelBinding, DeviceDetailItemEntity>(
-                if (detail.isShowDispenser)
+                if (detail.hasAttachGoods)
                     attachList
                 else
-                    detail.attachItems.subList(0, 1)
+                    detail.attachItems?.subList(0, 1)
             ) { _, childBinding, data ->
-                if (detail.isShowDispenser) {
+                if (detail.hasAttachGoods) {
                     childBinding.modelTitle = "自动投放${data.name}"
                     childBinding.clScanOrderConfig.let { cl ->
                         if (cl.childCount > 3) {
@@ -275,10 +275,10 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         }
                     }
                 } else {
-                    childBinding.modelTitle = "自动投放" + attachList.joinToString("/") { item ->
+                    childBinding.modelTitle = "自动投放" + attachList?.joinToString("/") { item ->
                         item.name
                     }
-                    childBinding.desc = detail.hideDispenserTips
+                    childBinding.desc = detail.dispenserValue?.tipMessage ?:""
                 }
             }
         }

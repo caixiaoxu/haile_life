@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="avm"
+            type="com.yunshang.haile_life.business.vm.OrderStatusViewModel" />
+
+        <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.DeviceSelfCleaningViewModel" />
     </data>
@@ -15,10 +19,10 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_appointment_success"
         android:orientation="vertical"
-        tools:context=".ui.activity.order.DeviceSelfCleaningActivity">
+        tools:context=".ui.fragment.DeviceSelfCleaningFragment">
 
         <com.yunshang.haile_life.ui.view.CommonTitleActionBar
-            android:id="@+id/bar_order_execute_title"
+            android:id="@+id/bar_order_device_self_cleaning_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
             app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +46,7 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_appointment_order_verify_status"
+                        android:id="@+id/tv_device_self_cleaning_verify_status"
                         style="@style/Font_24_black_85_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -53,7 +57,7 @@
                         tools:text="待启动，剩余 02:55" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_appointment_order_verify_prompt"
+                        android:id="@+id/tv_device_self_cleaning_verify_prompt"
                         style="@style/Font_12_72333333"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -79,6 +83,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_device_self_cleaning_main_run"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"

@@ -153,9 +153,7 @@ class MainActivity :
                             ).apply {
                                 putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
                             }
-                        else if (DeviceCategory.isWashingOrShoes(detail.categoryCode)
-                            || DeviceCategory.isDryer(detail.categoryCode)
-                        )
+                        else
                             Intent(
                                 this@MainActivity,
                                 OrderSelectorActivity::class.java
@@ -167,13 +165,12 @@ class MainActivity :
                                     )
                                 )
                             }
-                        else
-                            Intent(
-                                this@MainActivity,
-                                ScanOrderActivity::class.java
-                            ).apply {
-                                putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
-                            }
+//                            Intent(
+//                                this@MainActivity,
+//                                ScanOrderActivity::class.java
+//                            ).apply {
+//                                putExtras(IntentParams.ScanOrderParams.pack(code, scan, detail))
+//                            }
                     )
                 }
             }

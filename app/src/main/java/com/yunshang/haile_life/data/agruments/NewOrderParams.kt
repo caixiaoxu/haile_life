@@ -10,7 +10,7 @@ package com.yunshang.haile_life.data.agruments
  * <author> <time> <version> <desc>
  * 作者姓名 修改时间 版本号 描述
  */
-data class AppointmentOrderParams(
+data class NewOrderParams(
     val purchaseList: List<Purchase> = arrayListOf(),
     var reserveMethod: Int? = null
 )

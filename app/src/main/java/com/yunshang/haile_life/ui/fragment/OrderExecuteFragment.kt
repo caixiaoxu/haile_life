@@ -2,8 +2,6 @@ package com.yunshang.haile_life.ui.fragment
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import com.lsy.framelib.utils.SToast
@@ -12,19 +10,15 @@ import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.business.vm.OrderExecuteViewModel
-import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
-import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
-import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
-import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 
 class OrderExecuteFragment :
@@ -124,63 +118,20 @@ class OrderExecuteFragment :
             requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
         }
 
-//        mBinding.tvOrderExecuteFinishOrder.setOnClickListener {
-//            CommonDialog.Builder("是否结束订单？").apply {
-//                negativeTxt = StringUtils.getString(R.string.no)
-//                setPositiveButton(StringUtils.getString(R.string.yes)) {
-//                    mViewModel.finishOrder(mActivityViewModel.orderNo) {
-//                        Handler(Looper.getMainLooper()).postDelayed({
-//                            mActivityViewModel.jump.postValue(1)
-//                        }, 1000)
-//                    }
-//                }
-//            }.build().show(childFragmentManager)
-//        }
-
         mViewModel.totalTime = try {
             mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.unit?.toDouble()
                 ?.toInt()
                 ?.let {
                     it * 60
                 } ?: 0
-        } catch (e: Exception) {
-            0
-        }
+        } catch (e: Exception) { 0 }
         // 没有启动设备就启动
-        if (0 == mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfill) {
-            mViewModel.remainingTime.value = mViewModel.totalTime
-            mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.let { firstItem ->
-                val isSpecialDevice = firstItem.spuCode == "04001030"
-                if ((!SPRepository.isNoAppointPrompt && !DeviceCategory.isHair(firstItem.categoryCode))
-                    || isSpecialDevice
-                ) {
-                    ScanOrderConfirmDialog.Builder(firstItem.categoryCode, isSpecialDevice, true) {
-                        startOrderDevice()
-                    }.build().show(childFragmentManager)
-                } else {
-                    startOrderDevice()
-                }
+        DateTimeUtils.formatDateFromString(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.finishTime)
+            ?.let {
+                val diff = ((it.time - System.currentTimeMillis()) / 1000).toInt()
+                mViewModel.remainingTime.value = if (diff < 0) 0 else diff
+                mViewModel.checkValidTime()
             }
-        } else {
-            DateTimeUtils.formatDateFromString(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.finishTime)
-                ?.let {
-                    val diff = ((it.time - System.currentTimeMillis()) / 1000).toInt()
-                    mViewModel.remainingTime.value = if (diff < 0) 0 else diff
-                    mViewModel.checkValidTime()
-                }
-        }
-    }
-
-    private fun startOrderDevice() {
-        mViewModel.startOrderDevice(mActivityViewModel.orderNo) {
-            Hint3SecondDialog.Builder("设备已启动").apply {
-                dialogBgResource = R.drawable.shape_dialog_bg
-            }.build().show(childFragmentManager)
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                mActivityViewModel.requestData()
-            }, 2000)
-        }
     }
 
     override fun initData() {

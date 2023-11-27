@@ -18,7 +18,6 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
-import com.yunshang.haile_life.data.agruments.OrderStatus
 import com.yunshang.haile_life.data.extend.toDefaultDouble
 import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
@@ -77,6 +76,9 @@ data class OrderEntity(
     val redirectWorking: Boolean? = false,
     val fulfillInfo: FulfillInfo? = null
 ) : BaseObservable(), IMultiTypeEntity {
+
+    val isNormalOrder:Boolean
+    get() = state >= 1000 || state in 400 until 500
 
     @Transient
     @get:Bindable
@@ -435,6 +437,15 @@ data class ReserveInfo(
 )
 
 data class FulfillInfo(
-    val fulfill: Int = 0
+    val fulfill: Int = 0,
+    val fulfillingItem: FulfillingItem? = null
+)
+
+data class FulfillingItem(
+    val finishTime: String? = null,
+    val finishTimeTimeStamp: Int? = null,
+    val fulfillId: Int? = null,
+    val selfClean: Boolean? = null,
+    val state: Int? = null
 )
 

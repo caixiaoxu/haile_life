@@ -193,7 +193,7 @@ class ScanOrderViewModel : BaseViewModel() {
                     if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
                         // 初始化关联的sku
                         selectAttachSku = mutableMapOf()
-                        detail.attachItems.forEach { item ->
+                        detail.attachItems?.forEach { item ->
                             if (item.extAttrDto.items.isNotEmpty()) {
                                 selectAttachSku[item.id] =
                                     item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }

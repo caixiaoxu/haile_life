@@ -4,19 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.lsy.framelib.async.LiveDataBus
+import com.lsy.framelib.network.exception.CommonCustomException
 import com.lsy.framelib.ui.base.BaseViewModel
+import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
-import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
+import com.yunshang.haile_life.data.agruments.NewOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.math.BigDecimal
 
 /**
@@ -56,6 +59,10 @@ class OrderSelectorViewModel : BaseViewModel() {
         } ?: false
     }
 
+    val needSelfClean: LiveData<Boolean> = selectDeviceConfig.map {
+        it?.attachMap?.get(DeviceDetailEntity.SelfClean) ?: false
+    }
+
     val isDryer: LiveData<Boolean> = deviceDetail.map {
         DeviceCategory.isDryerOrHair(it.categoryCode)
     }
@@ -74,6 +81,8 @@ class OrderSelectorViewModel : BaseViewModel() {
             it.categoryName.replace("机", "")
         )
     }
+
+    val selectSelfClean: MutableLiveData<Boolean> = MutableLiveData(false)
 
     /**
      * 切换选择功能的配置
@@ -94,6 +103,12 @@ class OrderSelectorViewModel : BaseViewModel() {
                 attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
             }
         }
+        if (true == selectSelfClean.value) {
+            if (!deviceDetail.value?.selfCleanValue?.price.isNullOrEmpty()) {
+                attachTotal =
+                    attachTotal.add(BigDecimal(deviceDetail.value!!.selfCleanValue!!.price))
+            }
+        }
         totalPriceVal.value =
             BigDecimal(selectExtAttr.value?.unitPrice ?: "0.0").add(attachTotal).toDouble()
     }
@@ -111,6 +126,9 @@ class OrderSelectorViewModel : BaseViewModel() {
                     }
                 }
             }
+        }
+        if (true == selectSelfClean.value) {
+            configure += "+" + "筒自洁" + "￥" + deviceDetail.value?.selfCleanValue?.price
         }
         attachConfigureVal.value = if (configure.isNotEmpty()) {
             configure.substring(1)
@@ -156,7 +174,7 @@ class OrderSelectorViewModel : BaseViewModel() {
                 if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
                     // 初始化关联的sku
                     selectAttachSku = mutableMapOf()
-                    detail.attachItems.forEach { item ->
+                    detail.attachItems?.forEach { item ->
                         if (item.extAttrDto.items.isNotEmpty()) {
                             selectAttachSku[item.id] =
                                 item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
@@ -171,22 +189,33 @@ class OrderSelectorViewModel : BaseViewModel() {
     }
 
     fun submitOrder(
-        params: AppointmentOrderParams,
-        callback: (result: OrderSubmitResultEntity) -> Unit
+        params: NewOrderParams,
+        callback: (success: Boolean, result: OrderSubmitResultEntity?) -> Unit
     ) {
         launch({
             val body = ApiRepository.createRequestBody(GsonUtils.any2Json(params))
             ApiRepository.dealApiResult(
                 if (null == params.reserveMethod) {
-                    mOrderRepo.lockOrderCreate(body)
+                    mOrderRepo.scanOrderCreate(body)
                 } else {
                     mOrderRepo.reserveCreate(body)
                 }
             )?.let {
                 LiveDataBus.post(BusEvents.ORDER_SUBMIT_STATUS, true)
                 withContext(Dispatchers.Main) {
-                    callback(it)
+                    callback(true, it)
                 }
+            }
+        }, {
+            withContext(Dispatchers.Main) {
+                // 自己定义的错误显示报错提示
+                if (it is CommonCustomException) {
+                    it.message?.let { it1 -> SToast.showToast(msg = it1) }
+                } else {
+                    SToast.showToast(msg = "网络开小差~")
+                }
+                Timber.d("请求失败或异常$it")
+                callback(false, null)
             }
         })
     }

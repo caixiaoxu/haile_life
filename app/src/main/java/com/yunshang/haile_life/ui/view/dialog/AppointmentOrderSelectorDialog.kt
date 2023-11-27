@@ -20,11 +20,14 @@ import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.Constants
-import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.agruments.NewOrderParams
 import com.yunshang.haile_life.data.agruments.Purchase
-import com.yunshang.haile_life.data.entities.*
+import com.yunshang.haile_life.data.entities.DeviceDetailEntity
+import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
+import com.yunshang.haile_life.data.entities.DeviceStateEntity
+import com.yunshang.haile_life.data.entities.ExtAttrDtoItem
 import com.yunshang.haile_life.databinding.DialogAppointmentOrderSelectorBinding
 import com.yunshang.haile_life.databinding.ItemDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
@@ -211,8 +214,16 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             builder.totalPrice()
         }
 
+        builder.selectSelfClean.observe(this) {
+            builder.totalPrice()
+        }
+
         builder.needAttach.observe(this) {
             mBinding.llScanOrderConfigsAttrSku.visibility(it)
+        }
+
+        builder.needSelfClean.observe(this) {
+            mBinding.llAppointmentOrderSelectorSelfClean.visibility(it)
         }
 
         builder.totalPriceVal.observe(this) {
@@ -266,8 +277,20 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
                     }
                 })
 
+            //筒自洁
+            if (true == builder.selectSelfClean.value) {
+                goods.add(
+                    Purchase(
+                        builder.deviceDetail.value?.selfCleanValue?.selfCleanGoodsId,
+                        builder.deviceDetail.value?.selfCleanValue?.selfCleanItemId,
+                        "1",
+                        1
+                    )
+                )
+            }
+
             // 提交
-            builder.submitCallBack(AppointmentOrderParams(goods).apply {
+            builder.submitCallBack(NewOrderParams(goods).apply {
                 if (2 == builder.deviceDetail.value?.deviceState) {
                     reserveMethod = builder.deviceDetail.value?.reserveMethod
                 }
@@ -299,14 +322,14 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
      */
     private fun buildAttachSkuView(detail: DeviceDetailEntity) {
         if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
-            val attachList = detail.attachItems.filter { item -> 1 == item.soldState }
+            val attachList = detail.attachItems?.filter { item -> 1 == item.soldState }
             mBinding.llScanOrderConfigsAttrSku.buildChild<ItemScanOrderModelBinding, DeviceDetailItemEntity>(
-                if (detail.isShowDispenser)
+                if (detail.hasAttachGoods)
                     attachList
                 else
-                    detail.attachItems.subList(0, 1)
+                    detail.attachItems?.subList(0, 1)
             ) { _, childBinding, data ->
-                if (detail.isShowDispenser) {
+                if (detail.hasAttachGoods) {
                     childBinding.modelTitle = "自动投放${data.name}"
                     childBinding.clScanOrderConfig.let { cl ->
                         if (cl.childCount > 3) {
@@ -361,10 +384,10 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
                         }
                     }
                 } else {
-                    childBinding.modelTitle = "自动投放" + attachList.joinToString("/") { item ->
+                    childBinding.modelTitle = "自动投放" + attachList?.joinToString("/") { item ->
                         item.name
                     }
-                    childBinding.desc = detail.hideDispenserTips
+                    childBinding.desc = detail.dispenserValue?.tipMessage
                 }
             }
         }
@@ -381,7 +404,7 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
         val deviceDetail: MutableLiveData<DeviceDetailEntity>,
         val stateList: MutableLiveData<List<DeviceStateEntity>?>,
         val refreshStateList: () -> Unit,
-        val submitCallBack: (params: AppointmentOrderParams) -> Unit
+        val submitCallBack: (params: NewOrderParams) -> Unit
     ) {
 
         // 选择的设备模式
@@ -402,6 +425,12 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             } ?: false
         }
 
+        val needSelfClean: LiveData<Boolean> = selectDeviceConfig.map {
+            it?.attachMap?.get(DeviceDetailEntity.SelfClean) ?: false
+        }
+
+        val selectSelfClean: MutableLiveData<Boolean> = MutableLiveData(false)
+
         fun initData(detail: DeviceDetailEntity) {
             val list = detail.items.filter { item -> 1 == item.soldState }
             //如果没有默认，就显示第一个
@@ -414,7 +443,7 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
                 // 初始化关联的sku
                 selectAttachSku = mutableMapOf()
-                detail.attachItems.forEach { item ->
+                detail.attachItems?.forEach { item ->
                     if (item.extAttrDto.items.isNotEmpty()) {
                         selectAttachSku[item.id] =
                             item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
@@ -427,8 +456,8 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
         }
 
         val isDryer: LiveData<Boolean> = deviceDetail.map {
-                DeviceCategory.isDryer(it.categoryCode)
-            }
+            DeviceCategory.isDryer(it.categoryCode)
+        }
 
         val totalPriceVal: MutableLiveData<Double> by lazy {
             MutableLiveData()
@@ -456,6 +485,12 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             selectAttachSku.forEach { item ->
                 if (!item.value.value?.unitPrice.isNullOrEmpty()) {
                     attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
+                }
+            }
+            if (true == selectSelfClean.value) {
+                if (!deviceDetail.value?.selfCleanValue?.price.isNullOrEmpty()) {
+                    attachTotal =
+                        attachTotal.add(BigDecimal(deviceDetail.value!!.selfCleanValue!!.price))
                 }
             }
             totalPriceVal.value =

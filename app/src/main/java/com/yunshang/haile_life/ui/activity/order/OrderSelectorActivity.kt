@@ -18,7 +18,7 @@ import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderSelectorViewModel
 import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.Constants
-import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
+import com.yunshang.haile_life.data.agruments.NewOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.Purchase
@@ -190,6 +190,11 @@ class OrderSelectorActivity :
             mViewModel.attachConfigure()
         }
 
+        mViewModel.selectSelfClean.observe(this){
+            mViewModel.totalPrice()
+            mViewModel.attachConfigure()
+        }
+
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS, Boolean::class.java)?.observe(this) {
             if (it) {
                 finish()
@@ -207,14 +212,14 @@ class OrderSelectorActivity :
      */
     private fun buildAttachSkuView(detail: DeviceDetailEntity) {
         if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
-            val attachList = detail.attachItems.filter { item -> 1 == item.soldState }
+            val attachList = detail.attachItems?.filter { item -> 1 == item.soldState }
             mBinding.llSelectorConfigsAttrSku.buildChild<ItemScanOrderModelBinding, DeviceDetailItemEntity>(
-                if (detail.isShowDispenser)
+                if (detail.hasAttachGoods)
                     attachList
                 else
-                    detail.attachItems.subList(0, 1)
+                    detail.attachItems?.subList(0, 1)
             ) { _, childBinding, data ->
-                if (detail.isShowDispenser) {
+                if (detail.hasAttachGoods) {
                     childBinding.modelTitle = "自动投放${data.name}"
                     childBinding.clScanOrderConfig.let { cl ->
                         if (cl.childCount > 3) {
@@ -270,10 +275,10 @@ class OrderSelectorActivity :
                         }
                     }
                 } else {
-                    childBinding.modelTitle = "自动投放" + attachList.joinToString("/") { item ->
+                    childBinding.modelTitle = "自动投放" + attachList?.joinToString("/") { item ->
                         item.name
                     }
-                    childBinding.desc = detail.hideDispenserTips
+                    childBinding.desc = detail.dispenserValue?.tipMessage ?: ""
                 }
             }
         }
@@ -351,22 +356,38 @@ class OrderSelectorActivity :
                     }
                 })
 
+            //筒自洁
+            if (true == mViewModel.selectSelfClean.value) {
+                goods.add(
+                    Purchase(
+                        mViewModel.deviceDetail.value?.selfCleanValue?.selfCleanGoodsId,
+                        mViewModel.deviceDetail.value?.selfCleanValue?.selfCleanItemId,
+                        "1",
+                        1
+                    )
+                )
+            }
+
             // 提交
-            mViewModel.submitOrder(AppointmentOrderParams(goods).apply {
+            mViewModel.submitOrder(NewOrderParams(goods).apply {
                 if (2 == mViewModel.deviceDetail.value?.deviceState) {
                     reserveMethod = mViewModel.deviceDetail.value?.reserveMethod
                 }
-            }) { result ->
-                result.orderNo?.let { orderNo ->
-                    startActivity(
-                        Intent(
-                            this,
-                            OrderStatusActivity::class.java
-                        ).apply {
-                            putExtras(IntentParams.OrderParams.pack(orderNo))
-                        }
-                    )
-                    finish()
+            }) { success,result ->
+                if (success){
+                    result?.orderNo?.let { orderNo ->
+                        startActivity(
+                            Intent(
+                                this,
+                                OrderStatusActivity::class.java
+                            ).apply {
+                                putExtras(IntentParams.OrderParams.pack(orderNo))
+                            }
+                        )
+                        finish()
+                    }
+                } else {
+                    mViewModel.requestData()
                 }
             }
         }

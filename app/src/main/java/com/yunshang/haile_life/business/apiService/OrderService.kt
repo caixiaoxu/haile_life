@@ -74,6 +74,9 @@ interface OrderService {
     @POST("/trade/lockOrderCreate")
     suspend fun lockOrderCreate(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
 
+    @POST("/trade/scanOrderCreate")
+    suspend fun scanOrderCreate(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
+
     @POST("/trade/reserveCreate")
     suspend fun reserveCreate(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
 

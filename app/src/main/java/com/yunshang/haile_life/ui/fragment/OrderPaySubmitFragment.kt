@@ -22,6 +22,7 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
+import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderPaySubmitBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
@@ -30,6 +31,7 @@ import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
+import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
 
 class OrderPaySubmitFragment :
     BaseBusinessFragment<FragmentOrderPaySubmitBinding, OrderPaySubmitViewModel>(
@@ -347,8 +349,23 @@ class OrderPaySubmitFragment :
                     title = StringUtils.getString(R.string.friendly_reminder)
                     negativeTxt = StringUtils.getString(R.string.close)
                     setPositiveButton(StringUtils.getString(R.string.i_know)) {
-                        goPay()
+                        payDialog()
                     }
+                }.build().show(childFragmentManager)
+            } else {
+                payDialog()
+            }
+        }
+    }
+
+    private fun payDialog(){
+        mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.let { firstItem ->
+            val isSpecialDevice = firstItem.spuCode == "04001030"
+            if ((!SPRepository.isNoAppointPrompt && !DeviceCategory.isHair(firstItem.categoryCode))
+                || isSpecialDevice
+            ) {
+                ScanOrderConfirmDialog.Builder(firstItem.categoryCode, isSpecialDevice, true) {
+                    goPay()
                 }.build().show(childFragmentManager)
             } else {
                 goPay()

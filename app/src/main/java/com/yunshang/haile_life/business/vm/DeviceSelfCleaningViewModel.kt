@@ -33,19 +33,6 @@ class DeviceSelfCleaningViewModel : BaseViewModel() {
 
     val orderDetails: MutableLiveData<OrderEntity> by lazy { MutableLiveData() }
 
-    fun requestData() {
-        if (orderNo.isNullOrEmpty()) return
-
-        launch({
-            ApiRepository.dealApiResult(
-                mOrderRepo.requestOrderDetail(orderNo!!)
-            )?.let {
-                orderDetails.postValue(it)
-            }
-        })
-    }
-
-
     val inValidOrder: MutableLiveData<Boolean> = MutableLiveData(false)
     var validTime: Int? = null
     val countDownTime: MutableLiveData<SpannableString> by lazy {

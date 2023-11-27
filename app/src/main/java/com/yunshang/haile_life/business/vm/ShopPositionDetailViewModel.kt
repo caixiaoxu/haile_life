@@ -9,7 +9,7 @@ import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.business.event.BusEvents
-import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
+import com.yunshang.haile_life.data.agruments.NewOrderParams
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.extend.hasVal
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -162,7 +162,7 @@ class ShopPositionDetailViewModel : BaseViewModel() {
     }
 
     fun submitOrder(
-        params: AppointmentOrderParams,
+        params: NewOrderParams,
         callback: (result: OrderSubmitResultEntity) -> Unit
     ) {
         launch({

@@ -24,7 +24,8 @@ import com.yunshang.haile_life.data.rule.IOrderConfigEntity
  */
 data class DeviceDetailItemEntity(
     val amount: Int,
-    val attach: Int,
+//    val attach: Int,
+    val attachMap: Map<String, Boolean>? = null,
     val channelStatus: Int,
     val couponAmount: Double,
     val defaultModel: Boolean,
