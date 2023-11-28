@@ -48,7 +48,7 @@ class DeviceNavigationViewModel : BaseViewModel() {
                 mMarketingRepo.requestAD(
                     ApiRepository.createRequestBody(
                         hashMapOf(
-                            "slotKey" to "drinking_banner_top_android"
+                            "slotKey" to if (isShower) "shower_banner_top_android"  else "drinking_banner_top_android"
                         )
                     )
                 )
