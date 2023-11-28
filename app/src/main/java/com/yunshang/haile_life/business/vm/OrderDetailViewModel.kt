@@ -130,10 +130,13 @@ class OrderDetailViewModel : BaseViewModel() {
         addSource(changeUseModel) {
             value = checkShowAnyBtn()
         }
+        addSource(orderDetail) {
+            value = checkShowAnyBtn()
+        }
     }
 
     private fun checkShowAnyBtn() =
-        (((true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && true != formScan.value) || (true == formScan.value && false == changeUseModel.value))
+        (((true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && true != formScan.value) || (true == formScan.value && false == changeUseModel.value) || true == orderDetail.value?.canSubmitFix)
 
     fun requestOrderDetailAsync(showLoading: Boolean = true) {
         if (orderNo.isNullOrEmpty()) return

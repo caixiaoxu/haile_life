@@ -2,6 +2,7 @@ package com.yunshang.haile_life.ui.activity.personal
 
 import android.content.Intent
 import android.graphics.Color
+import android.view.View
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.ScreenUtils
 import com.yunshang.haile_life.BR
@@ -23,6 +24,8 @@ class FaultRepairsRecordDetailActivity :
     ) {
 
     override fun layoutId(): Int = R.layout.activity_fault_repairs_record_detail
+
+    override fun backBtn(): View = mBinding.barFaultRepairsRecordDetailTitle.getBackBtn()
 
     override fun initIntent() {
         super.initIntent()

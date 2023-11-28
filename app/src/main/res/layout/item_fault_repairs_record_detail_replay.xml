@@ -13,6 +13,6 @@
         android:layout_width="match_parent"
         android:text="@{item.replyContentVal}"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_sf5f5f5_r4"
         android:padding="12dp" />
 </layout>

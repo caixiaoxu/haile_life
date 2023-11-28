@@ -60,8 +60,8 @@
                     style="@style/Font_14_333333"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:text="@{vm.recordDetail.deviceName}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_fault_repairs_record_detail_device_name_title"
                     app:layout_constraintTop_toTopOf="@id/tv_fault_repairs_record_detail_device_name_title"
                     tools:text="3楼左2洗衣机" />
@@ -82,8 +82,8 @@
                     style="@style/Font_14_333333"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:text="@{vm.recordDetail.goodsCategoryName}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_fault_repairs_record_detail_device_category_title"
                     app:layout_constraintTop_toTopOf="@id/tv_fault_repairs_record_detail_device_category_title"
                     tools:text="洗衣机" />
@@ -104,8 +104,8 @@
                     style="@style/Font_14_333333"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:text="@{vm.recordDetail.pointName}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_fault_repairs_record_detail_position_title"
                     app:layout_constraintTop_toTopOf="@id/tv_fault_repairs_record_detail_position_title"
                     tools:text="研究楼A楼" />
@@ -126,8 +126,8 @@
                     style="@style/Font_14_333333"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:text="@{vm.recordDetail.createTime}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_fault_repairs_record_detail_repairs_time_title"
                     app:layout_constraintTop_toTopOf="@id/tv_fault_repairs_record_detail_repairs_time_title"
                     tools:text="2023-02-20 12:12:12" />
@@ -171,8 +171,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:text="@{vm.recordDetail.description}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_fault_repairs_record_detail_fault_desc_title"
                     app:layout_constraintTop_toBottomOf="@id/tv_fault_repairs_record_detail_fault_desc_title"
                     tools:text="欢迎畅所欲言，您的鼓励与批评是我们前进的动力！长度自定义" />
@@ -200,9 +200,12 @@
                     android:id="@+id/ll_fault_repairs_record_detail_reply"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:orientation="vertical"
+                    app:divider="@drawable/divide_size12"
                     app:itemLayout="@layout/item_fault_repairs_record_detail_replay"
-                    app:layout_constraintTop_toBottomOf="@id/cl_fault_repairs_record_detail_fault_pic" />
+                    app:layout_constraintTop_toBottomOf="@id/cl_fault_repairs_record_detail_fault_pic"
+                    app:showDividers="middle" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
