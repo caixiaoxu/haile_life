@@ -2,6 +2,8 @@ package com.yunshang.haile_life.ui.fragment
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import com.lsy.framelib.utils.SToast
@@ -19,6 +21,7 @@ import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 
 class OrderExecuteFragment :
@@ -126,12 +129,42 @@ class OrderExecuteFragment :
                 } ?: 0
         } catch (e: Exception) { 0 }
         // 没有启动设备就启动
-        DateTimeUtils.formatDateFromString(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.finishTime)
-            ?.let {
-                val diff = ((it.time - System.currentTimeMillis()) / 1000).toInt()
-                mViewModel.remainingTime.value = if (diff < 0) 0 else diff
-                mViewModel.checkValidTime()
-            }
+
+        // 没有启动设备就启动
+//        if (0 == mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfill) {
+//            mViewModel.remainingTime.value = mViewModel.totalTime
+//            mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.let { firstItem ->
+//                val isSpecialDevice = firstItem.spuCode == "04001030"
+//                if ((!SPRepository.isNoAppointPrompt && !DeviceCategory.isHair(firstItem.categoryCode))
+//                    || isSpecialDevice
+//                ) {
+//                    ScanOrderConfirmDialog.Builder(firstItem.categoryCode, isSpecialDevice, true) {
+//                        startOrderDevice()
+//                    }.build().show(childFragmentManager)
+//                } else {
+//                    startOrderDevice()
+//                }
+//            }
+//        } else {
+            DateTimeUtils.formatDateFromString(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.finishTime)
+                ?.let {
+                    val diff = ((it.time - System.currentTimeMillis()) / 1000).toInt()
+                    mViewModel.remainingTime.value = if (diff < 0) 0 else diff
+                    mViewModel.checkValidTime()
+                }
+//        }
+    }
+
+    private fun startOrderDevice() {
+        mViewModel.startOrderDevice(mActivityViewModel.orderNo) {
+            Hint3SecondDialog.Builder("设备已启动").apply {
+                dialogBgResource = R.drawable.shape_dialog_bg
+            }.build().show(childFragmentManager)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                mActivityViewModel.requestData()
+            }, 2000)
+        }
     }
 
     override fun initData() {
