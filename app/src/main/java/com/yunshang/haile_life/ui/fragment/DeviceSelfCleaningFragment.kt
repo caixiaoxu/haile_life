@@ -46,19 +46,21 @@ class DeviceSelfCleaningFragment :
             mActivityViewModel.requestData()
         }
 
-        mBinding.ivDeviceSelfCleaningMainRun.startAnimation(
-            RotateAnimation(
-                0f,
-                360f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f
-            ).apply {
-                duration = 2400
-                interpolator = LinearInterpolator()
-                repeatCount = Animation.INFINITE
-            })
+        if (true != mActivityViewModel.orderDetails.value?.fulfillInfo?.selfCleanFinish()) {
+            mBinding.ivDeviceSelfCleaningMainRun.startAnimation(
+                RotateAnimation(
+                    0f,
+                    360f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f
+                ).apply {
+                    duration = 2400
+                    interpolator = LinearInterpolator()
+                    repeatCount = Animation.INFINITE
+                })
+        }
 
         mBinding.btnDeviceSelfCleaningStart.setOnClickListener {
             mViewModel.startOrderDevice(

@@ -92,7 +92,8 @@
                             android:layout_marginEnd="12dp"
                             android:src="@mipmap/icon_device_self_cleaning_run"
                             app:layout_constraintEnd_toEndOf="@id/iv_device_self_cleaning_main"
-                            app:layout_constraintTop_toTopOf="@id/iv_device_self_cleaning_main" />
+                            app:layout_constraintTop_toTopOf="@id/iv_device_self_cleaning_main"
+                            app:visibility="@{avm.orderDetails.fulfillInfo.selfCleanFinish}" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_device_self_cleaning_status"
