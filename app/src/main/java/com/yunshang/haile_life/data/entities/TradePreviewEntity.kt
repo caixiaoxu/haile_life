@@ -46,7 +46,8 @@ data class TradePreviewGoodItem(
     val realAmount: String,
     val realUnitAmount: String,
     val shopId: Int? = null,
-    val goodsCategoryId: Int? = null
+    val goodsCategoryId: Int? = null,
+    val selfClean:Boolean = false
 ) {
     fun getCategoryIcon(): Int =
         if (goodsCategoryCode.isNullOrEmpty()) 0 else when (goodsCategoryCode) {

@@ -155,4 +155,16 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        mViewModel.requestData()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            mViewModel.requestData()
+        }
+    }
 }

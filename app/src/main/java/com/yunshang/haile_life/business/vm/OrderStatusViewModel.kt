@@ -41,7 +41,7 @@ class OrderStatusViewModel : BaseViewModel() {
 
     val orderDetails: MutableLiveData<OrderEntity> by lazy { MutableLiveData() }
 
-    fun requestData() {
+    fun requestData(showLoading: Boolean = true) {
         if (orderNo.isNullOrEmpty()) return
 
         launch({
@@ -50,7 +50,7 @@ class OrderStatusViewModel : BaseViewModel() {
             )?.let {
                 orderDetails.postValue(it)
             }
-        })
+        }, showLoading = showLoading)
     }
 
     /**

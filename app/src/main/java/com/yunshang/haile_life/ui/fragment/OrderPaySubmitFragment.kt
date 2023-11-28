@@ -29,6 +29,7 @@ import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
+import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
@@ -106,7 +107,7 @@ class OrderPaySubmitFragment :
                 val inflater = LayoutInflater.from(requireContext())
                 if (trade.itemList.isNotEmpty()) {
                     val isSingle = 1 == trade.itemList.size
-                    for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode) }) {
+                    for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode) && !item.selfClean }) {
                         val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
                             inflater,
                             R.layout.item_order_submit_good,
@@ -125,9 +126,9 @@ class OrderPaySubmitFragment :
                         )
                     }
 
-                    // 投放器数据
+                    // 投放器和筒自洁的数据
                     val dispenserList =
-                        trade.itemList.filter { item -> DeviceCategory.isDispenser(item.goodsCategoryCode) }
+                        trade.itemList.filter { item -> DeviceCategory.isDispenser(item.goodsCategoryCode) || item.selfClean }
                     if (dispenserList.isNotEmpty()) {
                         val childDispenserGoodBinding =
                             DataBindingUtil.inflate<ItemOrderSubmitGoodDispenserBinding>(
@@ -139,7 +140,8 @@ class OrderPaySubmitFragment :
                         childDispenserGoodBinding.llOrderSubmitGoodDispenserItem.buildChild<ItemOrderSubmitGoodItemBinding, TradePreviewGoodItem>(
                             dispenserList
                         ) { _, childBinding, data ->
-                            childBinding.title = data.goodsItemName + "${data.num}ml"
+                            childBinding.title =
+                                data.goodsItemName + if (data.selfClean) "" else "${data.num}ml"
                             childBinding.type = 0
                             childBinding.value = data.getOriginAmountStr()
                         }
@@ -358,7 +360,7 @@ class OrderPaySubmitFragment :
         }
     }
 
-    private fun payDialog(){
+    private fun payDialog() {
         mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.let { firstItem ->
             val isSpecialDevice = firstItem.spuCode == "04001030"
             if ((!SPRepository.isNoAppointPrompt && !DeviceCategory.isHair(firstItem.categoryCode))

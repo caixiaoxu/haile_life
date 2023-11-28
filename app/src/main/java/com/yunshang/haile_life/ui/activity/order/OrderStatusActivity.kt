@@ -48,7 +48,7 @@ class OrderStatusActivity :
         mViewModel.orderDetails.observe(this) { detail ->
             detail?.let {
                 if (true == detail.redirectWorking) {
-                    if (1 == detail.fulfillInfo?.fulfill) {
+                    if (0 == detail.fulfillInfo?.fulfill || 1 == detail.fulfillInfo?.fulfill) {
                         // 桶自洁
                         showAppointmentPage(DeviceSelfCleaningFragment())
                     } else {

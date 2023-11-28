@@ -77,8 +77,8 @@ data class OrderEntity(
     val fulfillInfo: FulfillInfo? = null
 ) : BaseObservable(), IMultiTypeEntity {
 
-    val isNormalOrder:Boolean
-    get() = state >= 1000 || state in 400 until 500
+    val isNormalOrder: Boolean
+        get() = state >= 1000 || state in 400 until 500
 
     @Transient
     @get:Bindable
@@ -439,7 +439,10 @@ data class ReserveInfo(
 data class FulfillInfo(
     val fulfill: Int = 0,
     val fulfillingItem: FulfillingItem? = null
-)
+) {
+    fun selfCleanFinish(): Boolean =
+        2 == fulfill || (1 == fulfill && (false == fulfillingItem?.selfClean || 3 == fulfillingItem?.state))
+}
 
 data class FulfillingItem(
     val finishTime: String? = null,
@@ -447,5 +450,19 @@ data class FulfillingItem(
     val fulfillId: Int? = null,
     val selfClean: Boolean? = null,
     val state: Int? = null
-)
+) {
+    fun selfCleanFinishTime(): String {
+        var timeStamp = finishTimeTimeStamp ?: 0
+        if (timeStamp <= 0) {
+            timeStamp = 1
+        }
+
+        val timeVal = if (timeStamp > 60) {
+            " ${ceil(timeStamp * 1.0 / 60).toInt()}分钟"
+        } else {
+            " ${timeStamp % 60}秒"
+        }
+        return "${StringUtils.getString(R.string.predict_remnant)} $timeVal"
+    }
+}
 

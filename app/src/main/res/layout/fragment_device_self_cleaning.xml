@@ -54,6 +54,7 @@
                         android:text="@{vm.countDownTime}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/bar_appointment_order_verify_title"
+                        app:visibility="@{avm.orderDetails.fulfillInfo.selfCleanFinish}"
                         tools:text="待启动，剩余 02:55" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -62,13 +63,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/order_device_self_cleaning_prompt1" />
+                        android:text="@string/order_device_self_cleaning_prompt1"
+                        app:visibility="@{avm.orderDetails.fulfillInfo.selfCleanFinish}" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_sffffff_r8"
                         android:layout_marginTop="20dp"
+                        android:background="@drawable/shape_sffffff_r8"
                         android:paddingHorizontal="42dp"
                         android:paddingTop="45dp"
                         android:paddingBottom="28dp">
@@ -98,7 +100,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:text="@string/self_cleaning_run"
+                            android:text="@{avm.orderDetails.fulfillInfo.selfCleanFinish?@string/self_cleaning_end:@string/self_cleaning_run}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_device_self_cleaning_main" />
@@ -109,10 +111,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="@string/predict_remnant"
+                            android:text="@{avm.orderDetails.fulfillInfo.fulfillingItem.selfCleanFinishTime}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_device_self_cleaning_status" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_device_self_cleaning_status"
+                            app:visibility="@{!vm.inValidOrder &amp;&amp; !avm.orderDetails.fulfillInfo.selfCleanFinish}" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_device_self_cleaning_prompt"
@@ -124,7 +127,8 @@
                             android:text="@string/order_device_self_cleaning_prompt2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_device_self_cleaning_time_prompt" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_device_self_cleaning_time_prompt"
+                            app:visibility="@{!vm.inValidOrder}" />
 
                         <com.lsy.framelib.ui.weight.SingleTapButton
                             android:id="@+id/btn_device_self_cleaning_start"
@@ -133,33 +137,36 @@
                             android:layout_height="46dp"
                             android:layout_marginHorizontal="20dp"
                             android:layout_marginTop="36dp"
-                            android:enabled="false"
+                            android:enabled="@{avm.orderDetails.fulfillInfo.selfCleanFinish}"
                             android:text="@string/start_washing"
-                            app:layout_constraintTop_toBottomOf="@id/tv_device_self_cleaning_prompt" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_device_self_cleaning_prompt"
+                            app:visibility="@{!vm.inValidOrder}" />
 
                         <com.lsy.framelib.ui.weight.SingleTapTextView
                             android:id="@+id/tv_device_self_cleaning_coerce_device"
                             style="@style/font_14_04D1E5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
                             android:paddingHorizontal="19dp"
                             android:text="@string/coerce_device"
                             app:layout_constraintEnd_toStartOf="@id/tv_device_self_cleaning_contact_shop"
                             app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_device_self_cleaning_start" />
+                            app:layout_constraintTop_toBottomOf="@id/btn_device_self_cleaning_start"
+                            app:layout_constraintTop_toTopOf="@id/tv_device_self_cleaning_contact_shop"
+                            app:visibility="@{!vm.inValidOrder}" />
 
                         <com.lsy.framelib.ui.weight.SingleTapTextView
                             android:id="@+id/tv_device_self_cleaning_contact_shop"
                             style="@style/font_14_04D1E5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
                             android:paddingHorizontal="19dp"
                             android:text="@string/contact_shop"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tv_device_self_cleaning_coerce_device"
-                            app:layout_constraintTop_toTopOf="@id/tv_device_self_cleaning_coerce_device" />
+                            app:layout_constraintTop_toBottomOf="@id/btn_device_self_cleaning_start" />
 
                         <View
                             android:layout_width="1dp"
@@ -167,7 +174,8 @@
                             android:background="@color/color_cccccc"
                             app:layout_constraintBottom_toBottomOf="@id/tv_device_self_cleaning_contact_shop"
                             app:layout_constraintStart_toStartOf="@id/tv_device_self_cleaning_contact_shop"
-                            app:layout_constraintTop_toTopOf="@id/tv_device_self_cleaning_contact_shop" />
+                            app:layout_constraintTop_toTopOf="@id/tv_device_self_cleaning_contact_shop"
+                            app:visibility="@{!vm.inValidOrder}" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -177,8 +185,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        app:order="@{vm.orderDetails}"
-                        app:showState="@{true}" />
+                        app:order="@{avm.orderDetails}"
+                        app:showState="@{false}" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 

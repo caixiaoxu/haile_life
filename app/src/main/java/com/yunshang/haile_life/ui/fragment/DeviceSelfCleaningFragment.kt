@@ -1,6 +1,8 @@
 package com.yunshang.haile_life.ui.fragment
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
@@ -13,6 +15,7 @@ import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.FragmentDeviceSelfCleaningBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 
 
 class DeviceSelfCleaningFragment :
@@ -56,8 +59,41 @@ class DeviceSelfCleaningFragment :
                 interpolator = LinearInterpolator()
                 repeatCount = Animation.INFINITE
             })
+
+        mBinding.btnDeviceSelfCleaningStart.setOnClickListener {
+            mViewModel.startOrderDevice(
+                mActivityViewModel.orderNo,
+                mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfillingItem?.fulfillId
+            ) {
+                Hint3SecondDialog.Builder("设备已启动").apply {
+                    dialogBgResource = R.drawable.shape_dialog_bg
+                }.build().show(childFragmentManager)
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    mActivityViewModel.requestData(false)
+                }, 2000)
+            }
+        }
     }
 
     override fun initData() {
+        if (true == mActivityViewModel.orderDetails.value?.fulfillInfo?.selfCleanFinish()) {
+            // 失效时间
+            mViewModel.validTime =
+                mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfillingItem?.finishTimeTimeStamp
+                    ?: 1
+            mViewModel.checkValidTime()
+        } else {
+            Handler(Looper.getMainLooper()).postDelayed(
+                {
+                    mActivityViewModel.requestData(false)
+                },
+                mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfillingItem?.finishTimeTimeStamp?.let {
+                    if (it <= 0) 10000L
+                    else if (0 == it % 60) 60000L
+                    else it % 60 * 1000L
+                }
+                    ?: 10000L)
+        }
     }
 }

@@ -32,23 +32,6 @@ class OrderExecuteViewModel : BaseViewModel() {
     private val defaultDiff = 2 * 60 * 1000L
     private val coerceDeviceCount: MutableLiveData<Int> = MutableLiveData(0)
 
-    fun startOrderDevice(orderNo: String?, callback: () -> Unit) {
-        if (orderNo.isNullOrEmpty()) return
-        launch({
-            ApiRepository.dealApiResult(
-                mOrderRepo.startAppointOrderDevice(
-                    ApiRepository.createRequestBody(
-                        hashMapOf(
-                            "orderNo" to orderNo
-                        )
-                    )
-                )
-            )
-            withContext(Dispatchers.Main) {
-                callback()
-            }
-        })
-    }
 
     /**
      * 强启设备

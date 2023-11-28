@@ -14,6 +14,8 @@ import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.data.model.ApiRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 
 /**
@@ -32,6 +34,25 @@ class DeviceSelfCleaningViewModel : BaseViewModel() {
     var orderNo: String? = null
 
     val orderDetails: MutableLiveData<OrderEntity> by lazy { MutableLiveData() }
+
+    fun startOrderDevice(orderNo: String?, fulId: Int? = null, callback: () -> Unit) {
+        if (orderNo.isNullOrEmpty()) return
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.startAppointOrderDevice(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "orderNo" to orderNo,
+                            "fulfillIdList" to fulId?.let { listOf(it) }
+                        )
+                    )
+                )
+            )
+            withContext(Dispatchers.Main) {
+                callback()
+            }
+        })
+    }
 
     val inValidOrder: MutableLiveData<Boolean> = MutableLiveData(false)
     var validTime: Int? = null
