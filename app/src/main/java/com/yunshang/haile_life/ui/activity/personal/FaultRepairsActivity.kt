@@ -45,7 +45,8 @@ class FaultRepairsActivity :
                 DialogUtils.showImgSelectorDialog(
                     this@FaultRepairsActivity,
                     6 - (mViewModel.faultPics.value?.size ?: 0),
-                    needCrop = false
+                    needCrop = false,
+                    title = "选择操作"
                 ) { isSuccess, picList ->
                     if (isSuccess && !picList.isNullOrEmpty()) {
                         mViewModel.uploadHeadIcon(picList.mapNotNull { item ->
