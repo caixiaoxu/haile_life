@@ -167,9 +167,10 @@ class DeviceSelfCleaningFragment :
                     mActivityViewModel.requestData(false)
                 },
                 mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfillingItem?.finishTimeTimeStamp?.let {
-                    if (it % 60 > 0) it % 60 * 1000L
-                    else 60000L
-                } ?: 60000L)
+                    if (it <= 0) 10000L
+                    else if (0 == it % 60) 60000L
+                    else it % 60 * 1000L
+                } ?: 10000L)
         }
     }
 }
