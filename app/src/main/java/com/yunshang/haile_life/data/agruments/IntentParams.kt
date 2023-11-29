@@ -436,6 +436,23 @@ object IntentParams {
         fun parseShopId(intent: Intent): Int = intent.getIntExtra(ShopId, -1)
     }
 
+    object FaultRepairsParams {
+        private const val GoodsInfo = "goodsInfo"
+
+        /**
+         * 包装参数
+         */
+        fun pack(goodsInfo: GoodsScanEntity? = null): Bundle =
+            Bundle().apply {
+                goodsInfo?.let {
+                    putString(GoodsInfo, GsonUtils.any2Json(it))
+                }
+            }
+
+        fun parseGoodsInfo(intent: Intent): GoodsScanEntity? =
+            GsonUtils.json2Class(intent.getStringExtra(GoodsInfo), GoodsScanEntity::class.java)
+    }
+
     object OrderParams {
         private const val OrderNo = "orderNo"
         private const val IsAppoint = "isAppoint"

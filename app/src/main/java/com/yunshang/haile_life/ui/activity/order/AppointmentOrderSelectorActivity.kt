@@ -22,10 +22,7 @@ import com.yunshang.haile_life.data.agruments.AppointmentOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.Purchase
-import com.yunshang.haile_life.data.entities.DeviceDetailEntity
-import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
-import com.yunshang.haile_life.data.entities.DeviceStateEntity
-import com.yunshang.haile_life.data.entities.ExtAttrDtoItem
+import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.databinding.ActivityAppointmentOrderSelectorBinding
 import com.yunshang.haile_life.databinding.ItemDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
@@ -284,7 +281,18 @@ class AppointmentOrderSelectorActivity :
         window.statusBarColor = Color.WHITE
 
         mBinding.includeScanOrderDeviceInfo.tvDeviceRepairs.setOnClickListener {
-            startActivity(Intent(this, FaultRepairsActivity::class.java))
+            startActivity(Intent(this, FaultRepairsActivity::class.java).apply {
+                putExtras(
+                    IntentParams.FaultRepairsParams.pack(
+                        GoodsScanEntity(
+                            mViewModel.deviceDetail.value?.id,
+                            mViewModel.deviceDetail.value?.name,
+                            mViewModel.deviceDetail.value?.categoryCode,
+                            mViewModel.deviceDetail.value?.categoryName,
+                        )
+                    )
+                )
+            })
         }
 
         mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setOnClickListener {

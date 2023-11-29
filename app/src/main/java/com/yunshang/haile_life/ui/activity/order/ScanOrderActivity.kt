@@ -289,7 +289,9 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
         window.statusBarColor = Color.WHITE
 
         mBinding.includeScanOrderDeviceInfo.tvDeviceRepairs.setOnClickListener {
-            startActivity(Intent(this, FaultRepairsActivity::class.java))
+            startActivity(Intent(this, FaultRepairsActivity::class.java).apply {
+                putExtras(IntentParams.FaultRepairsParams.pack(mViewModel.goodsScan.value))
+            })
         }
 
         mBinding.viewScanOrderSelected.setOnClickListener {
@@ -342,13 +344,13 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
         }
 
         mBinding.clScanRechargeStarfish.setOnClickListener {
-            mViewModel.goodsScan.value?.let {
+            mViewModel.goodsScan.value?.shopId?.let { shopId ->
                 startActivity(
                     Intent(
                         this@ScanOrderActivity,
                         RechargeStarfishActivity::class.java
                     ).apply {
-                        putExtras(IntentParams.RechargeStarfishParams.pack(it.shopId))
+                        putExtras(IntentParams.RechargeStarfishParams.pack(shopId))
                     })
             }
         }

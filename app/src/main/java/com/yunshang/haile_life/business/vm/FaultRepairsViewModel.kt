@@ -54,14 +54,26 @@ class FaultRepairsViewModel : BaseViewModel() {
                 )
             )?.let {
                 scanDevice.postValue(it)
-
-                ApiRepository.dealApiResult(
-                    mDeviceRepo.requestFaultTypes(it.categoryCode)
-                )?.let { categoryList ->
-                    faultCategorys.postValue(categoryList)
-                }
+                requestFaultTypes(it.categoryCode)
             }
         })
+    }
+
+    fun requestFaultTypesAsync() {
+        launch({
+            requestFaultTypes(scanDevice.value?.categoryCode)
+        })
+    }
+
+    private suspend fun requestFaultTypes(categoryCode: String?) {
+        categoryCode?.let {
+            ApiRepository.dealApiResult(
+                mDeviceRepo.requestFaultTypes(categoryCode)
+            )?.let { categoryList ->
+                faultCategorys.postValue(categoryList)
+                faultType.postValue(null)
+            }
+        }
     }
 
     /**
@@ -91,7 +103,7 @@ class FaultRepairsViewModel : BaseViewModel() {
     }
 
     fun submitFaultRepairs(context: Context) {
-        if (null == scanDevice.value?.deviceId) {
+        if (null == scanDevice.value?.goodsId && null == scanDevice.value?.deviceId) {
             SToast.showToast(context, "请选择选择设备")
             return
         }

@@ -122,6 +122,11 @@ class FaultRepairsActivity :
 
     override fun backBtn(): View = mBinding.barFaultRepairsTitle.getBackBtn()
 
+    override fun initIntent() {
+        super.initIntent()
+        mViewModel.scanDevice.value = IntentParams.FaultRepairsParams.parseGoodsInfo(intent)
+    }
+
     override fun initEvent() {
         super.initEvent()
 
@@ -246,5 +251,8 @@ class FaultRepairsActivity :
     }
 
     override fun initData() {
+        if (null != mViewModel.scanDevice.value){
+            mViewModel.requestFaultTypesAsync()
+        }
     }
 }
