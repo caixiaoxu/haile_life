@@ -46,7 +46,9 @@ class DeviceSelfCleaningFragment :
             mActivityViewModel.requestData()
         }
 
-        if (true != mActivityViewModel.orderDetails.value?.fulfillInfo?.selfCleanFinish()) {
+        if (true != mActivityViewModel.orderDetails.value?.fulfillInfo?.selfCleanFinish()
+            && true != mViewModel.inValidOrder.value
+        ) {
             mBinding.ivDeviceSelfCleaningMainRun.startAnimation(
                 RotateAnimation(
                     0f,
