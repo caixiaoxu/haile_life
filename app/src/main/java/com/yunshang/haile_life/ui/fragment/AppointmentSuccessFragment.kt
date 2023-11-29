@@ -54,7 +54,8 @@ class AppointmentSuccessFragment :
                 ) { index, childBinding, data ->
                     childBinding.title =
                         if (0 == index) StringUtils.getString(R.string.service) + "：" else ""
-                    childBinding.content = "${data.goodsItemName} ${data.unit.toRemove0Str()}${data.unitValue}"
+                    childBinding.content =
+                        "${data.goodsItemName} ${data.unit.toRemove0Str()}${data.unitValue}"
                     childBinding.tail =
                         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(data.originPrice)
                 }
@@ -85,7 +86,7 @@ class AppointmentSuccessFragment :
                 mBinding.includeAppointmentDeviceStatus.llDeviceStatusItems.buildChild<IncludeAppointmentDeviceStatusProgressBinding, List<DeviceStateEntity>>(
                     list
                 ) { index, childBinding, data ->
-                    childBinding.index = index
+                    childBinding.index = index + 1
                     childBinding.status =
                         if (0 == index && !stateList.underwayList.isNullOrEmpty()) "正在进行" else "排队中"
                     val size = data.size - 1
@@ -113,12 +114,13 @@ class AppointmentSuccessFragment :
         mBinding.includeAppointmentDeviceStatus.root.setBackgroundResource(R.drawable.shape_sffffff_r8)
 
         mBinding.btnAppointmentSuccessCancel.setOnClickListener {
-            CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt)).apply {
-                negativeTxt = StringUtils.getString(R.string.no)
-                setPositiveButton(StringUtils.getString(R.string.yes)) {
-                    mActivityViewModel.cancelOrder()
-                }
-            }.build().show(childFragmentManager)
+            CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt))
+                .apply {
+                    negativeTxt = StringUtils.getString(R.string.no)
+                    setPositiveButton(StringUtils.getString(R.string.yes)) {
+                        mActivityViewModel.cancelOrder()
+                    }
+                }.build().show(childFragmentManager)
         }
     }
 

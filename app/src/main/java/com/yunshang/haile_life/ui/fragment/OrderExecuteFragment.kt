@@ -108,7 +108,7 @@ class OrderExecuteFragment :
         }
 
         mBinding.tvOrderExecuteCoerceDevice.setOnClickListener {
-            CommonDialog.Builder("是否强启").apply {
+            CommonDialog.Builder("您确定要强制启动该设备？").apply {
                 dialogBgResource = R.drawable.shape_dialog_bg
                 negativeTxt = StringUtils.getString(R.string.cancel)
                 setPositiveButton(StringUtils.getString(R.string.sure)) {

@@ -132,7 +132,11 @@ class DeviceSelfCleaningFragment :
         }
 
         mBinding.tvDeviceSelfCleaningCoerceDevice.setOnClickListener {
-            CommonDialog.Builder("是否强启").apply {
+            if (true == mActivityViewModel.orderDetails.value?.fulfillInfo?.selfCleanFinish()) {
+                SToast.showToast(requireContext(), "请点击开始洗涤")
+                return@setOnClickListener
+            }
+            CommonDialog.Builder("您确定要强制启动该设备？").apply {
                 dialogBgResource = R.drawable.shape_dialog_bg
                 negativeTxt = StringUtils.getString(R.string.cancel)
                 setPositiveButton(StringUtils.getString(R.string.sure)) {

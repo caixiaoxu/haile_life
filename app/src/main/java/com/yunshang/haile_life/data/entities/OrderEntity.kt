@@ -286,8 +286,8 @@ data class OrderEntity(
         }" else ""
 
     fun getOrderDiscountTotalPrice(): String = try {
-        val price = originPrice.toDouble() - payAmount.toDouble()
-        if (price <= 0) ""
+        val price = discountPrice ?: 0.0
+        if (price <= 0.0) ""
         else com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(price)
     } catch (e: Exception) {
         e.printStackTrace()
