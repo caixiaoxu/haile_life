@@ -1,5 +1,6 @@
 package com.yunshang.haile_life.business.vm
 
+import android.content.Context
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
@@ -9,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.DimensionUtils
+import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.data.entities.OrderEntity
@@ -50,6 +52,29 @@ class DeviceSelfCleaningViewModel : BaseViewModel() {
             )
             withContext(Dispatchers.Main) {
                 callback()
+            }
+        })
+    }
+
+    /**
+     * 强启设备
+     */
+    fun coerceDevice(context: Context, orderNo: String?, fulId: Int? = null) {
+        if (orderNo.isNullOrEmpty()) return
+
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.startByOrder(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "orderNo" to orderNo,
+                            "fulfillIdList" to fulId?.let { listOf(it) }
+                        )
+                    )
+                )
+            )
+            withContext(Dispatchers.Main) {
+                SToast.showToast(context, "发送强启指令")
             }
         })
     }

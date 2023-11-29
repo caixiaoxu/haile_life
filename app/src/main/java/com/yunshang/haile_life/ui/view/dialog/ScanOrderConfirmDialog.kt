@@ -11,13 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.DialogScanOrderConfirmBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderConfirmItemBinding
-import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 
 /**
  * Title :
@@ -65,15 +63,6 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
 
         val isDryer = DeviceCategory.isDryerOrHair(builder.deviceCategoryCode)
 
-        if (builder.isAppoint) {
-            mBinding.tvScanOrderConfirmPrompt.text = "确认后，机器将自动启动，请务必确认"
-        }
-        mBinding.tvScanOrderConfirmPrompt.visibility(
-            builder.isAppoint || DeviceCategory.isWashingOrShoes(
-                builder.deviceCategoryCode
-            ) || builder.isSpecialDevice
-        )
-
         val color = ColorStateList.valueOf(
             ContextCompat.getColor(
                 requireContext(),
@@ -83,14 +72,25 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
 
         mBinding.btnScanOrderConfirmNext.backgroundTintList = color
         mBinding.ivScanOrderConfirmMain.setImageResource(if (isDryer) R.mipmap.icon_scan_order_tips_dryer_main else R.mipmap.icon_scan_order_tips_main)
+
+        val promptList = requireContext().resources.getStringArray(
+            when (builder.deviceCategoryCode) {
+                DeviceCategory.Dryer -> R.array.scan_order_dryer_confirm
+                DeviceCategory.Shoes -> R.array.scan_order_shoes_confirm
+                else -> R.array.scan_order_wash_confirm
+            }
+        ).toMutableList()
+        if (DeviceCategory.isWashingOrShoes(builder.deviceCategoryCode)) {
+            if (builder.hasClean) {
+                promptList.removeAt(1)
+                promptList.removeAt(1)
+            } else {
+                promptList.removeAt(3)
+            }
+        }
+
         mBinding.llScanOrderConfirmItems.buildChild<ItemScanOrderConfirmItemBinding, String>(
-            requireContext().resources.getStringArray(
-                when (builder.deviceCategoryCode) {
-                    DeviceCategory.Dryer -> R.array.scan_order_dryer_confirm
-                    DeviceCategory.Shoes -> R.array.scan_order_shoes_confirm
-                    else -> R.array.scan_order_wash_confirm
-                }
-            ).toList()
+            promptList
         ) { _, childBinding, data ->
             childBinding.tvScanOrderConfirmItem.setCompoundDrawablesWithIntrinsicBounds(
                 if (isDryer) R.mipmap.icon_scan_order_tips_dryer_ok else R.mipmap.icon_scan_order_tips_ok,
@@ -103,21 +103,13 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
             if (isDryer) R.drawable.selector_orange_check else R.drawable.selector_cyan_check,
             0, 0, 0
         )
-        mBinding.cbScanOrderConfirmNoPrompt.visibility =
-            if (builder.isSpecialDevice) View.GONE else View.VISIBLE
 
-        mBinding.btnScanOrderConfirmCancel.visibility(!builder.isAppoint)
         mBinding.btnScanOrderConfirmCancel.setOnClickListener {
             dismiss()
         }
-        mBinding.btnScanOrderConfirmNext.text =
-            StringUtils.getString(if (builder.isAppoint) R.string.affirm else R.string.next_step)
         mBinding.btnScanOrderConfirmNext.setOnClickListener {
             if (mBinding.cbScanOrderConfirmNoPrompt.isChecked) {
-                if (builder.isAppoint)
-                    SPRepository.isNoAppointPrompt = true
-                else
-                    SPRepository.isNoPrompt = true
+                SPRepository.isNoPrompt = true
             }
             builder.callBack?.invoke()
             dismiss()
@@ -128,14 +120,13 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
      * 默认显示
      */
     fun show(manager: FragmentManager) {
-        isCancelable = !builder.isAppoint
+        isCancelable = false
         show(manager, SCAN_ORDER_CONFIRM_TAG)
     }
 
     internal class Builder(
         val deviceCategoryCode: String,
-        val isSpecialDevice: Boolean,
-        val isAppoint: Boolean = false,
+        val hasClean: Boolean,
         val callBack: (() -> Unit)? = null
     ) {
         /**

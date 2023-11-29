@@ -278,7 +278,7 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                     childBinding.modelTitle = "自动投放" + attachList?.joinToString("/") { item ->
                         item.name
                     }
-                    childBinding.desc = detail.dispenserValue?.tipMessage ?:""
+                    childBinding.desc = detail.dispenserValue?.tipMessage ?: ""
                 }
             }
         }
@@ -319,14 +319,12 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                     return@setOnClickListener
                 }
 
-                val isSpecialDevice = mViewModel.deviceDetail.value?.spuCode == "04001030"
                 if ((!SPRepository.isNoPrompt && null != mViewModel.goodsScan.value
                             && !DeviceCategory.isHair(mViewModel.goodsScan.value!!.categoryCode))
-                    || isSpecialDevice
                 ) {
                     ScanOrderConfirmDialog.Builder(
                         mViewModel.goodsScan.value!!.categoryCode,
-                        isSpecialDevice
+                        false
                     ) {
                         jumpOrderSubmit()
                     }.build().show(supportFragmentManager)

@@ -60,7 +60,11 @@ class OrderSelectorViewModel : BaseViewModel() {
     }
 
     val needSelfClean: LiveData<Boolean> = selectDeviceConfig.map {
-        it?.attachMap?.get(DeviceDetailEntity.SelfClean) ?: false
+        (it?.attachMap?.get(DeviceDetailEntity.SelfClean) ?: false).apply {
+            if (!this){
+                selectSelfClean.value = false
+            }
+        }
     }
 
     val isDryer: LiveData<Boolean> = deviceDetail.map {
@@ -98,12 +102,14 @@ class OrderSelectorViewModel : BaseViewModel() {
 
     fun totalPrice() {
         var attachTotal = BigDecimal("0.0")
-        selectAttachSku.forEach { item ->
-            if (!item.value.value?.unitPrice.isNullOrEmpty()) {
-                attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
+        if (true == needAttach.value) {
+            selectAttachSku.forEach { item ->
+                if (!item.value.value?.unitPrice.isNullOrEmpty()) {
+                    attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
+                }
             }
         }
-        if (true == selectSelfClean.value) {
+        if (true == needSelfClean.value && true == selectSelfClean.value) {
             if (!deviceDetail.value?.selfCleanValue?.price.isNullOrEmpty()) {
                 attachTotal =
                     attachTotal.add(BigDecimal(deviceDetail.value!!.selfCleanValue!!.price))
@@ -127,7 +133,7 @@ class OrderSelectorViewModel : BaseViewModel() {
                 }
             }
         }
-        if (true == selectSelfClean.value) {
+        if (true == needSelfClean.value && true == selectSelfClean.value) {
             configure += "+" + "筒自洁" + "￥" + deviceDetail.value?.selfCleanValue?.price
         }
         attachConfigureVal.value = if (configure.isNotEmpty()) {

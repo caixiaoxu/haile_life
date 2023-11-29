@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.StringUtils
+import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.data.model.ApiRepository
 import kotlinx.coroutines.Dispatchers
@@ -28,10 +30,6 @@ import kotlin.math.ceil
 class OrderExecuteViewModel : BaseViewModel() {
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
-    private var coerceDeviceTime = 0L
-    private val defaultDiff = 2 * 60 * 1000L
-    private val coerceDeviceCount: MutableLiveData<Int> = MutableLiveData(0)
-
     fun startOrderDevice(orderNo: String?, callback: () -> Unit) {
         if (orderNo.isNullOrEmpty()) return
         launch({
@@ -50,44 +48,59 @@ class OrderExecuteViewModel : BaseViewModel() {
         })
     }
 
+    private val defaultDiff = 2 * 60
+    val coerceDeviceTime: MutableLiveData<Int> = MutableLiveData(0)
+    val coerceDeviceTimeVal: LiveData<String> = coerceDeviceTime.map {
+        StringUtils.getString(R.string.coerce_device) + if (it > 0) "（${it}s）" else ""
+    }
+    val coerceDeviceCount: MutableLiveData<Int> = MutableLiveData(0)
+
     /**
      * 强启设备
      */
-    fun coerceDevice(context: Context, orderNo: String?, callback: () -> Unit) {
+    fun coerceDevice(context: Context, orderNo: String?, fulId: Int? = null) {
         if (orderNo.isNullOrEmpty()) return
-
-        val diff = System.currentTimeMillis() - coerceDeviceTime
-        if (0L == coerceDeviceTime || diff >= defaultDiff) {
+        if (0 == coerceDeviceTime.value || coerceDeviceCount.value!! < 3) {
             launch({
                 ApiRepository.dealApiResult(
                     mOrderRepo.startByOrder(
                         ApiRepository.createRequestBody(
                             hashMapOf(
-                                "orderNo" to orderNo
+                                "orderNo" to orderNo,
+                                "fulfillIdList" to fulId?.let { listOf(it) }
                             )
                         )
                     )
                 )
+                coerceDeviceTime.postValue(defaultDiff)
                 coerceDeviceCount.postValue((coerceDeviceCount.value ?: 0) + 1)
+                checkCoerceTime()
 
-                coerceDeviceTime = System.currentTimeMillis()
                 withContext(Dispatchers.Main) {
-                    showCoerceDevicePrompt(context, defaultDiff)
-                    callback()
+                    SToast.showToast(context, "发送强启指令")
                 }
             })
-        } else {
-            showCoerceDevicePrompt(context, defaultDiff - diff)
         }
     }
 
-    private fun showCoerceDevicePrompt(context: Context, diff: Long) {
-        val minute = diff / 1000 / 60
-        val second = diff / 1000 % 60
-        SToast.showToast(
-            context,
-            "强启设备间隔时间还需要${minute}分" + if (second > 0) "${second}秒" else "钟"
-        )
+    // 计时器
+    var timerCoerce: Timer? = null
+
+    /**
+     * 检测有效时间
+     */
+    private fun checkCoerceTime() {
+        timerCoerce?.cancel()
+        timerCoerce = Timer()
+        timerCoerce?.schedule(object : TimerTask() {
+            override fun run() {
+                if (coerceDeviceTime.value!! > 0) {
+                    coerceDeviceTime.postValue(coerceDeviceTime.value!! - 1)
+                } else {
+                    timerCoerce?.cancel()
+                }
+            }
+        }, 0, 1000)
     }
 
     /**
@@ -166,5 +179,7 @@ class OrderExecuteViewModel : BaseViewModel() {
         super.onCleared()
         timer?.cancel()
         timer = null
+        timerCoerce?.cancel()
+        timerCoerce = null
     }
 }

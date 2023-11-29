@@ -97,7 +97,6 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                 }
                 val inflater = LayoutInflater.from(this@OrderSubmitActivity)
                 if (trade.itemList.isNotEmpty()) {
-                    val isSingle = 1 == trade.itemList.size
                     for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode) }) {
                         val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
                             inflater,
@@ -106,7 +105,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                             false
                         )
                         childGoodBinding.item = good
-                        childGoodBinding.isSingle = isSingle
+                        childGoodBinding.showDiscount = trade.showDiscount()
                         mBinding.llOrderSubmitGood.addView(
                             childGoodBinding.root,
                             (mBinding.llOrderSubmitGood.childCount - 2),
@@ -128,6 +127,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                 null,
                                 false
                             )
+                        childDispenserGoodBinding.showDiscount = trade.showDiscount()
                         childDispenserGoodBinding.llOrderSubmitGoodDispenserItem.buildChild<ItemOrderSubmitGoodItemBinding, TradePreviewGoodItem>(
                             dispenserList
                         ) { _, childBinding, data ->

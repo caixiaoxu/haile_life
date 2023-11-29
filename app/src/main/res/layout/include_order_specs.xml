@@ -42,7 +42,7 @@
                 style="@style/Font_12_black_85_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='@{@string/actually_paid+" ¥ "}' />
+                android:text='@{@string/total+" ¥ "}' />
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/Font_22_black_85_bold"

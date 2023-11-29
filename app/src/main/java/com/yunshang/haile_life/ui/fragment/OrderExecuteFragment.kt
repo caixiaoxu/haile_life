@@ -17,6 +17,7 @@ import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
+import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
@@ -69,7 +70,8 @@ class OrderExecuteFragment :
                 ) { index, childBinding, data ->
                     childBinding.title =
                         if (0 == index) StringUtils.getString(R.string.service) + "：" else ""
-                    childBinding.content = "${data.goodsItemName} ${data.unit}${data.unitValue}"
+                    childBinding.content =
+                        "${data.goodsItemName} ${data.unit.toRemove0Str()}${data.unitValue}"
                     childBinding.tail =
                         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(data.originPrice)
                 }
@@ -106,13 +108,15 @@ class OrderExecuteFragment :
         }
 
         mBinding.tvOrderExecuteCoerceDevice.setOnClickListener {
-            CommonDialog.Builder("您确定要强制启动该设备？").apply {
+            CommonDialog.Builder("是否强启").apply {
                 dialogBgResource = R.drawable.shape_dialog_bg
                 negativeTxt = StringUtils.getString(R.string.cancel)
                 setPositiveButton(StringUtils.getString(R.string.sure)) {
-                    mViewModel.coerceDevice(requireContext(), mActivityViewModel.orderNo) {
-                        mActivityViewModel.requestData()
-                    }
+                    mViewModel.coerceDevice(
+                        requireContext(),
+                        mActivityViewModel.orderNo,
+                        mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfillingItem?.fulfillId
+                    )
                 }
             }.build().show(childFragmentManager)
         }
@@ -127,7 +131,9 @@ class OrderExecuteFragment :
                 ?.let {
                     it * 60
                 } ?: 0
-        } catch (e: Exception) { 0 }
+        } catch (e: Exception) {
+            0
+        }
         // 没有启动设备就启动
 
         // 没有启动设备就启动
@@ -146,12 +152,12 @@ class OrderExecuteFragment :
 //                }
 //            }
 //        } else {
-            DateTimeUtils.formatDateFromString(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.finishTime)
-                ?.let {
-                    val diff = ((it.time - System.currentTimeMillis()) / 1000).toInt()
-                    mViewModel.remainingTime.value = if (diff < 0) 0 else diff
-                    mViewModel.checkValidTime()
-                }
+        DateTimeUtils.formatDateFromString(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.finishTime)
+            ?.let {
+                val diff = ((it.time - System.currentTimeMillis()) / 1000).toInt()
+                mViewModel.remainingTime.value = if (diff < 0) 0 else diff
+                mViewModel.checkValidTime()
+            }
 //        }
     }
 

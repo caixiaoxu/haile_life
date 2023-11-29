@@ -25,6 +25,7 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
+import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
@@ -67,7 +68,6 @@ class AppointmentOrderVerifyFragment :
                 }
                 val inflater = LayoutInflater.from(requireContext())
                 if (detail.orderItemList.isNotEmpty()) {
-                    val isSingle = 1 == detail.orderItemList.size
                     for (good in detail.orderItemList.filter { item ->
                         !DeviceCategory.isDispenser(
                             item.categoryCode
@@ -94,7 +94,7 @@ class AppointmentOrderVerifyFragment :
                             false
                         )
                         childGoodBinding.item = good
-                        childGoodBinding.isSingle = isSingle
+                        childGoodBinding.showDiscount = detail.showDiscount()
                         mBinding.includeOrderSpecs.llOrderSubmitGood.addView(
                             childGoodBinding.root,
                             (mBinding.includeOrderSpecs.llOrderSubmitGood.childCount - 2),
@@ -131,10 +131,11 @@ class AppointmentOrderVerifyFragment :
                                 null,
                                 false
                             )
+                        childDispenserGoodBinding.showDiscount = detail.showDiscount()
                         childDispenserGoodBinding.llOrderSubmitGoodDispenserItem.buildChild<ItemOrderSubmitGoodItemBinding, TradePreviewGoodItem>(
                             dispenserList
                         ) { _, childBinding, data ->
-                            childBinding.title = data.goodsItemName + "${data.num}ml"
+                            childBinding.title = data.goodsItemName + "${data.num.toRemove0Str()}ml"
                             childBinding.type = 0
                             childBinding.value = data.getOriginAmountStr()
                         }
@@ -181,7 +182,7 @@ class AppointmentOrderVerifyFragment :
                 ) { index, childBinding, data ->
                     childBinding.title =
                         if (0 == index) StringUtils.getString(R.string.service) + "：" else ""
-                    childBinding.content = "${data.goodsItemName} ${data.unit}${data.unitValue}"
+                    childBinding.content = "${data.goodsItemName} ${data.unit.toRemove0Str()}${data.unitValue}"
                     childBinding.tail =
                         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(data.originPrice)
                 }

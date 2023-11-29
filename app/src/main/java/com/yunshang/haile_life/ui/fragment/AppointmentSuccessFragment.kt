@@ -16,6 +16,7 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.DeviceStateEntity
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
+import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.databinding.FragmentAppointmentSuccessBinding
 import com.yunshang.haile_life.databinding.IncludeAppointmentDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
@@ -53,7 +54,7 @@ class AppointmentSuccessFragment :
                 ) { index, childBinding, data ->
                     childBinding.title =
                         if (0 == index) StringUtils.getString(R.string.service) + "：" else ""
-                    childBinding.content = "${data.goodsItemName} ${data.unit}${data.unitValue}"
+                    childBinding.content = "${data.goodsItemName} ${data.unit.toRemove0Str()}${data.unitValue}"
                     childBinding.tail =
                         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(data.originPrice)
                 }

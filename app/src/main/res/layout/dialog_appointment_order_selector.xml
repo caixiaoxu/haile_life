@@ -206,12 +206,23 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/money"
-            app:layout_constraintBottom_toBottomOf="@id/view_order_select_submit_selected"
+            app:layout_constraintBottom_toTopOf="@id/tv_order_selector_submit_desc"
             app:layout_constraintEnd_toStartOf="@id/view_order_select_submit_selected"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/view_order_select_submit_selected"
             app:layout_constraintVertical_chainStyle="spread"
             tools:text="￥ 5.00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_selector_submit_desc"
+            style="@style/Font_12_black_65"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/view_order_select_submit_selected"
+            app:layout_constraintEnd_toEndOf="@id/tv_order_selector_submit_price"
+            app:layout_constraintStart_toStartOf="@id/tv_order_selector_submit_price"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_selector_submit_price"
+            tools:text="+立白洗衣液" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -29,7 +29,6 @@ import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
-import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
@@ -106,7 +105,6 @@ class OrderPaySubmitFragment :
                 }
                 val inflater = LayoutInflater.from(requireContext())
                 if (trade.itemList.isNotEmpty()) {
-                    val isSingle = 1 == trade.itemList.size
                     for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode) && !item.selfClean }) {
                         val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
                             inflater,
@@ -115,7 +113,7 @@ class OrderPaySubmitFragment :
                             false
                         )
                         childGoodBinding.item = good
-                        childGoodBinding.isSingle = isSingle
+                        childGoodBinding.showDiscount = trade.showDiscount()
                         mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.addView(
                             childGoodBinding.root,
                             (mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.childCount - 2),
@@ -137,6 +135,7 @@ class OrderPaySubmitFragment :
                                 null,
                                 false
                             )
+                        childDispenserGoodBinding.showDiscount = trade.showDiscount()
                         childDispenserGoodBinding.llOrderSubmitGoodDispenserItem.buildChild<ItemOrderSubmitGoodItemBinding, TradePreviewGoodItem>(
                             dispenserList
                         ) { _, childBinding, data ->
@@ -345,28 +344,16 @@ class OrderPaySubmitFragment :
             }
 
             // 判断是否跳转验证
-            if (!(301 == mActivityViewModel.orderDetails.value?.orderSubType && 50 == mActivityViewModel.orderDetails.value?.state)
-            ) {
-                CommonDialog.Builder("请确保您在设备面前，再进行支付。支付后会立即启动设备").apply {
-                    title = StringUtils.getString(R.string.friendly_reminder)
-                    negativeTxt = StringUtils.getString(R.string.close)
-                    setPositiveButton(StringUtils.getString(R.string.i_know)) {
-                        payDialog()
-                    }
-                }.build().show(childFragmentManager)
-            } else {
-                payDialog()
-            }
+            payDialog()
         }
     }
 
     private fun payDialog() {
         mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.let { firstItem ->
-            val isSpecialDevice = firstItem.spuCode == "04001030"
-            if ((!SPRepository.isNoAppointPrompt && !DeviceCategory.isHair(firstItem.categoryCode))
-                || isSpecialDevice
-            ) {
-                ScanOrderConfirmDialog.Builder(firstItem.categoryCode, isSpecialDevice, true) {
+            if (!DeviceCategory.isHair(firstItem.categoryCode)) {
+                val hasClean =
+                    true == mActivityViewModel.orderDetails.value?.orderItemList?.any { item -> item.selfClean }
+                ScanOrderConfirmDialog.Builder(firstItem.categoryCode, hasClean) {
                     goPay()
                 }.build().show(childFragmentManager)
             } else {

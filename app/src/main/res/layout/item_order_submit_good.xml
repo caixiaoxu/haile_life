@@ -9,7 +9,7 @@
         <import type="com.yunshang.haile_life.data.agruments.DeviceCategory" />
 
         <variable
-            name="isSingle"
+            name="showDiscount"
             type="java.lang.Boolean" />
 
         <variable
@@ -37,7 +37,7 @@
         <include
             android:id="@+id/include_order_submit_good_discount"
             layout="@layout/item_order_submit_good_item"
-            android:visibility="@{(0 == item.getDiscountAmountStr().length() || isSingle)?View.GONE:View.VISIBLE}"
+            android:visibility="@{showDiscount?View.VISIBLE:View.GONE}"
             app:title="@{@string/good_discount}"
             app:type="@{2}"
             app:value="@{item.getDiscountAmountStr}" />
@@ -45,6 +45,7 @@
         <include
             android:id="@+id/include_order_submit_good_actually_paid"
             layout="@layout/item_order_submit_good_item"
+            android:visibility="@{showDiscount?View.VISIBLE:View.GONE}"
             app:title="@{@string/actually_paid}"
             app:type="@{2}"
             app:value="@{item.getRealAmountStr}" />

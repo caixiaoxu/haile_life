@@ -31,6 +31,14 @@ data class TradePreviewEntity(
         e.printStackTrace()
         false
     }
+
+    fun showDiscount(): Boolean = itemList.size > 1 &&
+            try {
+                discountPrice.toDouble() > 0
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
 }
 
 data class TradePreviewGoodItem(
@@ -47,7 +55,7 @@ data class TradePreviewGoodItem(
     val realUnitAmount: String,
     val shopId: Int? = null,
     val goodsCategoryId: Int? = null,
-    val selfClean:Boolean = false
+    val selfClean: Boolean = false
 ) {
     fun getCategoryIcon(): Int =
         if (goodsCategoryCode.isNullOrEmpty()) 0 else when (goodsCategoryCode) {

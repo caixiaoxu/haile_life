@@ -77,6 +77,14 @@ data class OrderEntity(
     val fulfillInfo: FulfillInfo? = null
 ) : BaseObservable(), IMultiTypeEntity {
 
+    fun showDiscount(): Boolean = orderItemList.size > 1 &&
+            try {
+                discountPrice?.let { it > 0 } ?: false
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+
     val isNormalOrder: Boolean
         get() = state >= 1000 || state in 400 until 500
 
@@ -278,7 +286,9 @@ data class OrderEntity(
         }" else ""
 
     fun getOrderDiscountTotalPrice(): String = try {
-        com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(originPrice.toDouble() - payAmount.toDouble())
+        val price = originPrice.toDouble() - payAmount.toDouble()
+        if (price <= 0) ""
+        else com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(price)
     } catch (e: Exception) {
         e.printStackTrace()
         ""
@@ -328,7 +338,8 @@ data class OrderItem(
     val goodsItemInfoDto: GoodsItemInfoDto?,
     val positionId: Int,
     val positionName: String,
-    val spuCode: String
+    val spuCode: String,
+    val selfClean: Boolean = false,
 ) {
 
     val goodsItemInfo: GoodsItemInfoEntity?
@@ -415,10 +426,14 @@ data class PromotionParticipation(
     val promotionProduct: Int,
     val promotionProductName: String
 ) {
-    fun getOrderDeviceDiscountPrice(): String =
-        com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
-            "-$discountPrice"
-        ) ?: ""
+    fun getOrderDeviceDiscountPrice(): String = try {
+        val price = discountPrice.toDouble()
+        if (price <= 0) ""
+        else com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(price)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
+    }
 }
 
 data class CheckInfo(
@@ -460,7 +475,7 @@ data class FulfillingItem(
         val timeVal = if (timeStamp > 60) {
             " ${ceil(timeStamp * 1.0 / 60).toInt()}分钟"
         } else {
-            " ${timeStamp % 60}秒"
+            " 1分钟"
         }
         return "${StringUtils.getString(R.string.predict_remnant)} $timeVal"
     }

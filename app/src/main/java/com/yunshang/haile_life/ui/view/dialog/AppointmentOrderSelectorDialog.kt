@@ -212,10 +212,12 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
 
         builder.selectExtAttr.observe(this) {
             builder.totalPrice()
+            builder.attachConfigure()
         }
 
         builder.selectSelfClean.observe(this) {
             builder.totalPrice()
+            builder.attachConfigure()
         }
 
         builder.needAttach.observe(this) {
@@ -228,6 +230,11 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
 
         builder.totalPriceVal.observe(this) {
             mBinding.tvOrderSelectorSubmitPrice.text = "${if (it < 0) "-" else ""}￥ ${abs(it)}"
+        }
+
+        builder.attachConfigureVal.observe(this) {
+            mBinding.tvOrderSelectorSubmitDesc.text = it
+            mBinding.tvOrderSelectorSubmitDesc.visibility(!it.isNullOrEmpty())
         }
 
         mBinding.btnAppointmentOrderSelectorNotReason.setOnClickListener {
@@ -367,6 +374,7 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
                                         rb.setOnClickListener {
                                             builder.selectAttachSku[data.id]?.value = item
                                             builder.totalPrice()
+                                            builder.attachConfigure()
                                         }
                                     }
                                     cl.addView(
@@ -463,6 +471,10 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             MutableLiveData()
         }
 
+        val attachConfigureVal: MutableLiveData<String> by lazy {
+            MutableLiveData()
+        }
+
         val modelTitle: String = StringUtils.getString(
             R.string.select_work_model,
             deviceDetail.value?.categoryName?.replace("机", "")
@@ -480,14 +492,39 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             }
         }
 
-        fun totalPrice() {
-            var attachTotal = BigDecimal("0.0")
-            selectAttachSku.forEach { item ->
-                if (!item.value.value?.unitPrice.isNullOrEmpty()) {
-                    attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
+        fun attachConfigure() {
+            var configure = ""
+            if (true == needAttach.value) {
+                selectAttachSku.forEach { item ->
+                    val name =
+                        deviceDetail.value?.attachItems?.find { it -> it.id == item.key }?.name
+                    if (!name.isNullOrEmpty()) {
+                        item.value.value?.let {
+                            if (it.unitPrice.isNotEmpty()) {
+                                configure += "+" + name + "￥" + it.unitPrice
+                            }
+                        }
+                    }
                 }
             }
-            if (true == selectSelfClean.value) {
+            if (true == needSelfClean.value && true == selectSelfClean.value) {
+                configure += "+" + "筒自洁" + "￥" + deviceDetail.value?.selfCleanValue?.price
+            }
+            attachConfigureVal.value = if (configure.isNotEmpty()) {
+                configure.substring(1)
+            } else configure
+        }
+
+        fun totalPrice() {
+            var attachTotal = BigDecimal("0.0")
+            if (true == needAttach.value) {
+                selectAttachSku.forEach { item ->
+                    if (!item.value.value?.unitPrice.isNullOrEmpty()) {
+                        attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
+                    }
+                }
+            }
+            if (true == needSelfClean.value && true == selectSelfClean.value) {
                 if (!deviceDetail.value?.selfCleanValue?.price.isNullOrEmpty()) {
                     attachTotal =
                         attachTotal.add(BigDecimal(deviceDetail.value!!.selfCleanValue!!.price))

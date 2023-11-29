@@ -191,6 +191,7 @@
     <string name="go_buy">去购买</string>
     <string name="no_prompt">不再提示</string>
     <string name="special_device_prompt">在提交订单后，按洗衣机上的桶自洁按键，会导致设备不能正常使用。若需要桶自洁，请在提交订单前操作。</string>
+    <string name="order_sure_prompt">确认后，机器将自动启动，请务必确认</string>
     <string name="submit_order">提交订单</string>
     <string name="submit_order_prompt">请在规定时间内支付，否则订单将会取消</string>
     <string name="go_pay">去支付</string>
@@ -359,11 +360,13 @@
         <item>请确认当前洗衣机舱门已经锁好</item>
         <item>请确认所有衣物都已放入洗衣机</item>
         <item>没有将易损衣物、奢饰品放入洗衣机</item>
+        <item>请勿放衣服，支付后会立即启动筒自洁</item>
     </string-array>
     <string-array name="scan_order_dryer_confirm">
         <item>请确认当前烘干机舱门已经锁好</item>
         <item>请确认所有衣物都已放入烘干机</item>
         <item>没有将易损衣物、奢饰品放入烘干机</item>
+        <item>请勿放鞋子，支付后会立即启动筒自洁</item>
     </string-array>
     <string-array name="scan_order_shoes_confirm">
         <item>请确认当前洗鞋机舱门已经锁好</item>
