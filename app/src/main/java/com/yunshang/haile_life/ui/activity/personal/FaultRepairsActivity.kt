@@ -238,6 +238,8 @@ class FaultRepairsActivity :
             }.build().show(supportFragmentManager)
         }
 
+        ViewUtils.editTextSlide(mBinding.etFaultRepairsDesc)
+
         mBinding.btnFaultRepairsSubmit.setOnClickListener {
             mViewModel.submitFaultRepairs(this@FaultRepairsActivity)
         }
