@@ -74,7 +74,7 @@ class DeviceSelfCleaningViewModel : BaseViewModel() {
                 )
             )
             withContext(Dispatchers.Main) {
-                SToast.showToast(context, "发送强启指令")
+                SToast.showToast(context, "发送强启指令成功")
             }
         })
     }
