@@ -76,7 +76,7 @@ data class OrderEntity(
     val refundCouponTime: String? = null,
     val redirectWorking: Boolean? = false,
     val fulfillInfo: FulfillInfo? = null,
-    val canSubmitFix:Boolean = false
+    val canSubmitFix: Boolean = false
 ) : BaseObservable(), IMultiTypeEntity {
 
     @Transient
@@ -414,10 +414,14 @@ data class PromotionParticipation(
     val promotionProduct: Int,
     val promotionProductName: String
 ) {
-    fun getOrderDeviceDiscountPrice(): String =
-        com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(
-            "-$discountPrice"
-        ) ?: ""
+    fun getOrderDeviceDiscountPrice(): String = try {
+        val price = discountPrice.toDouble()
+        if (price <= 0) ""
+        else com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(price)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
+    }
 }
 
 data class CheckInfo(
