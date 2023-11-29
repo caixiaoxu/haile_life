@@ -107,20 +107,6 @@ class ShopPositionDetailViewModel : BaseViewModel() {
                     )
                 )
             )?.let {
-//                val list = mutableListOf<ShopPositionDeviceEntity>()
-//                it.items?.let {
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                    list.addAll(it)
-//                }
                 curDeviceCategory.value?.refreshDeviceList(1 == page, it.items, it.total)
                 withContext(Dispatchers.Main) {
                     callback?.invoke(it.items)

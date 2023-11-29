@@ -68,11 +68,11 @@
             android:background="@drawable/shape_s19ff630e_r4"
             android:paddingHorizontal="6dp"
             android:paddingVertical="2dp"
-            android:text="@{item.enableReserve?@string/can_appointment:@string/can_not_appointment}"
+            android:text="@{1 == item.reserveState?@string/can_appointment:@string/can_not_appointment}"
             app:layout_constraintBottom_toBottomOf="@id/tv_shop_position_detail_device_state"
             app:layout_constraintStart_toEndOf="@id/tv_shop_position_detail_device_state"
             app:layout_constraintTop_toTopOf="@id/tv_shop_position_detail_device_state"
-            app:visibility="@{item.enableReserve}"
+            app:visibility="@{1 == item.reserveState}"
             tools:text="@string/can_appointment" />
 
         <!--        <androidx.appcompat.widget.AppCompatTextView-->
