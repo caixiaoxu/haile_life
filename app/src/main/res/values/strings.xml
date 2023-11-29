@@ -266,7 +266,7 @@
     <string name="predict_remnant">预计剩余</string>
     <string name="start_washing">开始洗涤</string>
     <string name="order_device_self_cleaning_prompt1">请在规定时间内开始洗涤，否则订单将会取消</string>
-    <string name="order_device_self_cleaning_prompt2">自清洁结束后，才可点击“开始洗涤”,点击“开始洗涤”后设备立即启动，请先放入衣物，再点击“开始洗涤”</string>
+    <string name="order_device_self_cleaning_prompt2">自清洁结束后，才可点击“开始洗涤”。点击“开始洗涤”后设备立即启动，请先放入衣物，再点击“开始洗涤”</string>
     <string name="order_device_self_cleaning_prompt3">点击“开始洗涤”后设备立即启动，请先放入衣物，再点击“开始洗涤”</string>
     <string name="order_execute_time_prompt">预计剩余时间（分钟）</string>
     <string name="order_execute_prompt">衣物面料、衣物量等会影响运行失常，预计剩余时间仅供参考，请以实际时间为准！</string>
