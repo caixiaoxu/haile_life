@@ -58,7 +58,7 @@ data class TradePreviewGoodItem(
     val selfClean: Boolean = false
 ) {
     fun getCategoryIcon(): Int =
-        if (goodsCategoryCode.isNullOrEmpty()) 0 else when (goodsCategoryCode) {
+        if (goodsCategoryCode.isNullOrEmpty() || selfClean) 0 else when (goodsCategoryCode) {
             DeviceCategory.Washing -> R.mipmap.icon_order_wash
             DeviceCategory.Dryer -> R.mipmap.icon_order_dryer
             DeviceCategory.Shoes -> R.mipmap.icon_order_shoes

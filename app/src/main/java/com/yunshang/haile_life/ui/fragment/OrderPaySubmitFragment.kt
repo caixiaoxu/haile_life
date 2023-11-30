@@ -126,7 +126,7 @@ class OrderPaySubmitFragment :
 
                     // 投放器和筒自洁的数据
                     val dispenserList =
-                        trade.itemList.filter { item -> DeviceCategory.isDispenser(item.goodsCategoryCode) || item.selfClean }
+                        trade.itemList.filter { item -> DeviceCategory.isDispenser(item.goodsCategoryCode) }
                     if (dispenserList.isNotEmpty()) {
                         val childDispenserGoodBinding =
                             DataBindingUtil.inflate<ItemOrderSubmitGoodDispenserBinding>(
@@ -168,6 +168,25 @@ class OrderPaySubmitFragment :
                         }
                         mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.addView(
                             childDispenserGoodBinding.root,
+                            (mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.childCount - 2),
+                            ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                        )
+                    }
+
+                    trade.itemList.find { item -> item.selfClean }?.let { good ->
+                        val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
+                            inflater,
+                            R.layout.item_order_submit_good,
+                            null,
+                            false
+                        )
+                        childGoodBinding.item = good
+                        childGoodBinding.showDiscount = trade.showDiscount()
+                        mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.addView(
+                            childGoodBinding.root,
                             (mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.childCount - 2),
                             ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
