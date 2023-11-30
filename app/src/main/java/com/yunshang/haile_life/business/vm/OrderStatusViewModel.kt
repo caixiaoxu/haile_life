@@ -9,10 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.SToast
-import com.yunshang.haile_life.business.apiService.CapitalService
-import com.yunshang.haile_life.business.apiService.DeviceService
-import com.yunshang.haile_life.business.apiService.LoginUserService
-import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.business.apiService.*
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -35,6 +32,7 @@ class OrderStatusViewModel : BaseViewModel() {
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mCapitalRepo = ApiRepository.apiClient(CapitalService::class.java)
     private val mUserRepo = ApiRepository.apiClient(LoginUserService::class.java)
+    private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
 
     var orderNo: String? = null
 
@@ -132,6 +130,10 @@ class OrderStatusViewModel : BaseViewModel() {
 
     var selectParticipate: MutableList<TradePreviewParticipate>? = null
 
+    val shopConfig: MutableLiveData<ShopConfigEntity?> by lazy {
+        MutableLiveData()
+    }
+
     private fun getCommonParams(autoSelect: Boolean) = hashMapOf<String, Any?>(
         "orderNo" to orderNo,
         "autoSelectPromotion" to if (autoSelect) (null == tradePreview.value) else false
@@ -156,8 +158,23 @@ class OrderStatusViewModel : BaseViewModel() {
                 )
             )?.let {
                 tradePreview.postValue(it)
+
+                // 强制使用海星
+                val ret = ApiRepository.dealApiResult(
+                    mShopRepo.requestShopConfigList(
+                        ApiRepository.createRequestBody(
+                            hashMapOf(
+                                "shopId" to it.itemList.firstOrNull()?.shopId,
+                                "goodsId" to it.itemList.firstOrNull()?.goodsId,
+                                "goodsCategoryId" to it.itemList.firstOrNull()?.goodsCategoryId
+                            )
+                        )
+                    )
+                )
+                shopConfig.postValue(ret?.find { item -> 1 == item.configType })
             }
 
+            // 资金
             ApiRepository.dealApiResult(
                 mCapitalRepo.requestBalance(
                     ApiRepository.createRequestBody("")

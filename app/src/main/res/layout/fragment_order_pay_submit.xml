@@ -68,10 +68,10 @@
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="4dp"
                         android:text="@string/cancel_order"
-                        app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder}"
                         app:layout_constraintBottom_toBottomOf="@id/tv_order_pay_submit_status_time_remaining"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tv_order_pay_submit_status_time_remaining" />
+                        app:layout_constraintTop_toTopOf="@id/tv_order_pay_submit_status_time_remaining"
+                        app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder}" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/Font_12_72333333"
@@ -93,8 +93,21 @@
                 <include
                     android:id="@+id/include_order_pay_submit_pay_way"
                     layout="@layout/layout_pay_way"
-                    app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder}"
-                    app:isDryer="@{vm.isDryer()}" />
+                    app:isDryer="@{vm.isDryer()}"
+                    app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder &amp;&amp; !avm.shopConfig.result}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btn_order_pay_recharge"
+                    style="@style/Font_14_black_85"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:drawableStart="@mipmap/icon_shop_detail_recharge"
+                    android:drawableEnd="@mipmap/icon_arrow_right"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="@string/starfish_recharge" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
 
@@ -102,8 +115,8 @@
             android:layout_width="match_parent"
             android:layout_height="98dp"
             android:background="@color/white"
-            app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder}"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder}">
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/Font_20_black_85_bold"

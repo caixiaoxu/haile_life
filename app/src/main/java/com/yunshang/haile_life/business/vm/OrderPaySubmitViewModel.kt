@@ -25,8 +25,6 @@ import java.util.*
  * 作者姓名 修改时间 版本号 描述
  */
 class OrderPaySubmitViewModel : BaseViewModel() {
-
-
     val isDryer: MutableLiveData<Boolean> by lazy { MutableLiveData() }
 
     val inValidOrder: MutableLiveData<Boolean> = MutableLiveData(false)

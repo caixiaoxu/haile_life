@@ -10,25 +10,27 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StatusBarUtils
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderPaySubmitViewModel
 import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
-import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderPaySubmitBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.activity.marketing.DiscountCouponSelectorActivity
+import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
@@ -300,6 +302,11 @@ class OrderPaySubmitFragment :
             }
         }
 
+        // 充值后刷新店铺配置
+        LiveDataBus.with(BusEvents.RECHARGE_SUCCESS_STATUS)?.observe(this) {
+            mActivityViewModel.requestPreview()
+        }
+
         mViewModel.jump.observe(this) {
             when (it) {
                 1 -> mActivityViewModel.requestPreview()
@@ -327,6 +334,31 @@ class OrderPaySubmitFragment :
         }
 
         mBinding.btnOrderPaySubmitPay.setOnClickListener {
+            if (true == mActivityViewModel.shopConfig.value?.result && !mActivityViewModel.tradePreview.value!!.isZero()) {
+                CommonDialog.Builder("海星余额不足，请先购买海星后再使用").apply {
+                    title = StringUtils.getString(R.string.friendly_reminder)
+                    isCancelable = mActivityViewModel.shopConfig.value?.closable ?: true
+                    negativeTxt = StringUtils.getString(R.string.cancel)
+                    setPositiveButton(StringUtils.getString(R.string.go_buy)) {
+                        startActivity(
+                            Intent(
+                                requireContext(),
+                                RechargeStarfishActivity::class.java
+                            ).apply {
+                                putExtras(
+                                    IntentParams.RechargeStarfishParams.pack(
+                                        mActivityViewModel.tradePreview.value?.itemList?.firstOrNull()?.shopId
+                                    )
+                                )
+                            })
+                    }
+                }.build().show(childFragmentManager)
+                return@setOnClickListener
+            }
+            if (true == mActivityViewModel.shopConfig.value?.result) {
+                mActivityViewModel.payMethod = 1001
+            }
+
             if (-1 == mActivityViewModel.payMethod) {
                 SToast.showToast(requireContext(), "请选择支付方式")
                 return@setOnClickListener

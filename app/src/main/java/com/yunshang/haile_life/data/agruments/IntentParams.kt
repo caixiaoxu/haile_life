@@ -353,9 +353,11 @@ object IntentParams {
         /**
          * 包装参数
          */
-        fun pack(shopId: Int): Bundle =
+        fun pack(shopId: Int?): Bundle =
             Bundle().apply {
-                putInt(ShopId, shopId)
+                shopId?.let {
+                    putInt(ShopId, shopId)
+                }
             }
 
         fun parseShopId(intent: Intent): Int = intent.getIntExtra(ShopId, -1)
