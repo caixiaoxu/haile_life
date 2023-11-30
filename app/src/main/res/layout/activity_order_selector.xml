@@ -103,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
                     android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
                     app:divider="@drawable/divder_efefef"
                     app:itemLayout="@layout/item_scan_order_model"
                     app:showDividers="middle"

@@ -54,17 +54,14 @@ class OrderSelectorViewModel : BaseViewModel() {
     var selectAttachSku: MutableMap<Int, MutableLiveData<ExtAttrDtoItem?>> = mutableMapOf()
 
     val needAttach: LiveData<Boolean> = selectDeviceConfig.map {
-        it?.let { item ->
-            !(item.name == "单脱" || item.name == "筒自洁")
-        } ?: false
+        (it?.let { item ->
+            !(item.name == "单脱" || item.name == "筒自洁") && (it.attachMap?.get(DeviceDetailEntity.Dispenser)
+                ?: false)
+        } ?: false)
     }
 
     val needSelfClean: LiveData<Boolean> = selectDeviceConfig.map {
-        (it?.attachMap?.get(DeviceDetailEntity.SelfClean) ?: false).apply {
-            if (!this){
-                selectSelfClean.value = false
-            }
-        }
+        (it?.attachMap?.get(DeviceDetailEntity.SelfClean) ?: false)
     }
 
     val isDryer: LiveData<Boolean> = deviceDetail.map {
@@ -163,32 +160,32 @@ class OrderSelectorViewModel : BaseViewModel() {
                         )
                     )
                 )?.let { deviceStateList ->
-                    deviceDetail.postValue(detail)
-                    stateList.postValue(deviceStateList.stateList)
-                }
-
-                val list = detail.items.filter { item -> 1 == item.soldState }
-                //如果没有默认，就显示第一个
-                (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
-                    ?: run { list.firstOrNull() })?.let { first ->
-                    selectDeviceConfig.postValue(first)
-                    withContext(Dispatchers.Main) {
-                        changeDeviceConfig(first)
-                    }
-                }
-
-                if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
-                    // 初始化关联的sku
-                    selectAttachSku = mutableMapOf()
-                    detail.attachItems?.forEach { item ->
-                        if (item.extAttrDto.items.isNotEmpty()) {
-                            selectAttachSku[item.id] =
-                                item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
-                                    ?.let { default ->
-                                        MutableLiveData(default)
-                                    } ?: MutableLiveData(null)
+                    val list = detail.items.filter { item -> 1 == item.soldState }
+                    //如果没有默认，就显示第一个
+                    (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
+                        ?: run { list.firstOrNull() })?.let { first ->
+                        selectDeviceConfig.postValue(first)
+                        withContext(Dispatchers.Main) {
+                            changeDeviceConfig(first)
                         }
                     }
+
+                    if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
+                        // 初始化关联的sku
+                        selectAttachSku = mutableMapOf()
+                        detail.attachItems?.forEach { item ->
+                            if (item.extAttrDto.items.isNotEmpty()) {
+                                selectAttachSku[item.id] =
+                                    item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
+                                        ?.let { default ->
+                                            MutableLiveData(default)
+                                        } ?: MutableLiveData(null)
+                            }
+                        }
+                    }
+
+                    deviceDetail.postValue(detail)
+                    stateList.postValue(deviceStateList.stateList)
                 }
             }
         })

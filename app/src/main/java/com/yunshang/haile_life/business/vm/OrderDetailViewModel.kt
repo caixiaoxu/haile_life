@@ -44,8 +44,6 @@ class OrderDetailViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    val changeUseModel: MutableLiveData<Boolean> = MutableLiveData(false)
-
     val orderDetail: MutableLiveData<OrderEntity> by lazy {
         MutableLiveData()
     }
@@ -127,13 +125,10 @@ class OrderDetailViewModel : BaseViewModel() {
         addSource(showPayOrder) {
             value = checkShowAnyBtn()
         }
-        addSource(changeUseModel) {
-            value = checkShowAnyBtn()
-        }
     }
 
     private fun checkShowAnyBtn() =
-        (((true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && true != formScan.value) || (true == formScan.value && false == changeUseModel.value))
+        (((true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && true != formScan.value))
 
     fun requestOrderDetailAsync(showLoading: Boolean = true) {
         if (orderNo.isNullOrEmpty()) return
@@ -214,7 +209,6 @@ class OrderDetailViewModel : BaseViewModel() {
             )
             LiveDataBus.post(BusEvents.APPOINT_ORDER_USE_STATUS, true)
             formScan.postValue(false)
-            changeUseModel.postValue(false)
 
             delay(2_000)
             requestOrderDetail()

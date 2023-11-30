@@ -190,7 +190,7 @@ class OrderSelectorActivity :
             mViewModel.attachConfigure()
         }
 
-        mViewModel.selectSelfClean.observe(this){
+        mViewModel.selectSelfClean.observe(this) {
             mViewModel.totalPrice()
             mViewModel.attachConfigure()
         }
@@ -348,16 +348,23 @@ class OrderSelectorActivity :
                 )
             )
 
-            // 关联sku
-            goods.addAll(mViewModel.selectAttachSku.filter { item -> !item.value.value?.unitAmount.isNullOrEmpty() }
-                .mapNotNull { item ->
-                    item.value.value?.let { dtos ->
-                        Purchase(mViewModel.deviceDetail.value?.id, item.key, dtos.unitAmount, 2)
-                    }
-                })
+            if (true == mViewModel.needAttach.value) {
+                // 关联sku
+                goods.addAll(mViewModel.selectAttachSku.filter { item -> !item.value.value?.unitAmount.isNullOrEmpty() }
+                    .mapNotNull { item ->
+                        item.value.value?.let { dtos ->
+                            Purchase(
+                                mViewModel.deviceDetail.value?.id,
+                                item.key,
+                                dtos.unitAmount,
+                                2
+                            )
+                        }
+                    })
+            }
 
             //筒自洁
-            if (true == mViewModel.selectSelfClean.value) {
+            if (true == mViewModel.needSelfClean.value && true == mViewModel.selectSelfClean.value) {
                 goods.add(
                     Purchase(
                         mViewModel.deviceDetail.value?.selfCleanValue?.selfCleanGoodsId,
@@ -373,8 +380,8 @@ class OrderSelectorActivity :
                 if (2 == mViewModel.deviceDetail.value?.deviceState) {
                     reserveMethod = mViewModel.deviceDetail.value?.reserveMethod
                 }
-            }) { success,result ->
-                if (success){
+            }) { success, result ->
+                if (success) {
                     result?.orderNo?.let { orderNo ->
                         startActivity(
                             Intent(

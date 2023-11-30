@@ -264,20 +264,6 @@ class OrderDetailActivity :
                 finish()
             }
         }
-
-        mBinding.tvOrderDetailAppointNoUse.setOnClickListener {
-            startActivity(
-                Intent(
-                    this@OrderDetailActivity,
-                    ScanOrderActivity::class.java
-                ).apply {
-                    putExtras(intent)
-                })
-            finish()
-        }
-        mBinding.tvOrderDetailAppointUse.setOnClickListener {
-            mViewModel.changeUseModel.value = true
-        }
     }
 
     override fun initData() {

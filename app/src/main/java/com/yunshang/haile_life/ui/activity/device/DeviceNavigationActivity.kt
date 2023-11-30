@@ -22,15 +22,12 @@ import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityDeviceNavigationBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
-import com.yunshang.haile_life.ui.activity.order.DrinkingScanOrderActivity
-import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
-import com.yunshang.haile_life.ui.activity.order.OrderListActivity
-import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.personal.DiscountCouponActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
+import com.yunshang.haile_life.ui.activity.order.*
 import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
@@ -137,11 +134,12 @@ class DeviceNavigationActivity :
                                     else
                                         Intent(
                                             this@DeviceNavigationActivity,
-                                            ScanOrderActivity::class.java
+                                            OrderSelectorActivity::class.java
                                         ).apply {
                                             putExtras(
-                                                IntentParams.ScanOrderParams.pack(
-                                                    code, scan, detail
+                                                IntentParams.DeviceParams.pack(
+                                                    detail.categoryCode,
+                                                    detail.id
                                                 )
                                             )
                                         })
