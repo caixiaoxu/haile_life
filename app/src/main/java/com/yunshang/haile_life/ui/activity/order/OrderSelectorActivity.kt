@@ -232,6 +232,7 @@ class OrderSelectorActivity :
                         } else {
                             val list = arrayListOf<ExtAttrDtoItem>()
                             list.addAll(items)
+                            val hasDef = items.any { item -> item.isEnabled && item.isDefault }
                             list.add(
                                 items.first()
                                     .copy(unitAmount = "", isDefault = false, unitPrice = "")
@@ -250,6 +251,10 @@ class OrderSelectorActivity :
                                                     if (isSame != rb.isChecked) {
                                                         rb.isChecked = isSame
                                                     }
+                                                }
+                                            } ?: run {
+                                                if (item.unitAmount.isEmpty()) {
+                                                    rb.isChecked = true
                                                 }
                                             }
                                         }
@@ -354,7 +359,7 @@ class OrderSelectorActivity :
                     .mapNotNull { item ->
                         item.value.value?.let { dtos ->
                             Purchase(
-                                mViewModel.deviceDetail.value?.id,
+                                mViewModel.deviceDetail.value?.dispenserValue?.goodsId,
                                 item.key,
                                 dtos.unitAmount,
                                 2
