@@ -17,6 +17,7 @@ import com.yunshang.haile_life.databinding.ActivityOrderStatusBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.fragment.*
+import com.yunshang.haile_life.ui.view.dialog.OfficialAccountsDialog
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 class OrderStatusActivity :
@@ -55,23 +56,37 @@ class OrderStatusActivity :
                         // 待执行
                         showAppointmentPage(OrderExecuteFragment())
                     }
+                    if (1 != mViewModel.statusType) {
+                        requestOfficialAccounts()
+                    }
+                    mViewModel.statusType = 1
                 } else if ((301 == detail.orderSubType && 500 == detail.state && 1 == detail.appointmentState)// 先付费
                     || (303 == detail.orderSubType && 50 == detail.state && 1 == detail.appointmentState)// 后付费
                 ) {
                     // 预约成功
                     showAppointmentPage(AppointmentSuccessFragment())
+                    if (2 != mViewModel.statusType) {
+                        requestOfficialAccounts()
+                    }
+                    mViewModel.statusType = 2
                 } else if (((101 == detail.orderSubType || 106 == detail.orderSubType) && 50 == detail.state && 1 == detail.checkInfo?.checkState)// 预定订单
                     || (301 == detail.orderSubType && 500 == detail.state && 5 == detail.appointmentState && 1 == detail.checkInfo?.checkState) // 先付费
                     || (303 == detail.orderSubType && 50 == detail.state && 5 == detail.appointmentState && 1 == detail.checkInfo?.checkState) // 后付费
                 ) {
                     // 待验证
                     showAppointmentPage(AppointmentOrderVerifyFragment())
+                    requestOfficialAccounts()
+                    if (!(2 == mViewModel.statusType || 3 == mViewModel.statusType)) {
+                        requestOfficialAccounts()
+                    }
+                    mViewModel.statusType = 3
                 } else if (((101 == detail.orderSubType || 106 == detail.orderSubType) && 50 == detail.state && 2 == detail.checkInfo?.checkState) // 预定订单
                     || (301 == detail.orderSubType && 50 == detail.state)// 先付费
                     || (303 == detail.orderSubType && 50 == detail.state && 5 == detail.appointmentState && 2 == detail.checkInfo?.checkState) //后付费
                 ) {
                     // 待支付
                     showAppointmentPage(OrderPaySubmitFragment())
+                    mViewModel.statusType = 4
                 } else goToNormalOrderPage(detail.orderNo)
             }
         }
@@ -111,6 +126,14 @@ class OrderStatusActivity :
         mViewModel.jump.observe(this) {
             when (it) {
                 1 -> mViewModel.orderNo?.let { orderNo -> goToNormalOrderPage(orderNo) }
+            }
+        }
+    }
+
+    private fun requestOfficialAccounts() {
+        mViewModel.requestOfficialAccounts() {
+            if (!it.flag) {
+                OfficialAccountsDialog(it).show(supportFragmentManager, "OfficialAccounts")
             }
         }
     }

@@ -11,12 +11,10 @@ import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.business.apiService.CapitalService
 import com.yunshang.haile_life.business.apiService.DeviceService
+import com.yunshang.haile_life.business.apiService.LoginUserService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
-import com.yunshang.haile_life.data.entities.BalanceEntity
-import com.yunshang.haile_life.data.entities.OrderEntity
-import com.yunshang.haile_life.data.entities.TradePreviewEntity
-import com.yunshang.haile_life.data.entities.TradePreviewParticipate
+import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.thrid.AlipayHelper
 import kotlinx.coroutines.Dispatchers
@@ -36,10 +34,14 @@ class OrderStatusViewModel : BaseViewModel() {
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mCapitalRepo = ApiRepository.apiClient(CapitalService::class.java)
+    private val mUserRepo = ApiRepository.apiClient(LoginUserService::class.java)
 
     var orderNo: String? = null
 
     val orderDetails: MutableLiveData<OrderEntity> by lazy { MutableLiveData() }
+
+    // 控制关注弹窗的显示
+    var statusType = -1
 
     fun requestData(showLoading: Boolean = true) {
         if (orderNo.isNullOrEmpty()) return
@@ -51,6 +53,16 @@ class OrderStatusViewModel : BaseViewModel() {
                 orderDetails.postValue(it)
             }
         }, showLoading = showLoading)
+    }
+
+    fun requestOfficialAccounts(callBack: (officialAccounts: OfficialAccountsEntity) -> Unit) {
+        launch({
+            ApiRepository.dealApiResult(
+                mUserRepo.requestOfficialAccounts()
+            )?.let {
+                callBack(it)
+            }
+        }, showLoading = false)
     }
 
     /**
