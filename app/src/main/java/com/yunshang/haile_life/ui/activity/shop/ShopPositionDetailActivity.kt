@@ -4,6 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +18,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.ShopPositionDetailViewModel
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
@@ -45,6 +56,7 @@ import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 import com.yunshang.haile_life.ui.view.refresh.CommonLoadMoreRecyclerView
 import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.MapManagerUtils
+import com.yunshang.haile_life.web.WebViewActivity
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
@@ -57,13 +69,15 @@ class ShopPositionDetailActivity :
         ShopPositionDetailViewModel::class.java, BR.vm
     ) {
 
+    private var callPhone: String = ""
+
     // 拨打电话权限
     private val requestPermission =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             if (result.values.any { it }) {
                 // 授权权限成功
-                mViewModel.shopDetail.value?.serviceTelephone?.let {
-                    startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$it")))
+                if (callPhone.isNotEmpty()) {
+                    startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$callPhone")))
                 }
             } else {
                 // 授权失败
@@ -172,6 +186,46 @@ class ShopPositionDetailActivity :
 
         mViewModel.shopDetail.observe(this) {
             it?.let { detail ->
+                val prefix = StringUtils.getString(R.string.service_phone)
+                val phoneList = detail.serviceTelephone.split(",")
+                val content = "$prefix ${phoneList.joinToString(" / ")}"
+                mBinding.tvShopDetailContactPhone.movementMethod = LinkMovementMethod.getInstance()
+                mBinding.tvShopDetailContactPhone.highlightColor = Color.TRANSPARENT
+                mBinding.tvShopDetailContactPhone.text = SpannableString(content).apply {
+                    var start = prefix.length + 1
+                    phoneList.forEach { phone ->
+                        setSpan(
+                            ForegroundColorSpan(
+                                ContextCompat.getColor(
+                                    this@ShopPositionDetailActivity,
+                                    R.color.color_10d0e6
+                                )
+                            ), start, start + phone.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                        setSpan(
+                            object : ClickableSpan() {
+                                override fun onClick(v: View) {
+                                    DialogUtils.checkPermissionDialog(
+                                        this@ShopPositionDetailActivity,
+                                        supportFragmentManager,
+                                        SystemPermissionHelper.callPhonePermissions(),
+                                        "需要权限来拨打电话"
+                                    ) {
+                                        callPhone = phone
+                                        requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+                                    }
+                                }
+
+                                override fun updateDrawState(ds: TextPaint) {
+                                    //去掉下划线
+                                    ds.isUnderlineText = false
+                                }
+                            }, start, start + phone.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                        start += phone.length + 3
+                    }
+                }
+
                 val mS = DimensionUtils.dip2px(this@ShopPositionDetailActivity, 4f)
                 mBinding.llShopPositionDetailTags.buildChild<ItemShopPositionDetailTagsBinding, TimeMarketVO>(
                     it.timeMarketVOList,
@@ -338,16 +392,6 @@ class ShopPositionDetailActivity :
             }
         }
 
-        mBinding.tvShopDetailContactPhone.setOnClickListener {
-            DialogUtils.checkPermissionDialog(
-                this,
-                supportFragmentManager,
-                SystemPermissionHelper.callPhonePermissions(),
-                "需要权限来拨打电话"
-            ) {
-                requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
-            }
-        }
         mBinding.tvShopDetailRecharge.setOnClickListener {
             if (!checkLogin()) {
                 return@setOnClickListener

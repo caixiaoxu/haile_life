@@ -60,7 +60,11 @@ data class ShopPositionDetailEntity(
     }
 
     val appointmentNumVal: String
-        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.isGreaterThan0()) "${reserveNum}${StringUtils.getString(R.string.unit_tai)}" else ""
+        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.isGreaterThan0()) "${reserveNum}${
+            StringUtils.getString(
+                R.string.unit_tai
+            )
+        }" else ""
 
     fun formatDistance(): String =
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +
