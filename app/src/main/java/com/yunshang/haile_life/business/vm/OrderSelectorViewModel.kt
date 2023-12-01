@@ -149,6 +149,7 @@ class OrderSelectorViewModel : BaseViewModel() {
             DeviceCategory.Washing -> StringUtils.getString(R.string.scan_order_wash_hint)
             DeviceCategory.Dryer -> StringUtils.getString(R.string.scan_order_dryer_hint)
             DeviceCategory.Shoes -> StringUtils.getString(R.string.scan_order_shoes_hint)
+            DeviceCategory.Hair -> StringUtils.getString(R.string.scan_order_hair_hint)
             else -> ""
         }
     }
@@ -159,28 +160,6 @@ class OrderSelectorViewModel : BaseViewModel() {
             ApiRepository.dealApiResult(
                 mDeviceRepo.requestDeviceDetail(deviceId)
             )?.also { detail ->
-                if (1 != detail.deviceState){
-                    ApiRepository.dealApiResult(
-                        mDeviceRepo.requestDeviceStateList(
-                            ApiRepository.createRequestBody(
-                                hashMapOf("goodsId" to deviceId)
-                            )
-                        )
-                    )?.let { deviceStateList ->
-                        stateList.postValue(deviceStateList.stateList)
-                    }
-                }
-
-                val list = detail.items.filter { item -> 1 == item.soldState }
-                //如果没有默认，就显示第一个
-                (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
-                    ?: run { list.firstOrNull() })?.let { first ->
-                    selectDeviceConfig.postValue(first)
-                    withContext(Dispatchers.Main) {
-                        changeDeviceConfig(first)
-                    }
-                }
-
                 if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
                     // 初始化关联的sku
                     selectAttachSku = mutableMapOf()
@@ -201,6 +180,28 @@ class OrderSelectorViewModel : BaseViewModel() {
                 }
 
                 deviceDetail.postValue(detail)
+
+                val list = detail.items.filter { item -> 1 == item.soldState }
+                //如果没有默认，就显示第一个
+                (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
+                    ?: run { list.firstOrNull() })?.let { first ->
+                    selectDeviceConfig.postValue(first)
+                    withContext(Dispatchers.Main) {
+                        changeDeviceConfig(first)
+                    }
+                }
+
+                if (1 != detail.deviceState){
+                    ApiRepository.dealApiResult(
+                        mDeviceRepo.requestDeviceStateList(
+                            ApiRepository.createRequestBody(
+                                hashMapOf("goodsId" to deviceId)
+                            )
+                        )
+                    )?.let { deviceStateList ->
+                        stateList.postValue(deviceStateList.stateList)
+                    }
+                }
 
                 // 是否有公告
                 if (null == shopNotice.value) {

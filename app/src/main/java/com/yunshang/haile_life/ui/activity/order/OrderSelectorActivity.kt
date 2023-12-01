@@ -349,7 +349,7 @@ class OrderSelectorActivity :
             }
 
             val num =
-                (if (DeviceCategory.isDryer(mViewModel.deviceDetail.value?.categoryCode)) mViewModel.selectExtAttr.value?.unitAmount else 1)
+                (if (DeviceCategory.isDryerOrHairOrDispenser(mViewModel.deviceDetail.value?.categoryCode)) mViewModel.selectExtAttr.value?.unitAmount else 1)
                     ?: return@setOnClickListener
 
             // 主商品
