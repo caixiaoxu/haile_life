@@ -167,18 +167,8 @@ class OrderSelectorViewModel : BaseViewModel() {
                         )
                     )
                 )?.let { deviceStateList ->
-                    val list = detail.items.filter { item -> 1 == item.soldState }
-                    //如果没有默认，就显示第一个
-                    (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
-                        ?: run { list.firstOrNull() })?.let { first ->
-                        selectDeviceConfig.postValue(first)
-                        withContext(Dispatchers.Main) {
-                            changeDeviceConfig(first)
-                        }
-                    }
-
+                    // 初始化关联的sku
                     if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
-                        // 初始化关联的sku
                         selectAttachSku = mutableMapOf()
                         detail.attachItems?.forEach { item ->
                             if (item.extAttrDto.items.isNotEmpty()) {
@@ -197,6 +187,17 @@ class OrderSelectorViewModel : BaseViewModel() {
                     }
 
                     deviceDetail.postValue(detail)
+
+                    //如果没有默认，就显示第一个
+                    val list = detail.items.filter { item -> 1 == item.soldState }
+                    (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
+                        ?: run { list.firstOrNull() })?.let { first ->
+                        selectDeviceConfig.postValue(first)
+                        withContext(Dispatchers.Main) {
+                            changeDeviceConfig(first)
+                        }
+                    }
+
                     stateList.postValue(deviceStateList.stateList)
                 }
 

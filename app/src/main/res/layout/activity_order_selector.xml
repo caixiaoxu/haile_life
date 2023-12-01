@@ -31,8 +31,9 @@
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:background="@{vm.isDryer?@color/color_ffefe6:@color/color_e5fafc}"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="@{vm.hint}"
+            android:paddingHorizontal="16dp"
             android:textColor="@{vm.isDryer?@color/color_ff630e:@color/colorPrimary}"
             android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/bar_selector_title" />
