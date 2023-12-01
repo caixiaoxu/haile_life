@@ -104,6 +104,17 @@ class OrderSelectorActivity :
                                 itemBinding.item = item
                                 itemBinding.root.id = index + 1
                                 itemBinding.rbOrderModelItem.let { rb ->
+                                    // 吹风机使用中不可点击
+                                    if (DeviceCategory.isHair(detail.categoryCode) && 0 == item.amount) {
+                                        rb.setTextColor(
+                                            ContextCompat.getColor(
+                                                this@OrderSelectorActivity,
+                                                R.color.color_black_25
+                                            )
+                                        )
+                                        rb.setOnRadioClickListener { true }
+                                    }
+
                                     mViewModel.selectDeviceConfig.observe(this) {
                                         (item.id == it.id).let { isSame ->
                                             if (isSame != rb.isChecked) {

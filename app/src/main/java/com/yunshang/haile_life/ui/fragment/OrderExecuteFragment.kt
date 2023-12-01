@@ -14,6 +14,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.OrderExecuteViewModel
 import com.yunshang.haile_life.business.vm.OrderStatusViewModel
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
@@ -21,6 +22,7 @@ import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
+import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.setVisibility
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -83,6 +85,8 @@ class OrderExecuteFragment :
                     childBinding.content = data.promotionProductName
                     childBinding.tail = data.getOrderDeviceDiscountPrice()
                 }
+
+                mBinding.tvOrderExecutePrompt.setVisibility(!DeviceCategory.isHair(detail.orderItemList.firstOrNull()?.categoryCode))
             }
         }
 
@@ -134,8 +138,6 @@ class OrderExecuteFragment :
         } catch (e: Exception) {
             0
         }
-        // 没有启动设备就启动
-
         // 没有启动设备就启动
 //        if (0 == mActivityViewModel.orderDetails.value?.fulfillInfo?.fulfill) {
 //            mViewModel.remainingTime.value = mViewModel.totalTime
