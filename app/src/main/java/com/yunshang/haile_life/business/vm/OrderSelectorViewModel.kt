@@ -181,10 +181,15 @@ class OrderSelectorViewModel : BaseViewModel() {
 
                 deviceDetail.postValue(detail)
 
+                // 吹风机只选中未使用，
                 val list = detail.items.filter { item -> 1 == item.soldState }
-                //如果没有默认，就显示第一个
-                (list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
-                    ?: run { list.firstOrNull() })?.let { first ->
+                if (DeviceCategory.isHair(detail.categoryCode)) {
+                    list.find { item -> 1 == item.amount }
+                } else {
+                    //如果没有默认，就显示第一个
+                    list.find { item -> item.extAttrDto.items.any { attr -> attr.isEnabled && attr.isDefault } }
+                        ?: run { list.firstOrNull() }
+                }?.let { first ->
                     selectDeviceConfig.postValue(first)
                     withContext(Dispatchers.Main) {
                         changeDeviceConfig(first)

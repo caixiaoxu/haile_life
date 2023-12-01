@@ -366,12 +366,12 @@
         <item>请确认当前烘干机舱门已经锁好</item>
         <item>请确认所有衣物都已放入烘干机</item>
         <item>没有将易损衣物、奢饰品放入烘干机</item>
-        <item>请勿放鞋子，支付后会立即启动筒自洁</item>
     </string-array>
     <string-array name="scan_order_shoes_confirm">
         <item>请确认当前洗鞋机舱门已经锁好</item>
         <item>请确认所有鞋子都已放入洗鞋机</item>
-        <item>没有将易损衣物、奢饰品放入烘干机</item>
+        <item>没有将易损鞋子、奢饰品放入洗鞋机</item>
+        <item>请勿放鞋子，支付后会立即启动筒自洁</item>
     </string-array>
     <string-array name="discount_coupon_type">
         <item></item>

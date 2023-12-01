@@ -457,17 +457,6 @@ class OrderPaySubmitFragment :
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            // 如果是未支付完成，并且订单不为空
-            if (2 == mActivityViewModel.isPayFinish && !mActivityViewModel.orderNo.isNullOrEmpty()) {
-                mActivityViewModel.jump.postValue(1)
-            }
-        }, 300)
-    }
-
     override fun initData() {
         mActivityViewModel.requestPreview()
     }
