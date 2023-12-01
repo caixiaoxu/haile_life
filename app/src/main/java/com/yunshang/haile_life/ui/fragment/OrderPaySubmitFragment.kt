@@ -22,7 +22,6 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.TradePreviewGoodItem
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
-import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderPaySubmitBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodBinding
 import com.yunshang.haile_life.databinding.ItemOrderSubmitGoodDispenserBinding
@@ -342,7 +341,7 @@ class OrderPaySubmitFragment :
                 }.build().show(childFragmentManager)
         }
 
-        mBinding.includeOrderPaySubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
+        mBinding.includeOrderPaySubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, _ ->
             changePayWay()
         }
 
