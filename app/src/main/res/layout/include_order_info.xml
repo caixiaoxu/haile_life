@@ -127,7 +127,7 @@
 
             <include
                 layout="@layout/include_order_info_item"
-                app:content='@{StringUtils.formatAmountStrOfStr(order.payAmount)}'
+                app:content='@{StringUtils.formatAmountStrOfStr(order.realPrice)}'
                 app:title='@{@string/need_pay + "："}' />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
