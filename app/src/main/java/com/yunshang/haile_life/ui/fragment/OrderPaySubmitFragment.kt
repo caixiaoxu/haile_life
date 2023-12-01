@@ -287,6 +287,21 @@ class OrderPaySubmitFragment :
             }
         }
 
+        mActivityViewModel.shopConfig.observe(this) {
+            it?.let { config ->
+                if (config.result && !mActivityViewModel.tradePreview.value!!.isZero()) {
+                    CommonDialog.Builder("海星余额不足，请先购买海星后再使用").apply {
+                        title = StringUtils.getString(R.string.friendly_reminder)
+                        isCancelable = config.closable
+                        negativeTxt = StringUtils.getString(R.string.cancel)
+                        setPositiveButton(StringUtils.getString(R.string.go_buy)) {
+                            goToRechargeStarfishPage()
+                        }
+                    }.build().show(childFragmentManager)
+                }
+            }
+        }
+
         mActivityViewModel.balance.observe(this) {
             try {
                 mActivityViewModel.tradePreview.value?.realPrice?.toDouble()?.let { price ->
@@ -333,28 +348,11 @@ class OrderPaySubmitFragment :
             changePayWay()
         }
 
+        mBinding.btnOrderPayRecharge.setOnClickListener {
+            goToRechargeStarfishPage()
+        }
+
         mBinding.btnOrderPaySubmitPay.setOnClickListener {
-            if (true == mActivityViewModel.shopConfig.value?.result && !mActivityViewModel.tradePreview.value!!.isZero()) {
-                CommonDialog.Builder("海星余额不足，请先购买海星后再使用").apply {
-                    title = StringUtils.getString(R.string.friendly_reminder)
-                    isCancelable = mActivityViewModel.shopConfig.value?.closable ?: true
-                    negativeTxt = StringUtils.getString(R.string.cancel)
-                    setPositiveButton(StringUtils.getString(R.string.go_buy)) {
-                        startActivity(
-                            Intent(
-                                requireContext(),
-                                RechargeStarfishActivity::class.java
-                            ).apply {
-                                putExtras(
-                                    IntentParams.RechargeStarfishParams.pack(
-                                        mActivityViewModel.tradePreview.value?.itemList?.firstOrNull()?.shopId
-                                    )
-                                )
-                            })
-                    }
-                }.build().show(childFragmentManager)
-                return@setOnClickListener
-            }
             if (true == mActivityViewModel.shopConfig.value?.result) {
                 mActivityViewModel.payMethod = 1001
             }
@@ -378,6 +376,23 @@ class OrderPaySubmitFragment :
             // 判断是否跳转验证
             payDialog()
         }
+    }
+
+    /**
+     * 跳转到海星充值页
+     */
+    private fun goToRechargeStarfishPage() {
+        startActivity(
+            Intent(
+                requireContext(),
+                RechargeStarfishActivity::class.java
+            ).apply {
+                putExtras(
+                    IntentParams.RechargeStarfishParams.pack(
+                        mActivityViewModel.tradePreview.value?.itemList?.firstOrNull()?.shopId
+                    )
+                )
+            })
     }
 
     private fun payDialog() {

@@ -135,7 +135,8 @@
                 android:layout_width="132dp"
                 android:layout_height="46dp"
                 android:layout_marginEnd="16dp"
-                android:background="@{vm.isDryer()?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
+                android:background="@{vm.isDryer()?@drawable/selector_washing_order_selector_btn:@drawable/selector_dryer_order_selector_btn}"
+                android:enabled="@{!avm.shopConfig.result || avm.tradePreview.isZero()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
