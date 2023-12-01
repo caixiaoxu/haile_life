@@ -383,25 +383,12 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         mBinding.clHomeOrderState.setOnClickListener {
             mViewModel.orderStateList.value?.let {stateList->
                 if (!stateList.orderNo.isNullOrEmpty()) {
-                    startActivity(
-                        if (stateList.isAppoint) {
-                            Intent(
-                                requireContext(),
-                                OrderStatusActivity::class.java
-                            ).apply {
-                                putExtras(IntentParams.OrderParams.pack(stateList.orderNo))
-                            }
-                        } else {
-                            Intent(
-                                requireContext(),
-                                OrderDetailActivity::class.java
-                            ).apply {
-                                putExtras(
-                                    IntentParams.OrderParams.pack(stateList.orderNo)
-                                )
-                            }
-                        }
-                    )
+//                    DeviceCategory.isDrinkingOrShower(order.orderItemList.firstOrNull()?.categoryCode)
+//                    if (order.isNormalOrder || "500" == order.orderType) {
+//                        goToNormalOrderPage(order.orderNo)
+//                    } else {
+//                        goToNewOrderPage(order.orderNo)
+//                    }
                 }
             }
         }

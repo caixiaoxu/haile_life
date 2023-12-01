@@ -176,6 +176,7 @@ class OrderPaySubmitFragment :
                         )
                     }
 
+                    // 筒自洁
                     trade.itemList.find { item -> item.selfClean }?.let { good ->
                         val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
                             inflater,

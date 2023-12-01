@@ -69,9 +69,7 @@ class AppointmentOrderVerifyFragment :
                 val inflater = LayoutInflater.from(requireContext())
                 if (detail.orderItemList.isNotEmpty()) {
                     for (good in detail.orderItemList.filter { item ->
-                        !DeviceCategory.isDispenser(
-                            item.categoryCode
-                        )
+                        !DeviceCategory.isDispenser(item.categoryCode) && !item.selfClean
                     }.map { item ->
                         TradePreviewGoodItem(
                             item.discountPrice,
@@ -170,6 +168,39 @@ class AppointmentOrderVerifyFragment :
                             )
                         )
                     }
+
+                    // 筒自洁
+                    detail.orderItemList.find { item -> item.selfClean }?.let { item->
+                        val selfClean = TradePreviewGoodItem(
+                            item.discountPrice,
+                            item.categoryCode,
+                            item.goodsId,
+                            item.goodsItemId,
+                            item.goodsItemName,
+                            item.goodsName,
+                            item.num,
+                            item.originPrice,
+                            item.originUnitPrice,
+                            item.realPrice,
+                            item.realUnitPrice,
+                        )
+                        val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
+                            inflater,
+                            R.layout.item_order_submit_good,
+                            null,
+                            false
+                        )
+                        childGoodBinding.item = selfClean
+                        childGoodBinding.showDiscount = detail.showDiscount()
+                        mBinding.includeOrderSpecs.llOrderSubmitGood.addView(
+                            childGoodBinding.root,
+                            (mBinding.includeOrderSpecs.llOrderSubmitGood.childCount - 2),
+                            ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                        )
+                    }
                 }
 
                 mBinding.includeOrderSpecs.llOrderGoodDiscounts.visibility(false)
@@ -182,7 +213,8 @@ class AppointmentOrderVerifyFragment :
                 ) { index, childBinding, data ->
                     childBinding.title =
                         if (0 == index) StringUtils.getString(R.string.service) + "：" else ""
-                    childBinding.content = "${data.goodsItemName} ${data.unit.toRemove0Str()}${data.unitValue}"
+                    childBinding.content =
+                        "${data.goodsItemName} ${data.unit.toRemove0Str()}${data.unitValue}"
                     childBinding.tail =
                         com.yunshang.haile_life.utils.string.StringUtils.formatAmountStrOfStr(data.originPrice)
                 }
@@ -239,12 +271,13 @@ class AppointmentOrderVerifyFragment :
         }
 
         mBinding.btnAppointmentOrderVerifyCancel.setOnClickListener {
-            CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt)).apply {
-                negativeTxt = StringUtils.getString(R.string.no)
-                setPositiveButton(StringUtils.getString(R.string.yes)) {
-                    mActivityViewModel.cancelOrder()
-                }
-            }.build().show(childFragmentManager)
+            CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt))
+                .apply {
+                    negativeTxt = StringUtils.getString(R.string.no)
+                    setPositiveButton(StringUtils.getString(R.string.yes)) {
+                        mActivityViewModel.cancelOrder()
+                    }
+                }.build().show(childFragmentManager)
         }
 
         mBinding.btnAppointmentOrderVerifyResend.setOnClickListener {
