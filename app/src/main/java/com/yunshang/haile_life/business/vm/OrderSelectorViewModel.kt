@@ -149,6 +149,7 @@ class OrderSelectorViewModel : BaseViewModel() {
             DeviceCategory.Washing -> StringUtils.getString(R.string.scan_order_wash_hint)
             DeviceCategory.Dryer -> StringUtils.getString(R.string.scan_order_dryer_hint)
             DeviceCategory.Shoes -> StringUtils.getString(R.string.scan_order_shoes_hint)
+            DeviceCategory.Hair -> StringUtils.getString(R.string.scan_order_hair_hint)
             else -> ""
         }
     }
