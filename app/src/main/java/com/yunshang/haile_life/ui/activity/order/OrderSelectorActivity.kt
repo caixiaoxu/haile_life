@@ -32,6 +32,7 @@ import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
+import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 import com.yunshang.haile_life.web.WebViewActivity
 
 class OrderSelectorActivity :
@@ -140,6 +141,15 @@ class OrderSelectorActivity :
             )
         }
 
+        // 店铺公告
+        mViewModel.shopNotice.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                ShopNoticeDialog(it, false) {
+                    finish()
+                }.show(supportFragmentManager)
+            }
+        }
+
         // 时长
         mViewModel.selectDeviceConfig.observe(this) {
             mBinding.includeSelectorMinute.clScanOrderConfig.let { cl ->
@@ -232,7 +242,6 @@ class OrderSelectorActivity :
                         } else {
                             val list = arrayListOf<ExtAttrDtoItem>()
                             list.addAll(items)
-                            val hasDef = items.any { item -> item.isEnabled && item.isDefault }
                             list.add(
                                 items.first()
                                     .copy(unitAmount = "", isDefault = false, unitPrice = "")

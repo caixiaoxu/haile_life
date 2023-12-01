@@ -381,14 +381,17 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
 //        }
 
         mBinding.clHomeOrderState.setOnClickListener {
-            mViewModel.orderStateList.value?.let {stateList->
+            mViewModel.orderStateList.value?.let { stateList ->
                 if (!stateList.orderNo.isNullOrEmpty()) {
-//                    DeviceCategory.isDrinkingOrShower(order.orderItemList.firstOrNull()?.categoryCode)
-//                    if (order.isNormalOrder || "500" == order.orderType) {
-//                        goToNormalOrderPage(order.orderNo)
-//                    } else {
-//                        goToNewOrderPage(order.orderNo)
-//                    }
+                    mViewModel.requestOrderDetail(stateList.orderNo) { order ->
+                        if (DeviceCategory.isDrinkingOrShower(order.orderItemList.firstOrNull()?.categoryCode)
+                            || order.isNormalOrder || "500" == order.orderType
+                        ) {
+                            goToNormalOrderPage(order.orderNo)
+                        } else {
+                            goToNewOrderPage(order.orderNo)
+                        }
+                    }
                 }
             }
         }
@@ -476,6 +479,29 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         mViewModel.hasLocationPermission.value =
             SystemPermissionHelper.checkPermissions(requireContext(), permissions)
         mViewModel.requestData()
+    }
+
+    private fun goToNewOrderPage(orderNo: String) {
+        startActivity(
+            Intent(
+                requireContext(),
+                OrderStatusActivity::class.java
+            ).apply {
+                putExtras(IntentParams.OrderParams.pack(orderNo))
+            }
+        )
+    }
+
+    private fun goToNormalOrderPage(orderNo: String) {
+        startActivity(
+            Intent(
+                requireContext(),
+                OrderDetailActivity::class.java
+            ).apply {
+                putExtras(
+                    IntentParams.OrderParams.pack(orderNo)
+                )
+            })
     }
 
     override fun onHiddenChanged(hidden: Boolean) {

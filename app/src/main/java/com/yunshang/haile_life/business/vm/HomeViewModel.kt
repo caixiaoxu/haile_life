@@ -287,6 +287,15 @@ class HomeViewModel : BaseViewModel() {
             }
         })
     }
+
+    fun requestOrderDetail(orderNo: String?, callBack: (OrderEntity) -> Unit) {
+        if (orderNo.isNullOrEmpty()) return
+        launch({
+            ApiRepository.dealApiResult(mOrderRepo.requestOrderDetail(orderNo))?.let {
+                callBack(it)
+            }
+        })
+    }
 }
 
 data class HomeCategory(

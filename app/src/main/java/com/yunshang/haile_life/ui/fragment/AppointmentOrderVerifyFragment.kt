@@ -170,7 +170,7 @@ class AppointmentOrderVerifyFragment :
                     }
 
                     // 筒自洁
-                    detail.orderItemList.find { item -> item.selfClean }?.let { item->
+                    detail.orderItemList.find { item -> item.selfClean }?.let { item ->
                         val selfClean = TradePreviewGoodItem(
                             item.discountPrice,
                             item.categoryCode,
@@ -183,6 +183,7 @@ class AppointmentOrderVerifyFragment :
                             item.originUnitPrice,
                             item.realPrice,
                             item.realUnitPrice,
+                            selfClean = item.selfClean
                         )
                         val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
                             inflater,

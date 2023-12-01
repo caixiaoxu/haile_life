@@ -25,7 +25,11 @@ import com.yunshang.haile_life.utils.string.StringUtils
  * <author> <time> <version> <desc>
  * 作者姓名 修改时间 版本号 描述
  */
-class ShopNoticeDialog(private val noticeList: MutableList<ShopNoticeEntity>) :
+class ShopNoticeDialog(
+    private val noticeList: MutableList<ShopNoticeEntity>,
+    private val canCancel: Boolean = true,
+    private val callback: (() -> Unit)? = null
+) :
     AppCompatDialogFragment() {
     private val SHOP_NOTICE_TAG = "shop_notice_tag"
     private lateinit var mBinding: DialogShopNoticeBinding
@@ -53,6 +57,7 @@ class ShopNoticeDialog(private val noticeList: MutableList<ShopNoticeEntity>) :
 
         mBinding.btnShopNoticeIKnow.setOnClickListener {
             dismiss()
+            callback?.invoke()
         }
     }
 
@@ -76,6 +81,7 @@ class ShopNoticeDialog(private val noticeList: MutableList<ShopNoticeEntity>) :
      */
     fun show(manager: FragmentManager) {
         //不可取消
+        isCancelable = canCancel
         show(manager, SHOP_NOTICE_TAG)
     }
 }
