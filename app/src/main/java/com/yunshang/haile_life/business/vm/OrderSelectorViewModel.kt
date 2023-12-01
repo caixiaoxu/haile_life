@@ -174,7 +174,7 @@ class OrderSelectorViewModel : BaseViewModel() {
                     }
                 }
 
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     totalPrice()
                     attachConfigure()
                 }
@@ -191,7 +191,7 @@ class OrderSelectorViewModel : BaseViewModel() {
                     }
                 }
 
-                if (1 != detail.deviceState){
+                if (1 != detail.deviceState) {
                     ApiRepository.dealApiResult(
                         mDeviceRepo.requestDeviceStateList(
                             ApiRepository.createRequestBody(
