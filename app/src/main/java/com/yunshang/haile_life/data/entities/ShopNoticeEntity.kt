@@ -42,9 +42,10 @@ data class ShopNoticeEntity(
     fun dateVal(): String = "时间：${
         DateTimeUtils.formatDateTimeForStr(
             templateStartTime,
-            "MM月dd日HH:mm"
+            "MM月dd日HH:mm",
+            "yyyy-MM-dd HH:mm"
         )
-    }-${DateTimeUtils.formatDateTimeForStr(templateEndTime, "MM月dd日HH:mm")}"
+    }-${DateTimeUtils.formatDateTimeForStr(templateEndTime, "MM月dd日HH:mm", "yyyy-MM-dd HH:mm")}"
 }
 
 data class NoticeShopDto(

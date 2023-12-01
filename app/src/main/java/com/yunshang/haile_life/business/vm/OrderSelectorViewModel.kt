@@ -12,6 +12,7 @@ import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.NewOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
@@ -34,12 +35,17 @@ import java.math.BigDecimal
  */
 class OrderSelectorViewModel : BaseViewModel() {
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
+    private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
     var deviceId: Int = -1
 
     val isHideDeviceInfo: MutableLiveData<Boolean> = MutableLiveData(true)
     val deviceDetail: MutableLiveData<DeviceDetailEntity> by lazy { MutableLiveData() }
     val stateList: MutableLiveData<List<DeviceStateEntity>?> by lazy { MutableLiveData() }
+
+    val shopNotice: MutableLiveData<MutableList<ShopNoticeEntity>> by lazy {
+        MutableLiveData()
+    }
 
     // 选择的设备模式
     val selectDeviceConfig: MutableLiveData<DeviceDetailItemEntity> by lazy {
@@ -184,13 +190,28 @@ class OrderSelectorViewModel : BaseViewModel() {
                         }
                     }
 
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         totalPrice()
                         attachConfigure()
                     }
 
                     deviceDetail.postValue(detail)
                     stateList.postValue(deviceStateList.stateList)
+                }
+
+                // 是否有公告
+                if (null == shopNotice.value) {
+                    ApiRepository.dealApiResult(
+                        mShopRepo.requestShopNotice(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "shopId" to detail.shopId
+                                )
+                            )
+                        )
+                    )?.let {
+                        shopNotice.postValue(it)
+                    }
                 }
             }
         })
