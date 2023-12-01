@@ -31,7 +31,7 @@
             app:icon="@{item.getCategoryIcon}"
             app:title="@{item.goodsItemName}"
             app:unit="@{item.getGoodUnit}"
-            app:type="@{DeviceCategory.canShowDeviceCategory(item.goodsCategoryCode)?1:0}"
+            app:type="@{!item.selfClean &amp;&amp; DeviceCategory.canShowDeviceCategory(item.goodsCategoryCode)?1:0}"
             app:value="@{item.getOriginAmountStr}" />
 
         <include

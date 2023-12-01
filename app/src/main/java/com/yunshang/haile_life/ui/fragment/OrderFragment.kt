@@ -17,6 +17,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderViewModel
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.databinding.FragmentOrderBinding
@@ -55,7 +56,9 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
 
             mItemBinding?.root?.setOnClickListener {
                 mViewModel.requestOrderDetail(item.orderNo) { order ->
-                    if (order.isNormalOrder || "500" == order.orderType) {
+                    if (DeviceCategory.isDrinkingOrShower(order.orderItemList.firstOrNull()?.categoryCode)
+                        || order.isNormalOrder || "500" == order.orderType
+                    ) {
                         goToNormalOrderPage(order.orderNo)
                     } else {
                         goToNewOrderPage(order.orderNo)
@@ -191,7 +194,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
     }
 
     override fun initView() {
-        val isMain = arguments?.let { IntentParams.OrderListParams.parseIsMain(it) } ?:false
+        val isMain = arguments?.let { IntentParams.OrderListParams.parseIsMain(it) } ?: false
         if (isMain) {
             (mBinding.viewOrderPadding.layoutParams as ViewGroup.LayoutParams).height =
                 StatusBarUtils.getStatusBarHeight()

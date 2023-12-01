@@ -162,7 +162,7 @@
                         android:id="@+id/include_order_detail_need_price"
                         layout="@layout/item_title_value"
                         app:title='@{@string/need_pay +"："}'
-                        app:value="@{StringUtils.formatAmountStrOfStr(vm.orderDetail.payAmount)}" />
+                        app:value="@{StringUtils.formatAmountStrOfStr(vm.orderDetail.realPrice)}" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat

@@ -102,6 +102,7 @@ data class AttachValueMapValue(
     val selfCleanItemId: Int? = null,
     val price: String? = null,
     val items: List<DeviceDetailItemEntity>? = null,
+    val goodsId: Int? = null
 )
 
 data class AdvancedSettingVOS(

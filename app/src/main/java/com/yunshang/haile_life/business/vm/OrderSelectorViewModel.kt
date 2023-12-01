@@ -140,9 +140,9 @@ class OrderSelectorViewModel : BaseViewModel() {
 
     val hint: LiveData<String> = deviceDetail.map {
         when (it.categoryCode) {
-            DeviceCategory.Washing -> com.lsy.framelib.utils.StringUtils.getString(R.string.scan_order_wash_hint)
-            DeviceCategory.Dryer -> com.lsy.framelib.utils.StringUtils.getString(R.string.scan_order_dryer_hint)
-            DeviceCategory.Shoes -> com.lsy.framelib.utils.StringUtils.getString(R.string.scan_order_shoes_hint)
+            DeviceCategory.Washing -> StringUtils.getString(R.string.scan_order_wash_hint)
+            DeviceCategory.Dryer -> StringUtils.getString(R.string.scan_order_dryer_hint)
+            DeviceCategory.Shoes -> StringUtils.getString(R.string.scan_order_shoes_hint)
             else -> ""
         }
     }
@@ -182,6 +182,11 @@ class OrderSelectorViewModel : BaseViewModel() {
                                         } ?: MutableLiveData(null)
                             }
                         }
+                    }
+
+                    withContext(Dispatchers.Main){
+                        totalPrice()
+                        attachConfigure()
                     }
 
                     deviceDetail.postValue(detail)
