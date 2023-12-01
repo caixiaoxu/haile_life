@@ -63,20 +63,6 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
                     } else {
                         goToNewOrderPage(order.orderNo)
                     }
-
-//                    if ((106 == order.orderSubType && 50 == order.state
-//                                && (1 == order.checkInfo?.checkState || 2 == order.checkInfo?.checkState))// 预定订单
-//                        || (301 == order.orderSubType
-//                                && ((500 == order.state
-//                                && (1 == order.appointmentState || (5 == order.appointmentState
-//                                && 1 == order.checkInfo?.checkState)))
-//                                || 50 == order.state)) // 后付费
-//                        || (303 == order.orderSubType && 50 == order.state
-//                                && (1 == order.appointmentState || (5 == order.appointmentState
-//                                && (1 == order.checkInfo?.checkState || 2 == order.checkInfo?.checkState)))) // 先付费
-//                        || true == order.redirectWorking
-//                    ) goToNewOrderPage(order.orderNo)
-//                    else goToNormalOrderPage(order.orderNo)
                 }
             }
         }
