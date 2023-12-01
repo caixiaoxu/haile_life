@@ -155,9 +155,7 @@ class OrderSelectorActivity :
         // 店铺公告
         mViewModel.shopNotice.observe(this) {
             if (!it.isNullOrEmpty()) {
-                ShopNoticeDialog(it, false) {
-                    finish()
-                }.show(supportFragmentManager)
+                ShopNoticeDialog(it).show(supportFragmentManager)
             }
         }
 
