@@ -98,6 +98,16 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/font_14_04D1E5"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@color/secondColorPrimaryBg"
+            android:gravity="center"
+            android:text="@{avm.tradePreview.selfCleanInfo.selfPrompt}"
+            app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}"
+            tools:text="选择筒自洁" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="98dp"
@@ -121,8 +131,8 @@
                 android:id="@+id/ll_order_pay_submit_pay_area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -131,36 +141,39 @@
                     style="@style/font_16_04d1e5_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="46dp"
-                    android:minWidth="106dp"
-                    android:gravity="center"
-                    android:paddingHorizontal="12dp"
-                    android:drawablePadding="8dp"
+                    android:background="@drawable/shape_s2604d1e5_lr23"
                     android:drawableStart="@mipmap/icon_canister_self_cleaning"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:minWidth="106dp"
+                    android:paddingHorizontal="12dp"
                     android:text="@string/canister_self_cleaning"
-                    android:background="@drawable/shape_s2604d1e5_lr23"/>
+                    app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}" />
 
                 <com.lsy.framelib.ui.weight.SingleTapTextView
                     android:id="@+id/btn_order_pay_submit_pay"
                     style="@style/Font_16_white_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="46dp"
-                    android:minWidth="106dp"
                     android:layout_marginStart="4dp"
-                    android:paddingHorizontal="12dp"
+                    android:background="@drawable/shape_s04d1e5_rr23"
                     android:gravity="center"
+                    android:minWidth="106dp"
+                    android:paddingHorizontal="12dp"
                     android:text="@string/go_pay"
-                    android:background="@drawable/shape_s04d1e5_rr23"/>
+                    app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}" />
 
                 <com.lsy.framelib.ui.weight.SingleTapTextView
                     android:id="@+id/btn_order_pay_submit_only_pay"
                     style="@style/Font_16_white_bold"
                     android:layout_width="132dp"
                     android:layout_height="46dp"
-                    android:gravity="center"
-                    tools:visibility="gone"
-                    android:text="@string/go_pay"
                     android:background="@{vm.isDryer()?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
-                    tools:background="@drawable/shape_s04d1e5_r23"/>
+                    android:gravity="center"
+                    android:text="@string/go_pay"
+                    app:visibility="@{!avm.tradePreview.selfCleanInfo.supportSelfClean}"
+                    tools:background="@drawable/shape_s04d1e5_r23"
+                    tools:visibility="gone" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

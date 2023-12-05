@@ -23,7 +23,8 @@ data class TradePreviewEntity(
     val itemList: List<TradePreviewGoodItem>,
     val originPrice: String,
     val promotionList: List<TradePreviewPromotion>,
-    val realPrice: String
+    val realPrice: String,
+    val selfCleanInfo: SelfCleanInfo? = null
 ) {
     fun isZero(): Boolean = try {
         realPrice.toDouble() == 0.0
@@ -212,4 +213,21 @@ data class TradePreviewPromotionDetail(
         }
 
     fun dealLineDateStr(): String = DateTimeUtils.formatDateTimeForStr(endAt, "yyyy/MM/dd") + "到期"
+}
+
+data class SelfCleanInfo(
+    val remainMinutes: String? = null,
+    val selfCleanItemId: Int? = null,
+    val selfCleanStatus: Int? = null,
+    val supportSelfClean: Boolean? = null
+) {
+    //<40 执行中，40 执行完成，50 执行失败.
+    val selfPrompt: String
+        get() = selfCleanStatus?.let {
+            if (it < 40) {
+                "筒自洁清洁中，预计耗时${remainMinutes}分钟"
+            } else if (40 == it) {
+                "筒自洁已结束"
+            } else "选择筒自洁，享受${remainMinutes}分钟免费筒自洁"
+        } ?: "选择筒自洁，享受${remainMinutes}分钟免费筒自洁"
 }
