@@ -2,8 +2,6 @@ package com.yunshang.haile_life.ui.fragment
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,7 +102,7 @@ class OrderPaySubmitFragment :
                 }
                 val inflater = LayoutInflater.from(requireContext())
                 if (trade.itemList.isNotEmpty()) {
-                    for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode) && !item.selfClean }) {
+                    for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode)}) {
                         val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
                             inflater,
                             R.layout.item_order_submit_good,
@@ -123,7 +121,7 @@ class OrderPaySubmitFragment :
                         )
                     }
 
-                    // 投放器和筒自洁的数据
+                    // 投放器的数据
                     val dispenserList =
                         trade.itemList.filter { item -> DeviceCategory.isDispenser(item.goodsCategoryCode) }
                     if (dispenserList.isNotEmpty()) {
@@ -139,7 +137,7 @@ class OrderPaySubmitFragment :
                             dispenserList
                         ) { _, childBinding, data ->
                             childBinding.title =
-                                data.goodsItemName + if (data.selfClean) "" else "${data.num}ml"
+                                data.goodsItemName + "${data.num}ml"
                             childBinding.type = 0
                             childBinding.value = data.getOriginAmountStr()
                         }
@@ -167,26 +165,6 @@ class OrderPaySubmitFragment :
                         }
                         mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.addView(
                             childDispenserGoodBinding.root,
-                            (mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.childCount - 2),
-                            ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
-                        )
-                    }
-
-                    // 筒自洁
-                    trade.itemList.find { item -> item.selfClean }?.let { good ->
-                        val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
-                            inflater,
-                            R.layout.item_order_submit_good,
-                            null,
-                            false
-                        )
-                        childGoodBinding.item = good
-                        childGoodBinding.showDiscount = trade.showDiscount()
-                        mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.addView(
-                            childGoodBinding.root,
                             (mBinding.includeOrderPaySubmitSpecs.llOrderSubmitGood.childCount - 2),
                             ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,

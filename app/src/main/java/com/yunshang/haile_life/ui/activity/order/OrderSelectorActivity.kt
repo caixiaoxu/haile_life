@@ -209,11 +209,6 @@ class OrderSelectorActivity :
             mViewModel.attachConfigure()
         }
 
-        mViewModel.selectSelfClean.observe(this) {
-            mViewModel.totalPrice()
-            mViewModel.attachConfigure()
-        }
-
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS, Boolean::class.java)?.observe(this) {
             if (it) {
                 finish()
@@ -384,18 +379,6 @@ class OrderSelectorActivity :
                             )
                         }
                     })
-            }
-
-            //筒自洁
-            if (true == mViewModel.needSelfClean.value && true == mViewModel.selectSelfClean.value) {
-                goods.add(
-                    Purchase(
-                        mViewModel.deviceDetail.value?.selfCleanValue?.selfCleanGoodsId,
-                        mViewModel.deviceDetail.value?.selfCleanValue?.selfCleanItemId,
-                        "1",
-                        1
-                    )
-                )
             }
 
             // 提交

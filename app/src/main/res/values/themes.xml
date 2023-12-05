@@ -317,6 +317,15 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="font_16_04d1e5">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/secondColorPrimary</item>
+    </style>
+
+    <style name="font_16_04d1e5_bold" parent="font_16_04d1e5">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Font_16_ff630e">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/color_ff630e</item>
