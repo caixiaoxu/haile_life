@@ -16,12 +16,14 @@ import com.yunshang.haile_life.business.vm.AppointmentOrderViewModel
 import com.yunshang.haile_life.business.vm.OrderExecuteViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
@@ -118,6 +120,21 @@ class OrderExecuteFragment :
                     }
                 }
             }.build().show(childFragmentManager)
+        }
+
+        mBinding.tvOrderExecuteDeviceRepairs.setOnClickListener {
+            startActivity(Intent(requireContext(), FaultRepairsActivity::class.java).apply {
+                putExtras(
+                    IntentParams.FaultRepairsParams.pack(
+                        GoodsScanEntity(
+                            mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.goodsId,
+                            mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.goodsName,
+                            mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.categoryCode,
+                            DeviceCategory.categoryName(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.categoryCode),
+                        )
+                    )
+                )
+            })
         }
 
         mBinding.tvOrderExecuteContactShop.setOnClickListener {
