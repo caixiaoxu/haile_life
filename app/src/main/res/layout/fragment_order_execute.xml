@@ -63,16 +63,16 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_order_execute_time"
+                            style="@style/Font_52_black_85"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            style="@style/Font_52_black_85"
                             android:fontFamily="@font/money"
                             android:gravity="center"
                             android:text="@{vm.remainingTimeVal}"
-                            app:layout_constraintTop_toTopOf="@id/cd_order_execute_time"
-                            app:layout_constraintStart_toStartOf="@id/cd_order_execute_time"
+                            app:layout_constraintBottom_toBottomOf="@id/cd_order_execute_time"
                             app:layout_constraintEnd_toEndOf="@id/cd_order_execute_time"
-                            app:layout_constraintBottom_toBottomOf="@id/cd_order_execute_time"/>
+                            app:layout_constraintStart_toStartOf="@id/cd_order_execute_time"
+                            app:layout_constraintTop_toTopOf="@id/cd_order_execute_time" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_order_execute_time_prompt"
@@ -119,7 +119,8 @@
                             android:text="@string/device_repairs"
                             app:layout_constraintEnd_toStartOf="@id/tv_order_execute_contact_shop"
                             app:layout_constraintStart_toEndOf="@id/tv_order_execute_coerce_device"
-                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_coerce_device" />
+                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_coerce_device"
+                            app:visibility="@{avm.orderDetails.canSubmitFix}" />
 
                         <com.lsy.framelib.ui.weight.SingleTapTextView
                             android:id="@+id/tv_order_execute_contact_shop"
@@ -138,7 +139,8 @@
                             android:background="@color/color_cccccc"
                             app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
                             app:layout_constraintStart_toStartOf="@id/tv_order_execute_device_repairs"
-                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
+                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop"
+                            app:visibility="@{avm.orderDetails.canSubmitFix}" />
 
                         <View
                             android:layout_width="1dp"
@@ -156,8 +158,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        app:showState="@{true}"
-                        app:order="@{avm.orderDetails}" />
+                        app:order="@{avm.orderDetails}"
+                        app:showState="@{true}" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
