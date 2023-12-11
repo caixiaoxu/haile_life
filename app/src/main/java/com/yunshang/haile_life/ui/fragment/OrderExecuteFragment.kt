@@ -161,6 +161,21 @@ class OrderExecuteFragment :
                 mViewModel.checkValidTime()
             }
 //        }
+
+        mBinding.includeOrderInfo.btnOrderInfoCancel.text =
+            StringUtils.getString(R.string.finish_order)
+        mBinding.includeOrderInfo.btnOrderInfoCancel.setOnClickListener {
+            CommonDialog.Builder("是否结束订单？").apply {
+                negativeTxt = StringUtils.getString(R.string.no)
+                setPositiveButton(StringUtils.getString(R.string.yes)) {
+                    mViewModel.finishOrder(mActivityViewModel.orderNo) {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            mActivityViewModel.jump.postValue(1)
+                        }, 1000)
+                    }
+                }
+            }.build().show(childFragmentManager)
+        }
     }
 
     private fun startOrderDevice() {

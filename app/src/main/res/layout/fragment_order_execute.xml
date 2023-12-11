@@ -139,7 +139,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         app:order="@{avm.orderDetails}"
-                        app:showState="@{true}" />
+                        app:showCancel="@{true}" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 

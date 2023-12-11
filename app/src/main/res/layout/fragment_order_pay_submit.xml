@@ -105,7 +105,7 @@
             android:background="@color/secondColorPrimaryBg"
             android:gravity="center"
             android:text="@{avm.tradePreview.selfCleanInfo.selfPrompt}"
-            app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}"
+            app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean &amp;&amp; !vm.inValidOrder}"
             tools:text="选择筒自洁" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -142,12 +142,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="46dp"
                     android:background="@drawable/shape_s2604d1e5_lr23"
-                    android:drawableStart="@mipmap/icon_canister_self_cleaning"
+                    android:backgroundTint="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@color/secondColorPrimary:@color/color_c0c0c0}"
                     android:drawablePadding="8dp"
+                    android:drawableStart="@mipmap/icon_canister_self_cleaning"
+                    android:enabled="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50}"
                     android:gravity="center"
                     android:minWidth="106dp"
                     android:paddingHorizontal="12dp"
-                    android:text="@string/canister_self_cleaning"
+                    android:text="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@string/canister_self_cleaning:avm.selfCleanRefresh.selfCleanStateVal}"
+                    android:textColor="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@color/secondColorPrimary:@color/color_black_45}"
                     app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}" />
 
                 <com.lsy.framelib.ui.weight.SingleTapTextView
@@ -157,6 +160,8 @@
                     android:layout_height="46dp"
                     android:layout_marginStart="4dp"
                     android:background="@drawable/shape_s04d1e5_rr23"
+                    android:backgroundTint="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status >= 40?@color/secondColorPrimary:@color/color_black_25}"
+                    android:enabled="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status >= 40}"
                     android:gravity="center"
                     android:minWidth="106dp"
                     android:paddingHorizontal="12dp"

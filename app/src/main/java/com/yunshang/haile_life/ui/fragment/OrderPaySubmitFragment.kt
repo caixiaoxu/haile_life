@@ -102,7 +102,7 @@ class OrderPaySubmitFragment :
                 }
                 val inflater = LayoutInflater.from(requireContext())
                 if (trade.itemList.isNotEmpty()) {
-                    for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode)}) {
+                    for (good in trade.itemList.filter { item -> !DeviceCategory.isDispenser(item.goodsCategoryCode) }) {
                         val childGoodBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodBinding>(
                             inflater,
                             R.layout.item_order_submit_good,
@@ -282,6 +282,15 @@ class OrderPaySubmitFragment :
             }
         }
 
+        mActivityViewModel.selfCleanRefresh.observe(this) {
+            mBinding.btnOrderPaySubmitSelfClean.setCompoundDrawablesWithIntrinsicBounds(
+                if (null == it || it.status == 50) R.mipmap.icon_canister_self_cleaning else 0,
+                0,
+                0,
+                0
+            )
+        }
+
         mActivityViewModel.balance.observe(this) {
             try {
                 mActivityViewModel.tradePreview.value?.realPrice?.toDouble()?.let { price ->
@@ -323,26 +332,46 @@ class OrderPaySubmitFragment :
             changePayWay()
         }
 
-        mBinding.btnOrderPaySubmitPay.setOnClickListener {
-            if (-1 == mActivityViewModel.payMethod) {
-                SToast.showToast(requireContext(), "请选择支付方式")
-                return@setOnClickListener
-            }
-
-            val noMoney = 1001 == mActivityViewModel.payMethod && try {
-                mActivityViewModel.balance.value!!.amount.toDouble() < mActivityViewModel.tradePreview.value!!.realPrice.toDouble()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                false
-            }
-            if (noMoney) {
-                SToast.showToast(requireContext(), "余额不足，先选择其他方式支付")
-                return@setOnClickListener
-            }
-
-            // 判断是否跳转验证
-            payDialog()
+        // 筒自洁
+        mBinding.btnOrderPaySubmitSelfClean.setOnClickListener {
+            CommonDialog.Builder("该设备有筒自洁功能，去除残留污垢和细菌，耗时X分钟，是否需要？\n\n点击需要，设备立即启动，请勿放入衣服").apply {
+                title = "健康筒自洁"
+                negativeTxt = "不需要"
+                setPositiveButton("需要") {
+                    mActivityViewModel.startSelfClean()
+                }
+            }.build().show(childFragmentManager)
         }
+
+        // 支付
+        mBinding.btnOrderPaySubmitOnlyPay.setOnClickListener {
+            payEvent()
+        }
+        // 支付
+        mBinding.btnOrderPaySubmitPay.setOnClickListener {
+            payEvent()
+        }
+    }
+
+    private fun payEvent() {
+        if (-1 == mActivityViewModel.payMethod) {
+            SToast.showToast(requireContext(), "请选择支付方式")
+            return
+        }
+
+        val noMoney = 1001 == mActivityViewModel.payMethod && try {
+            mActivityViewModel.balance.value!!.amount.toDouble() < mActivityViewModel.tradePreview.value!!.realPrice.toDouble()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+        if (noMoney) {
+            SToast.showToast(requireContext(), "余额不足，先选择其他方式支付")
+            return
+        }
+
+        // 判断是否跳转验证
+        payDialog()
     }
 
     private fun payDialog() {

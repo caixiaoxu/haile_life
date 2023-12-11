@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
         <import type="com.yunshang.haile_life.utils.string.StringUtils" />
 
@@ -13,7 +14,7 @@
             type="com.yunshang.haile_life.data.entities.OrderEntity" />
 
         <variable
-            name="showState"
+            name="showCancel"
             type="java.lang.Boolean" />
     </data>
 
@@ -30,35 +31,40 @@
             style="@style/Font_17_black_85"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@null"
             android:background="@color/transparent"
-            android:drawableEnd="@drawable/selector_order_info"
+            android:button="@null"
             android:checked="@={order.showDetail}"
+            android:drawableEnd="@drawable/selector_order_info"
             android:padding="16dp"
             android:text="@string/order_info" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:visibility="@{order.showDetail &amp;&amp; showState}"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:visibility="@{order.showDetail}">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_order_info_state"
                 style="@style/Font_20_black_85_bold"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@{order.stateDesc}"
                 tools:text="洗衣中" />
 
-            <!--            <androidx.appcompat.widget.AppCompatTextView-->
-            <!--                style="@style/Font_14_333333"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="8dp"-->
-            <!--                android:drawableEnd="@mipmap/icon_order_desc_prompt"-->
-            <!--                android:drawablePadding="4dp"-->
-            <!--                tools:text="预计剩余时间 40分钟" />-->
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/btn_order_info_cancel"
+                style="@style/Font_12_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_stroke26000000_r14"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:text="@string/cancel_order"
+                app:visibility="@{showCancel}" />
         </LinearLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -66,9 +72,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            app:visibility="@{order.showDetail}"
             app:divider="@drawable/divide_size8"
-            app:showDividers="middle">
+            app:showDividers="middle"
+            app:visibility="@{order.showDetail}">
 
             <include
                 layout="@layout/include_order_info_item"
@@ -91,18 +97,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:itemLayout="@layout/include_order_info_item"
                 app:divider="@drawable/divide_size8"
-                app:showDividers="middle"/>
+                app:itemLayout="@layout/include_order_info_item"
+                app:showDividers="middle" />
 
             <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
                 android:id="@+id/ll_order_info_promotions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:itemLayout="@layout/include_order_info_item"
                 app:divider="@drawable/divide_size8"
-                app:showDividers="middle"/>
+                app:itemLayout="@layout/include_order_info_item"
+                app:showDividers="middle" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -110,9 +116,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            app:visibility="@{order.showDetail}"
             app:divider="@drawable/divide_size8"
-            app:showDividers="middle">
+            app:showDividers="middle"
+            app:visibility="@{order.showDetail}">
 
             <include
                 layout="@layout/include_order_info_item"
@@ -121,9 +127,9 @@
 
             <include
                 layout="@layout/include_order_info_item"
+                android:visibility="@{0 == order.getOrderDiscountTotalPrice().length()?View.GONE:View.VISIBLE}"
                 app:content='@{order.getOrderDiscountTotalPrice}'
-                app:title='@{@string/discount_price + "："}'
-                android:visibility="@{0 == order.getOrderDiscountTotalPrice().length()?View.GONE:View.VISIBLE}" />
+                app:title='@{@string/discount_price + "："}' />
 
             <include
                 layout="@layout/include_order_info_item"
@@ -136,8 +142,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:visibility="@{order.showDetail}"
             app:content='@{order.createTime}'
-            app:title='@{@string/order_time + "："}' />
+            app:title='@{@string/order_time + "："}'
+            app:visibility="@{order.showDetail}" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
