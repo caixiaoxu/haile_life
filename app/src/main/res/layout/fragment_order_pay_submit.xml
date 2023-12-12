@@ -104,7 +104,7 @@
             android:layout_height="32dp"
             android:background="@color/secondColorPrimaryBg"
             android:gravity="center"
-            android:text="@{avm.tradePreview.selfCleanInfo.selfPrompt}"
+            android:text="@{null == avm.selfCleanRefresh?avm.tradePreview.selfCleanInfo.selfPrompt:avm.selfCleanRefresh.selfPrompt(avm.tradePreview.selfCleanInfo.remainMinutes)}"
             app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean &amp;&amp; !vm.inValidOrder}"
             tools:text="选择筒自洁" />
 
@@ -143,8 +143,8 @@
                     android:layout_height="46dp"
                     android:background="@drawable/shape_s2604d1e5_lr23"
                     android:backgroundTint="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@color/secondColorPrimary:@color/color_c0c0c0}"
-                    android:drawablePadding="8dp"
                     android:drawableStart="@mipmap/icon_canister_self_cleaning"
+                    android:drawablePadding="8dp"
                     android:enabled="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50}"
                     android:gravity="center"
                     android:minWidth="106dp"
