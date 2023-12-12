@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.FaultRepairsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.personal.FaultRepairsActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_fault_repairs_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:rightModel="text"
+            app:title="@string/device_repairs" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    app:divider="@drawable/divder_efefef"
+                    app:dividerPadding="16dp"
+                    app:showDividers="middle">
+
+                    <LinearLayout
+                        android:id="@+id/ll_fault_repairs_imei"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center_vertical"
+                            android:text="*"
+                            android:textColor="@color/ps_color_ff572e"
+                            android:textSize="17sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_17_black_85"
+                            android:layout_width="72dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="2dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/device_info" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_17_black_85_45"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="32dp"
+                            android:layout_weight="1"
+                            android:drawableEnd="@mipmap/icon_card_binding_scan"
+                            android:gravity="center_vertical"
+                            android:hint="@string/device_info_hint"
+                            android:paddingEnd="12dp"
+                            android:text="@{vm.scanDevice.deviceName}" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center_vertical"
+                            android:text="*"
+                            android:textColor="@color/ps_color_ff572e"
+                            android:textSize="17sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_17_black_85"
+                            android:layout_width="72dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="2dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/device_type" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_17_black_85_45"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="32dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:hint="@string/please_select"
+                            android:paddingEnd="12dp"
+                            android:text="@{vm.scanDevice.categoryName}" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_fault_repairs_fault_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center_vertical"
+                            android:text="*"
+                            android:textColor="@color/ps_color_ff572e"
+                            android:textSize="17sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_17_black_85"
+                            android:layout_width="72dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="2dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/fault_type" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_17_black_85_45"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="32dp"
+                            android:layout_weight="1"
+                            android:drawableEnd="@mipmap/icon_arrow_right"
+                            android:gravity="center_vertical"
+                            android:hint="@string/please_select"
+                            android:paddingEnd="12dp"
+                            android:text="@{vm.faultType.fixTypeName}" />
+                    </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center_vertical"
+                        android:text="*"
+                        android:textColor="@color/ps_color_ff572e"
+                        android:textSize="17sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_17_black_85"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/fault_desc" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_fault_repairs_desc"
+                    style="@style/Font_16_black_85_25"
+                    android:layout_width="match_parent"
+                    android:layout_height="146dp"
+                    android:background="@color/white"
+                    android:gravity="top|start"
+                    android:hint="@string/fault_desc_hint"
+                    android:maxLength="300"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="16dp"
+                    android:text="@={vm.faultDesc}"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_fault_repairs_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingBottom="24dp">
+
+                    <androidx.constraintlayout.helper.widget.Flow
+                        android:id="@+id/flow_fault_repairs_desc_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:flow_horizontalBias="0"
+                        app:flow_horizontalGap="8dp"
+                        app:flow_horizontalStyle="packed"
+                        app:flow_verticalGap="12dp"
+                        app:flow_wrapMode="chain"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:background="@color/white"
+            android:paddingTop="10dp">
+
+            <com.lsy.framelib.ui.weight.SingleTapButton
+                android:id="@+id/btn_fault_repairs_submit"
+                style="@style/CommonMatchBtnStyle1"
+                android:layout_marginHorizontal="16dp"
+                android:text="@string/submit"
+                app:layout_constraintTop_toBottomOf="@id/et_bind_phone_code" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>

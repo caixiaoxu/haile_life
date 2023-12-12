@@ -31,6 +31,8 @@ object DialogUtils {
         maxNum: Int,
         showTake: Boolean = true,
         showAlbum: Boolean = true,
+        needCrop: Boolean = true,
+        title: String = "",
         callback: (isSuccess: Boolean, result: ArrayList<LocalMedia>?) -> Unit
     ) {
         val list = arrayListOf<SearchSelectParam>()
@@ -41,7 +43,7 @@ object DialogUtils {
             list.add(SearchSelectParam(2, StringUtils.getString(R.string.for_album)))
         }
 
-        CommonBottomSheetDialog.Builder("", list).apply {
+        CommonBottomSheetDialog.Builder(title, list).apply {
             selectModel = 1
             onValueSureListener = object :
                 CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
@@ -49,7 +51,12 @@ object DialogUtils {
                     if (1 == data!!.id) {
                         PictureSelectUtils.takePicture(activity, callback)
                     } else {
-                        PictureSelectUtils.pictureForAlbum(activity, maxNum, callback = callback)
+                        PictureSelectUtils.pictureForAlbum(
+                            activity,
+                            maxNum,
+                            needCrop = needCrop,
+                            callback = callback
+                        )
                     }
                 }
             }

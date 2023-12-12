@@ -105,10 +105,22 @@
                             android:enabled="@{2 > vm.coerceDeviceCount &amp;&amp; 0L == vm.coerceDeviceTime}"
                             android:paddingHorizontal="19dp"
                             android:text="@string/coerce_device"
-                            app:layout_constraintEnd_toStartOf="@id/tv_order_execute_contact_shop"
+                            app:layout_constraintEnd_toStartOf="@id/tv_order_execute_device_repairs"
                             app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
+
+                        <com.lsy.framelib.ui.weight.SingleTapTextView
+                            android:id="@+id/tv_order_execute_device_repairs"
+                            style="@style/font_14_04D1E5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="19dp"
+                            android:text="@string/device_repairs"
+                            app:layout_constraintEnd_toStartOf="@id/tv_order_execute_contact_shop"
+                            app:layout_constraintStart_toEndOf="@id/tv_order_execute_coerce_device"
+                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_coerce_device"
+                            app:visibility="@{avm.orderDetails.canSubmitFix}" />
 
                         <com.lsy.framelib.ui.weight.SingleTapTextView
                             android:id="@+id/tv_order_execute_contact_shop"
@@ -119,8 +131,17 @@
                             android:paddingHorizontal="19dp"
                             android:text="@string/contact_shop"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tv_order_execute_coerce_device"
-                            app:layout_constraintTop_toBottomOf="@id/tv_order_execute_prompt" />
+                            app:layout_constraintStart_toEndOf="@id/tv_order_execute_device_repairs"
+                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_coerce_device" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:background="@color/color_cccccc"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
+                            app:layout_constraintStart_toStartOf="@id/tv_order_execute_device_repairs"
+                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop"
+                            app:visibility="@{avm.orderDetails.canSubmitFix}" />
 
                         <View
                             android:layout_width="1dp"
