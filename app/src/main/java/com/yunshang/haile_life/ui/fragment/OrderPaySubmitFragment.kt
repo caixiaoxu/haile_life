@@ -334,7 +334,7 @@ class OrderPaySubmitFragment :
 
         // 筒自洁
         mBinding.btnOrderPaySubmitSelfClean.setOnClickListener {
-            CommonDialog.Builder("该设备有筒自洁功能，去除残留污垢和细菌，耗时X分钟，是否需要？\n\n点击需要，设备立即启动，请勿放入衣服").apply {
+            CommonDialog.Builder("该设备有筒自洁功能，去除残留污垢和细菌，耗时${mActivityViewModel.tradePreview.value?.selfCleanInfo?.remainMinutes}分钟，是否需要？\n\n点击需要，设备立即启动，请勿放入衣服").apply {
                 title = "健康筒自洁"
                 negativeTxt = "不需要"
                 setPositiveButton("需要") {
