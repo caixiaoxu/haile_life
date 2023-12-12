@@ -18,14 +18,11 @@ import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderSelectorViewModel
 import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.Constants
-import com.yunshang.haile_life.data.agruments.NewOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.agruments.NewOrderParams
 import com.yunshang.haile_life.data.agruments.Purchase
-import com.yunshang.haile_life.data.entities.DeviceDetailEntity
-import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
-import com.yunshang.haile_life.data.entities.DeviceStateEntity
-import com.yunshang.haile_life.data.entities.ExtAttrDtoItem
+import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.databinding.ActivityOrderSelectorBinding
 import com.yunshang.haile_life.databinding.ItemDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
