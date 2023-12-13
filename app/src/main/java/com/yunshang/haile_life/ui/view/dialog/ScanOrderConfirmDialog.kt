@@ -125,7 +125,7 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
     }
 
     internal class Builder(
-        val deviceCategoryCode: String,
+        val deviceCategoryCode: String?,
         val hasClean: Boolean,
         val callBack: (() -> Unit)? = null
     ) {

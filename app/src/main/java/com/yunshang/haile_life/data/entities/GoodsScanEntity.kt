@@ -11,9 +11,11 @@ package com.yunshang.haile_life.data.entities
  * 作者姓名 修改时间 版本号 描述
  */
 data class GoodsScanEntity(
-    val categoryCode: String,
-    val categoryName: String,
-    val goodsId: Int,
-    val shopId: Int,
-    val shopType: Int
+    val goodsId: Int? = null,
+    val deviceName: String? = null,
+    val categoryCode: String? = null,
+    val categoryName: String? = null,
+    val shopId: Int? = null,
+    val shopType: Int? = null,
+    val deviceId: Int? = null,
 )

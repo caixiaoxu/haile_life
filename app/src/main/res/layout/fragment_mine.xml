@@ -272,22 +272,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_fun_service_wallet_balance"
                 style="@style/Font_12_black_45"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
                 android:drawableTop="@mipmap/icon_fun_service_wallet"
                 android:drawablePadding="4dp"
                 android:gravity="center"
+                android:paddingVertical="18dp"
                 android:text="@string/mine_wallet"
                 app:layout_constraintEnd_toStartOf="@id/tv_fun_service_wallet_haixin"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_fun_service_title" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_fun_service_wallet_haixin"
                 style="@style/Font_12_black_45"
                 android:layout_width="0dp"
@@ -295,13 +295,14 @@
                 android:drawableTop="@mipmap/icon_fun_service_haixin"
                 android:drawablePadding="4dp"
                 android:gravity="center"
+                android:paddingVertical="18dp"
                 android:text="@string/mine_starfish"
                 app:layout_constraintEnd_toStartOf="@id/tv_fun_service_wallet_discounts"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@id/tv_fun_service_wallet_balance"
                 app:layout_constraintTop_toTopOf="@id/tv_fun_service_wallet_balance" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_fun_service_wallet_discounts"
                 style="@style/Font_12_black_45"
                 android:layout_width="0dp"
@@ -309,13 +310,14 @@
                 android:drawableTop="@mipmap/icon_fun_service_discount"
                 android:drawablePadding="4dp"
                 android:gravity="center"
+                android:paddingVertical="18dp"
                 android:text="@string/discount_coupon"
                 app:layout_constraintEnd_toStartOf="@id/tv_fun_service_service"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@id/tv_fun_service_wallet_haixin"
                 app:layout_constraintTop_toTopOf="@id/tv_fun_service_wallet_balance" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_fun_service_service"
                 style="@style/Font_12_black_45"
                 android:layout_width="0dp"
@@ -323,11 +325,26 @@
                 android:drawableTop="@mipmap/icon_fun_service_service"
                 android:drawablePadding="4dp"
                 android:gravity="center"
+                android:paddingVertical="18dp"
                 android:text="@string/online_service"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toEndOf="@id/tv_fun_service_wallet_discounts"
                 app:layout_constraintTop_toTopOf="@id/tv_fun_service_wallet_balance" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_fun_service_repairs"
+                style="@style/Font_12_black_45"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/icon_fun_service_repairs"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:paddingVertical="18dp"
+                android:text="@string/device_repairs"
+                app:layout_constraintEnd_toEndOf="@id/tv_fun_service_wallet_balance"
+                app:layout_constraintStart_toStartOf="@id/tv_fun_service_wallet_balance"
+                app:layout_constraintTop_toBottomOf="@id/tv_fun_service_wallet_balance" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

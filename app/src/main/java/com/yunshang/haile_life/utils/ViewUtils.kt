@@ -8,8 +8,10 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout

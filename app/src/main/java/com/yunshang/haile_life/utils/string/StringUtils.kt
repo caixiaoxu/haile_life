@@ -422,7 +422,7 @@ object StringUtils {
         }
     }
 
-    fun clearHtmlCaches(){
+    fun clearHtmlCaches() {
         textView = null
         htmlTxt = null
         map.clear()

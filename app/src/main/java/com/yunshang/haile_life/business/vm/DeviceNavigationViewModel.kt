@@ -70,7 +70,7 @@ class DeviceNavigationViewModel : BaseViewModel() {
                 )
             )?.let { scan ->
                 // 设备详情
-                ApiRepository.dealApiResult(mDeviceRepo.requestDeviceDetail(scan.goodsId))
+                ApiRepository.dealApiResult(mDeviceRepo.requestDeviceDetail(scan.goodsId!!))
                     ?.let { deviceDetail ->
                         // 如果有预约跳转预约订单详情列表
                         val appointEntity = ApiRepository.dealApiResult(

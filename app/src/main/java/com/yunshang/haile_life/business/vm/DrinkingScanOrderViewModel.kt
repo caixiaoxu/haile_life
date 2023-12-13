@@ -71,13 +71,13 @@ class DrinkingScanOrderViewModel : BaseViewModel() {
                 // 商品详情
                 if (null == deviceDetail.value) {
                     ApiRepository.dealApiResult(
-                        mDeviceRepo.requestDeviceDetail(scan.goodsId)
+                        mDeviceRepo.requestDeviceDetail(scan.goodsId!!)
                     )?.also {
                         deviceDetail.postValue(it)
                     }
                 }
                 ApiRepository.dealApiResult(
-                    mShopRepo.requestShopDetail(scan.shopId)
+                    mShopRepo.requestShopDetail(scan.shopId!!)
                 )?.let {
                     shopName.postValue(it.name)
                 }

@@ -100,4 +100,8 @@ interface OrderService {
     suspend fun verifyDeviceVerifyCode(@Body body: RequestBody): ResponseWrapper<Any>
     @POST("/trade/underway/stateList")
     suspend fun requestOrderStateList(): ResponseWrapper<OrderStateListEntity>
+    @POST("/device/selfClean/refresh")
+    suspend fun requestSelfCleanRefresh(@Body body: RequestBody): ResponseWrapper<SelfCleanRefreshEntity>
+    @POST("/device/selfClean/start")
+    suspend fun startSelfClean(@Body body: RequestBody): ResponseWrapper<Any>
 }

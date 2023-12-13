@@ -18,19 +18,17 @@ import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderSelectorViewModel
 import com.yunshang.haile_life.data.ActivityTag
 import com.yunshang.haile_life.data.Constants
-import com.yunshang.haile_life.data.agruments.NewOrderParams
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.agruments.NewOrderParams
 import com.yunshang.haile_life.data.agruments.Purchase
-import com.yunshang.haile_life.data.entities.DeviceDetailEntity
-import com.yunshang.haile_life.data.entities.DeviceDetailItemEntity
-import com.yunshang.haile_life.data.entities.DeviceStateEntity
-import com.yunshang.haile_life.data.entities.ExtAttrDtoItem
+import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.databinding.ActivityOrderSelectorBinding
 import com.yunshang.haile_life.databinding.ItemDeviceStatusProgressBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 import com.yunshang.haile_life.web.WebViewActivity
@@ -209,11 +207,6 @@ class OrderSelectorActivity :
             mViewModel.attachConfigure()
         }
 
-        mViewModel.selectSelfClean.observe(this) {
-            mViewModel.totalPrice()
-            mViewModel.attachConfigure()
-        }
-
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS, Boolean::class.java)?.observe(this) {
             if (it) {
                 finish()
@@ -309,6 +302,22 @@ class OrderSelectorActivity :
 
     override fun initView() {
         window.statusBarColor = Color.WHITE
+
+        mBinding.includeScanOrderDeviceInfo.tvDeviceRepairs.setOnClickListener {
+            startActivity(Intent(this, FaultRepairsActivity::class.java).apply {
+                putExtras(
+                    IntentParams.FaultRepairsParams.pack(
+                        GoodsScanEntity(
+                            mViewModel.deviceDetail.value?.id,
+                            mViewModel.deviceDetail.value?.name,
+                            mViewModel.deviceDetail.value?.categoryCode,
+                            mViewModel.deviceDetail.value?.categoryName,
+                        )
+                    )
+                )
+            })
+        }
+
         mBinding.includeScanOrderDeviceInfo.ibScanOrderDeviceInfoToggle.setOnClickListener {
             mViewModel.isHideDeviceInfo.value = !mViewModel.isHideDeviceInfo.value!!
         }
@@ -384,18 +393,6 @@ class OrderSelectorActivity :
                             )
                         }
                     })
-            }
-
-            //筒自洁
-            if (true == mViewModel.needSelfClean.value && true == mViewModel.selectSelfClean.value) {
-                goods.add(
-                    Purchase(
-                        mViewModel.deviceDetail.value?.selfCleanValue?.selfCleanGoodsId,
-                        mViewModel.deviceDetail.value?.selfCleanValue?.selfCleanItemId,
-                        "1",
-                        1
-                    )
-                )
             }
 
             // 提交

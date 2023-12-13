@@ -47,18 +47,36 @@
         app:showDividers="middle"
         tools:showIn="@layout/activity_scan_order">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Font_18_black_85_bold"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="13dp"
-            android:gravity="center_vertical"
-            android:text="@{deviceName}"
-            app:drawSD="@{0 == deviceType?null:1 == deviceType?@drawable/shape_scan_order_dryer_device_name:@drawable/shape_scan_order_washing_device_name}"
-            app:paddingTE="@{@dimen/dimen_16}"
-            app:paddingTS="@{0 == deviceType?@dimen/dimen_16:0f}"
-            tools:drawableStart="@drawable/shape_scan_order_washing_device_name"
-            tools:text="1号楼1号洗衣机" />
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_18_black_85_bold"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:drawablePadding="13dp"
+                android:gravity="center_vertical"
+                android:text="@{deviceName}"
+                app:drawSD="@{0 == deviceType?null:1 == deviceType?@drawable/shape_scan_order_dryer_device_name:@drawable/shape_scan_order_washing_device_name}"
+                app:paddingTE="@{@dimen/dimen_16}"
+                app:paddingTS="@{0 == deviceType?@dimen/dimen_16:0f}"
+                tools:drawableStart="@drawable/shape_scan_order_washing_device_name"
+                tools:text="1号楼1号洗衣机" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_device_repairs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="4dp"
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/shape_se5fafc_rltb14"
+                android:backgroundTint="@{1 == deviceType?@color/color_appoint_bg:@color/color_e5fafc}"
+                android:textColor="@{1 == deviceType?@color/color_appoint:@color/secondColorPrimary}"
+                android:text="@string/device_repairs"
+                style="@style/font_12_04d1e5"/>
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"

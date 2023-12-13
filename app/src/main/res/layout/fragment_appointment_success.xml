@@ -38,20 +38,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bar_appointment_success_title" />
 
-        <com.lsy.framelib.ui.weight.SingleTapTextView
-            android:id="@+id/btn_appointment_success_cancel"
-            style="@style/Font_12_black_85"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/shape_stroke26000000_r14"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="4dp"
-            android:text="@string/cancel_order"
-            app:layout_constraintBottom_toBottomOf="@id/tv_appointment_success_status"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_appointment_success_status" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_appointment_success_ranking"
             style="@style/Font_12_72333333"
@@ -189,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="10dp"
-                    app:showState="@{false}"
+                    app:showCancel="@{true}"
                     app:order="@{avm.orderDetails}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

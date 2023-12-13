@@ -16,6 +16,7 @@ import com.yunshang.haile_life.business.vm.OrderExecuteViewModel
 import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
@@ -24,6 +25,7 @@ import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.setVisibility
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
@@ -129,6 +131,21 @@ class OrderExecuteFragment :
             }.build().show(childFragmentManager)
         }
 
+        mBinding.tvOrderExecuteDeviceRepairs.setOnClickListener {
+            startActivity(Intent(requireContext(), FaultRepairsActivity::class.java).apply {
+                putExtras(
+                    IntentParams.FaultRepairsParams.pack(
+                        GoodsScanEntity(
+                            mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.goodsId,
+                            mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.goodsName,
+                            mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.categoryCode,
+                            DeviceCategory.categoryName(mActivityViewModel.orderDetails.value?.orderItemList?.firstOrNull()?.categoryCode),
+                        )
+                    )
+                )
+            })
+        }
+
         mBinding.tvOrderExecuteContactShop.setOnClickListener {
             mActivityViewModel.orderDetails.value?.serviceTelephone?.let {
                 val phoneList =
@@ -184,6 +201,21 @@ class OrderExecuteFragment :
                 mViewModel.checkValidTime()
             }
 //        }
+
+        mBinding.includeOrderInfo.btnOrderInfoCancel.text =
+            StringUtils.getString(R.string.finish_order)
+        mBinding.includeOrderInfo.btnOrderInfoCancel.setOnClickListener {
+            CommonDialog.Builder("是否结束订单？").apply {
+                negativeTxt = StringUtils.getString(R.string.no)
+                setPositiveButton(StringUtils.getString(R.string.yes)) {
+                    mViewModel.finishOrder(mActivityViewModel.orderNo) {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            mActivityViewModel.jump.postValue(1)
+                        }, 1000)
+                    }
+                }
+            }.build().show(childFragmentManager)
+        }
     }
 
     private fun startOrderDevice() {
