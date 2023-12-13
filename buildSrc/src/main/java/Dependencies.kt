@@ -80,6 +80,9 @@ object ThirdLibs {
     // jsbridge
     const val jsBridge = "com.github.lzyzsd:jsbridge:2.0.0"
 
+    // apng
+    const val apng = "com.github.penfeizhou.android.animation:apng:3.0.0-alpha.1"
+
     // opencv wechat_qrcode
     const val opencv = "com.github.jenly1314.WeChatQRCode:opencv:2.0.0"
     const val opencv_armv7a = "com.github.jenly1314.WeChatQRCode:opencv-armv7a:2.0.0"

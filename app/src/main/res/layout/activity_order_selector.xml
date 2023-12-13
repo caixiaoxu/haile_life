@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.OrderSelectorViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.order.OrderSelectorActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_selector_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white"
+            app:title="@string/select_model"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_selector_hint"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:background="@{vm.isDryer?@color/color_ffefe6:@color/color_e5fafc}"
+            android:gravity="center_vertical"
+            android:text="@{vm.hint}"
+            android:paddingHorizontal="16dp"
+            android:textColor="@{vm.isDryer?@color/color_ff630e:@color/colorPrimary}"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/bar_selector_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toTopOf="@id/view_no_appoint_bottom"
+            app:layout_constraintTop_toBottomOf="@id/tv_selector_hint">
+
+            <LinearLayout
+                android:id="@+id/ll_selector_configs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/include_scan_order_device_info"
+                    layout="@layout/include_scan_order_device_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
+                    app:deviceCode='@{vm.deviceDetail.id+""}'
+                    app:deviceImei="@{vm.deviceDetail.imei}"
+                    app:deviceName="@{vm.deviceDetail.name}"
+                    app:deviceType="@{vm.isDryer()?1:2}"
+                    app:hasToggle="@{true}"
+                    app:isHide="@{vm.isHideDeviceInfo}"
+                    app:shopName="@{vm.deviceDetail.shopName}" />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_marginHorizontal="16dp" />
+
+                <include
+                    android:id="@+id/include_device_status"
+                    layout="@layout/include_appointment_device_status" />
+
+                <include
+                    android:id="@+id/include_selector_spec"
+                    layout="@layout/item_scan_order_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:desc="@{vm.selectDeviceConfig.feature}"
+                    app:modelTitle="@{vm.modelTitle}" />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_marginHorizontal="16dp" />
+
+                <include
+                    android:id="@+id/include_selector_minute"
+                    layout="@layout/item_scan_order_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:modelTitle="@{@string/use_time}" />
+
+                <View
+                    style="@style/DividingStyle"
+                    android:layout_marginHorizontal="16dp" />
+
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_selector_configs_attr_sku"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    app:divider="@drawable/divder_efefef"
+                    app:itemLayout="@layout/item_scan_order_model"
+                    app:showDividers="middle"
+                    app:visibility="@{vm.needAttach}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:id="@+id/view_no_appoint_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@color/color_appoint_bg"
+            app:layout_constraintBottom_toTopOf="@id/view_selector_bottom"
+            app:visibility="@{1 != vm.deviceDetail.deviceState &amp;&amp; (0 == vm.deviceDetail.reserveState || !vm.deviceDetail.enableReserve)}" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:drawableStart="@mipmap/icon_refund_list_prompt"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="@string/device_can_not_appointment"
+            app:layout_constraintBottom_toBottomOf="@id/view_no_appoint_bottom"
+            app:layout_constraintStart_toStartOf="@id/view_no_appoint_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom"
+            app:visibility="@{1 != vm.deviceDetail.deviceState &amp;&amp; (0 == vm.deviceDetail.reserveState || !vm.deviceDetail.enableReserve)}" />
+
+        <com.lsy.framelib.ui.weight.SingleTapTextView
+            android:id="@+id/btn_selector_not_reason"
+            style="@style/Font_14_ff630e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/check_reason"
+            app:layout_constraintBottom_toBottomOf="@id/view_no_appoint_bottom"
+            app:layout_constraintEnd_toEndOf="@id/view_no_appoint_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_no_appoint_bottom"
+            app:visibility="@{1 != vm.deviceDetail.deviceState &amp;&amp; (0 == vm.deviceDetail.reserveState || !vm.deviceDetail.enableReserve)}" />
+
+        <View
+            android:id="@+id/view_selector_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            android:background="@drawable/shape_top_stroke_dividing"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.lsy.framelib.ui.weight.SingleTapButton
+            android:id="@+id/view_selector_selected"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="132dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:background="@{vm.dryer?@drawable/selector_washing_order_selector_btn:@drawable/selector_dryer_order_selector_btn}"
+            android:enabled="@{1 == vm.deviceDetail.deviceState || (vm.deviceDetail.enableReserve &amp;&amp; 1 == vm.deviceDetail.reserveState)}"
+            app:layout_constraintEnd_toEndOf="@id/view_selector_bottom"
+            app:layout_constraintTop_toTopOf="@id/view_selector_bottom" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_select_submit_selected"
+            style="@style/Font_16_white_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@mipmap/icon_order_submit_right"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@id/view_selector_selected"
+            app:layout_constraintEnd_toEndOf="@id/view_selector_selected"
+            app:layout_constraintStart_toStartOf="@id/view_selector_selected"
+            app:layout_constraintTop_toTopOf="@id/view_selector_selected"
+            tools:text="提前预约" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_selector_price"
+            style="@style/Font_20_black_85"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/money"
+            app:layout_constraintEnd_toStartOf="@id/view_selector_selected"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_selector_selected"
+            app:layout_constraintBottom_toTopOf="@id/tv_selector_desc"
+            app:layout_constraintVertical_chainStyle="spread"
+            app:tMoney='@{vm.totalPriceVal}'
+            tools:text="￥ 5.00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_selector_desc"
+            style="@style/Font_12_black_65"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{vm.attachConfigureVal}"
+            android:visibility='@{(null == vm.attachConfigureVal || "" == vm.attachConfigureVal)?View.GONE:View.VISIBLE}'
+            app:layout_constraintBottom_toBottomOf="@id/view_selector_selected"
+            app:layout_constraintEnd_toEndOf="@id/tv_selector_price"
+            app:layout_constraintStart_toStartOf="@id/tv_selector_price"
+            app:layout_constraintTop_toBottomOf="@id/tv_selector_price"
+            tools:text="+立白洗衣液" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/page_bg"
+            app:visibility="@{null == vm.deviceDetail}"
+            tools:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/bar_selector_title"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

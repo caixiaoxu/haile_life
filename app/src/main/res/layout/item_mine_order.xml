@@ -8,10 +8,6 @@
         <import type="com.yunshang.haile_life.data.agruments.OrderStatus" />
 
         <variable
-            name="isAppoint"
-            type="java.lang.Boolean" />
-
-        <variable
             name="item"
             type="com.yunshang.haile_life.data.entities.OrderEntity" />
     </data>
@@ -39,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableEnd="@mipmap/icon_small_right_no_padding"
-            android:text="@{isAppoint?OrderStatus.getAppointStateName(item.appointmentState,false):item.getOrderStatusTitle}"
+            android:text="@{item.getOrderStatusTitle}"
             android:textSize="12sp"
             app:bgResIds="@{item.multiTypeBgRes}"
             android:drawablePadding="4dp"
@@ -47,7 +43,7 @@
             app:layout_constraintStart_toEndOf="@id/tv_item_mine_order_time"
             app:layout_constraintTop_toTopOf="@id/tv_item_mine_order_time"
             app:txtColors="@{item.multiTypeTxtColors}"
-            app:type="@{item.getMultiType(isAppoint)}"
+            app:type="@{item.getMultiType()}"
             tools:text="已完成" />
 
         <View
@@ -77,6 +73,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_item_mine_order_device_name"
             tools:text="大物洗 x1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_list_coupon"
+            style="@style/Font_10_333333"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/shape_sf5f5f5_r4"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="4dp"
+            android:text="@string/refund_coupon"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@id/tv_item_mine_order_device_model"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_mine_order_device_model"
+            app:visibility="@{item.hasRefundCoupon}" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_list_money"
+            style="@style/Font_10_333333"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_sf5f5f5_r4"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="4dp"
+            android:text="@string/refund_money"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@id/tv_order_list_coupon"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_mine_order_device_model"
+            app:visibility="@{item.hasRefundMoney}" />
 
         <com.yunshang.haile_life.ui.view.AmountTextView
             android:id="@+id/tv_item_mine_order_price_unit"

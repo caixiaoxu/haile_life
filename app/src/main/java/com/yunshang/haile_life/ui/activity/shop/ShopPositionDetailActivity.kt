@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.AppBarLayout
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
@@ -20,10 +22,10 @@ import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.ShopPositionDetailViewModel
+import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.ShopPositionDeviceEntity
-import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.data.entities.TimeMarketVO
 import com.yunshang.haile_life.data.extend.hasVal
 import com.yunshang.haile_life.data.model.SPRepository
@@ -33,17 +35,21 @@ import com.yunshang.haile_life.databinding.ItemShopPositionDetailFloorBinding
 import com.yunshang.haile_life.databinding.ItemShopPositionDetailTagsBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
-import com.yunshang.haile_life.ui.activity.order.AppointmentSubmitActivity
+import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
+import com.yunshang.haile_life.ui.view.IndicatorPagerTitleView
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
+import com.yunshang.haile_life.ui.view.dialog.AppointmentOrderSelectorDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
+import com.yunshang.haile_life.ui.view.refresh.CommonLoadMoreRecyclerView
+import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.MapManagerUtils
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 
 
 class ShopPositionDetailActivity :
@@ -65,10 +71,70 @@ class ShopPositionDetailActivity :
             }
         }
 
+    private var selectorDialog: AppointmentOrderSelectorDialog? = null
+
     private val mAdapter by lazy {
         CommonRecyclerAdapter<ItemShopPositionDetailDeviceBinding, ShopPositionDeviceEntity>(
             R.layout.item_shop_position_detail_device, BR.item
-        ) { _, _, _ -> }
+        ) { mItemBinding, _, item ->
+
+            mItemBinding?.root?.setOnClickListener {
+                if (!checkLogin()) {
+                    return@setOnClickListener
+                }
+
+                if (DeviceCategory.isWashingOrShoes(mViewModel.curDeviceCategory.value?.categoryCode)
+                    || DeviceCategory.isDryer(mViewModel.curDeviceCategory.value?.categoryCode)
+                ) {
+                    // 请求弹窗信息
+                    mViewModel.requestAppointmentInfo(true, item.id) { deviceDetail, stateList ->
+                        deviceDetail.value?.let { detail ->
+                            if (detail.deviceErrorCode > 0 || 3 == detail.deviceState) {
+                                Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备故障,请稍后再试!" })
+                                    .apply {
+                                        dialogBgResource = R.drawable.shape_dialog_bg
+                                    }.build().show(supportFragmentManager)
+                                return@requestAppointmentInfo
+                            } else if (2 == detail.soldState) {
+                                Hint3SecondDialog.Builder(detail.deviceErrorMsg.ifEmpty { "设备已停用,请稍后再试!" })
+                                    .apply {
+                                        dialogBgResource = R.drawable.shape_dialog_bg
+                                    }.build().show(supportFragmentManager)
+                                return@requestAppointmentInfo
+                            } else if (detail.shopClosed) {
+                                Hint3SecondDialog.Builder("门店不在营业时间内,请稍后再试!").apply {
+                                    dialogBgResource = R.drawable.shape_dialog_bg
+                                }.build().show(supportFragmentManager)
+                                return@requestAppointmentInfo
+                            }
+                        }
+
+                        // 打开预约弹窗
+                        selectorDialog = AppointmentOrderSelectorDialog.Builder(
+                            deviceDetail,
+                            stateList,
+                            { mViewModel.requestAppointmentInfo(false, item.id) }) { params ->
+                            mViewModel.submitOrder(params) { result ->
+                                selectorDialog?.dismiss()
+                                result.orderNo?.let { orderNo ->
+                                    startActivity(
+                                        Intent(
+                                            this@ShopPositionDetailActivity,
+                                            OrderStatusActivity::class.java
+                                        ).apply {
+                                            putExtras(IntentParams.OrderParams.pack(orderNo))
+                                        }
+                                    )
+                                }
+                            }
+                        }.build()
+                        selectorDialog?.show(supportFragmentManager)
+                    }
+                } else {
+                    SToast.showToast(this@ShopPositionDetailActivity, "该设备类型无法预约")
+                }
+            }
+        }
     }
 
     override fun layoutId(): Int = R.layout.activity_shop_position_detail
@@ -90,19 +156,13 @@ class ShopPositionDetailActivity :
 
         mViewModel.curDeviceCategory.observe(this) {
             if (mBinding.rgShopPositionDetailFloor.childCount > 0) {
-                var index =
-                    mViewModel.shopDetail.value?.floorList?.indexOfFirst { item -> item.value == it.selectFloor?.value || (item.value.isNullOrEmpty() && it.selectFloor?.value.isNullOrEmpty()) }
+                val index =
+                    mViewModel.shopDetail.value?.floorList?.indexOfFirst { item -> item.value == it.selectFloor?.value || (item.value.isEmpty() && it.selectFloor?.value.isNullOrEmpty()) }
                 if (index.hasVal()) {
                     mBinding.rgShopPositionDetailFloor.check(mBinding.rgShopPositionDetailFloor[index!!].id)
                 }
             }
-            refreshDeviceList(true, it)
-        }
-    }
-
-    private fun refreshDeviceList(refresh: Boolean, device: StoreDeviceEntity?) {
-        mViewModel.requestDeviceList(refresh, device) { list ->
-            mAdapter.refreshList(list, true)
+            mBinding.rvShopPositionDetailDevices.requestLoadMore(true)
         }
     }
 
@@ -136,7 +196,7 @@ class ShopPositionDetailActivity :
                                     context: Context?,
                                     index: Int
                                 ): IPagerTitleView {
-                                    return SimplePagerTitleView(context).apply {
+                                    return IndicatorPagerTitleView(context).apply {
                                         normalColor = ContextCompat.getColor(
                                             this@ShopPositionDetailActivity,
                                             R.color.color_black_65
@@ -159,6 +219,16 @@ class ShopPositionDetailActivity :
                                 override fun getIndicator(context: Context?): IPagerIndicator {
                                     return LinePagerIndicator(context).apply {
                                         mode = LinePagerIndicator.MODE_WRAP_CONTENT
+                                        lineWidth = DimensionUtils.dip2px(
+                                            this@ShopPositionDetailActivity,
+                                            34f
+                                        ).toFloat()
+                                        roundRadius =
+                                            DimensionUtils.dip2px(
+                                                this@ShopPositionDetailActivity,
+                                                2f
+                                            )
+                                                .toFloat()
                                         setColors(
                                             ContextCompat.getColor(
                                                 this@ShopPositionDetailActivity,
@@ -186,23 +256,16 @@ class ShopPositionDetailActivity :
                         if (b) {
                             mViewModel.curDeviceCategory.value?.let { device ->
                                 device.selectFloor = floor
-                                refreshDeviceList(true, device)
+                                mBinding.rvShopPositionDetailDevices.requestLoadMore(true)
                             }
                         }
                     }
                     itemFloorBinding.item = floor
                     mBinding.rgShopPositionDetailFloor.addView(
                         itemFloorBinding.root, ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            DimensionUtils.dip2px(this@ShopPositionDetailActivity, 32f)
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
                         )
                     )
-                }
-
-                mBinding.tvShopPositionDetailDeviceLoadMore.setOnClickListener {
-                    mViewModel.curDeviceCategory.value?.let { device ->
-                        refreshDeviceList(false, device)
-                    }
                 }
             }
         }
@@ -276,7 +339,14 @@ class ShopPositionDetailActivity :
         }
 
         mBinding.tvShopDetailContactPhone.setOnClickListener {
-            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            DialogUtils.checkPermissionDialog(
+                this,
+                supportFragmentManager,
+                SystemPermissionHelper.callPhonePermissions(),
+                "需要权限来拨打电话"
+            ) {
+                requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            }
         }
         mBinding.tvShopDetailRecharge.setOnClickListener {
             if (!checkLogin()) {
@@ -295,17 +365,28 @@ class ShopPositionDetailActivity :
 
         mBinding.rvShopPositionDetailDevices.layoutManager = LinearLayoutManager(this)
         mBinding.rvShopPositionDetailDevices.adapter = mAdapter
-
-        mBinding.btnShopDetailAppoint.setOnClickListener {
-            if (!checkLogin()) {
-                return@setOnClickListener
+        mBinding.rvShopPositionDetailDevices.requestData = object :
+            CommonLoadMoreRecyclerView.OnRequestDataListener<ShopPositionDeviceEntity>() {
+            override fun requestData(
+                page: Int,
+                pageSize: Int,
+                callBack: (responseList: MutableList<out ShopPositionDeviceEntity>?) -> Unit
+            ) {
+                mViewModel.requestDeviceList(page, pageSize, callBack)
             }
-            mViewModel.shopDetail.value?.shopId?.let {
-                startActivity(Intent(this, AppointmentSubmitActivity::class.java).apply {
-                    putExtras(
-                        IntentParams.ShopParams.pack(it)
-                    )
-                })
+
+            override fun onLoadMore(
+                isRefresh: Boolean,
+                responseList: MutableList<out ShopPositionDeviceEntity>
+            ): Boolean {
+                if (isRefresh && responseList.isEmpty()) {
+                    val behavior =
+                        (mBinding.appbarShopPositionDetail.layoutParams as CoordinatorLayout.LayoutParams).behavior
+                    if (behavior is AppBarLayout.Behavior) {
+                        behavior.topAndBottomOffset = 0 //快熟滑动到顶部
+                    }
+                }
+                return false
             }
         }
     }

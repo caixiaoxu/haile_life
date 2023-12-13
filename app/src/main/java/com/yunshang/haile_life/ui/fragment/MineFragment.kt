@@ -14,6 +14,7 @@ import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.databinding.FragmentMineBinding
 import com.yunshang.haile_life.ui.activity.order.OrderListActivity
 import com.yunshang.haile_life.ui.activity.personal.DiscountCouponActivity
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.activity.personal.SettingActivity
 import com.yunshang.haile_life.ui.activity.personal.WalletBalanceActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
@@ -81,23 +82,27 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
             goDiscountCouponList()
         }
 
+        // 在线客服
         mBinding.tvFunServiceService.setOnClickListener {
-            if (!ViewUtils.isFastDoubleClick()) {
-                // 调用系统浏览器
+            // 调用系统浏览器
 //                val uri: Uri = Uri.parse(Constants.SERVICE_URL)
 //                val intent = Intent(Intent.ACTION_VIEW, uri)
 //                startActivity(intent)
 
-                startActivity(Intent(requireContext(), WebViewActivity::class.java).apply {
-                    putExtras(
-                        IntentParams.WebViewParams.pack(
-                            Constants.SERVICE_URL,
-                            noCache = true
-                        )
+            startActivity(Intent(requireContext(), WebViewActivity::class.java).apply {
+                putExtras(
+                    IntentParams.WebViewParams.pack(
+                        Constants.SERVICE_URL,
+                        noCache = true
                     )
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                })
-            }
+                )
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        }
+
+        // 故障报修
+        mBinding.tvFunServiceRepairs.setOnClickListener {
+            startActivity(Intent(requireContext(), FaultRepairsActivity::class.java))
         }
 
         mBinding.btnMineRecharge.setOnClickListener {
@@ -153,6 +158,18 @@ class MineFragment : BaseBusinessFragment<FragmentMineBinding, MineViewModel>(
             if (null == mSharedViewModel.userInfo.value) {
                 mSharedViewModel.requestUserInfo()
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mViewModel.requestData()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            mViewModel.requestData()
         }
     }
 }

@@ -22,222 +22,219 @@
             android:id="@+id/bar_shop_detail_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
-            android:background="@color/white"
+            android:background="@drawable/shape_bottom_stroke_dividing_efefef"
             app:title="@string/shop_detail" />
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar_shop_position_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="130dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_shop_detail_main" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
-                    android:padding="16dp">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_shop_detail_name"
-                        style="@style/Font_18_black_85_bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{vm.shopDetail.name}"
-                        app:layout_constraintEnd_toStartOf="@id/tv_shop_position_detail_navigation"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="浙大博士楼店" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_shop_detail_address"
-                        style="@style/Font_12_black_85_bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text='@{vm.shopDetail.getAddressVal()}'
-                        app:layout_constraintEnd_toStartOf="@id/tv_shop_position_detail_navigation"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_shop_detail_name"
-                        tools:text="距您 534m I 浙大紫金港路具体多少号" />
-
-                    <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
-                        android:id="@+id/ll_shop_position_detail_tags"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toStartOf="@id/tv_shop_position_detail_navigation"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_shop_detail_address">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/tv_shop_detail_startfinsh"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@mipmap/icon_near_by_shop_starfish"
-                            android:visibility="@{vm.shopDetail.rechargeFlag?View.VISIBLE:View.GONE}" />
-
-                    </com.yunshang.haile_life.ui.view.CustomChildListLinearLayout>
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_shop_position_detail_navigation"
-                        style="@style/Font_12_black_85"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableTop="@mipmap/icon_shop_position_navigation"
-                        android:drawablePadding="4dp"
-                        android:gravity="center"
-                        android:text="@string/navigation"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="12dp"
-                    app:divider="@drawable/divide_size10"
-                    app:showDividers="middle">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_shop_detail_work_time"
-                        style="@style/Font_12_black_85"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@mipmap/icon_shop_detail_business_time"
-                        android:drawableEnd="@mipmap/icon_small_arrow_right"
-                        android:drawablePadding="4dp"
-                        android:text="@{vm.shopDetail.getBusinessTimeVal}"
-                        tools:text="营业时间 全天24小时" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Font_12_black_85"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@mipmap/icon_shop_detail_put_in"
-                        android:drawablePadding="4dp"
-                        android:text="@{vm.shopDetail.getBusinessTimeVal}"
-                        android:visibility="gone"
-                        tools:text="自动投放洗衣液/除菌液" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_shop_detail_contact_phone"
-                        style="@style/Font_12_10d0e6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@mipmap/icon_shop_detail_contact_phone"
-                        android:drawablePadding="4dp"
-                        android:text="@{vm.shopDetail.serviceTelephone}"
-                        tools:text="0571-4912-8823" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_shop_detail_recharge"
-                    style="@style/Font_14_black_85"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:drawableStart="@mipmap/icon_shop_detail_recharge"
-                    android:drawableEnd="@mipmap/icon_arrow_right"
-                    android:drawablePadding="12dp"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="12dp"
-                    android:text="@string/starfish_recharge" />
+                android:background="@color/page_bg"
+                app:elevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/white"
+                    android:layout_marginBottom="8dp"
                     android:orientation="vertical"
-                    app:visibility="@{null != vm.shopDetail.positionDeviceDetailList &amp;&amp; vm.shopDetail.positionDeviceDetailList.size() > 0}">
+                    app:layout_scrollFlags="scroll">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/icon_shop_detail_main" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
+                        android:padding="16dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_shop_detail_name"
+                            style="@style/Font_18_black_85_bold"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="32dp"
+                            android:text="@{vm.shopDetail.name}"
+                            app:layout_constraintEnd_toStartOf="@id/tv_shop_position_detail_navigation"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="浙大博士楼店" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_shop_detail_address"
+                            style="@style/Font_12_black_85_bold"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="32dp"
+                            android:text='@{vm.shopDetail.getAddressVal()}'
+                            app:layout_constraintEnd_toStartOf="@id/tv_shop_position_detail_navigation"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_shop_detail_name"
+                            tools:text="距您 534m I 浙大紫金港路具体多少号" />
+
+                        <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                            android:id="@+id/ll_shop_position_detail_tags"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toStartOf="@id/tv_shop_position_detail_navigation"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_shop_detail_address">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/tv_shop_detail_startfinsh"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/icon_near_by_shop_starfish"
+                                android:visibility="@{vm.shopDetail.rechargeFlag?View.VISIBLE:View.GONE}" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_near_by_shop_appoint"
+                                style="@style/Font_10_FF630E"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:background="@drawable/shape_strokeff630e_r4"
+                                android:paddingHorizontal="6dp"
+                                android:paddingVertical="2dp"
+                                android:text="@{vm.shopDetail.appointmentNumVal}"
+                                app:visibility="@{vm.shopDetail.appointment &amp;&amp; vm.shopDetail.reserveNum > 0}"
+                                tools:background="@drawable/shape_strokeff630e_r4" />
+
+                        </com.yunshang.haile_life.ui.view.CustomChildListLinearLayout>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_shop_position_detail_navigation"
+                            style="@style/Font_12_black_85"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTop="@mipmap/icon_shop_position_navigation"
+                            android:drawablePadding="4dp"
+                            android:gravity="center"
+                            android:text="@string/navigation"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_bottom_stroke_dividing_mlr16"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp"
+                        app:divider="@drawable/divide_size10"
+                        app:showDividers="middle">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_shop_detail_work_time"
+                            style="@style/Font_12_black_85"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@mipmap/icon_shop_detail_business_time"
+                            android:drawableEnd="@mipmap/icon_small_arrow_right"
+                            android:drawablePadding="4dp"
+                            android:text="@{vm.shopDetail.getBusinessTimeVal}"
+                            tools:text="营业时间 全天24小时" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_12_black_85"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@mipmap/icon_shop_detail_put_in"
+                            android:drawablePadding="4dp"
+                            android:text="@{vm.shopDetail.getBusinessTimeVal}"
+                            android:visibility="gone"
+                            tools:text="自动投放洗衣液/除菌液" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_shop_detail_contact_phone"
+                            style="@style/Font_12_10d0e6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@mipmap/icon_shop_detail_contact_phone"
+                            android:drawablePadding="4dp"
+                            android:text="@{vm.shopDetail.serviceTelephone}"
+                            tools:text="0571-4912-8823" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_shop_detail_recharge"
+                        style="@style/Font_14_black_85"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:drawableStart="@mipmap/icon_shop_detail_recharge"
+                        android:drawableEnd="@mipmap/icon_arrow_right"
+                        android:drawablePadding="12dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp"
+                        android:text="@string/starfish_recharge" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
 
                     <net.lucode.hackware.magicindicator.MagicIndicator
                         android:id="@+id/indicator_shop_position_detail_device_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:background="@color/white"
-                        android:paddingHorizontal="16dp" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/Font_12_black_65"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="24dp"
-                        android:paddingVertical="12dp"
-                        android:text="@{@string/device_idle_num_prompt(vm.curDeviceCategory.idleCount,vm.curDeviceCategory.total)}"
-                        tools:text="设备（空闲2/共4）" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@drawable/shape_s2e3d3e_r8"
-                        android:orientation="horizontal">
-
-                        <RadioGroup
-                            android:id="@+id/rg_shop_position_detail_floor"
-                            android:layout_width="54dp"
-                            android:layout_height="wrap_content"
-                            android:paddingVertical="6dp"
-                            android:orientation="vertical"/>
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/color_black_5"/>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_shop_position_detail_devices"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_marginHorizontal="12dp"
-                            android:layout_height="wrap_content"
-                            android:paddingVertical="6dp" />
-
-                    </LinearLayout>
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_shop_position_detail_device_load_more"
-                        style="@style/Font_12_black_25"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:drawableEnd="@mipmap/icon_small_arrow_down"
-                        android:drawablePadding="8dp"
-                        android:gravity="center"
-                        android:paddingBottom="12dp"
-                        app:visibility="@{vm.curDeviceCategory.hasMore}"
-                        tools:text="@string/load_more" />
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                        android:layout_height="44dp"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingHorizontal="16dp"
+                        app:visibility="@{null != vm.shopDetail.positionDeviceDetailList &amp;&amp; vm.shopDetail.positionDeviceDetailList.size() > 0}" />
+                </FrameLayout>
 
-        <com.lsy.framelib.ui.weight.SingleTapButton
-            android:id="@+id/btn_shop_detail_appoint"
-            style="@style/CommonMatchBtnStyle1"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="40dp"
-            android:text="@string/appointment_device"
-            android:visibility="@{vm.shopDetail.appointment?View.VISIBLE:View.GONE}" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_12_black_65"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="12dp"
+                    android:text="@{@string/device_idle_num_prompt(vm.curDeviceCategory.idleCount,vm.curDeviceCategory.total)}"
+                    app:visibility="@{null != vm.shopDetail.positionDeviceDetailList &amp;&amp; vm.shopDetail.positionDeviceDetailList.size() > 0}"
+                    tools:text="设备（空闲2/共4）" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/rg_shop_position_detail_floor"
+                        android:layout_width="54dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <com.yunshang.haile_life.ui.view.refresh.CommonLoadMoreRecyclerView
+                        android:id="@+id/rv_shop_position_detail_devices"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>
 </layout>

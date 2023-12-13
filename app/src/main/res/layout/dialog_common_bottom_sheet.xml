@@ -43,7 +43,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View style="@style/DividingStyle"/>
+    <View style="@style/DividingStyle2"/>
 
     <com.yunshang.haile_life.ui.view.MaxHeightScrollView
         android:layout_width="match_parent"

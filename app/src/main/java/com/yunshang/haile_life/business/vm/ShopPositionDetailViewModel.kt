@@ -2,12 +2,16 @@ package com.yunshang.haile_life.business.vm
 
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
+import com.lsy.framelib.utils.gson.GsonUtils
+import com.yunshang.haile_life.business.apiService.DeviceService
+import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.apiService.ShopService
-import com.yunshang.haile_life.data.entities.ShopNoticeEntity
-import com.yunshang.haile_life.data.entities.ShopPositionDetailEntity
-import com.yunshang.haile_life.data.entities.ShopPositionDeviceEntity
-import com.yunshang.haile_life.data.entities.StoreDeviceEntity
+import com.yunshang.haile_life.business.event.BusEvents
+import com.yunshang.haile_life.data.agruments.NewOrderParams
+import com.yunshang.haile_life.data.entities.*
+import com.yunshang.haile_life.data.extend.hasVal
 import com.yunshang.haile_life.data.model.ApiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,6 +28,8 @@ import kotlinx.coroutines.withContext
  */
 class ShopPositionDetailViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
+    private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
+    private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
     var positionId: Int = -1
 
@@ -82,32 +88,81 @@ class ShopPositionDetailViewModel : BaseViewModel() {
     }
 
     fun requestDeviceList(
-        refresh: Boolean,
-        storeDevice: StoreDeviceEntity?,
-        callback: (list: MutableList<ShopPositionDeviceEntity>) -> Unit
+        page: Int,
+        pageSize: Int,
+        callback: ((responseList: MutableList<out ShopPositionDeviceEntity>?) -> Unit)? = null
     ) {
-        if (null == storeDevice) return
+        if (null == curDeviceCategory.value) return
         launch({
-            if (refresh) {
-                storeDevice.page = 1
-            }
-
             ApiRepository.dealApiResult(
                 mShopRepo.requestPositionDeviceList(
                     ApiRepository.createRequestBody(
                         hashMapOf(
-                            "page" to storeDevice.page,
-                            "pageSize" to 20,
+                            "page" to page,
+                            "pageSize" to pageSize,
                             "positionId" to positionId,
-                            "categoryCode" to storeDevice.categoryCode,
-                            "floorCode" to storeDevice.selectFloor?.value
+                            "categoryCode" to curDeviceCategory.value?.categoryCode,
+                            "floorCode" to curDeviceCategory.value?.selectFloor?.value
                         )
                     )
                 )
             )?.let {
-                storeDevice.refreshDeviceList(refresh, it.items, it.total)
+                curDeviceCategory.value?.refreshDeviceList(1 == page, it.items, it.total)
                 withContext(Dispatchers.Main) {
-                    callback(storeDevice.deviceList)
+                    callback?.invoke(it.items)
+                }
+            }
+        })
+    }
+
+    val deviceDetail: MutableLiveData<DeviceDetailEntity> = MutableLiveData()
+    val stateList: MutableLiveData<List<DeviceStateEntity>?> = MutableLiveData()
+
+    fun requestAppointmentInfo(
+        isInit: Boolean,
+        deviceId: Int?,
+        callback: ((deviceDetail: MutableLiveData<DeviceDetailEntity>, stateList: MutableLiveData<List<DeviceStateEntity>?>) -> Unit)? = null
+    ) {
+        if (!deviceId.hasVal()) return
+        launch({
+            ApiRepository.dealApiResult(
+                mDeviceRepo.requestDeviceDetail(deviceId!!)
+            )?.also { detail ->
+                ApiRepository.dealApiResult(
+                    mDeviceRepo.requestDeviceStateList(
+                        ApiRepository.createRequestBody(
+                            hashMapOf("goodsId" to deviceId)
+                        )
+                    )
+                )?.let { deviceStateList ->
+                    deviceDetail.postValue(detail)
+                    stateList.postValue(deviceStateList.stateList)
+                    if (isInit) {
+                        withContext(Dispatchers.Main) {
+                            callback?.invoke(deviceDetail, stateList)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    fun submitOrder(
+        params: NewOrderParams,
+        callback: (result: OrderSubmitResultEntity) -> Unit
+    ) {
+        launch({
+            val body = ApiRepository.createRequestBody(GsonUtils.any2Json(params))
+            ApiRepository.dealApiResult(
+                if (null == params.reserveMethod) {
+                    mOrderRepo.lockOrderCreate(body)
+                } else {
+                    mOrderRepo.reserveCreate(body)
+                }
+            )?.let {
+                LiveDataBus.post(BusEvents.ORDER_SUBMIT_STATUS, true)
+                withContext(Dispatchers.Main) {
+                    callback(it)
                 }
             }
         })

@@ -46,6 +46,7 @@
 
     <style name="BottomSheetStyleWrapper" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
+        <item name="behavior_peekHeight">800dp</item>
     </style>
 
     <style name="CommonBottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
@@ -66,6 +67,13 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
         <item name="android:background">@color/dividing_line_color</item>
+    </style>
+
+
+    <style name="DividingStyle2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/dividing_line_color_efefef</item>
     </style>
 
     <style name="MainTab">
@@ -135,6 +143,11 @@
     <style name="Font_12_333333">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/color_333333</item>
+    </style>
+
+    <style name="Font_12_72333333">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_72333333</item>
     </style>
 
     <style name="Font_12_black_65">
@@ -221,6 +234,11 @@
     <style name="Font_14_666666">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#666666</item>
+    </style>
+
+    <style name="Font_14_999999">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#999999</item>
     </style>
 
     <style name="Font_14_black_65">
@@ -311,9 +329,35 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="font_16_04d1e5">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/secondColorPrimary</item>
+    </style>
+
+    <style name="font_16_04d1e5_bold" parent="font_16_04d1e5">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Font_16_ff630e">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/color_ff630e</item>
+    </style>
+
+    <style name="Font_17_black_85">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_17_black_85_45" parent="Font_17_black_85">
+        <item name="android:textColorHint">@color/color_black_45</item>
+    </style>
+
+    <style name="Font_17_333333">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
+    <style name="Font_17_333333_bold" parent="Font_17_333333">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Font_18_04cee5">
@@ -407,6 +451,11 @@
 
     <style name="Font_52_black_85">
         <item name="android:textSize">52sp</item>
+        <item name="android:textColor">@color/color_black_85</item>
+    </style>
+
+    <style name="Font_64_black_85">
+        <item name="android:textSize">64sp</item>
         <item name="android:textColor">@color/color_black_85</item>
     </style>
 

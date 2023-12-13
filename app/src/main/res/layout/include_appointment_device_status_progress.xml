@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/include_appointment_device_status">
+
+    <data>
+
+        <variable
+            name="index"
+            type="java.lang.Integer" />
+
+        <variable
+            name="status"
+            type="java.lang.String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="12dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text='@{"第" + index + "笔订单" + "（"+ status +"）"}'
+            app:visibility="@{null != index}"
+            tools:text="第1笔订单（正在进行）" />
+
+        <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+            android:id="@+id/ll_device_state_progress"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:gravity="center_vertical"
+            app:itemLayout="@layout/item_device_status_progress"
+            android:orientation="horizontal"
+            android:background="@drawable/shape_sf9f9f9_r8"/>
+    </LinearLayout>
+</layout>

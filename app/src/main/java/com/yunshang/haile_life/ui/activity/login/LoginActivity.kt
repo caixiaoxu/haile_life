@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import com.lsy.framelib.async.LiveDataBus
+import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
@@ -79,6 +80,10 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
         mBinding.ivLoginAlipay.visibility =
             if (isAlipayInstall) View.VISIBLE else View.GONE
         mBinding.ivLoginAlipay.setOnClickListener {
+            if (true != mViewModel.isAgree.value) {
+                SToast.showToast(this@LoginActivity, R.string.agreement_err)
+                return@setOnClickListener
+            }
             mViewModel.aliPayAuth(this@LoginActivity) {
                 mSharedViewModel.thirdLogin(7, it) { code ->
                     startActivity(
@@ -95,6 +100,10 @@ class LoginActivity : BaseBusinessActivity<ActivityLoginBinding, LoginViewModel>
         mBinding.ivLoginWechat.visibility =
             if (isWxInstall) View.VISIBLE else View.GONE
         mBinding.ivLoginWechat.setOnClickListener {
+            if (true != mViewModel.isAgree.value) {
+                SToast.showToast(this@LoginActivity, R.string.agreement_err)
+                return@setOnClickListener
+            }
             WeChatHelper.openWeChatLogin()
         }
         mBinding.tvLoginThirdLoginTitle.visibility =

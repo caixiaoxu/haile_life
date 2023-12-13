@@ -12,6 +12,7 @@ import com.yunshang.haile_life.business.apiService.MarketingService
 import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.*
+import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.string.StringUtils
 import java.math.BigDecimal
@@ -31,7 +32,7 @@ class ScanOrderViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
 
-    val isHideDeviceInfo:MutableLiveData<Boolean> = MutableLiveData(true)
+    val isHideDeviceInfo: MutableLiveData<Boolean> = MutableLiveData(true)
 
     val goodsScan: MutableLiveData<GoodsScanEntity> by lazy {
         MutableLiveData()
@@ -171,7 +172,7 @@ class ScanOrderViewModel : BaseViewModel() {
                 // 商品详情
                 val deviceDetail = if (null == deviceDetail.value) {
                     ApiRepository.dealApiResult(
-                        mDeviceRepo.requestDeviceDetail(scan.goodsId)
+                        mDeviceRepo.requestDeviceDetail(scan.goodsId!!)
                     )?.also {
                         deviceDetail.postValue(it)
                     }
@@ -193,7 +194,7 @@ class ScanOrderViewModel : BaseViewModel() {
                     if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
                         // 初始化关联的sku
                         selectAttachSku = mutableMapOf()
-                        detail.attachItems.forEach { item ->
+                        detail.attachItems?.forEach { item ->
                             if (item.extAttrDto.items.isNotEmpty()) {
                                 selectAttachSku[item.id] =
                                     item.extAttrDto.items.find { dto -> dto.isEnabled && dto.isDefault }
@@ -206,7 +207,7 @@ class ScanOrderViewModel : BaseViewModel() {
 
                     requestShopList(detail.shopId, scan.goodsId, detail.categoryId)
                 }
-                if (scan.shopId > 0) {
+                if (scan.shopId.isGreaterThan0()) {
                     ApiRepository.dealApiResult(
                         mMarketingRepo.requestShopUmpList(
                             ApiRepository.createRequestBody(
@@ -249,13 +250,13 @@ class ScanOrderViewModel : BaseViewModel() {
         }
     }
 
-    fun requestShopListAsync(shopId: Int, goodsId: Int, categoryId: Int) {
+    fun requestShopListAsync(shopId: Int, goodsId: Int?, categoryId: Int) {
         launch({
             requestShopList(shopId, goodsId, categoryId)
         })
     }
 
-    private suspend fun requestShopList(shopId: Int, goodsId: Int, categoryId: Int) {
+    private suspend fun requestShopList(shopId: Int, goodsId: Int?, categoryId: Int) {
         // 强制使用海星
         ApiRepository.dealApiResult(
             mShopRepo.requestShopConfigList(

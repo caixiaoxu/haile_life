@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="avm"
+            type="com.yunshang.haile_life.business.vm.OrderStatusViewModel" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.AppointmentOrderVerifyViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_appointment_success"
+        tools:context=".ui.activity.order.AppointmentOrderVerifyActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_appointment_order_verify_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/verify" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_appointment_order_verify_status"
+            style="@style/Font_24_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{vm.countDownTime}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bar_appointment_order_verify_title"
+            tools:text="待验证，剩余 02:55" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_appointment_order_verify_prompt"
+            style="@style/Font_12_72333333"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/verify_order_prompt"
+            app:layout_constraintStart_toStartOf="@id/tv_appointment_order_verify_status"
+            app:layout_constraintTop_toBottomOf="@id/tv_appointment_order_verify_status" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_appointment_order_verify_prompt">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/include_order_specs"
+                    layout="@layout/include_order_specs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    app:total="@{avm.orderDetails.realPrice}" />
+
+                <LinearLayout
+                    android:id="@+id/ll_appointment_order_verify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="32dp"
+                    app:visibility="@{!vm.inValidOrder}">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_appointment_order_verify"
+                        style="@style/Font_16_black_85_45"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:background="@drawable/shape_sf5f5f5_r23"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:hint="@string/appointment_order_verify_code_prompt"
+                        android:text="@={vm.checkCode}" />
+
+                    <com.lsy.framelib.ui.weight.SingleTapButton
+                        android:id="@+id/btn_appointment_order_verify"
+                        style="@style/CommonMatchBtnStyle1"
+                        android:layout_marginTop="24dp"
+                        android:enabled="@{null != vm.checkCode &amp;&amp; vm.checkCode.length() > 0}"
+                        android:text="@string/verify" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_appointment_order_verify_device"
+                        style="@style/Font_14_black_25"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        tools:text="验证码已发送至设备“xxxx”" />
+
+                    <com.lsy.framelib.ui.weight.SingleTapTextView
+                        android:id="@+id/btn_appointment_order_verify_resend"
+                        style="@style/font_14_04D1E5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/send_again2" />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/include_order_info"
+                    layout="@layout/include_order_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="10dp"
+                    app:showCancel="@{!vm.inValidOrder}"
+                    app:order="@{avm.orderDetails}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -47,6 +47,22 @@ object IntentParams {
         fun parseId(intent: Intent): Int = intent.getIntExtra(Id, -1)
     }
 
+    object PicParams {
+        private const val Url = "url"
+
+        /**
+         * 包装参数
+         */
+        fun pack(url: String): Bundle = Bundle().apply {
+            putString(Url, url)
+        }
+
+        /**
+         * 解析Url
+         */
+        fun parseUrl(intent: Intent): String? = intent.getStringExtra(Url)
+    }
+
     object BindPhoneParams {
         private const val Code = "code"
         private const val LoginType = "loginType"
@@ -112,6 +128,7 @@ object IntentParams {
         private const val ReserveTime = "reserveTime"
         private const val DeviceName = "deviceName"
         private const val ShopAddress = "shopAddress"
+        private const val IsAppoint = "isAppoint"
 
         /**
          * 包装参数
@@ -121,6 +138,7 @@ object IntentParams {
             reserveTime: String? = null,
             deviceName: String? = null,
             shopAddress: String? = null,
+            isAppoint: Boolean? = null,
         ): Bundle =
             Bundle().apply {
                 putString(Goods, GsonUtils.any2Json(goods))
@@ -133,6 +151,9 @@ object IntentParams {
                 shopAddress?.let {
                     putString(ShopAddress, shopAddress)
                 }
+                isAppoint?.let {
+                    putBoolean(IsAppoint, isAppoint)
+                }
             }
 
         /**
@@ -144,6 +165,7 @@ object IntentParams {
         fun parseReserveTime(intent: Intent): String? = intent.getStringExtra(ReserveTime)
         fun parseDeviceName(intent: Intent): String? = intent.getStringExtra(DeviceName)
         fun parseShopAddress(intent: Intent): String? = intent.getStringExtra(ShopAddress)
+        fun parseIsAppoint(intent: Intent): Boolean = intent.getBooleanExtra(IsAppoint, false)
 
         data class OrderSubmitGood(
             val categoryCode: String,
@@ -262,40 +284,44 @@ object IntentParams {
     object OrderListParams {
         private const val IsMain = "isMain"
         private const val Status = "status"
-        private const val IsAppoint = "isAppoint"
 
         /**
          * 包装参数
          */
-        fun pack(isMain: Boolean = false, status: Int? = null, isAppoint: Boolean = false): Bundle =
+        fun pack(isMain: Boolean = false, status: Int? = null): Bundle =
             Bundle().apply {
                 putBoolean(IsMain, isMain)
                 status?.let {
                     putInt(Status, status)
                 }
-                putBoolean(IsAppoint, isAppoint)
             }
 
         fun parseIsMain(bundle: Bundle?): Boolean = bundle?.getBoolean(IsMain, false) ?: false
-        fun parseIsAppoint(bundle: Bundle?): Boolean = bundle?.getBoolean(IsAppoint, false) ?: false
         fun parseStatus(bundle: Bundle?): Int? = bundle?.getInt(Status, -1).let {
             if (-1 == it) null else it
         }
     }
 
     object DeviceParams {
-        private const val CategoryCode = "categoryCode"
+        private const val DeviceId = "deviceId"
+        const val CategoryCode = "categoryCode"
 
         /**
          * 包装参数
          */
-        fun pack(categoryCode: String?): Bundle =
+        fun pack(categoryCode: String? = null, deviceId: Int? = null): Bundle =
             Bundle().apply {
-                putString(CategoryCode, categoryCode)
+                categoryCode?.let {
+                    putString(CategoryCode, categoryCode)
+                }
+                deviceId?.let {
+                    putInt(DeviceId, deviceId)
+                }
             }
 
-
         fun parseCategoryCode(intent: Intent): String? = intent.getStringExtra(CategoryCode)
+
+        fun parseDeviceId(intent: Intent): Int = intent.getIntExtra(DeviceId, -1)
     }
 
     object DiscountCouponSelectorParams {
@@ -410,6 +436,23 @@ object IntentParams {
         fun parseShopId(intent: Intent): Int = intent.getIntExtra(ShopId, -1)
     }
 
+    object FaultRepairsParams {
+        private const val GoodsInfo = "goodsInfo"
+
+        /**
+         * 包装参数
+         */
+        fun pack(goodsInfo: GoodsScanEntity? = null): Bundle =
+            Bundle().apply {
+                goodsInfo?.let {
+                    putString(GoodsInfo, GsonUtils.any2Json(it))
+                }
+            }
+
+        fun parseGoodsInfo(intent: Intent): GoodsScanEntity? =
+            GsonUtils.json2Class(intent.getStringExtra(GoodsInfo), GoodsScanEntity::class.java)
+    }
+
     object OrderParams {
         private const val OrderNo = "orderNo"
         private const val IsAppoint = "isAppoint"
@@ -441,12 +484,19 @@ object IntentParams {
          */
         fun pack(
             orderNo: String,
+            orderType: String,
+            orderSubType: Int,
             timeRemaining: String,
             price: String,
             orderItems: List<OrderItem>? = null
         ): Bundle =
             Bundle().apply {
-                putAll(OrderParams.pack(orderNo))
+                putAll(
+                    OrderParams.pack(
+                        orderNo,
+                        "300" == orderType || 106 == orderSubType
+                    )
+                )
                 putString(TimeRemaining, timeRemaining)
                 putString(Price, price)
                 orderItems?.let {

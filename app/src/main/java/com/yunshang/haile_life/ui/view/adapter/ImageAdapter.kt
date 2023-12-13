@@ -30,7 +30,8 @@ class ImageAdapter<T>(
     override fun onCreateHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
         return BannerViewHolder(RoundImageView(parent.context).apply {
             radius = DimensionUtils.dip2px(parent.context, 8f).toFloat()
-            scaleType = ImageView.ScaleType.CENTER_CROP
+            scaleType = ImageView.ScaleType.FIT_XY
+            adjustViewBounds = true
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT

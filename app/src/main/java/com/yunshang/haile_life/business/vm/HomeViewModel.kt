@@ -9,6 +9,7 @@ import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.MarketingService
 import com.yunshang.haile_life.business.apiService.MessageService
+import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.entities.*
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -28,6 +29,7 @@ class HomeViewModel : BaseViewModel() {
     private val mMessageRepo = ApiRepository.apiClient(MessageService::class.java)
     private val mMarketingRepo = ApiRepository.apiClient(MarketingService::class.java)
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
+    private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
     val hasLocationPermission: MutableLiveData<Boolean> by lazy {
         MutableLiveData()
@@ -38,7 +40,7 @@ class HomeViewModel : BaseViewModel() {
         HomeCategory(R.mipmap.icon_home_hair, R.string.home_category_hair),
         HomeCategory(R.mipmap.icon_home_drinking, R.string.home_category_drinking),
         HomeCategory(R.mipmap.icon_home_shower, R.string.home_category_shower),
-        HomeCategory(R.mipmap.icon_home_dry_cleaning, R.string.home_category_dry_cleaning),
+//        HomeCategory(R.mipmap.icon_home_dry_cleaning, R.string.home_category_dry_cleaning),
     )
     val smallCategory = arrayListOf(
         HomeCategory(R.mipmap.icon_home_cloth_recycle, R.string.home_category_cloth_recyce),
@@ -89,10 +91,15 @@ class HomeViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
+    val orderStateList: MutableLiveData<OrderStateListEntity> by lazy {
+        MutableLiveData()
+    }
+
     fun requestData() {
         launch({
-            requestHomeMsg()
+            requestOrderState()
             requestAD()
+            requestHomeMsg()
             requestGoodsRecommendAD()
             requestStoreAD()
             requestStudentRecommendAD()
@@ -103,7 +110,28 @@ class HomeViewModel : BaseViewModel() {
      * 首页消息
      */
     fun requestHomeMsgAsync() {
-        launch({ requestHomeMsg() }, showLoading = false)
+        launch({
+            requestHomeMsg()
+        }, {}, showLoading = false)
+    }
+
+    /**
+     * 订单状态信息
+     */
+    fun requestHomeOrderStateAsync() {
+        launch({
+            requestOrderState()
+        }, {}, showLoading = false)
+    }
+
+    private suspend fun requestOrderState() {
+        if (SPRepository.isLogin()) {
+            ApiRepository.dealApiResult(
+                mOrderRepo.requestOrderStateList()
+            )?.let {
+                orderStateList.postValue(it)
+            }
+        }
     }
 
     /**
@@ -256,6 +284,15 @@ class HomeViewModel : BaseViewModel() {
                 mShopRepo.requestShopPositionDevice(nearStoreEntity.value!!.id!!)
             )?.let {
                 storeDevices.postValue(it)
+            }
+        })
+    }
+
+    fun requestOrderDetail(orderNo: String?, callBack: (OrderEntity) -> Unit) {
+        if (orderNo.isNullOrEmpty()) return
+        launch({
+            ApiRepository.dealApiResult(mOrderRepo.requestOrderDetail(orderNo))?.let {
+                callBack(it)
             }
         })
     }

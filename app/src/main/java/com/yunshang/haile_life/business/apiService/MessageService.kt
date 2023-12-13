@@ -22,4 +22,7 @@ interface MessageService {
 
     @POST("/message/read")
     suspend fun readHomeMessage(@Body body: RequestBody): ResponseWrapper<Any>
+
+    @POST("/message/tokeClothes/sendMessage")
+    suspend fun sendTakeSms(@Body body: RequestBody): ResponseWrapper<Any>
 }

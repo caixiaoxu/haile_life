@@ -21,7 +21,8 @@ interface DeviceService {
     suspend fun requestGoodsScan(
         @Query("imei") imei: String? = null,
         @Query("sn") sn: String? = null,
-        @Query("n") n: String? = null
+        @Query("n") n: String? = null,
+        @Query("ifThrowException") ifThrowException:Boolean = true
     ): ResponseWrapper<GoodsScanEntity>
 
     @GET("/goods/normal/items")
@@ -29,6 +30,9 @@ interface DeviceService {
 
     @GET("/goods/normal/details")
     suspend fun requestDeviceDetail(@Query("goodsId") goodsId: Int): ResponseWrapper<DeviceDetailEntity>
+
+    @POST("/goods/stateList")
+    suspend fun requestDeviceStateList(@Body body: RequestBody): ResponseWrapper<DeviceStateListEntity>
 
     /**
      * 卡片列表接口
@@ -77,5 +81,29 @@ interface DeviceService {
      */
     @GET("/waterCode/getWaterCodeByUserId")
     suspend fun requestWaterCode(): ResponseWrapper<WaterControlCodeEntity>
+
+    /**
+     * 错误列表接口
+     */
+    @POST("/deviceFix/getTypes/{goodsCategory}")
+    suspend fun requestFaultTypes(@Path("goodsCategory") goodsCategory: String): ResponseWrapper<MutableList<FaultCategoryEntity>>
+
+    /**
+     * 提交错误接口
+     */
+    @POST("/deviceFix/create")
+    suspend fun submitFaultRepairs(@Body body: RequestBody): ResponseWrapper<Any>
+
+    /**
+     * 请求报修记录列表接口
+     */
+    @POST("/deviceFix/list")
+    suspend fun requestFaultRepairsRecordList(@Body body: RequestBody): ResponseWrapper<ResponseList<FaultRepairsRecordEntity>>
+
+    /**
+     * 请求报修记录详情接口
+     */
+    @POST("/deviceFix/detail/{id}")
+    suspend fun requestFaultRepairsRecordDetails(@Path("id") id: Int): ResponseWrapper<FaultRepairsRecordEntity>
 
 }

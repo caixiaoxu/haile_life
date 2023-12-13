@@ -63,8 +63,6 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
 
         val isDryer = DeviceCategory.isDryerOrHair(builder.deviceCategoryCode)
 
-//        mBinding.tvScanOrderConfirmPrompt.visibility(DeviceCategory.isWashingOrShoes())
-
         val color = ColorStateList.valueOf(
             ContextCompat.getColor(
                 requireContext(),
@@ -74,14 +72,25 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
 
         mBinding.btnScanOrderConfirmNext.backgroundTintList = color
         mBinding.ivScanOrderConfirmMain.setImageResource(if (isDryer) R.mipmap.icon_scan_order_tips_dryer_main else R.mipmap.icon_scan_order_tips_main)
+
+        val promptList = requireContext().resources.getStringArray(
+            when (builder.deviceCategoryCode) {
+                DeviceCategory.Dryer -> R.array.scan_order_dryer_confirm
+                DeviceCategory.Shoes -> R.array.scan_order_shoes_confirm
+                else -> R.array.scan_order_wash_confirm
+            }
+        ).toMutableList()
+        if (DeviceCategory.isWashingOrShoes(builder.deviceCategoryCode)) {
+            if (builder.hasClean) {
+                promptList.removeAt(1)
+                promptList.removeAt(1)
+            } else {
+                promptList.removeAt(3)
+            }
+        }
+
         mBinding.llScanOrderConfirmItems.buildChild<ItemScanOrderConfirmItemBinding, String>(
-            requireContext().resources.getStringArray(
-                when (builder.deviceCategoryCode) {
-                    DeviceCategory.Dryer -> R.array.scan_order_dryer_confirm
-                    DeviceCategory.Shoes -> R.array.scan_order_shoes_confirm
-                    else -> R.array.scan_order_wash_confirm
-                }
-            ).toList()
+            promptList
         ) { _, childBinding, data ->
             childBinding.tvScanOrderConfirmItem.setCompoundDrawablesWithIntrinsicBounds(
                 if (isDryer) R.mipmap.icon_scan_order_tips_dryer_ok else R.mipmap.icon_scan_order_tips_ok,
@@ -111,10 +120,15 @@ class ScanOrderConfirmDialog private constructor(private val builder: Builder) :
      * 默认显示
      */
     fun show(manager: FragmentManager) {
+        isCancelable = false
         show(manager, SCAN_ORDER_CONFIRM_TAG)
     }
 
-    internal class Builder(val deviceCategoryCode: String, val callBack: (() -> Unit)? = null) {
+    internal class Builder(
+        val deviceCategoryCode: String?,
+        val hasClean: Boolean,
+        val callBack: (() -> Unit)? = null
+    ) {
         /**
          * 构建
          */

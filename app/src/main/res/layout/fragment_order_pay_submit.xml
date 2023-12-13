@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="avm"
+            type="com.yunshang.haile_life.business.vm.OrderStatusViewModel" />
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.OrderPaySubmitViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_appointment_success"
+        android:orientation="vertical"
+        tools:context=".ui.activity.order.OrderSubmitActivity">
+
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_order_pay_submit_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@string/submit_order" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:scrollbars="none">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                app:divider="@drawable/divide_size8"
+                app:showDividers="middle">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_order_pay_submit_status_time_remaining"
+                        style="@style/Font_24_black_85_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.countDownTime}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="待支付，剩余 02:55" />
+
+                    <com.lsy.framelib.ui.weight.SingleTapTextView
+                        android:id="@+id/btn_order_pay_submit_cancel"
+                        style="@style/Font_12_black_85"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/shape_stroke26000000_r14"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:text="@string/cancel_order"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_order_pay_submit_status_time_remaining"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_order_pay_submit_status_time_remaining"
+                        app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder}" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Font_12_72333333"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/submit_order_prompt"
+                        app:layout_constraintTop_toBottomOf="@id/tv_order_pay_submit_status_time_remaining" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <include
+                    android:id="@+id/include_order_pay_submit_specs"
+                    layout="@layout/include_order_specs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:total="@{avm.tradePreview.realPrice}" />
+
+                <include
+                    android:id="@+id/include_order_pay_submit_pay_way"
+                    layout="@layout/layout_pay_way"
+                    app:isDryer="@{vm.isDryer()}"
+                    app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder}" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/font_14_04D1E5"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@color/secondColorPrimaryBg"
+            android:gravity="center"
+            android:text="@{null == avm.selfCleanRefresh?avm.tradePreview.selfCleanInfo.selfPrompt:avm.selfCleanRefresh.selfPrompt(avm.tradePreview.selfCleanInfo.remainMinutes)}"
+            app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean &amp;&amp; !vm.inValidOrder}"
+            tools:text="选择筒自洁" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="98dp"
+            android:background="@color/white"
+            android:paddingTop="10dp"
+            app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder}">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_20_black_85_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text='@{@string/unit_money + " "+ avm.tradePreview.realPrice}'
+                android:visibility="@{(null == avm.tradePreview.realPrice || 0 == avm.tradePreview.realPrice.length())?View.GONE:View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="@id/ll_order_pay_submit_pay_area"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ll_order_pay_submit_pay_area"
+                tools:text="￥ 5.00" />
+
+            <LinearLayout
+                android:id="@+id/ll_order_pay_submit_pay_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.lsy.framelib.ui.weight.SingleTapTextView
+                    android:id="@+id/btn_order_pay_submit_self_clean"
+                    style="@style/font_16_04d1e5_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:background="@drawable/shape_s2604d1e5_lr23"
+                    android:backgroundTint="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@color/secondColorPrimary:@color/color_c0c0c0}"
+                    android:drawableStart="@mipmap/icon_canister_self_cleaning"
+                    android:drawablePadding="8dp"
+                    android:enabled="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50}"
+                    android:gravity="center"
+                    android:minWidth="106dp"
+                    android:paddingHorizontal="12dp"
+                    android:text="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@string/canister_self_cleaning:avm.selfCleanRefresh.selfCleanStateVal}"
+                    android:textColor="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@color/secondColorPrimary:@color/color_black_45}"
+                    app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}" />
+
+                <com.lsy.framelib.ui.weight.SingleTapTextView
+                    android:id="@+id/btn_order_pay_submit_pay"
+                    style="@style/Font_16_white_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/shape_s04d1e5_rr23"
+                    android:backgroundTint="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status >= 40?@color/secondColorPrimary:@color/color_black_25}"
+                    android:enabled="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status >= 40}"
+                    android:gravity="center"
+                    android:minWidth="106dp"
+                    android:paddingHorizontal="12dp"
+                    android:text="@string/go_pay"
+                    app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}" />
+
+                <com.lsy.framelib.ui.weight.SingleTapTextView
+                    android:id="@+id/btn_order_pay_submit_only_pay"
+                    style="@style/Font_16_white_bold"
+                    android:layout_width="132dp"
+                    android:layout_height="46dp"
+                    android:background="@{vm.isDryer()?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
+                    android:gravity="center"
+                    android:text="@string/go_pay"
+                    app:visibility="@{!avm.tradePreview.selfCleanInfo.supportSelfClean}"
+                    tools:background="@drawable/shape_s04d1e5_r23"
+                    tools:visibility="gone" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,34 +10,83 @@
             type="com.yunshang.haile_life.data.entities.ShopPositionDeviceEntity" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_stroke_dividing_efefef"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingVertical="16dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="16dp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Font_14_black_65"
+            android:id="@+id/tv_shop_position_detail_device_name"
+            style="@style/Font_14_black_85"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@{item.name}"
+            app:layout_constraintEnd_toStartOf="@id/tv_shop_position_detail_device_floor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="1号楼一号设备" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_position_detail_device_floor"
             style="@style/Font_14_black_45"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:text="@{item.floorCodeVal}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="1F" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_position_detail_device_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@{1 == item.state?@drawable/shape_s1904cee5_r4:@drawable/shape_s0c000000_r4}"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            android:text="@{1 == item.state?@string/idle:2 == item.state?@string/in_use:@string/fault}"
+            android:textColor="@{1 == item.state?@color/secondColorPrimary:2 == item.state?@color/color_black_85:@color/color_appoint}"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_shop_position_detail_device_name"
+            tools:background="@drawable/shape_s1904cee5_r4"
             tools:text="空闲"
-            android:text="@{1 == item.state?@string/idle:@string/occupy}"
-            android:textColor="@{1 == item.state?@color/secondColorPrimary:@color/color_black_85}"
-            android:textSize="14sp" />
-    </LinearLayout>
+            tools:textColor="@color/secondColorPrimary" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_position_detail_device_can_appoint"
+            style="@style/Font_10_FF630E"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/shape_s19ff630e_r4"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            android:text="@{1 == item.reserveState?@string/can_appointment:@string/can_not_appointment}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_shop_position_detail_device_state"
+            app:layout_constraintStart_toEndOf="@id/tv_shop_position_detail_device_state"
+            app:layout_constraintTop_toTopOf="@id/tv_shop_position_detail_device_state"
+            app:visibility="@{1 == item.reserveState}"
+            tools:text="@string/can_appointment" />
+
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:id="@+id/tv_shop_position_detail_device_appoint_time"-->
+        <!--            style="@style/Font_12_black_85"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="4dp"-->
+        <!--            android:background="@drawable/shape_s0c000000_r4"-->
+        <!--            android:paddingHorizontal="6dp"-->
+        <!--            android:paddingVertical="2dp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/tv_shop_position_detail_device_can_appoint"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/tv_shop_position_detail_device_can_appoint"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/tv_shop_position_detail_device_can_appoint"-->
+        <!--            tools:text="预计时间9分钟" />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

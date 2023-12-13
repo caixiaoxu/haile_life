@@ -54,9 +54,9 @@ class MineViewModel : BaseViewModel() {
         it?.find { item -> 2099 == item.orderState }?.orderCount?.toString() ?: ""
     }
 
-    fun requestData(request: suspend () -> Unit) {
+    fun requestData(request: (suspend () -> Unit)? = null) {
         launch({
-            request()
+            request?.invoke()
             requestBalance()
             requestStarfishTotal()
             requestCouponTotal()

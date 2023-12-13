@@ -71,4 +71,37 @@ interface OrderService {
     @POST("/trade/finishByOrder")
     suspend fun finishByOrder(@Body body: RequestBody): ResponseWrapper<Any>
 
+    @POST("/trade/lockOrderCreate")
+    suspend fun lockOrderCreate(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
+
+    @POST("/trade/scanOrderCreate")
+    suspend fun scanOrderCreate(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
+
+    @POST("/trade/reserveCreate")
+    suspend fun reserveCreate(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
+
+    @POST("/appointment/order/stateList")
+    suspend fun requestAppointStateList(@Body body: RequestBody): ResponseWrapper<AppointmentStateListEntity>
+
+    @POST("/appointment/order/stateQuery")
+    suspend fun requestAppointStateQuery(@Body body: RequestBody): ResponseWrapper<AppointmentStateEntity>
+
+    @POST("/trade/underway/preview")
+    suspend fun requestUnderWayOrderPreview(@Body body: RequestBody): ResponseWrapper<TradePreviewEntity>
+
+    @POST("/trade/underway/create")
+    suspend fun createUnderWayOrder(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
+
+    @POST("/trade/fulfillment/start")
+    suspend fun startAppointOrderDevice(@Body body: RequestBody): ResponseWrapper<Any>
+    @POST("/trade/check/reSendCode")
+    suspend fun sendDeviceVerifyCode(@Body body: RequestBody): ResponseWrapper<Any>
+    @POST("/trade/check/verify")
+    suspend fun verifyDeviceVerifyCode(@Body body: RequestBody): ResponseWrapper<Any>
+    @POST("/trade/underway/stateList")
+    suspend fun requestOrderStateList(): ResponseWrapper<OrderStateListEntity>
+    @POST("/device/selfClean/refresh")
+    suspend fun requestSelfCleanRefresh(@Body body: RequestBody): ResponseWrapper<SelfCleanRefreshEntity>
+    @POST("/device/selfClean/start")
+    suspend fun startSelfClean(@Body body: RequestBody): ResponseWrapper<Any>
 }

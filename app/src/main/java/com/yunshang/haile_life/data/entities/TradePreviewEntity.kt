@@ -23,7 +23,8 @@ data class TradePreviewEntity(
     val itemList: List<TradePreviewGoodItem>,
     val originPrice: String,
     val promotionList: List<TradePreviewPromotion>,
-    val realPrice: String
+    val realPrice: String,
+    val selfCleanInfo: SelfCleanInfo? = null
 ) {
     fun isZero(): Boolean = try {
         realPrice.toDouble() == 0.0
@@ -31,25 +32,34 @@ data class TradePreviewEntity(
         e.printStackTrace()
         false
     }
+
+    fun showDiscount(): Boolean = itemList.size > 1 &&
+            try {
+                discountPrice.toDouble() > 0
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
 }
 
 data class TradePreviewGoodItem(
     val discountAmount: String,
-    val goodsCategoryId: Int,
     val goodsCategoryCode: String,
     val goodsId: Int,
     val goodsItemId: Int,
     val goodsItemName: String,
     val goodsName: String,
-    val num: Int,
+    val num: String,
     val originAmount: String,
     val originUnitAmount: String,
     val realAmount: String,
     val realUnitAmount: String,
-    val shopId: Int
+    val shopId: Int? = null,
+    val goodsCategoryId: Int? = null,
+    val selfClean: Boolean = false
 ) {
     fun getCategoryIcon(): Int =
-        if (goodsCategoryCode.isNullOrEmpty()) 0 else when (goodsCategoryCode) {
+        if (goodsCategoryCode.isNullOrEmpty() || selfClean) 0 else when (goodsCategoryCode) {
             DeviceCategory.Washing -> R.mipmap.icon_order_wash
             DeviceCategory.Dryer -> R.mipmap.icon_order_dryer
             DeviceCategory.Shoes -> R.mipmap.icon_order_shoes
@@ -203,4 +213,21 @@ data class TradePreviewPromotionDetail(
         }
 
     fun dealLineDateStr(): String = DateTimeUtils.formatDateTimeForStr(endAt, "yyyy/MM/dd") + "到期"
+}
+
+data class SelfCleanInfo(
+    val remainMinutes: String? = null,
+    val selfCleanItemId: Int? = null,
+    val selfCleanStatus: Int? = null,
+    val supportSelfClean: Boolean? = null
+) {
+    //<40 执行中，40 执行完成，50 执行失败.
+    val selfPrompt: String
+        get() = selfCleanStatus?.let {
+            if (it < 40) {
+                "筒自洁清洁中，预计耗时${remainMinutes}分钟"
+            } else if (40 == it) {
+                "筒自洁已结束"
+            } else "选择筒自洁，享受${remainMinutes}分钟免费筒自洁"
+        } ?: "选择筒自洁，享受${remainMinutes}分钟免费筒自洁"
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="total"
+            type="java.lang.String" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_order_submit_good"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_r8"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp"
+        app:divider="@color/dividing_line_color_efefef"
+        app:showDividers="middle"
+        tools:showIn="@layout/activity_order_submit">
+
+        <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+            android:id="@+id/ll_order_good_discounts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="12dp"
+            android:orientation="vertical"
+            app:divider="@drawable/divide_size8"
+            app:itemLayout="@layout/item_order_submit_good_item"
+            app:showDividers="middle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom|end"
+            android:orientation="horizontal"
+            android:paddingVertical="12dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_12_black_85_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{@string/total+" ¥ "}' />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_22_black_85_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{total}"
+                tools:text="0.00" />
+        </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

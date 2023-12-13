@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.data.rule.IMultiTypeEntity
 
 /**
@@ -31,16 +32,25 @@ data class NearStorePositionEntity(
     val rechargeFlag: Boolean? = null,
     val shopId: Int? = null,
     val state: Int? = null,
-    val workTime: String? = null
+    val workTime: String? = null,
+    val reserveNum: Int,
 ) : IMultiTypeEntity {
-    fun formatDistance(isJoin: Boolean = true): String =distance?.let {
+
+    val appointmentNumVal: String
+        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.isGreaterThan0()) "${reserveNum}${
+            StringUtils.getString(
+                R.string.unit_tai
+            )
+        }" else ""
+
+    fun formatDistance(isJoin: Boolean = true): String = distance?.let {
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +
                 (if (distance >= 1000) String.format(
                     "%.2fkm", distance / 1000
                 ) else String.format(
                     "%.2fm", distance
                 ))
-    } ?:""
+    } ?: ""
 
     fun getAddressVal(): SpannableString {
         val distance = formatDistance()
@@ -63,14 +73,21 @@ data class NearStorePositionEntity(
     fun stateVal(): String =
         StringUtils.getString(if (1 == state) R.string.in_operation else R.string.stop_of_business)
 
-    override fun getMultiType(): Int = 0
+    override fun getMultiType(): Int = if (1 == state) 1 else 0
 
     override fun getMultiTypeBgRes(): IntArray = intArrayOf(
-        R.drawable.shape_s19ff630e_r4,
+        R.drawable.shape_s0c000000_r4,
         R.drawable.shape_s1904cee5_r4,
     )
 
     override fun getMultiTypeTxtColors(): IntArray = intArrayOf(
-
+        ContextCompat.getColor(
+            Constants.APP_CONTEXT,
+            R.color.color_black_45
+        ),
+        ContextCompat.getColor(
+            Constants.APP_CONTEXT,
+            R.color.colorPrimary
+        ),
     )
 }

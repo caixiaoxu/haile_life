@@ -29,7 +29,7 @@ class DiscountCouponViewModel : BaseViewModel() {
 
     val mCouponIndicators: MutableLiveData<List<IndicatorEntity<Int>>> = MutableLiveData(
         arrayListOf(
-            IndicatorEntity("可用", 0, 1),
+            IndicatorEntity("未使用", 0, 1),
             IndicatorEntity("已使用", 0, 30),
             IndicatorEntity("已失效", 0, 31),
         )

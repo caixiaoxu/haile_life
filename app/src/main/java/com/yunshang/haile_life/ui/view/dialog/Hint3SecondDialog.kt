@@ -1,5 +1,6 @@
 package com.yunshang.haile_life.ui.view.dialog
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -46,7 +47,11 @@ class Hint3SecondDialog private constructor(private val builder: Builder) :
     ): View {
         mBinding = DialogHint3SecondBinding.inflate(inflater, container, false)
         // 背景图
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.shape_sffffff_r8)
+        if (null != builder.dialogBgDrawable) {
+            dialog?.window?.setBackgroundDrawable(builder.dialogBgDrawable)
+        } else {
+            dialog?.window?.setBackgroundDrawableResource(builder.dialogBgResource)
+        }
         return mBinding.root
     }
 
@@ -82,11 +87,15 @@ class Hint3SecondDialog private constructor(private val builder: Builder) :
      */
     fun show(manager: FragmentManager) {
         //不可取消
-        isCancelable = true
+        isCancelable = false
         show(manager, HINT_3S_TAG)
     }
 
     internal class Builder(val msg: CharSequence) {
+
+        // 对话框背景
+        var dialogBgDrawable: Drawable? = null
+        var dialogBgResource: Int = R.drawable.shape_sffffff_r8
 
         /**
          * 构建

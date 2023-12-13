@@ -14,6 +14,12 @@
         android:orientation="vertical"
         tools:context=".ui.activity.shop.NearByShopActivity">
 
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_near_by_shop_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@color/white" />
+
         <include
             android:id="@+id/include_indicator_list"
             layout="@layout/include_indicator_list"/>

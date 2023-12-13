@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnScrollChangedListener
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -13,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
-import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StatusBarUtils
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.youth.banner.indicator.CircleIndicator
@@ -26,14 +26,18 @@ import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.ADImage
+import com.yunshang.haile_life.data.entities.DeviceStateEntity
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.device.DeviceNavigationActivity
+import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.ShopPositionDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
+import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
+import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.web.WebViewActivity
 
@@ -57,7 +61,6 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
     // 权限
     private val requestMultiplePermission =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result: Map<String, Boolean> ->
-
             var isAllow = true
             for (permission in permissions) {
                 if (true != result[permission]) {
@@ -67,7 +70,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             }
             if (isAllow) {
                 mViewModel.hasLocationPermission.value = true
-                mSharedViewModel.requestLocationInfo(requireContext())
+//                mSharedViewModel.requestLocationInfo(requireContext())
             }
         }
 
@@ -107,6 +110,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         super.initEvent()
 
         mViewModel.hasLocationPermission.observe(this) {
+            changeNearByShopState(it)
             if (true == it)
                 mSharedViewModel.requestLocationInfo(requireContext())
         }
@@ -130,6 +134,26 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 mBinding.bannerHomeBanner.visibility = View.VISIBLE
             }
         }
+
+        mViewModel.orderStateList.observe(this) { stateList ->
+            stateList?.let {
+                val size = stateList.stateList?.size?.let { it - 1 } ?: 0
+                mBinding.llDeviceStateProgress.buildChild<ItemDeviceStatusProgressBinding, DeviceStateEntity>(
+                    stateList.stateList,
+                    LinearLayoutCompat.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ).apply {
+                        weight = 1f
+                    }
+                ) { progressIndex, childProgressBinding, state ->
+                    childProgressBinding.isFirst = 0 == progressIndex
+                    childProgressBinding.isLast = progressIndex == size
+                    childProgressBinding.item = state
+                }
+            }
+        }
+
         // 商城
         mViewModel.storeAdEntity.observe(this) { ad ->
             ad.images.firstOrNull()?.let { img ->
@@ -204,12 +228,56 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         }
 
         mSharedViewModel.mSharedLocation.observe(this) {
-            mViewModel.requestNearByStore(it)
+            if (!isHide) {
+                mViewModel.requestNearByStore(it)
+            }
         }
 
         LiveDataBus.with(BusEvents.LOGIN_STATUS)?.observe(this) {
             mViewModel.requestHomeMsgAsync()
+            mViewModel.requestHomeOrderStateAsync()
         }
+    }
+
+    /**
+     * 跳转到营业点列表
+     */
+    private fun goToPositionList() {
+        if (true != mViewModel.hasLocationPermission.value) {
+            DialogUtils.checkPermissionDialog(
+                requireContext(),
+                childFragmentManager,
+                permissions,
+                "需要定位权限来寻找附近营业点", false
+            ) {
+                requestMultiplePermission.launch(permissions)
+            }
+        } else {
+            if (null == mViewModel.nearStoreEntity.value) {
+                Hint3SecondDialog.Builder("附近2公里内暂无营业点").apply {
+                    dialogBgResource = R.drawable.shape_dialog_bg
+                }.build().show(childFragmentManager)
+            } else {
+                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
+            }
+        }
+    }
+
+    private var isHide: Boolean = false
+
+    override fun onResume() {
+        super.onResume()
+        isHide = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isHide = true
+    }
+
+    private fun changeNearByShopState(it: Boolean) {
+        mBinding.tvNearByShopState.text =
+            if (it) "附近2公里内暂无营业点" else "定位失败，暂无位置权限"
     }
 
     override fun initView() {
@@ -234,7 +302,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
             childBinding.item = data
             childBinding.root.setOnClickListener {
                 when (data.icon) {
-                    R.mipmap.icon_home_wash ->
+                    R.mipmap.icon_home_wash -> {
                         startActivity(
                             Intent(
                                 requireContext(),
@@ -242,6 +310,8 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DefaultPageParams.pack(1))
                             })
+                    }
+
                     R.mipmap.icon_home_hair ->
                         startActivity(
                             Intent(
@@ -250,6 +320,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DefaultPageParams.pack(4))
                             })
+
                     R.mipmap.icon_home_drinking ->
                         startActivity(
                             Intent(
@@ -258,6 +329,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Water))
                             })
+
                     R.mipmap.icon_home_shower ->
                         startActivity(
                             Intent(
@@ -266,55 +338,72 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                             ).apply {
                                 putExtras(IntentParams.DeviceParams.pack(DeviceCategory.Shower))
                             })
+
                     else -> startActivity(Intent(requireContext(), NearByShopActivity::class.java))
                 }
             }
         }
 
         // 分类2(小图)
-        mBinding.llHomeCategorySmall.buildChild<ItemHomeCategorySmallBinding, HomeCategory>(
-            mViewModel.smallCategory,
-            LinearLayoutCompat.LayoutParams(
-                0,
-                LinearLayoutCompat.LayoutParams.WRAP_CONTENT
-            ).apply {
-                weight = 1f
-            }
-        ) { _, childBinding, data ->
-            childBinding.item = data
-            childBinding.root.setOnClickListener {
-                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
-            }
-        }
+//        mBinding.llHomeCategorySmall.buildChild<ItemHomeCategorySmallBinding, HomeCategory>(
+//            mViewModel.smallCategory,
+//            LinearLayoutCompat.LayoutParams(
+//                0,
+//                LinearLayoutCompat.LayoutParams.WRAP_CONTENT
+//            ).apply {
+//                weight = 1f
+//            }
+//        ) { _, childBinding, data ->
+//            childBinding.item = data
+//            childBinding.root.setOnClickListener {
+//                startActivity(Intent(requireContext(), NearByShopActivity::class.java))
+//            }
+//        }
+//        mBinding.clHomeCurTask.setOnClickListener {
+//            mViewModel.lastMessage.value?.let { msg ->
+//                msg.messageContent()?.let { content ->
+//                    if (content.orderNo.isNotEmpty()) {
+//                        startActivity(
+//                            Intent(
+//                                requireContext(),
+//                                OrderDetailActivity::class.java
+//                            ).apply {
+//                                putExtras(
+//                                    IntentParams.OrderParams.pack(
+//                                        content.orderNo,
+//                                        msg.subtype == "user:order:appoint"
+//                                    )
+//                                )
+//                            })
+//                    }
+//                }
+//            }
+//        }
 
-        mBinding.clHomeCurTask.setOnClickListener {
-            mViewModel.lastMessage.value?.let { msg ->
-                msg.messageContent()?.let { content ->
-                    if (content.orderNo.isNotEmpty()) {
-                        startActivity(
-                            Intent(
-                                requireContext(),
-                                OrderDetailActivity::class.java
-                            ).apply {
-                                putExtras(
-                                    IntentParams.OrderParams.pack(
-                                        content.orderNo,
-                                        msg.subtype == "user:order:appoint"
-                                    )
-                                )
-                            })
+        mBinding.clHomeOrderState.setOnClickListener {
+            mViewModel.orderStateList.value?.let { stateList ->
+                if (!stateList.orderNo.isNullOrEmpty()) {
+                    mViewModel.requestOrderDetail(stateList.orderNo) { order ->
+                        if (DeviceCategory.isDrinkingOrShower(order.orderItemList.firstOrNull()?.categoryCode)
+                            || order.isNormalOrder || "500" == order.orderType
+                        ) {
+                            goToNormalOrderPage(order.orderNo)
+                        } else {
+                            goToNewOrderPage(order.orderNo)
+                        }
                     }
                 }
             }
         }
 
+        mBinding.btnHomeOrderEmpty.setOnClickListener {
+            // 请求权限
+            goToPositionList()
+        }
+
         // 附近门店 更多
         mBinding.clNearByShopMore.setOnClickListener {
-            startActivity(Intent(requireContext(), NearByShopActivity::class.java))
-        }
-        // 请求权限
-        mBinding.btnHomeNearStoresGetLocation.setOnClickListener {
-            requestMultiplePermission.launch(permissions)
+            goToPositionList()
         }
         // 附近门店
         mBinding.clNearByShop.setOnClickListener {
@@ -327,6 +416,13 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
                 })
             }
         }
+
+        changeNearByShopState(
+            SystemPermissionHelper.checkPermissions(
+                requireContext(),
+                permissions
+            )
+        )
 
         // 指南
         mBinding.clHomeGuideMain.setOnClickListener {
@@ -385,10 +481,35 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         mViewModel.requestData()
     }
 
+    private fun goToNewOrderPage(orderNo: String) {
+        startActivity(
+            Intent(
+                requireContext(),
+                OrderStatusActivity::class.java
+            ).apply {
+                putExtras(IntentParams.OrderParams.pack(orderNo))
+            }
+        )
+    }
+
+    private fun goToNormalOrderPage(orderNo: String) {
+        startActivity(
+            Intent(
+                requireContext(),
+                OrderDetailActivity::class.java
+            ).apply {
+                putExtras(
+                    IntentParams.OrderParams.pack(orderNo)
+                )
+            })
+    }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
+        isHide = hidden
         if (!hidden) {
             mViewModel.requestHomeMsgAsync()
+            mViewModel.requestHomeOrderStateAsync()
         }
     }
 

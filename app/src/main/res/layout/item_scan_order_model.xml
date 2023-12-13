@@ -36,7 +36,7 @@
             android:id="@+id/flow_scan_order_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="3dp"
             app:flow_horizontalBias="0"
             app:flow_horizontalStyle="packed"
             app:flow_verticalGap="12dp"

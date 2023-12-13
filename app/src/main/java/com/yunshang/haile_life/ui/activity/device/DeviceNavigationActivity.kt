@@ -15,29 +15,32 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.DeviceNavigationViewModel
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.model.SPRepository
 import com.yunshang.haile_life.databinding.ActivityDeviceNavigationBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.login.LoginActivity
-import com.yunshang.haile_life.ui.activity.order.DrinkingScanOrderActivity
-import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
-import com.yunshang.haile_life.ui.activity.order.OrderListActivity
-import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.personal.DiscountCouponActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
 import com.yunshang.haile_life.ui.view.adapter.ImageAdapter
 import com.yunshang.haile_life.ui.activity.common.WeChatQRCodeScanActivity
+import com.yunshang.haile_life.ui.activity.order.*
+import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.scheme.SchemeURLHelper
 import com.yunshang.haile_life.utils.string.StringUtils
+import com.yunshang.haile_life.web.WebViewActivity
 import timber.log.Timber
 
 class DeviceNavigationActivity :
     BaseBusinessActivity<ActivityDeviceNavigationBinding, DeviceNavigationViewModel>(
         DeviceNavigationViewModel::class.java, BR.vm
     ) {
+
+    private val permissions = SystemPermissionHelper.cameraPermissions()
+        .plus(SystemPermissionHelper.readWritePermissions())
 
     // 权限
     private val requestMultiplePermission =
@@ -70,7 +73,10 @@ class DeviceNavigationActivity :
                     Timber.i("二维码：$it")
                     val originCodeTrim = it.trim()
                     val code =
-                        StringUtils.getPayCode(originCodeTrim) ?: if (StringUtils.isImeiCode(originCodeTrim)) it else null
+                        StringUtils.getPayCode(originCodeTrim) ?: if (StringUtils.isImeiCode(
+                                originCodeTrim
+                            )
+                        ) it else null
                     code?.let {
                         mViewModel.requestScanResult(code) { scan, detail, appoint ->
                             if (detail.deviceErrorCode > 0) {
@@ -128,11 +134,12 @@ class DeviceNavigationActivity :
                                     else
                                         Intent(
                                             this@DeviceNavigationActivity,
-                                            ScanOrderActivity::class.java
+                                            OrderSelectorActivity::class.java
                                         ).apply {
                                             putExtras(
-                                                IntentParams.ScanOrderParams.pack(
-                                                    code, scan, detail
+                                                IntentParams.DeviceParams.pack(
+                                                    detail.categoryCode,
+                                                    detail.id
                                                 )
                                             )
                                         })
@@ -215,10 +222,14 @@ class DeviceNavigationActivity :
 
         mBinding.btnDeviceNavigationScan.setOnClickListener {
             if (checkLogin())
-                requestMultiplePermission.launch(
-                    SystemPermissionHelper.cameraPermissions()
-                        .plus(SystemPermissionHelper.readWritePermissions())
-                )
+                DialogUtils.checkPermissionDialog(
+                    this@DeviceNavigationActivity,
+                    supportFragmentManager,
+                    permissions,
+                    "需要相机权限和媒体读取权限来扫描或读取设备码"
+                ) {
+                    requestMultiplePermission.launch(permissions)
+                }
         }
         mBinding.btnDeviceNavigationCardManager.setOnClickListener {
             if (checkLogin()) {
@@ -237,9 +248,9 @@ class DeviceNavigationActivity :
                     Intent(this@DeviceNavigationActivity, WaterControlCodeActivity::class.java)
                 )
         }
-        mBinding.btnDeviceNavigationAppoint.setOnClickListener {
-            SToast.showToast(this@DeviceNavigationActivity, R.string.coming_soon)
-        }
+//        mBinding.btnDeviceNavigationAppoint.setOnClickListener {
+//            SToast.showToast(this@DeviceNavigationActivity, R.string.coming_soon)
+//        }
 
         mBinding.btnDeviceNavigationOrder.setOnClickListener {
             if (checkLogin())
@@ -260,7 +271,11 @@ class DeviceNavigationActivity :
         }
 
         mBinding.btnDeviceNavigationFaq.setOnClickListener {
-            SToast.showToast(this@DeviceNavigationActivity, R.string.coming_soon)
+            startActivity(
+                Intent(
+                    this@DeviceNavigationActivity,
+                    WebViewActivity::class.java
+                ).apply { putExtras(IntentParams.WebViewParams.pack(Constants.guide)) })
         }
     }
 

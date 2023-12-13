@@ -5,6 +5,8 @@
     <string name="login">登录</string>
     <string name="submit">提交</string>
     <string name="save">保存</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
     <string name="sure">确定</string>
     <string name="cancel">取消</string>
     <string name="i_know">知道了</string>
@@ -15,9 +17,14 @@
     <string name="device">设备</string>
     <string name="num">数量</string>
     <string name="idle">空闲</string>
+    <string name="copy">复制</string>
+    <string name="in_use">使用中</string>
+    <string name="device_in_use">设备使用中</string>
     <string name="occupy">占用</string>
+    <string name="fault">故障</string>
     <string name="distance">距离</string>
     <string name="you">您</string>
+    <string name="affirm">确认</string>
     <string name="selected">选好了</string>
     <string name="minute">分钟</string>
     <string name="finish">完成</string>
@@ -28,6 +35,26 @@
     <string name="scan">扫码</string>
     <string name="coming_soon">敬请期待</string>
     <string name="please_input">请输入</string>
+    <string name="refresh">刷新</string>
+    <string name="orders">下单</string>
+    <string name="verify">验证</string>
+    <string name="verify_device">验证机器</string>
+    <string name="canister_self_cleaning">筒自洁</string>
+    <string name="pay">支付</string>
+    <string name="device_run">设备运行</string>
+    <string name="device_running">设备运行中</string>
+    <string name="check_reason">查看原因</string>
+    <string name="appointment_success">预约成功</string>
+    <string name="page_time_prefix">待支付，剩余</string>
+    <string name="verify_time_prefix">待验证，剩余</string>
+    <string name="self_cleaning_prefix">待启动，剩余</string>
+    <string name="verify_order_prompt">请在规定时间内完成验证，否则订单将会取消设备内有衣物？</string>
+    <string name="already_appointment_success">已预约成功</string>
+    <string name="service">服务</string>
+    <string name="discounts">优惠</string>
+    <string name="close">关闭</string>
+    <string name="agree">同意</string>
+    <string name="reject">拒绝</string>
 
     <string name="agreement_hint">根据国家法律法规的要求，我们更新了《隐私政策》，帮助您了解我们收集、使用、存储和共享个人信息的情况，特别是我们所采集的个人信息类型及用途，同时您还可以了解到您所共享的相关权利和实现途径，以及我们为了保护好您的个人信息安全所采取的相关策略。</string>
     <string name="login_title">登录海乐生活</string>
@@ -40,7 +67,9 @@
     <string name="getCode">获取验证码</string>
     <string name="send_code">发送验证码</string>
     <string name="send_again">再次发送</string>
+    <string name="send_success">发送成功</string>
     <string name="send_again1">重新获取</string>
+    <string name="send_again2">重新发送</string>
     <string name="phone_empty">请先输入手机号</string>
     <string name="password_empty">请先输入密码</string>
     <string name="code_empty">请先输入验证码</string>
@@ -77,13 +106,16 @@
     <string name="home_category_cloth_manager">衣物管家</string>
     <string name="home_category_student_entrepreneurship">学生创业</string>
     <string name="nearby_stores">附近营业点</string>
-    <string name="nearby_stores_desc">体验洗衣先生的专业洗护</string>
+    <string name="outlet">营业点</string>
+    <string name="nearby_stores_desc">欢迎使用海乐生活智慧物联设备</string>
     <string name="home_guide">自助洗烘指南</string>
     <string name="home_guide_desc">遇到问题来这里快速解决</string>
     <string name="can_appointment">可预约</string>
     <string name="can_not_appointment">不可预约</string>
+    <string name="device_can_not_appointment">设备无法预约</string>
+    <string name="can_not_appointment1">无法预约</string>
     <string name="in_operation">营业中</string>
-    <string name="stop_of_business">暂停营业</string>
+    <string name="stop_of_business">停业中</string>
     <string name="wallet_balance">钱包余额</string>
     <string name="mine_starfish">我的海星</string>
     <string name="discount">优惠折扣</string>
@@ -119,6 +151,27 @@
     <string name="appoint_device_queue_use_time">%1$s排队%2$d人，预计使用时间</string>
     <string name="appoint_order_detail_prompt">温馨提示：\n1、到店后可用微信/支付宝/海乐生活APP扫码解锁设备。\n2、因自身原因超时未使用的订单将无法退款。</string>
     <string name="appoint_order_detail_prompt2">\n2、因自身原因超时未使用的订单将无法退款。</string>
+    <string name="select_model">选择模式</string>
+    <string name="cancel_appoint_order_prompt">是否取消订单？</string>
+
+    <string name="device_repairs">设备报修</string>
+    <string name="device_info">设备信息</string>
+    <string name="device_info_hint">请扫描设备上的二维码</string>
+    <string name="device_type">设备类型</string>
+    <string name="fault_type">故障类型</string>
+    <string name="fault_desc">故障描述</string>
+    <string name="fault_desc_hint">请填写具体故障表现。</string>
+    <string name="repairs_record">报修记录</string>
+    <string name="replied">已回复</string>
+    <string name="no_reply">未回复</string>
+    <string name="repairs_time">报修时间</string>
+    <string name="device_repairs_info">设备报修信息</string>
+    <string name="device_name">设备名称</string>
+
+    <string name="pic_browse">图片浏览</string>
+
+    <string name="device_cur_status">设备当前状态</string>
+    <string name="mine_order_status">我的订单状态</string>
 
     <string name="refund_record">退款记录</string>
     <string name="recharge_record">充值记录</string>
@@ -153,7 +206,10 @@
     <string name="scan_order_confirm_prompt">在提交订单后，按洗衣机上的桶自洁按键，会导致设备不能正常使用。若需要桶自洁，请在提交订单前操作。</string>
     <string name="go_buy">去购买</string>
     <string name="no_prompt">不再提示</string>
+    <string name="special_device_prompt">在提交订单后，按洗衣机上的桶自洁按键，会导致设备不能正常使用。若需要桶自洁，请在提交订单前操作。</string>
+    <string name="order_sure_prompt">确认后，机器将自动启动，请务必确认</string>
     <string name="submit_order">提交订单</string>
+    <string name="submit_order_prompt">请在规定时间内支付，否则订单将会取消</string>
     <string name="go_pay">去支付</string>
     <string name="good_discount">分摊优惠</string>
     <string name="actually_paid">小记</string>
@@ -183,22 +239,31 @@
     <string name="over_time_prompt1">距预约时间不足10分钟，取消后付款金额不退还，确认取消？</string>
     <string name="over_time_prompt2">距预约时间超过10分钟，取消后付款金额原路退回您的账户，已使用的优惠券等权益不返还，确认取消？</string>
     <string name="over_time_prompt3">已超过预约使用时间，取消后付款金额不退还，确认取消？</string>
-    <string name="cancel_order_prompt">您确定要取消订单吗？</string>
+    <string name="cancel_order_prompt">结束订单会导致设备停止运行，确定要停止设备运行吗？</string>
     <string name="user_account">用户账号</string>
     <string name="order_no">订单编号</string>
+    <string name="order_no1">订单号</string>
     <string name="go_use">去使用</string>
     <string name="cutoff_prompt">%1$d天后到期</string>
     <string name="used">已使用</string>
     <string name="expired">已过期</string>
 
     <string name="appointment_order">预约订单</string>
+    <string name="order_info">订单信息</string>
+    <string name="appointment_success_ranking">您的预约订单排在第%1$d位，请耐心等待</string>
+    <string name="appointment_success_prompt">前面订单结束，设备状态变为空闲时，预约订单方可进行验证，请注意查收消息，海乐会及时通知您使用哦</string>
+    <string name="appointment_order_verify_code_prompt">请输入机器屏幕上的验证码</string>
     <string name="order_detail">订单详情</string>
     <string name="copy_order_no">复制订单号</string>
     <string name="total_price">总金额</string>
     <string name="discount_price">已优惠</string>
     <string name="need_pay">需支付</string>
     <string name="order_time">下单时间</string>
+    <string name="other_attach">其他附加</string>
+    <string name="other_attach_value">先筒自洁再洗衣</string>
     <string name="pay_now">立即支付</string>
+    <string name="order_now">立即下单</string>
+    <string name="advance_reservation">提前预约</string>
     <string name="cancel_order">取消订单</string>
     <string name="delete_order">删除订单</string>
     <string name="contact_shop">联系商家</string>
@@ -211,6 +276,18 @@
     <string name="use_appoint_order">使用预约单</string>
     <string name="appoint_order_use_prompt">请开启舱门，放入衣物</string>
     <string name="appoint_order_use_start_prompt">已放入衣物，启动设备</string>
+
+    <string name="self_cleaning_run">自清洁中</string>
+    <string name="self_cleaning_end">已清洁</string>
+    <string name="predict_remnant">预计剩余</string>
+    <string name="start_washing">开始洗涤</string>
+    <string name="order_device_self_cleaning_prompt1">请在规定时间内开始洗涤，否则订单将会取消</string>
+    <string name="order_device_self_cleaning_prompt2">自清洁结束后，才可点击“开始洗涤”。点击“开始洗涤”后设备立即启动，请先放入衣物，再点击“开始洗涤”</string>
+    <string name="order_device_self_cleaning_prompt3">点击“开始洗涤”后设备立即启动，请先放入衣物，再点击“开始洗涤”</string>
+    <string name="order_execute_time_prompt">预计剩余时间（分钟）</string>
+    <string name="order_execute_prompt">衣物面料、衣物量等会影响运行失常，预计剩余时间仅供参考，请以实际时间为准！</string>
+    <string name="refund_coupon">已返券</string>
+    <string name="refund_money">已退款</string>
 
     <string name="shop_detail">营业点详情</string>
     <string name="business_time">营业时间</string>
@@ -284,6 +361,9 @@
     <string name="card_sn">卡编号</string>
     <string name="sure_binding">确认绑定</string>
 
+    <string name="order_in_progress">进行中订单</string>
+    <string name="order_in_progress_empty">暂无进行中的订单～</string>
+
     <string name="follow_the_wechat_official_account">关注公众号</string>
     <string name="follow_the_wechat_official_account_tip">保存二维码后打开微信识别关注公众号</string>
     <string name="save_qr_code">保存二维码</string>
@@ -296,6 +376,7 @@
         <item>请确认当前洗衣机舱门已经锁好</item>
         <item>请确认所有衣物都已放入洗衣机</item>
         <item>没有将易损衣物、奢饰品放入洗衣机</item>
+        <item>请勿放衣服，支付后会立即启动筒自洁</item>
     </string-array>
     <string-array name="scan_order_dryer_confirm">
         <item>请确认当前烘干机舱门已经锁好</item>
@@ -305,7 +386,8 @@
     <string-array name="scan_order_shoes_confirm">
         <item>请确认当前洗鞋机舱门已经锁好</item>
         <item>请确认所有鞋子都已放入洗鞋机</item>
-        <item>没有将易损衣物、奢饰品放入烘干机</item>
+        <item>没有将易损鞋子、奢饰品放入洗鞋机</item>
+        <item>请勿放鞋子，支付后会立即启动筒自洁</item>
     </string-array>
     <string-array name="discount_coupon_type">
         <item></item>
@@ -318,4 +400,5 @@
     <string name="unit_discount">折</string>
     <string name="unit_money">¥</string>
     <string name="unit_yuan">元</string>
+    <string name="unit_tai">台</string>
 </resources>

@@ -72,4 +72,8 @@
         <attr name="triangle_shadow_w" format="dimension" />
         <attr name="bgColor" />
     </declare-styleable>
+    <declare-styleable name="RingCountDown">
+        <attr name="totalVal" format="integer"/>
+        <attr name="progressVal" format="integer"/>
+    </declare-styleable>
 </resources>

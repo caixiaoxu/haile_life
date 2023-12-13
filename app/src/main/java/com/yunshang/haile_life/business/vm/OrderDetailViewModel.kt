@@ -39,19 +39,17 @@ class OrderDetailViewModel : BaseViewModel() {
 
     var orderNo: String? = null
 
-    val isAppoint: MutableLiveData<Boolean> by lazy {
-        MutableLiveData()
-    }
 
     val formScan: MutableLiveData<Boolean> by lazy {
         MutableLiveData()
     }
 
-    val changeUseModel: MutableLiveData<Boolean> = MutableLiveData(false)
-
     val orderDetail: MutableLiveData<OrderEntity> by lazy {
         MutableLiveData()
     }
+
+    val isAppoint: LiveData<Boolean> =
+        orderDetail.map { "300" == it.orderType }
 
     val showContactShop: LiveData<Boolean> = orderDetail.map {
         it?.let { detail ->
@@ -89,8 +87,9 @@ class OrderDetailViewModel : BaseViewModel() {
             if (true == formScan.value) {
                 false
             } else {
-                if (true == isAppoint.value) 0 == detail.appointmentState || 1 == detail.appointmentState
-                else 100 == detail.state && !DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)
+                detail.state < 1000 && detail.state != 401 && detail.state != 411 && detail.state != 421 && !DeviceCategory.isDrinking(
+                    detail.orderItemList.firstOrNull()?.categoryCode
+                )
             }
         } ?: false
     }
@@ -100,8 +99,7 @@ class OrderDetailViewModel : BaseViewModel() {
             if (true == formScan.value) {
                 false
             } else {
-                if (true == isAppoint.value) false
-                else 1000 == detail.state || 2099 == detail.state
+                1000 <= detail.state
             }
         } ?: false
     }
@@ -127,13 +125,10 @@ class OrderDetailViewModel : BaseViewModel() {
         addSource(showPayOrder) {
             value = checkShowAnyBtn()
         }
-        addSource(changeUseModel) {
-            value = checkShowAnyBtn()
-        }
     }
 
     private fun checkShowAnyBtn() =
-        (((true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && true != formScan.value) || (true == formScan.value && false == changeUseModel.value))
+        (((true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && true != formScan.value))
 
     fun requestOrderDetailAsync(showLoading: Boolean = true) {
         if (orderNo.isNullOrEmpty()) return
@@ -213,10 +208,7 @@ class OrderDetailViewModel : BaseViewModel() {
                 )
             )
             LiveDataBus.post(BusEvents.APPOINT_ORDER_USE_STATUS, true)
-            // 转换为正常订单
-            isAppoint.postValue(false)
             formScan.postValue(false)
-            changeUseModel.postValue(false)
 
             delay(2_000)
             requestOrderDetail()

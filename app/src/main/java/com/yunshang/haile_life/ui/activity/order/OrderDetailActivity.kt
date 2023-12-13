@@ -23,13 +23,16 @@ import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderDetailViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.TranslucencePopupWindow
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
+import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 
 
@@ -62,7 +65,6 @@ class OrderDetailActivity :
     override fun initIntent() {
         super.initIntent()
         mViewModel.orderNo = IntentParams.OrderParams.parseOrderNo(intent)
-        mViewModel.isAppoint.value = IntentParams.OrderParams.parseIsAppoint(intent)
         mViewModel.formScan.value = 1 == IntentParams.OrderParams.parseFormScan(intent)
     }
 
@@ -163,7 +165,11 @@ class OrderDetailActivity :
         }
 
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
-            mViewModel.requestOrderDetailAsync()
+            if ("300" == mViewModel.orderDetail.value?.orderType || 106 == mViewModel.orderDetail.value?.orderSubType) {
+                finish()
+            } else {
+                mViewModel.requestOrderDetailAsync()
+            }
         }
 
         LiveDataBus.with(BusEvents.PROMPT_POPUP, Boolean::class.java)?.observe(this) {
@@ -197,8 +203,30 @@ class OrderDetailActivity :
     override fun initView() {
         mBinding.tvOrderDetailDesc.movementMethod = LinkMovementMethod.getInstance()
 
+        mBinding.tvOrderDetailRepairs.setOnClickListener {
+            startActivity(Intent(this, FaultRepairsActivity::class.java).apply {
+                putExtras(
+                    IntentParams.FaultRepairsParams.pack(
+                        GoodsScanEntity(
+                            mViewModel.orderDetail.value?.orderItemList?.firstOrNull()?.goodsId,
+                            mViewModel.orderDetail.value?.orderItemList?.firstOrNull()?.goodsName,
+                            mViewModel.orderDetail.value?.orderItemList?.firstOrNull()?.categoryCode,
+                            DeviceCategory.categoryName(mViewModel.orderDetail.value?.orderItemList?.firstOrNull()?.categoryCode),
+                        )
+                    )
+                )
+            })
+        }
+
         mBinding.tvOrderDetailContact.setOnClickListener {
-            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            DialogUtils.checkPermissionDialog(
+                this,
+                supportFragmentManager,
+                SystemPermissionHelper.callPhonePermissions(),
+                "需要权限来拨打电话"
+            ) {
+                requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            }
         }
         mBinding.tvOrderDetailPay.setOnClickListener {
             mViewModel.orderDetail.value?.let { detail ->
@@ -206,6 +234,8 @@ class OrderDetailActivity :
                     putExtras(
                         IntentParams.OrderPayParams.pack(
                             detail.orderNo,
+                            detail.orderType,
+                            detail.orderSubType,
                             if (DeviceCategory.isDrinking(detail.orderItemList.firstOrNull()?.categoryCode)) "" else detail.invalidTime,
                             detail.realPrice,
                             detail.orderItemList,
@@ -250,20 +280,6 @@ class OrderDetailActivity :
             mViewModel.deleteOrder() {
                 finish()
             }
-        }
-
-        mBinding.tvOrderDetailAppointNoUse.setOnClickListener {
-            startActivity(
-                Intent(
-                    this@OrderDetailActivity,
-                    ScanOrderActivity::class.java
-                ).apply {
-                    putExtras(intent)
-                })
-            finish()
-        }
-        mBinding.tvOrderDetailAppointUse.setOnClickListener {
-            mViewModel.changeUseModel.value = true
         }
     }
 

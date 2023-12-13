@@ -96,7 +96,7 @@
             app:layout_constraintEnd_toEndOf="@id/et_login_code"
             app:layout_constraintStart_toStartOf="@id/et_login_code" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.lsy.framelib.ui.weight.SingleTapButton
             android:id="@+id/btn_login_login"
             style="@style/CommonMatchBtnStyle1"
             android:layout_marginHorizontal="24dp"

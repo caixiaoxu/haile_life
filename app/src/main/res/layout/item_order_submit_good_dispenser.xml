@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
+        <variable
+            name="showDiscount"
+            type="java.lang.Boolean" />
         <variable
             name="discount"
             type="java.lang.String" />
@@ -31,6 +36,7 @@
         <include
             android:id="@+id/include_order_submit_good_discount"
             layout="@layout/item_order_submit_good_item"
+            android:visibility="@{showDiscount?View.VISIBLE:View.GONE}"
             app:title="@{@string/good_discount}"
             app:type="@{2}"
             app:value="@{discount}" />
@@ -38,6 +44,7 @@
         <include
             android:id="@+id/include_order_submit_good_actually_paid"
             layout="@layout/item_order_submit_good_item"
+            android:visibility="@{showDiscount?View.VISIBLE:View.GONE}"
             app:title="@{@string/actually_paid}"
             app:type="@{2}"
             app:value="@{price}" />

@@ -7,11 +7,14 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import com.google.gson.annotations.SerializedName
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.gson.GsonUtils
+import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
@@ -57,26 +60,55 @@ data class OrderEntity(
     val realPrice: String,
     val sellerId: Int,
     val serviceTelephone: String,
-    val state: Int,
+    var state: Int,
     val stateDesc: String,
     val viewReply: Boolean,
     val payTime: String? = null,
     val reserveAutoRefund: Int? = null,
-    val timesOfRestart: Int? = null
-) : IMultiTypeEntity {
-    override fun getMultiType(): Int = when (state) {
-        100, 500 -> 0
-        1000, 2099 -> 2
-        else -> 1
-    }
+    val timesOfRestart: Int? = null,
+    val checkInfo: CheckInfo? = null,
+    val discountPrice: Double? = null,
+    val reserveInfo: ReserveInfo? = null,
+    val tipRemark: String? = null,
+    val refundTag: String? = null,
+    val refundTime: String? = null,
+    val refundCouponTime: String? = null,
+    val redirectWorking: Boolean? = false,
+    val fulfillInfo: FulfillInfo? = null,
+    val canSubmitFix: Boolean = false
+) : BaseObservable(), IMultiTypeEntity {
 
-    fun getMultiType(isAppoint: Boolean): Int = if (isAppoint) {
+    fun showDiscount(): Boolean = orderItemList.size > 1 &&
+            try {
+                discountPrice?.let { it > 0 } ?: false
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+
+    val isNormalOrder: Boolean
+        get() = state >= 1000 || state in 400 until 500
+
+    @Transient
+    @get:Bindable
+    var showDetail: Boolean = false
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.showDetail)
+        }
+
+    override fun getMultiType(): Int = if ("300" == orderType)
         when (appointmentState) {
             0, 1, 2 -> 0
             3, 4 -> 2
             else -> 1
         }
-    } else getMultiType()
+    else
+        when (state) {
+            100, 500 -> 0
+            1000, 2099 -> 2
+            else -> 1
+        }
 
     override fun getMultiTypeBgRes(): IntArray? = null
 
@@ -95,11 +127,14 @@ data class OrderEntity(
         ),
     )
 
-    fun getOrderStatusTitle(): String = when (state) {
-        500 -> orderItemList.firstOrNull()
-            ?.let { DeviceCategory.categoryName(it.categoryCode).replace("机", "中") } ?: ""
-        else -> stateDesc
-    }
+    fun getOrderStatusTitle(): String =
+//        if ("300" == orderType)
+//        OrderStatus.getAppointStateName(appointmentState, false)
+//    else if (500 == state) {
+//        orderItemList.firstOrNull()
+//            ?.let { DeviceCategory.categoryName(it.categoryCode).replace("机", "中") } ?: ""
+//    } else
+        stateDesc
 
     fun getOrderDetailFinishTimePrompt(): SpannableString = when (state) {
         50 -> com.yunshang.haile_life.utils.string.StringUtils.formatMultiStyleStr(
@@ -162,8 +197,8 @@ data class OrderEntity(
         StringUtils.getString(R.string.predict_remnant_time).let { prefix ->
             ((DateTimeUtils.formatDateFromString(orderItemList.firstOrNull()?.finishTime)?.let {
                 val diff = it.time - System.currentTimeMillis()
-                "$prefix ${if (diff <= 0) "即将完成" else ceil(diff * 1.0 / 1000 / 60).toInt()}分钟"
-            } ?: "") + " 图").let { content ->
+                "$prefix ${if (diff <= 0) "即将完成" else "${ceil(diff * 1.0 / 1000 / 60).toInt()}分钟"}"
+            } ?: "$prefix") + " 图").let { content ->
                 if (content.isNotEmpty()) {
                     SpannableString(content).apply {
                         setSpan(
@@ -224,6 +259,9 @@ data class OrderEntity(
     fun getOrderDeviceName(): String =
         if (orderItemList.isNotEmpty()) orderItemList.first().goodsName else ""
 
+    fun getOrderPositionName(): String =
+        if (orderItemList.isNotEmpty()) orderItemList.first().positionName else ""
+
     fun getOrderDeviceModel(): String = (orderItemList.firstOrNull()?.let {
         if (DeviceCategory.isDrinking(it.categoryCode)) {
             orderItemList.joinToString(",") { item -> item.goodsItemName }
@@ -249,7 +287,9 @@ data class OrderEntity(
         }" else ""
 
     fun getOrderDiscountTotalPrice(): String = try {
-        com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(originPrice.toDouble() - payAmount.toDouble())
+        val price = discountPrice ?: 0.0
+        if (price <= 0.0) ""
+        else com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(price)
     } catch (e: Exception) {
         e.printStackTrace()
         ""
@@ -262,6 +302,13 @@ data class OrderEntity(
     fun drinkingPauseTime(): String = orderItemList.firstOrNull()?.let { first ->
         first.goodsItemInfoDto?.pauseTime ?: run { first.goodsItemInfo?.pauseTime }
     } ?: ""
+
+    val hasRefundMoney: Boolean
+        get() = refundTag?.split(",")?.contains("1") ?: false
+
+    val hasRefundCoupon: Boolean
+        get() = refundTag?.split(",")?.contains("2") ?: false
+
 }
 
 data class OrderItem(
@@ -292,6 +339,8 @@ data class OrderItem(
     val goodsItemInfoDto: GoodsItemInfoDto?,
     val positionId: Int,
     val positionName: String,
+    val spuCode: String,
+    val selfClean: Boolean = false,
 ) {
 
     val goodsItemInfo: GoodsItemInfoEntity?
@@ -322,12 +371,12 @@ data class OrderItem(
 
     fun getOrderDeviceUnit(state: Int): String = goodsItemInfoDto?.let {
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount}${unitValue}${if (1 == volumeVisibleState && 50 != state) " X ${goodsItemInfoDto.unit.toRemove0Str()}${unitValue}" else ""}"
-        } else "${goodsItemInfoDto.unit}${unitValue}"
+            "${originUnitPrice}元/${if (1.0 == goodsItemInfoDto.unitAmount?.toDefaultDouble(1.0)) "" else goodsItemInfoDto.unitAmount.toRemove0Str()}${unitValue}${if (1 == volumeVisibleState && 50 != state) " X ${goodsItemInfoDto.unit.toRemove0Str()}${unitValue}" else ""}"
+        } else "${goodsItemInfoDto.unit.toRemove0Str()}${unitValue}"
     } ?: run {
         if (DeviceCategory.isDrinkingOrShower(categoryCode)) {
-            "${originUnitPrice}元/${unitValue}${if (50 != state) " X ${unit}${unitValue}" else ""}"
-        } else "${unit}${unitValue}"
+            "${originUnitPrice}元/${unitValue}${if (50 != state) " X ${unit.toRemove0Str()}${unitValue}" else ""}"
+        } else "${unit.toRemove0Str()}${unitValue}"
     }
 
     fun getOrderDeviceOriginPrice(state: Int): String = if (50 == state) ""
@@ -377,4 +426,59 @@ data class PromotionParticipation(
     val discountPrice: String,
     val promotionProduct: Int,
     val promotionProductName: String
+) {
+    fun getOrderDeviceDiscountPrice(): String = try {
+        val price = discountPrice.toDouble()
+        if (price <= 0) ""
+        else com.yunshang.haile_life.utils.string.StringUtils.formatAmountStr(price)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
+    }
+}
+
+data class CheckInfo(
+    val checkState: Int? = null,
+    val enableCheck: Boolean = false,
+    val invalidTime: String? = null,
+    val invalidTimeStamp: Int? = null
 )
+
+data class ReserveInfo(
+    val appointmentReason: String? = null,
+    val appointmentState: Int? = null,
+    val appointmentTime: String? = null,
+    val appointmentUsageTime: String? = null,
+    val reserveAutoRefund: Int? = null
+)
+
+data class FulfillInfo(
+    val fulfill: Int = 0,
+    val fulfillingItem: FulfillingItem? = null
+) {
+    fun selfCleanFinish(): Boolean =
+        2 == fulfill || (1 == fulfill && (false == fulfillingItem?.selfClean || 3 == fulfillingItem?.state))
+}
+
+data class FulfillingItem(
+    val finishTime: String? = null,
+    val finishTimeTimeStamp: Int? = null,
+    val fulfillId: Int? = null,
+    val selfClean: Boolean? = null,
+    val state: Int? = null
+) {
+    fun selfCleanFinishTime(): String {
+        var timeStamp = finishTimeTimeStamp ?: 0
+        if (timeStamp <= 0) {
+            timeStamp = 1
+        }
+
+        val timeVal = if (timeStamp > 60) {
+            " ${ceil(timeStamp * 1.0 / 60).toInt()}分钟"
+        } else {
+            " 1分钟"
+        }
+        return "${StringUtils.getString(R.string.predict_remnant)} $timeVal"
+    }
+}
+

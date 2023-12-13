@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.yunshang.haile_life.utils.string.StringUtils" />
+
+        <variable
+            name="order"
+            type="com.yunshang.haile_life.data.entities.OrderEntity" />
+
+        <variable
+            name="showCancel"
+            type="java.lang.Boolean" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_r8"
+        android:orientation="vertical"
+        app:divider="@drawable/divder_efefef"
+        app:dividerPadding="12dp"
+        app:showDividers="middle">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            style="@style/Font_17_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:button="@null"
+            android:checked="@={order.showDetail}"
+            android:drawableEnd="@drawable/selector_order_info"
+            android:padding="16dp"
+            android:text="@string/order_info" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:visibility="@{order.showDetail}">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_order_info_state"
+                style="@style/Font_20_black_85_bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{order.stateDesc}"
+                tools:text="洗衣中" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/btn_order_info_cancel"
+                style="@style/Font_12_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_stroke26000000_r14"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:text="@string/cancel_order"
+                app:visibility="@{showCancel}" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:divider="@drawable/divide_size8"
+            app:showDividers="middle"
+            app:visibility="@{order.showDetail}">
+
+            <include
+                layout="@layout/include_order_info_item"
+                app:canCopy="@{true}"
+                app:content='@{order.orderNo}'
+                app:title='@{@string/order_no1 + "："}' />
+
+            <include
+                layout="@layout/include_order_info_item"
+                app:content='@{order.getOrderPositionName}'
+                app:title='@{@string/outlet + "："}' />
+
+            <include
+                layout="@layout/include_order_info_item"
+                app:content='@{order.getOrderDeviceName}'
+                app:title='@{@string/device + "："}' />
+
+            <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                android:id="@+id/ll_order_info_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:divider="@drawable/divide_size8"
+                app:itemLayout="@layout/include_order_info_item"
+                app:showDividers="middle" />
+
+            <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                android:id="@+id/ll_order_info_promotions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:divider="@drawable/divide_size8"
+                app:itemLayout="@layout/include_order_info_item"
+                app:showDividers="middle" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:divider="@drawable/divide_size8"
+            app:showDividers="middle"
+            app:visibility="@{order.showDetail}">
+
+            <include
+                layout="@layout/include_order_info_item"
+                app:content='@{StringUtils.formatAmountStrOfStr(order.originPrice)}'
+                app:title='@{@string/total_price + "："}' />
+
+            <include
+                layout="@layout/include_order_info_item"
+                android:visibility="@{0 == order.getOrderDiscountTotalPrice().length()?View.GONE:View.VISIBLE}"
+                app:content='@{order.getOrderDiscountTotalPrice}'
+                app:title='@{@string/discount_price + "："}' />
+
+            <include
+                layout="@layout/include_order_info_item"
+                app:content='@{StringUtils.formatAmountStrOfStr(order.realPrice)}'
+                app:title='@{@string/need_pay + "："}' />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include
+            layout="@layout/include_order_info_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:content='@{order.createTime}'
+            app:title='@{@string/order_time + "："}'
+            app:visibility="@{order.showDetail}" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

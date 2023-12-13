@@ -35,8 +35,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:overScrollMode="never"
-            android:scrollbars="none"
-            android:visibility="@{vm.changeUseModel?View.GONE:View.VISIBLE}">
+            android:scrollbars="none">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -58,7 +57,7 @@
                         style="@style/Font_20_black_85_bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.isAppoint?OrderStatus.getAppointStateName(vm.orderDetail.appointmentState,vm.formScan):vm.orderDetail.getOrderStatusTitle}"
+                        android:text="@{vm.orderDetail.getOrderStatusTitle}"
                         tools:text="洗衣中" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -163,7 +162,7 @@
                         android:id="@+id/include_order_detail_need_price"
                         layout="@layout/item_title_value"
                         app:title='@{@string/need_pay +"："}'
-                        app:value="@{StringUtils.formatAmountStrOfStr(vm.orderDetail.payAmount)}" />
+                        app:value="@{StringUtils.formatAmountStrOfStr(vm.orderDetail.realPrice)}" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -182,22 +181,7 @@
                         layout="@layout/item_title_value"
                         app:title='@{@string/order_time +"："}'
                         app:value="@{vm.orderDetail.createTime}" />
-
-                    <include
-                        android:id="@+id/include_order_detail_appoint_time"
-                        layout="@layout/item_title_value"
-                        android:visibility="@{vm.isAppoint?View.VISIBLE:View.GONE}"
-                        app:title='@{@string/appoint_time +"："}'
-                        app:value="@{vm.orderDetail.appointmentUsageTime}" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Font_12_black_45"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:text='@{@string/appoint_order_detail_prompt + ((1 == vm.orderDetail.timesOfRestart)?"":@string/appoint_order_detail_prompt2)}'
-                    android:visibility="@{(!vm.isAppoint || vm.formScan)?View.GONE:View.VISIBLE}" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -266,6 +250,17 @@
             app:showDividers="middle">
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_order_detail_repairs"
+                style="@style/Font_14_black_85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_s979797_r23"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/device_repairs"
+                android:visibility="@{vm.orderDetail.canSubmitFix?View.VISIBLE:View.GONE}" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_contact"
                 style="@style/Font_14_black_85"
                 android:layout_width="wrap_content"
@@ -288,17 +283,17 @@
                 android:text="@string/coerce_device"
                 app:visibility="@{vm.showCoerceDevice &amp;&amp; 3 > vm.coerceDeviceCount}" />
 
-            <com.lsy.framelib.ui.weight.SingleTapTextView
-                android:id="@+id/tv_order_detail_finish_order"
-                style="@style/Font_14_black_85"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_s979797_r23"
-                android:onClick="@{vm::finishOrder}"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:text="@string/finish_order"
-                app:visibility="@{vm.showFinishOrder}" />
+            <!--            <com.lsy.framelib.ui.weight.SingleTapTextView-->
+            <!--                android:id="@+id/tv_order_detail_finish_order"-->
+            <!--                style="@style/Font_14_black_85"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:background="@drawable/shape_s979797_r23"-->
+            <!--                android:onClick="@{vm::finishOrder}"-->
+            <!--                android:paddingHorizontal="16dp"-->
+            <!--                android:paddingVertical="8dp"-->
+            <!--                android:text="@string/finish_order"-->
+            <!--                app:visibility="@{vm.showFinishOrder}" />-->
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_cancel"
@@ -332,66 +327,6 @@
                 android:paddingVertical="8dp"
                 android:text="@string/pay_now"
                 android:visibility="@{vm.showPayOrder?View.VISIBLE:View.GONE}" />
-
-            <com.lsy.framelib.ui.weight.SingleTapTextView
-                android:id="@+id/tv_order_detail_appoint_no_use"
-                style="@style/Font_14_black_85"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_s979797_r23"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:text="@string/no_use_appoint_order"
-                android:visibility="@{vm.formScan?View.VISIBLE:View.GONE}" />
-
-            <com.lsy.framelib.ui.weight.SingleTapTextView
-                android:id="@+id/tv_order_detail_appoint_use"
-                style="@style/Font_14_ffffff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_s04d1e5_r23"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:text="@string/use_appoint_order"
-                android:visibility="@{vm.formScan?View.VISIBLE:View.GONE}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:background="@drawable/shape_sffffff_r8"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingHorizontal="68dp"
-            android:paddingTop="36dp"
-            android:paddingBottom="32dp"
-            android:visibility="@{vm.changeUseModel?View.VISIBLE:View.GONE}"
-            tools:visibility="gone">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/icon_scan_order_tips_main" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/Font_14_black_85_bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/appoint_order_use_prompt" />
-
-            <com.lsy.framelib.ui.weight.SingleTapTextView
-                android:id="@+id/tv_order_detail_appoint_use_start"
-                style="@style/Font_14_ffffff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/shape_s04d1e5_r23"
-                android:onClick="@{vm::useAppointOrder}"
-                android:paddingHorizontal="25dp"
-                android:paddingVertical="12dp"
-                android:text="@string/appoint_order_use_start_prompt" />
-        </LinearLayout>
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

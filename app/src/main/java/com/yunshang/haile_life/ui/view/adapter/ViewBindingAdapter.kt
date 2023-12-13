@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -28,6 +27,12 @@ import kotlin.math.abs
  * 作者姓名 修改时间 版本号 描述
  */
 object ViewBindingAdapter {
+
+    @BindingAdapter("visibility")
+    @JvmStatic
+    fun View.visibility(show: Boolean?) {
+        visibility = if (true == show) View.VISIBLE else View.GONE
+    }
 
     @BindingAdapter("width", "height")
     @JvmStatic
@@ -162,7 +167,7 @@ object ViewBindingAdapter {
      */
     @BindingAdapter("imgRes", "imgUrl", "imgHeadUrl", requireAll = false)
     @JvmStatic
-    fun ImageView.loadImage(res: Int?, url: String?, imgHeadUrl: String?) {
+    fun ImageView.loadImage(res: Int? = null, url: String? = null, imgHeadUrl: String? = null) {
         res?.let {
             setImageResource(res)
         }

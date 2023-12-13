@@ -38,6 +38,21 @@
         android:theme="@style/Theme.HaileLife"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.common.PicBrowseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.personal.FaultRepairsRecordDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.personal.FaultRepairsRecordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.personal.FaultRepairsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.order.OrderStatusActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.device.WaterControlCodeActivity"
             android:exported="false" />
         <activity
@@ -108,7 +123,7 @@
             android:name=".ui.activity.shop.SelectAppointmentDeviceActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.order.AppointmentSubmitActivity"
+            android:name=".ui.activity.order.OrderSelectorActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.shop.RechargeStarfishActivity"

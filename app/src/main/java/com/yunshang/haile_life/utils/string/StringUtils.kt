@@ -321,7 +321,7 @@ object StringUtils {
      */
     @JvmStatic
     fun formatAmountStr(amount: Double): String {
-        return (if (amount >= 0) "¥" else "-¥") + checkAmountIsIntOrDouble(amount)
+        return (if (amount >= 0) "¥" else "-¥") + String.format("%.2f", abs(amount))
     }
 
     /**
@@ -422,7 +422,7 @@ object StringUtils {
         }
     }
 
-    fun clearHtmlCaches(){
+    fun clearHtmlCaches() {
         textView = null
         htmlTxt = null
         map.clear()

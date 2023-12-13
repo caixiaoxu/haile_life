@@ -24,6 +24,7 @@ import com.yunshang.haile_life.databinding.ActivityScanOrderBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
@@ -208,15 +209,15 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
      * 构建关键sku的布局
      */
     private fun buildAttachSkuView(detail: DeviceDetailEntity) {
-        if (detail.hasAttachGoods && detail.attachItems.isNotEmpty()) {
-            val attachList = detail.attachItems.filter { item -> 1 == item.soldState }
+        if (detail.hasAttachGoods && !detail.attachItems.isNullOrEmpty()) {
+            val attachList = detail.attachItems?.filter { item -> 1 == item.soldState }
             mBinding.llScanOrderConfigsAttrSku.buildChild<ItemScanOrderModelBinding, DeviceDetailItemEntity>(
-                if (detail.isShowDispenser)
+                if (detail.hasAttachGoods)
                     attachList
                 else
-                    detail.attachItems.subList(0, 1)
+                    detail.attachItems?.subList(0, 1)
             ) { _, childBinding, data ->
-                if (detail.isShowDispenser) {
+                if (detail.hasAttachGoods) {
                     childBinding.modelTitle = "自动投放${data.name}"
                     childBinding.clScanOrderConfig.let { cl ->
                         if (cl.childCount > 3) {
@@ -275,10 +276,10 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                         }
                     }
                 } else {
-                    childBinding.modelTitle = "自动投放" + attachList.joinToString("/") { item ->
+                    childBinding.modelTitle = "自动投放" + attachList?.joinToString("/") { item ->
                         item.name
                     }
-                    childBinding.desc = detail.hideDispenserTips
+                    childBinding.desc = detail.dispenserValue?.tipMessage ?: ""
                 }
             }
         }
@@ -286,6 +287,12 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
 
     override fun initView() {
         window.statusBarColor = Color.WHITE
+
+        mBinding.includeScanOrderDeviceInfo.tvDeviceRepairs.setOnClickListener {
+            startActivity(Intent(this, FaultRepairsActivity::class.java).apply {
+                putExtras(IntentParams.FaultRepairsParams.pack(mViewModel.goodsScan.value))
+            })
+        }
 
         mBinding.viewScanOrderSelected.setOnClickListener {
             if (!ViewUtils.isFastDoubleClick()) {
@@ -318,10 +325,14 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
                     }
                     return@setOnClickListener
                 }
-                if (!SPRepository.isNoPrompt && null != mViewModel.goodsScan.value
-                    && !DeviceCategory.isHair(mViewModel.goodsScan.value!!.categoryCode)
+
+                if ((!SPRepository.isNoPrompt && null != mViewModel.goodsScan.value
+                            && !DeviceCategory.isHair(mViewModel.goodsScan.value!!.categoryCode))
                 ) {
-                    ScanOrderConfirmDialog.Builder(mViewModel.goodsScan.value!!.categoryCode) {
+                    ScanOrderConfirmDialog.Builder(
+                        mViewModel.goodsScan.value!!.categoryCode,
+                        false
+                    ) {
                         jumpOrderSubmit()
                     }.build().show(supportFragmentManager)
                 } else {
@@ -331,13 +342,13 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
         }
 
         mBinding.clScanRechargeStarfish.setOnClickListener {
-            mViewModel.goodsScan.value?.let {
+            mViewModel.goodsScan.value?.shopId?.let { shopId ->
                 startActivity(
                     Intent(
                         this@ScanOrderActivity,
                         RechargeStarfishActivity::class.java
                     ).apply {
-                        putExtras(IntentParams.RechargeStarfishParams.pack(it.shopId))
+                        putExtras(IntentParams.RechargeStarfishParams.pack(shopId))
                     })
             }
         }

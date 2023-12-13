@@ -9,12 +9,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
-            android:id="@+id/bar_indicator_list_title"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/title_action_bar_h"
-            android:background="@color/white" />
-
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/indicator_indicator_list_status"
             android:layout_width="match_parent"
