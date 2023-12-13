@@ -83,6 +83,14 @@ class ShopPositionDetailActivity :
                     return@setOnClickListener
                 }
 
+                if (0 == mViewModel.shopDetail.value?.nearOrderState) {
+                    Hint3SecondDialog.Builder("请扫描设备付款码使用")
+                        .apply {
+                            dialogBgResource = R.drawable.shape_dialog_bg
+                        }.build().show(supportFragmentManager)
+                    return@setOnClickListener
+                }
+
                 if (DeviceCategory.isWashingOrShoes(mViewModel.curDeviceCategory.value?.categoryCode)
                     || DeviceCategory.isDryer(mViewModel.curDeviceCategory.value?.categoryCode)
                 ) {

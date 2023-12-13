@@ -39,11 +39,11 @@ data class ShopPositionDetailEntity(
     val timeMarketVOList: List<TimeMarketVO>,
     val workTime: String,
     val workTimeStr: String,
-
     val gpsList: List<Gps>? = null,
     val lat: Double? = null,
     val lng: Double? = null,
     val shopId: Int? = null,
+    val nearOrderState: Int? = null
 ) : IMultiTypeEntity {
 
     var floorList: MutableList<FloorParam>? = mutableListOf()
@@ -60,7 +60,11 @@ data class ShopPositionDetailEntity(
     }
 
     val appointmentNumVal: String
-        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.isGreaterThan0()) "${reserveNum}${StringUtils.getString(R.string.unit_tai)}" else ""
+        get() = StringUtils.getString(R.string.can_appointment) + if (reserveNum.isGreaterThan0()) "${reserveNum}${
+            StringUtils.getString(
+                R.string.unit_tai
+            )
+        }" else ""
 
     fun formatDistance(): String =
         "${StringUtils.getString(R.string.distance)}${StringUtils.getString(R.string.you)} " +
