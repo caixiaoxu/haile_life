@@ -77,6 +77,8 @@ class CommonBottomSheetDialog<D : ICommonBottomItemEntity> private constructor(p
 
         mBinding.clCommonDialogTitle.visibility =
             if (builder.title.isEmpty()) View.GONE else View.VISIBLE
+        mBinding.dividerCommonDialogTitle.visibility =
+            if (builder.title.isEmpty()) View.GONE else View.VISIBLE
 
         // 确定
         mBinding.tvCommonDialogSure.visibility =

@@ -188,7 +188,7 @@ class ShopPositionDetailActivity :
             it?.let { detail ->
                 val prefix = StringUtils.getString(R.string.service_phone)
                 val phoneList = detail.serviceTelephone.split(",")
-                val content = "$prefix ${phoneList.joinToString(" / ")}"
+                val content = "$prefix ${phoneList.joinToString("，")}"
                 mBinding.tvShopDetailContactPhone.movementMethod = LinkMovementMethod.getInstance()
                 mBinding.tvShopDetailContactPhone.highlightColor = Color.TRANSPARENT
                 mBinding.tvShopDetailContactPhone.text = SpannableString(content).apply {
@@ -222,7 +222,7 @@ class ShopPositionDetailActivity :
                                 }
                             }, start, start + phone.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE
                         )
-                        start += phone.length + 3
+                        start += phone.length + 1
                     }
                 }
 
