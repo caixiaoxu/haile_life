@@ -74,7 +74,8 @@ data class OrderEntity(
     val refundTime: String? = null,
     val refundCouponTime: String? = null,
     val redirectWorking: Boolean? = false,
-    val fulfillInfo: FulfillInfo? = null
+    val fulfillInfo: FulfillInfo? = null,
+    val canSubmitFix: Boolean = false
 ) : BaseObservable(), IMultiTypeEntity {
 
     fun showDiscount(): Boolean = orderItemList.size > 1 &&

@@ -66,10 +66,6 @@ class OrderSelectorViewModel : BaseViewModel() {
         } ?: false)
     }
 
-    val needSelfClean: LiveData<Boolean> = selectDeviceConfig.map {
-        (it?.attachMap?.get(DeviceDetailEntity.SelfClean) ?: false)
-    }
-
     val isDryer: LiveData<Boolean> = deviceDetail.map {
         DeviceCategory.isDryerOrHair(it.categoryCode)
     }
@@ -88,8 +84,6 @@ class OrderSelectorViewModel : BaseViewModel() {
             it.categoryName.replace("机", "")
         )
     }
-
-    val selectSelfClean: MutableLiveData<Boolean> = MutableLiveData(false)
 
     /**
      * 切换选择功能的配置
@@ -112,12 +106,6 @@ class OrderSelectorViewModel : BaseViewModel() {
                 }
             }
         }
-        if (true == needSelfClean.value && true == selectSelfClean.value) {
-            if (!deviceDetail.value?.selfCleanValue?.price.isNullOrEmpty()) {
-                attachTotal =
-                    attachTotal.add(BigDecimal(deviceDetail.value!!.selfCleanValue!!.price))
-            }
-        }
         totalPriceVal.value =
             BigDecimal(selectExtAttr.value?.unitPrice ?: "0.0").add(attachTotal).toDouble()
     }
@@ -135,9 +123,6 @@ class OrderSelectorViewModel : BaseViewModel() {
                     }
                 }
             }
-        }
-        if (true == needSelfClean.value && true == selectSelfClean.value) {
-            configure += "+" + "筒自洁" + "￥" + deviceDetail.value?.selfCleanValue?.price
         }
         attachConfigureVal.value = if (configure.isNotEmpty()) {
             configure.substring(1)

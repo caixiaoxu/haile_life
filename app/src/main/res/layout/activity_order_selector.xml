@@ -109,36 +109,6 @@
                     app:itemLayout="@layout/item_scan_order_model"
                     app:showDividers="middle"
                     app:visibility="@{vm.needAttach}" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:background="@color/white"
-                    app:visibility="@{vm.deviceDetail.hasSelfClean &amp;&amp; vm.needSelfClean}"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/other_attach"
-                        style="@style/Font_14_black_85_bold"/>
-
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/rb_order_selector_self_clean"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:button="@null"
-                        android:checked="@={vm.selectSelfClean}"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:text="@string/other_attach_value"
-                        android:textSize="14sp"
-                        android:background="@drawable/selector_device_model_item1"
-                        android:textColor="@color/selector_black85_04d1e5" />
-
-                </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

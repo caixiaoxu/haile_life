@@ -10,8 +10,8 @@ import com.lsy.framelib.utils.StatusBarUtils
 import com.lsy.framelib.utils.StringUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.business.vm.AppointmentSuccessViewModel
+import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.DeviceStateEntity
 import com.yunshang.haile_life.data.entities.OrderItem
@@ -113,7 +113,7 @@ class AppointmentSuccessFragment :
         mBinding.root.setPadding(0, StatusBarUtils.getStatusBarHeight(), 0, 0)
         mBinding.includeAppointmentDeviceStatus.root.setBackgroundResource(R.drawable.shape_sffffff_r8)
 
-        mBinding.btnAppointmentSuccessCancel.setOnClickListener {
+        mBinding.includeOrderInfo.btnOrderInfoCancel.setOnClickListener {
             CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt))
                 .apply {
                     negativeTxt = StringUtils.getString(R.string.no)

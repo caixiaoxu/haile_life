@@ -111,6 +111,16 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/font_14_04D1E5"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:background="@color/secondColorPrimaryBg"
+            android:gravity="center"
+            android:text="@{null == avm.selfCleanRefresh?avm.tradePreview.selfCleanInfo.selfPrompt:avm.selfCleanRefresh.selfPrompt(avm.tradePreview.selfCleanInfo.remainMinutes)}"
+            app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean &amp;&amp; !vm.inValidOrder}"
+            tools:text="选择筒自洁" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="98dp"
@@ -125,33 +135,65 @@
                 android:layout_marginStart="16dp"
                 android:text='@{@string/unit_money + " "+ avm.tradePreview.realPrice}'
                 android:visibility="@{(null == avm.tradePreview.realPrice || 0 == avm.tradePreview.realPrice.length())?View.GONE:View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@id/btn_order_pay_submit_pay"
+                app:layout_constraintBottom_toBottomOf="@id/ll_order_pay_submit_pay_area"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/btn_order_pay_submit_pay"
+                app:layout_constraintTop_toTopOf="@id/ll_order_pay_submit_pay_area"
                 tools:text="￥ 5.00" />
 
-            <com.lsy.framelib.ui.weight.SingleTapTextView
-                android:id="@+id/btn_order_pay_submit_pay"
-                android:layout_width="132dp"
-                android:layout_height="46dp"
-                android:layout_marginEnd="16dp"
-                android:background="@{vm.isDryer()?@drawable/selector_washing_order_selector_btn:@drawable/selector_dryer_order_selector_btn}"
-                android:enabled="@{!avm.shopConfig.result || avm.tradePreview.isZero()}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/Font_16_white_bold"
+            <LinearLayout
+                android:id="@+id/ll_order_pay_submit_pay_area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@mipmap/icon_order_submit_right"
-                android:drawablePadding="4dp"
-                android:gravity="center"
-                android:text="@string/go_pay"
-                app:layout_constraintBottom_toBottomOf="@id/btn_order_pay_submit_pay"
-                app:layout_constraintEnd_toEndOf="@id/btn_order_pay_submit_pay"
-                app:layout_constraintStart_toStartOf="@id/btn_order_pay_submit_pay"
-                app:layout_constraintTop_toTopOf="@id/btn_order_pay_submit_pay" />
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.lsy.framelib.ui.weight.SingleTapTextView
+                    android:id="@+id/btn_order_pay_submit_self_clean"
+                    style="@style/font_16_04d1e5_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:background="@drawable/shape_s2604d1e5_lr23"
+                    android:backgroundTint="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@color/secondColorPrimary:@color/color_c0c0c0}"
+                    android:drawableStart="@mipmap/icon_canister_self_cleaning"
+                    android:drawablePadding="8dp"
+                    android:enabled="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50}"
+                    android:gravity="center"
+                    android:minWidth="106dp"
+                    android:paddingHorizontal="12dp"
+                    android:text="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@string/canister_self_cleaning:avm.selfCleanRefresh.selfCleanStateVal}"
+                    android:textColor="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@color/secondColorPrimary:@color/color_black_45}"
+                    app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}" />
+
+                <com.lsy.framelib.ui.weight.SingleTapTextView
+                    android:id="@+id/btn_order_pay_submit_pay"
+                    style="@style/Font_16_white_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/shape_s04d1e5_rr23"
+                    android:backgroundTint="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status >= 40?@color/secondColorPrimary:@color/color_black_25}"
+                    android:enabled="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status >= 40}"
+                    android:gravity="center"
+                    android:minWidth="106dp"
+                    android:paddingHorizontal="12dp"
+                    android:text="@string/go_pay"
+                    app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}" />
+
+                <com.lsy.framelib.ui.weight.SingleTapTextView
+                    android:id="@+id/btn_order_pay_submit_only_pay"
+                    style="@style/Font_16_white_bold"
+                    android:layout_width="132dp"
+                    android:layout_height="46dp"
+                    android:background="@{vm.isDryer()?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
+                    android:gravity="center"
+                    android:enabled="@{!avm.shopConfig.result || avm.tradePreview.isZero()}"
+                    android:text="@string/go_pay"
+                    app:visibility="@{!avm.tradePreview.selfCleanInfo.supportSelfClean}"
+                    tools:background="@drawable/shape_s04d1e5_r23"
+                    tools:visibility="gone" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

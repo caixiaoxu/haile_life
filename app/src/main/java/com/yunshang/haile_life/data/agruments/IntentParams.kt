@@ -47,6 +47,22 @@ object IntentParams {
         fun parseId(intent: Intent): Int = intent.getIntExtra(Id, -1)
     }
 
+    object PicParams {
+        private const val Url = "url"
+
+        /**
+         * 包装参数
+         */
+        fun pack(url: String): Bundle = Bundle().apply {
+            putString(Url, url)
+        }
+
+        /**
+         * 解析Url
+         */
+        fun parseUrl(intent: Intent): String? = intent.getStringExtra(Url)
+    }
+
     object BindPhoneParams {
         private const val Code = "code"
         private const val LoginType = "loginType"
@@ -420,6 +436,23 @@ object IntentParams {
             }
 
         fun parseShopId(intent: Intent): Int = intent.getIntExtra(ShopId, -1)
+    }
+
+    object FaultRepairsParams {
+        private const val GoodsInfo = "goodsInfo"
+
+        /**
+         * 包装参数
+         */
+        fun pack(goodsInfo: GoodsScanEntity? = null): Bundle =
+            Bundle().apply {
+                goodsInfo?.let {
+                    putString(GoodsInfo, GsonUtils.any2Json(it))
+                }
+            }
+
+        fun parseGoodsInfo(intent: Intent): GoodsScanEntity? =
+            GsonUtils.json2Class(intent.getStringExtra(GoodsInfo), GoodsScanEntity::class.java)
     }
 
     object OrderParams {

@@ -24,6 +24,7 @@ import com.yunshang.haile_life.databinding.ActivityScanOrderBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelBinding
 import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
@@ -287,6 +288,12 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
     override fun initView() {
         window.statusBarColor = Color.WHITE
 
+        mBinding.includeScanOrderDeviceInfo.tvDeviceRepairs.setOnClickListener {
+            startActivity(Intent(this, FaultRepairsActivity::class.java).apply {
+                putExtras(IntentParams.FaultRepairsParams.pack(mViewModel.goodsScan.value))
+            })
+        }
+
         mBinding.viewScanOrderSelected.setOnClickListener {
             if (!ViewUtils.isFastDoubleClick()) {
                 if (null == mViewModel.selectDeviceConfig.value) {
@@ -335,13 +342,13 @@ class ScanOrderActivity : BaseBusinessActivity<ActivityScanOrderBinding, ScanOrd
         }
 
         mBinding.clScanRechargeStarfish.setOnClickListener {
-            mViewModel.goodsScan.value?.let {
+            mViewModel.goodsScan.value?.shopId?.let { shopId ->
                 startActivity(
                     Intent(
                         this@ScanOrderActivity,
                         RechargeStarfishActivity::class.java
                     ).apply {
-                        putExtras(IntentParams.RechargeStarfishParams.pack(it.shopId))
+                        putExtras(IntentParams.RechargeStarfishParams.pack(shopId))
                     })
             }
         }

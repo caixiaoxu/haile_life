@@ -10,7 +10,7 @@ object AndroidConfig {
         val applicationId = "com.yunshang.haile_life"
         val minSdk = 21
         val targetSdk = 33
-        val versionCode = 10203
-        val versionName = "1.2.3"
+        val versionCode = 10205
+        val versionName = "1.2.5"
     }
 }

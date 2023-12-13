@@ -215,17 +215,8 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             builder.attachConfigure()
         }
 
-        builder.selectSelfClean.observe(this) {
-            builder.totalPrice()
-            builder.attachConfigure()
-        }
-
         builder.needAttach.observe(this) {
             mBinding.llScanOrderConfigsAttrSku.visibility(it)
-        }
-
-        builder.needSelfClean.observe(this) {
-            mBinding.llAppointmentOrderSelectorSelfClean.visibility(it)
         }
 
         builder.totalPriceVal.observe(this) {
@@ -283,18 +274,6 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
                         Purchase(builder.deviceDetail.value?.id, item.key, dtos.unitAmount, 2)
                     }
                 })
-
-            //筒自洁
-            if (true == builder.selectSelfClean.value) {
-                goods.add(
-                    Purchase(
-                        builder.deviceDetail.value?.selfCleanValue?.selfCleanGoodsId,
-                        builder.deviceDetail.value?.selfCleanValue?.selfCleanItemId,
-                        "1",
-                        1
-                    )
-                )
-            }
 
             // 提交
             builder.submitCallBack(NewOrderParams(goods).apply {
@@ -433,12 +412,6 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
             } ?: false
         }
 
-        val needSelfClean: LiveData<Boolean> = selectDeviceConfig.map {
-            it?.attachMap?.get(DeviceDetailEntity.SelfClean) ?: false
-        }
-
-        val selectSelfClean: MutableLiveData<Boolean> = MutableLiveData(false)
-
         fun initData(detail: DeviceDetailEntity) {
             val list = detail.items.filter { item -> 1 == item.soldState }
             //如果没有默认，就显示第一个
@@ -507,9 +480,6 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
                     }
                 }
             }
-            if (true == needSelfClean.value && true == selectSelfClean.value) {
-                configure += "+" + "筒自洁" + "￥" + deviceDetail.value?.selfCleanValue?.price
-            }
             attachConfigureVal.value = if (configure.isNotEmpty()) {
                 configure.substring(1)
             } else configure
@@ -522,12 +492,6 @@ class AppointmentOrderSelectorDialog private constructor(private val builder: Bu
                     if (!item.value.value?.unitPrice.isNullOrEmpty()) {
                         attachTotal = attachTotal.add(BigDecimal(item.value.value!!.unitPrice))
                     }
-                }
-            }
-            if (true == needSelfClean.value && true == selectSelfClean.value) {
-                if (!deviceDetail.value?.selfCleanValue?.price.isNullOrEmpty()) {
-                    attachTotal =
-                        attachTotal.add(BigDecimal(deviceDetail.value!!.selfCleanValue!!.price))
                 }
             }
             totalPriceVal.value =

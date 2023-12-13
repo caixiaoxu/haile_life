@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.ReplyDTOS" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_fault_repairs_record_detail_replay"
+        style="@style/Font_14_999999"
+        android:layout_width="match_parent"
+        android:text="@{item.replyContentVal}"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sf5f5f5_r4"
+        android:padding="12dp" />
+</layout>

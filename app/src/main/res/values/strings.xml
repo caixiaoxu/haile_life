@@ -154,6 +154,22 @@
     <string name="select_model">选择模式</string>
     <string name="cancel_appoint_order_prompt">是否取消订单？</string>
 
+    <string name="device_repairs">设备报修</string>
+    <string name="device_info">设备信息</string>
+    <string name="device_info_hint">请扫描设备上的二维码</string>
+    <string name="device_type">设备类型</string>
+    <string name="fault_type">故障类型</string>
+    <string name="fault_desc">故障描述</string>
+    <string name="fault_desc_hint">请填写具体故障表现。</string>
+    <string name="repairs_record">报修记录</string>
+    <string name="replied">已回复</string>
+    <string name="no_reply">未回复</string>
+    <string name="repairs_time">报修时间</string>
+    <string name="device_repairs_info">设备报修信息</string>
+    <string name="device_name">设备名称</string>
+
+    <string name="pic_browse">图片浏览</string>
+
     <string name="device_cur_status">设备当前状态</string>
     <string name="mine_order_status">我的订单状态</string>
 

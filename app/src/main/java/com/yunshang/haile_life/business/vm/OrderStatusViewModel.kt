@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
+import androidx.core.os.postDelayed
 import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
@@ -122,6 +123,50 @@ class OrderStatusViewModel : BaseViewModel() {
     /** ------------------------------预约成功------------------------------**/
 
     /** ------------------------------预约支付------------------------------**/
+
+    fun startSelfClean() {
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.startSelfClean(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "itemId" to tradePreview.value?.selfCleanInfo?.selfCleanItemId,
+                            "tradeNo" to orderNo,
+                        )
+                    )
+                )
+            )
+            requestData(false)
+            requestPreviewSync()
+            querySelfCleanState()
+        })
+    }
+
+    val selfCleanRefresh: MutableLiveData<SelfCleanRefreshEntity> by lazy {
+        MutableLiveData()
+    }
+
+    private fun querySelfCleanState() {
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.requestSelfCleanRefresh(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "tradeNo" to orderNo
+                        )
+                    )
+                )
+            )?.let {
+                selfCleanRefresh.postValue(it)
+                if (it.status < 40) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        querySelfCleanState()
+                    }, 10000)
+                }
+            }
+        }, showLoading = false)
+    }
+
     val tradePreview: MutableLiveData<TradePreviewEntity> by lazy { MutableLiveData() }
 
     val balance: MutableLiveData<BalanceEntity> by lazy {
@@ -152,29 +197,7 @@ class OrderStatusViewModel : BaseViewModel() {
 
     fun requestPreview() {
         launch({
-            ApiRepository.dealApiResult(
-                mOrderRepo.requestUnderWayOrderPreview(
-                    ApiRepository.createRequestBody(getCommonParams(true))
-                )
-            )?.let {
-                tradePreview.postValue(it)
-
-                // 强制使用海星
-                if (null == shopConfig.value) {
-                    val ret = ApiRepository.dealApiResult(
-                        mShopRepo.requestShopConfigList(
-                            ApiRepository.createRequestBody(
-                                hashMapOf(
-                                    "shopId" to it.itemList.firstOrNull()?.shopId,
-                                    "goodsId" to it.itemList.firstOrNull()?.goodsId,
-                                    "goodsCategoryId" to it.itemList.firstOrNull()?.goodsCategoryId
-                                )
-                            )
-                        )
-                    )
-                    shopConfig.postValue(ret?.find { item -> 1 == item.configType })
-                }
-            }
+            requestPreviewSync()
 
             // 资金
             ApiRepository.dealApiResult(
@@ -184,7 +207,35 @@ class OrderStatusViewModel : BaseViewModel() {
             )?.let {
                 balance.postValue(it)
             }
+
+            querySelfCleanState()
         })
+    }
+
+    private suspend fun requestPreviewSync() {
+        ApiRepository.dealApiResult(
+            mOrderRepo.requestUnderWayOrderPreview(
+                ApiRepository.createRequestBody(getCommonParams(true))
+            )
+        )?.let {
+            tradePreview.postValue(it)
+
+            // 强制使用海星
+            if (null == shopConfig.value) {
+                val ret = ApiRepository.dealApiResult(
+                    mShopRepo.requestShopConfigList(
+                        ApiRepository.createRequestBody(
+                            hashMapOf(
+                                "shopId" to it.itemList.firstOrNull()?.shopId,
+                                "goodsId" to it.itemList.firstOrNull()?.goodsId,
+                                "goodsCategoryId" to it.itemList.firstOrNull()?.goodsCategoryId
+                            )
+                        )
+                    )
+                )
+                shopConfig.postValue(ret?.find { item -> 1 == item.configType })
+            }
+        }
     }
 
     //支付方式 1001-余额 103--支付宝app支付 203--微信app支付

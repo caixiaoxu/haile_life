@@ -23,10 +23,12 @@ import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderDetailViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
+import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.TranslucencePopupWindow
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -200,6 +202,21 @@ class OrderDetailActivity :
 
     override fun initView() {
         mBinding.tvOrderDetailDesc.movementMethod = LinkMovementMethod.getInstance()
+
+        mBinding.tvOrderDetailRepairs.setOnClickListener {
+            startActivity(Intent(this, FaultRepairsActivity::class.java).apply {
+                putExtras(
+                    IntentParams.FaultRepairsParams.pack(
+                        GoodsScanEntity(
+                            mViewModel.orderDetail.value?.orderItemList?.firstOrNull()?.goodsId,
+                            mViewModel.orderDetail.value?.orderItemList?.firstOrNull()?.goodsName,
+                            mViewModel.orderDetail.value?.orderItemList?.firstOrNull()?.categoryCode,
+                            DeviceCategory.categoryName(mViewModel.orderDetail.value?.orderItemList?.firstOrNull()?.categoryCode),
+                        )
+                    )
+                )
+            })
+        }
 
         mBinding.tvOrderDetailContact.setOnClickListener {
             DialogUtils.checkPermissionDialog(
