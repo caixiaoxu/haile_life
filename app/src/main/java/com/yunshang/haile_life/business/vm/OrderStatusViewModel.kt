@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
-import androidx.core.os.postDelayed
 import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
