@@ -31,7 +31,7 @@ class DiscountCouponViewModel : BaseViewModel() {
         arrayListOf(
             IndicatorEntity("未使用", 0, 1),
             IndicatorEntity("已使用", 0, 30),
-            IndicatorEntity("已过期", 0, 31),
+            IndicatorEntity("已失效", 0, 31),
         )
     )
 
