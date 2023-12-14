@@ -94,7 +94,7 @@
                     android:id="@+id/include_order_pay_submit_pay_way"
                     layout="@layout/layout_pay_way"
                     app:isDryer="@{vm.isDryer()}"
-                    app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder &amp;&amp; !avm.shopConfig.result}" />
+                    app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder &amp;&amp; null != avm.shopConfig &amp;&amp;  1 != avm.shopConfig.configType}" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/btn_order_pay_recharge"
@@ -174,7 +174,7 @@
                     android:layout_marginStart="4dp"
                     android:background="@drawable/shape_s04d1e5_rr23"
                     android:backgroundTint="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status >= 40?@color/secondColorPrimary:@color/color_black_25}"
-                    android:enabled="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status >= 40}"
+                    android:enabled="@{(null == avm.selfCleanRefresh || avm.selfCleanRefresh.status >= 40) &amp;&amp; (!avm.shopConfig.result || avm.tradePreview.isZero())}"
                     android:gravity="center"
                     android:minWidth="106dp"
                     android:paddingHorizontal="12dp"
@@ -187,8 +187,8 @@
                     android:layout_width="132dp"
                     android:layout_height="46dp"
                     android:background="@{vm.isDryer()?@drawable/shape_sff630e_r23:@drawable/shape_s04d1e5_r23}"
-                    android:gravity="center"
                     android:enabled="@{!avm.shopConfig.result || avm.tradePreview.isZero()}"
+                    android:gravity="center"
                     android:text="@string/go_pay"
                     app:visibility="@{!avm.tradePreview.selfCleanInfo.supportSelfClean}"
                     tools:background="@drawable/shape_s04d1e5_r23"

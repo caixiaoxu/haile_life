@@ -296,7 +296,7 @@ class OrderPaySubmitFragment :
 
         mActivityViewModel.shopConfig.observe(this) {
             it?.let { config ->
-                if (config.result && !mActivityViewModel.tradePreview.value!!.isZero()) {
+                if (1 == config.configType && (config.result || !mActivityViewModel.tradePreview.value!!.isZero())) {
                     CommonDialog.Builder("海星余额不足，请先购买海星后再使用").apply {
                         title = StringUtils.getString(R.string.friendly_reminder)
                         isCancelable = config.closable
@@ -361,13 +361,14 @@ class OrderPaySubmitFragment :
 
         // 筒自洁
         mBinding.btnOrderPaySubmitSelfClean.setOnClickListener {
-            CommonDialog.Builder("该设备有筒自洁功能，去除残留污垢和细菌，耗时${mActivityViewModel.tradePreview.value?.selfCleanInfo?.remainMinutes}分钟，是否需要？\n\n点击需要，设备立即启动，请勿放入衣物").apply {
-                title = "健康筒自洁"
-                negativeTxt = "不需要"
-                setPositiveButton("需要") {
-                    mActivityViewModel.startSelfClean()
-                }
-            }.build().show(childFragmentManager)
+            CommonDialog.Builder("该设备有筒自洁功能，去除残留污垢和细菌，耗时${mActivityViewModel.tradePreview.value?.selfCleanInfo?.remainMinutes}分钟，是否需要？\n\n点击需要，设备立即启动，请勿放入衣物")
+                .apply {
+                    title = "健康筒自洁"
+                    negativeTxt = "不需要"
+                    setPositiveButton("需要") {
+                        mActivityViewModel.startSelfClean()
+                    }
+                }.build().show(childFragmentManager)
         }
 
         // 支付
