@@ -115,8 +115,7 @@
                 android:gravity="center_vertical"
                 android:paddingHorizontal="12dp"
                 android:paddingBottom="4dp"
-                android:text="@string/wechat"
-                android:visibility="gone" />
+                android:text="@string/wechat" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/rb_order_balance_pay_way"

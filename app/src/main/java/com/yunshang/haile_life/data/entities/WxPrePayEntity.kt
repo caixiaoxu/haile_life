@@ -12,7 +12,7 @@ package com.yunshang.haile_life.data.entities
 </desc></version></time></author> */
 data class WxPrePayEntity(
     val timeStamp: String,
-    val partnerId: String,
+    val parentId: String,
     val prepayId: String,
     val paySign: String,
     val appId: String,
