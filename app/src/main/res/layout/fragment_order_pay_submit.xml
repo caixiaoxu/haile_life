@@ -155,15 +155,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="46dp"
                     android:background="@drawable/shape_s2604d1e5_lr23"
-                    android:backgroundTint="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@color/secondColorPrimary:@color/color_c0c0c0}"
+                    android:backgroundTint="@{((null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50) &amp;&amp; (!avm.shopConfig.result || avm.tradePreview.isZero()))?@color/secondColorPrimary:@color/color_c0c0c0}"
                     android:drawableStart="@mipmap/icon_canister_self_cleaning"
                     android:drawablePadding="8dp"
-                    android:enabled="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50}"
+                    android:enabled="@{(null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50) &amp;&amp; (!avm.shopConfig.result || avm.tradePreview.isZero())}"
                     android:gravity="center"
                     android:minWidth="106dp"
                     android:paddingHorizontal="12dp"
                     android:text="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@string/canister_self_cleaning:avm.selfCleanRefresh.selfCleanStateVal}"
-                    android:textColor="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@color/secondColorPrimary:@color/color_black_45}"
+                    android:textColor="@{((null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50) &amp;&amp; (!avm.shopConfig.result || avm.tradePreview.isZero()))?@color/secondColorPrimary:@color/color_black_45}"
                     app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}" />
 
                 <com.lsy.framelib.ui.weight.SingleTapTextView
