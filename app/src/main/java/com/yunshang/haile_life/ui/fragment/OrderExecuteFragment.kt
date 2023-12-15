@@ -17,6 +17,7 @@ import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.GoodsScanEntity
+import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.data.extend.toRemove0Str
@@ -25,6 +26,7 @@ import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.setVisibility
 import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
+import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -33,6 +35,8 @@ class OrderExecuteFragment :
     BaseBusinessFragment<FragmentOrderExecuteBinding, OrderExecuteViewModel>(
         OrderExecuteViewModel::class.java, BR.vm
     ) {
+
+    private var callPhone: String? = ""
 
     val mActivityViewModel by lazy {
         getActivityViewModelProvider(requireActivity())[OrderStatusViewModel::class.java]
@@ -43,8 +47,8 @@ class OrderExecuteFragment :
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             if (result.values.any { it }) {
                 // 授权权限成功
-                mActivityViewModel.orderDetails.value?.serviceTelephone?.let {
-                    startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$it")))
+                if (!callPhone.isNullOrEmpty()) {
+                    startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$callPhone")))
                 }
             } else {
                 // 授权失败
@@ -143,7 +147,26 @@ class OrderExecuteFragment :
         }
 
         mBinding.tvOrderExecuteContactShop.setOnClickListener {
-            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            mActivityViewModel.orderDetails.value?.serviceTelephone?.let {
+                val phoneList =
+                    it.split(",").mapIndexed { index, phone -> SearchSelectParam(index, phone) }
+                CommonBottomSheetDialog.Builder("", phoneList).apply {
+                    selectModel = 1
+                    onValueSureListener =
+                        object : CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
+                            override fun onValue(data: SearchSelectParam?) {
+                                CommonDialog.Builder("是否拨打电话").apply {
+                                    title = StringUtils.getString(R.string.tip)
+                                    negativeTxt = StringUtils.getString(R.string.cancel)
+                                    setPositiveButton(StringUtils.getString(R.string.sure)) {
+                                        callPhone = data?.name
+                                        requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+                                    }
+                                }.build().show(childFragmentManager)
+                            }
+                        }
+                }.build().show(childFragmentManager)
+            }
         }
 
         mViewModel.totalTime = try {

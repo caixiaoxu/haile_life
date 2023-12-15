@@ -161,12 +161,11 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_shop_detail_contact_phone"
-                            style="@style/Font_12_10d0e6"
+                            style="@style/Font_12_black_85"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableStart="@mipmap/icon_shop_detail_contact_phone"
                             android:drawablePadding="4dp"
-                            android:text="@{vm.shopDetail.serviceTelephone}"
                             tools:text="0571-4912-8823" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>

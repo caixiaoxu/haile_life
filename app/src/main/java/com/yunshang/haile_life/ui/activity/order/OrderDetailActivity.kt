@@ -25,7 +25,9 @@ import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.entities.OrderItem
+import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.PromotionParticipation
+import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
@@ -42,17 +44,19 @@ class OrderDetailActivity :
         BR.vm
     ) {
 
+    private var callPhone: String? = ""
+
     // 拨打电话权限
     private val requestPermission =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             if (result.values.any { it }) {
                 // 授权权限成功
-                mViewModel.orderDetail.value?.serviceTelephone?.let {
-                    startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$it")))
+                if (!callPhone.isNullOrEmpty()) {
+                    startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$callPhone")))
                 }
             } else {
                 // 授权失败
-                SToast.showToast(this, R.string.empty_permission)
+                SToast.showToast(this@OrderDetailActivity, R.string.empty_permission)
             }
         }
 
@@ -219,13 +223,25 @@ class OrderDetailActivity :
         }
 
         mBinding.tvOrderDetailContact.setOnClickListener {
-            DialogUtils.checkPermissionDialog(
-                this,
-                supportFragmentManager,
-                SystemPermissionHelper.callPhonePermissions(),
-                "需要权限来拨打电话"
-            ) {
-                requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+            mViewModel.orderDetail.value?.serviceTelephone?.let {
+                val phoneList =
+                    it.split(",").mapIndexed { index, phone -> SearchSelectParam(index, phone) }
+                CommonBottomSheetDialog.Builder("", phoneList).apply {
+                    selectModel = 1
+                    onValueSureListener =
+                        object : CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
+                            override fun onValue(data: SearchSelectParam?) {
+                                CommonDialog.Builder("是否拨打电话").apply {
+                                    title = com.lsy.framelib.utils.StringUtils.getString(R.string.tip)
+                                    negativeTxt = com.lsy.framelib.utils.StringUtils.getString(R.string.cancel)
+                                    setPositiveButton(com.lsy.framelib.utils.StringUtils.getString(R.string.sure)) {
+                                        callPhone = data?.name
+                                        requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
+                                    }
+                                }.build().show(supportFragmentManager)
+                            }
+                        }
+                }.build().show(supportFragmentManager)
             }
         }
         mBinding.tvOrderDetailPay.setOnClickListener {

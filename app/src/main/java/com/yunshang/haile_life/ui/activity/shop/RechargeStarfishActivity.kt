@@ -108,7 +108,7 @@ class RechargeStarfishActivity :
                     GsonUtils.json2Class(it, WxPrePayEntity::class.java)?.let { wxPrePayBean ->
                         WeChatHelper.openWeChatPay(
                             wxPrePayBean.appId,
-                            wxPrePayBean.partnerId,
+                            wxPrePayBean.parentId,
                             wxPrePayBean.prepayId,
                             wxPrePayBean.nonceStr,
                             wxPrePayBean.timeStamp,
