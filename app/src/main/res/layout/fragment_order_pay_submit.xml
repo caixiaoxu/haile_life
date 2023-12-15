@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.yunshang.haile_life.R" />
+
         <import type="android.view.View" />
 
         <variable
@@ -156,7 +158,6 @@
                     android:layout_height="46dp"
                     android:background="@drawable/shape_s2604d1e5_lr23"
                     android:backgroundTint="@{((null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50) &amp;&amp; avm.canForceUseStarfish)?@color/secondColorPrimary:@color/color_c0c0c0}"
-                    android:drawableStart="@mipmap/icon_canister_self_cleaning"
                     android:drawablePadding="8dp"
                     android:enabled="@{(null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50) &amp;&amp; avm.canForceUseStarfish}"
                     android:gravity="center"
@@ -164,6 +165,7 @@
                     android:paddingHorizontal="12dp"
                     android:text="@{null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50?@string/canister_self_cleaning:avm.selfCleanRefresh.selfCleanStateVal}"
                     android:textColor="@{((null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50) &amp;&amp; avm.canForceUseStarfish)?@color/secondColorPrimary:@color/color_black_45}"
+                    app:drawStart="@{(!avm.canForceUseStarfish || 40 > avm.selfCleanRefresh.status)?R.mipmap.icon_canister_self_clean_disenable:(null == avm.selfCleanRefresh || avm.selfCleanRefresh.status == 50)?R.mipmap.icon_canister_self_cleaning:-1}"
                     app:visibility="@{avm.tradePreview.selfCleanInfo.supportSelfClean}" />
 
                 <com.lsy.framelib.ui.weight.SingleTapTextView

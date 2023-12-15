@@ -285,15 +285,6 @@ class OrderPaySubmitFragment :
             }
         }
 
-        mActivityViewModel.selfCleanRefresh.observe(this) {
-            mBinding.btnOrderPaySubmitSelfClean.setCompoundDrawablesWithIntrinsicBounds(
-                if (null == it || it.status == 50) R.mipmap.icon_canister_self_cleaning else 0,
-                0,
-                0,
-                0
-            )
-        }
-
         mActivityViewModel.shopConfig.observe(this) {
             it?.let { config ->
                 if ((1 == config.configType && 1 == config.tokenCoinForceUse) && (config.result || !mActivityViewModel.tradePreview.value!!.isZero())) {

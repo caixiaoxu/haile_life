@@ -105,7 +105,12 @@ object ViewBindingAdapter {
     ) {
 
         if (dsRes != 0 || dtRes != 0 || deRes != 0 || dbRes != 0) {
-            setCompoundDrawablesWithIntrinsicBounds(dsRes, dtRes, deRes, dbRes)
+            setCompoundDrawablesWithIntrinsicBounds(
+                if (-1 == dsRes) 0 else dsRes,
+                if (-1 == dtRes) 0 else dtRes,
+                if (-1 == deRes) 0 else deRes,
+                if (-1 == dbRes) 0 else dbRes
+            )
         }
 
         if (null != dsDraw || null != dtDraw || null != deDraw || null != dbDraw) {
