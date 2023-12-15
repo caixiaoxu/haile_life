@@ -292,7 +292,7 @@ class OrderPaySubmitFragment :
                         title = StringUtils.getString(R.string.friendly_reminder)
                         isCancelable = config.closable
                         negativeTxt = StringUtils.getString(R.string.cancel)
-                        setPositiveButton(StringUtils.getString(R.string.go_buy)) {
+                        setPositiveButton(StringUtils.getString(R.string.go_recharge)) {
                             goToRechargeStarfishPage()
                         }
                     }.build().show(childFragmentManager)
