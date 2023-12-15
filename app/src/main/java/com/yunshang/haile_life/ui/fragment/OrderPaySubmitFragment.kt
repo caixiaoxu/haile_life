@@ -438,7 +438,9 @@ class OrderPaySubmitFragment :
     }
 
     private fun goPay() {
-        if (1001 == mActivityViewModel.payMethod) {
+        if (1001 == mActivityViewModel.payMethod && !(1 == mActivityViewModel.shopConfig.value?.configType
+                    && 1 == mActivityViewModel.shopConfig.value?.tokenCoinForceUse)
+        ) {
             if (null != mActivityViewModel.tradePreview.value && null != mActivityViewModel.balance.value) {
                 BalancePaySureDialog(
                     mActivityViewModel.balance.value!!.amount,

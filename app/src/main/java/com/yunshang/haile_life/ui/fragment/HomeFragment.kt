@@ -30,8 +30,8 @@ import com.yunshang.haile_life.data.entities.DeviceStateEntity
 import com.yunshang.haile_life.data.entities.StoreDeviceEntity
 import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.device.DeviceNavigationActivity
-import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
+import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.activity.shop.ShopPositionDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
@@ -405,6 +405,7 @@ class HomeFragment : BaseBusinessFragment<FragmentHomeBinding, HomeViewModel>(
         mBinding.clNearByShopMore.setOnClickListener {
             goToPositionList()
         }
+
         // 附近门店
         mBinding.clNearByShop.setOnClickListener {
             mViewModel.nearStoreEntity.value?.id?.let { nearStoreId ->
