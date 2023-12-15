@@ -94,7 +94,7 @@
                     android:id="@+id/include_order_pay_submit_pay_way"
                     layout="@layout/layout_pay_way"
                     app:isDryer="@{vm.isDryer()}"
-                    app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder &amp;&amp; null != avm.shopConfig &amp;&amp;  1 != avm.shopConfig.configType}" />
+                    app:visibility="@{401 != avm.orderDetails.state &amp;&amp; !vm.inValidOrder &amp;&amp; null != avm.shopConfig &amp;&amp; !(1 == avm.shopConfig.configType &amp;&amp;  1 == avm.shopConfig.tokenCoinForceUse) }" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/btn_order_pay_recharge"

@@ -296,7 +296,7 @@ class OrderPaySubmitFragment :
 
         mActivityViewModel.shopConfig.observe(this) {
             it?.let { config ->
-                if (1 == config.configType && (config.result || !mActivityViewModel.tradePreview.value!!.isZero())) {
+                if ((1 == config.configType && 1 == config.tokenCoinForceUse) && (config.result || !mActivityViewModel.tradePreview.value!!.isZero())) {
                     CommonDialog.Builder("海星余额不足，请先购买海星后再使用").apply {
                         title = StringUtils.getString(R.string.friendly_reminder)
                         isCancelable = config.closable
