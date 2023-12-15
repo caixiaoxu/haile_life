@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
@@ -177,6 +178,23 @@ class OrderStatusViewModel : BaseViewModel() {
     val shopConfig: MutableLiveData<ShopConfigEntity?> by lazy {
         MutableLiveData()
     }
+
+    // 强制海星
+    val canForceUseStarfish: MediatorLiveData<Boolean> = MediatorLiveData(false).apply {
+        addSource(tradePreview) {
+            value = checkForceUseStarfish()
+        }
+        addSource(shopConfig) {
+            value = checkForceUseStarfish()
+        }
+    }
+
+    private fun checkForceUseStarfish(): Boolean =
+        if (1 == shopConfig.value?.configType) {
+            if (1 == shopConfig.value?.tokenCoinForceUse) {
+                true == tradePreview.value?.isZero()
+            } else true
+        } else true
 
     private fun getCommonParams(autoSelect: Boolean) = hashMapOf<String, Any?>(
         "orderNo" to orderNo,
