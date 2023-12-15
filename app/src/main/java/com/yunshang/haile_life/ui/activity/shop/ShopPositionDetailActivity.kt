@@ -170,27 +170,6 @@ class ShopPositionDetailActivity :
             mViewModel.requestData()
         }
 
-        mViewModel.shopNotice.observe(this) {
-            if (!it.isNullOrEmpty()) {
-                ShopNoticeDialog(it).show(supportFragmentManager)
-            }
-        }
-
-        mViewModel.curDeviceCategory.observe(this) {
-            if (mBinding.rgShopPositionDetailFloor.childCount > 0) {
-                val index =
-                    mViewModel.shopDetail.value?.floorList?.indexOfFirst { item -> item.value == it.selectFloor?.value || (item.value.isEmpty() && it.selectFloor?.value.isNullOrEmpty()) }
-                if (index.hasVal()) {
-                    mBinding.rgShopPositionDetailFloor.check(mBinding.rgShopPositionDetailFloor[index!!].id)
-                }
-            }
-            mBinding.rvShopPositionDetailDevices.requestLoadMore(true)
-        }
-    }
-
-    override fun initIntent() {
-        super.initIntent()
-        mViewModel.positionId = IntentParams.IdParams.parseId(intent)
 
         mViewModel.shopDetail.observe(this) {
             it?.let { detail ->
@@ -331,6 +310,29 @@ class ShopPositionDetailActivity :
                 }
             }
         }
+
+        mViewModel.shopNotice.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                ShopNoticeDialog(it).show(supportFragmentManager)
+            }
+        }
+
+        mViewModel.curDeviceCategory.observe(this) {
+            if (mBinding.rgShopPositionDetailFloor.childCount > 0) {
+                val index =
+                    mViewModel.shopDetail.value?.floorList?.indexOfFirst { item -> item.value == it.selectFloor?.value || (item.value.isEmpty() && it.selectFloor?.value.isNullOrEmpty()) }
+                if (index.hasVal()) {
+                    mBinding.rgShopPositionDetailFloor.check(mBinding.rgShopPositionDetailFloor[index!!].id)
+                }
+            }
+            mBinding.rvShopPositionDetailDevices.requestLoadMore(true)
+        }
+    }
+
+    override fun initIntent() {
+        super.initIntent()
+        mViewModel.positionId = IntentParams.IdParams.parseId(intent)
+
     }
 
     override fun initView() {
