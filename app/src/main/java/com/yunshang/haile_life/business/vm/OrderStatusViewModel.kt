@@ -238,20 +238,18 @@ class OrderStatusViewModel : BaseViewModel() {
             tradePreview.postValue(it)
 
             // 强制使用海星
-            if (null == shopConfig.value) {
-                val ret = ApiRepository.dealApiResult(
-                    mShopRepo.requestShopConfigList(
-                        ApiRepository.createRequestBody(
-                            hashMapOf(
-                                "shopId" to it.itemList.firstOrNull()?.shopId,
-                                "goodsId" to it.itemList.firstOrNull()?.goodsId,
-                                "goodsCategoryId" to it.itemList.firstOrNull()?.goodsCategoryId
-                            )
+            val ret = ApiRepository.dealApiResult(
+                mShopRepo.requestShopConfigList(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "shopId" to it.itemList.firstOrNull()?.shopId,
+                            "goodsId" to it.itemList.firstOrNull()?.goodsId,
+                            "goodsCategoryId" to it.itemList.firstOrNull()?.goodsCategoryId
                         )
                     )
                 )
-                shopConfig.postValue(ret?.find { item -> 1 == item.configType })
-            }
+            )
+            shopConfig.postValue(ret?.find { item -> 1 == item.configType })
         }
     }
 
