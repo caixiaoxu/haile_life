@@ -271,7 +271,7 @@ class AppointmentOrderVerifyFragment :
             }
         }
 
-        mBinding.includeOrderInfo.btnOrderInfoCancel.setOnClickListener {
+        mBinding.btnAppointmentOrderVerifyCancel.setOnClickListener {
             CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt))
                 .apply {
                     negativeTxt = StringUtils.getString(R.string.no)

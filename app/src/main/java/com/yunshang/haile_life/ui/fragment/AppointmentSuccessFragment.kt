@@ -113,7 +113,7 @@ class AppointmentSuccessFragment :
         mBinding.root.setPadding(0, StatusBarUtils.getStatusBarHeight(), 0, 0)
         mBinding.includeAppointmentDeviceStatus.root.setBackgroundResource(R.drawable.shape_sffffff_r8)
 
-        mBinding.includeOrderInfo.btnOrderInfoCancel.setOnClickListener {
+        mBinding.btnAppointmentSuccessCancel.setOnClickListener {
             CommonDialog.Builder(StringUtils.getString(R.string.cancel_appoint_order_prompt))
                 .apply {
                     negativeTxt = StringUtils.getString(R.string.no)
