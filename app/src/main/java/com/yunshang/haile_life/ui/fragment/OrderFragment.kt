@@ -194,15 +194,6 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
         }
 
         mBinding.rvMineOrderList.layoutManager = LinearLayoutManager(requireContext())
-        ResourcesCompat.getDrawable(resources, R.drawable.divide_size8, null)?.let {
-            mBinding.rvMineOrderList.addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    DividerItemDecoration.VERTICAL
-                ).apply {
-                    setDrawable(it)
-                })
-        }
         mBinding.rvMineOrderList.adapter = mAdapter
         mBinding.rvMineOrderList.requestData =
             object : CommonRefreshRecyclerView.OnRequestDataListener<OrderEntity>() {
@@ -220,5 +211,12 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
     override fun initData() {
         mViewModel.curOrderStatus.value =
             arguments?.let { IntentParams.OrderListParams.parseStatus(it) }
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            mViewModel.requestReplyNum()
+        }
     }
 }

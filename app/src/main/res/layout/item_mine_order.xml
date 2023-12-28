@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_sffffff_r8"
+        android:layout_marginBottom="8dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="12dp">
 

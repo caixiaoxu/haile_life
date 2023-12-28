@@ -39,6 +39,20 @@ class OrderViewModel : BaseViewModel() {
         )
     )
 
+    fun requestReplyNum() {
+        launch({
+            requestReplyNumAsync()
+        })
+    }
+
+    private suspend fun requestReplyNumAsync() {
+        ApiRepository.dealApiResult(
+            mOrderRepo.requestReplayNum(
+                ApiRepository.createRequestBody(hashMapOf())
+            )
+        )
+    }
+
     fun requestOrderList(
         page: Int,
         pageSize: Int,
@@ -51,6 +65,10 @@ class OrderViewModel : BaseViewModel() {
         )
 
         launch({
+            if (1 == page) {
+                requestReplyNumAsync()
+            }
+
             ApiRepository.dealApiResult(
                 mOrderRepo.requestOrderList(
                     ApiRepository.createRequestBody(

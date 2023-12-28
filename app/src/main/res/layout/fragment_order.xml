@@ -34,6 +34,13 @@
             android:background="@color/white"
             android:paddingHorizontal="16dp" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_list_reply_prompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Font_14_02d5f1_bold"
+            android:paddingVertical="12dp"/>
+
         <com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
             android:id="@+id/rv_mine_order_list"
             android:layout_width="match_parent"

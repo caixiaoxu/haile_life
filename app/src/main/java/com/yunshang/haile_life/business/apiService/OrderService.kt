@@ -104,4 +104,6 @@ interface OrderService {
     suspend fun requestSelfCleanRefresh(@Body body: RequestBody): ResponseWrapper<SelfCleanRefreshEntity>
     @POST("/device/selfClean/start")
     suspend fun startSelfClean(@Body body: RequestBody): ResponseWrapper<Any>
+    @POST("/feedback/getFeedbackOrderReplayTotal")
+    suspend fun requestReplayNum(@Body body: RequestBody): ResponseWrapper<Int>
 }
