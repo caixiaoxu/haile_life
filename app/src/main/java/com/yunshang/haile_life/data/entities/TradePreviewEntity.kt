@@ -84,7 +84,7 @@ data class TradePreviewGoodItem(
 data class TradePreviewPromotion(
     val available: Boolean,
     val discountPrice: String,
-    val options: List<TradePreviewParticipate>,
+    val options: List<TradePreviewParticipate>?,
     val originPrice: String,
     val participateList: List<TradePreviewParticipate>,
     val promotionProduct: Int,//1-限时特惠，2-商家优惠券，3-折扣卡，4-平台优惠券，5-海星折扣

@@ -325,6 +325,7 @@ object IntentParams {
     }
 
     object DiscountCouponSelectorParams {
+        private const val OrderNo = "OrderNo"
         private const val SelectCoupon = "SelectCoupon"
         private const val PromotionProduct = "promotionProduct"
         private const val OtherSelectCoupon = "OtherSelectCoupon"
@@ -336,8 +337,12 @@ object IntentParams {
             select: List<TradePreviewParticipate>? = null,
             promotionProduct: Int,
             otherSelect: List<TradePreviewParticipate>? = null,
+            orderNo: String? = null,
         ): Bundle =
             Bundle().apply {
+                orderNo?.let {
+                    putString(OrderNo, orderNo)
+                }
                 select?.let {
                     putString(SelectCoupon, GsonUtils.any2Json(select))
                 }
@@ -346,6 +351,8 @@ object IntentParams {
                     putString(OtherSelectCoupon, GsonUtils.any2Json(otherSelect))
                 }
             }
+
+        fun parseOrderNo(intent: Intent): String? = intent.getStringExtra(OrderNo)
 
         fun parseSelectCoupon(intent: Intent): MutableList<TradePreviewParticipate>? =
             GsonUtils.json2List(

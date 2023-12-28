@@ -25,7 +25,14 @@
             android:background="@drawable/shape_bottom_stroke_dividing_efefef"
             app:title="@string/order_discount_coupon_selector" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/indicator_discount_coupon_status"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/white"
+            android:paddingHorizontal="16dp" />
+
+        <com.yunshang.haile_life.ui.view.refresh.EmptyStatusRecyclerView
             android:id="@+id/rv_discount_coupon_selector_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"

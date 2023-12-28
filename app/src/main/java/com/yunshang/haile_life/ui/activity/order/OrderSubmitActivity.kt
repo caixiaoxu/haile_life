@@ -199,7 +199,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                 }
                                 childBinding.value = StringUtils.getString(
                                     R.string.available_coupon_num,
-                                    promotion.options.filter { item -> item.available }.size
+                                    promotion.options?.filter { item -> item.available }?.size ?: 0
                                 )
                             } else {
                                 childBinding.endDraw = R.mipmap.icon_small_arrow_right
@@ -235,10 +235,9 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                                 if (promotion.used) {
                                     // 如果强制使用海星，不可取消
                                     if (promotion.forceUse) return@setOnClickListener
-
                                     mViewModel.selectParticipate?.removeAll { item -> 5 == item.promotionProduct }
                                 } else {
-                                    if (promotion.options.isNotEmpty()) {
+                                    if (!promotion.options.isNullOrEmpty()) {
                                         mViewModel.selectParticipate?.addAll(promotion.options)
                                     }
                                 }

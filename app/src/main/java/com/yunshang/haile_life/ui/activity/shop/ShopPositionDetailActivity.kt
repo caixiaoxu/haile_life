@@ -10,7 +10,6 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
-import android.text.style.ImageSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,21 +17,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
-import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.StringUtils
 import com.lsy.framelib.utils.SystemPermissionHelper
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
-import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.ShopPositionDetailViewModel
-import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
@@ -56,7 +51,6 @@ import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 import com.yunshang.haile_life.ui.view.refresh.CommonLoadMoreRecyclerView
 import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.MapManagerUtils
-import com.yunshang.haile_life.web.WebViewActivity
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
@@ -125,6 +119,15 @@ class ShopPositionDetailActivity :
                                 return@requestAppointmentInfo
                             } else if (detail.shopClosed) {
                                 Hint3SecondDialog.Builder("门店不在营业时间内,请稍后再试!").apply {
+                                    dialogBgResource = R.drawable.shape_dialog_bg
+                                }.build().show(supportFragmentManager)
+                                return@requestAppointmentInfo
+                            } else if (!(2 == detail.deviceState && true == detail.enableReserve
+                                        && (DeviceCategory.isWashingOrShoes(detail.categoryCode) || DeviceCategory.isDryer(
+                                    detail.categoryCode
+                                )))
+                            ) {
+                                Hint3SecondDialog.Builder("设备工作中,请稍后再试!").apply {
                                     dialogBgResource = R.drawable.shape_dialog_bg
                                 }.build().show(supportFragmentManager)
                                 return@requestAppointmentInfo
