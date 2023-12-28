@@ -69,10 +69,71 @@
                         tools:text="预计完成时间 下午16点47" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="horizontal"
+                    app:visibility="@{vm.evaluateStatus.canFeedback}">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_order_evaluate_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/icon_order_evaluate_main"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_order_evaluate_triangle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/icon_order_evaluate_triangle"
+                        app:layout_constraintStart_toEndOf="@id/iv_order_evaluate_main"
+                        app:layout_constraintTop_toTopOf="@id/ll_order_evaluate" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_order_evaluate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_sffffff_r8"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iv_order_evaluate_triangle"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Font_14_333333"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/go_evaluate_prompt" />
+
+                        <com.lsy.framelib.ui.weight.SingleTapTextView
+                            android:id="@+id/tv_order_detail_evaluate_go"
+                            style="@style/Font_14_ffffff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:background="@drawable/shape_s02d5f1_r14"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="4dp"
+                            android:text="@string/go_evaluate" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginHorizontal="12dp"
                     android:background="@drawable/shape_sffffff_r8"
                     android:visibility="@{vm.formScan?View.GONE:View.VISIBLE}">
 
@@ -97,96 +158,18 @@
                         android:text="@string/copy_order_no" />
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/Font_14_black_85"
+                <include
+                    android:id="@+id/include_order_detail_info"
+                    layout="@layout/include_order_detail_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:background="@drawable/shape_sffffff_r8"
-                    android:padding="12dp"
-                    android:text="@{vm.orderDetail.getGoodInfo}"
-                    android:visibility="@{vm.formScan?View.GONE:View.VISIBLE}"
-                    tools:text="浙大紫荆港校区蓝田学园\n生公寓3区1号楼\n10号洗衣机" />
-
-                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
-                    android:id="@+id/ll_order_detail_skus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:background="@drawable/shape_sffffff_r8"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    app:divider="@drawable/divder_efefef"
-                    app:dividerPadding="12dp"
-                    app:itemLayout="@layout/item_order_detail_sku"
-                    app:showDividers="middle" />
-
-                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
-                    android:id="@+id/ll_order_detail_discount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:background="@drawable/shape_sffffff_r8"
-                    android:orientation="vertical"
-                    android:padding="12dp"
-                    android:visibility="gone"
-                    app:divider="@drawable/divide_size8"
-                    app:itemLayout="@layout/item_title_value_lr"
-                    app:showDividers="middle" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:background="@drawable/shape_sffffff_r8"
-                    android:orientation="vertical"
-                    android:padding="12dp"
-                    android:visibility="@{(vm.formScan || 50 == vm.orderDetail.state)?View.GONE:View.VISIBLE}"
-                    app:divider="@drawable/divide_size8"
-                    app:showDividers="middle">
-
-                    <include
-                        android:id="@+id/include_order_detail_total_price"
-                        layout="@layout/item_title_value"
-                        app:title='@{@string/total_price +"："}'
-                        app:value="@{StringUtils.formatAmountStrOfStr(vm.orderDetail.originPrice)}" />
-
-                    <include
-                        android:id="@+id/include_order_detail_discount_price"
-                        layout="@layout/item_title_value"
-                        android:visibility="@{0 == vm.orderDetail.getOrderDiscountTotalPrice().length()?View.GONE:View.VISIBLE}"
-                        app:title='@{@string/discount_price +"："}'
-                        app:value="@{vm.orderDetail.getOrderDiscountTotalPrice}" />
-
-                    <include
-                        android:id="@+id/include_order_detail_need_price"
-                        layout="@layout/item_title_value"
-                        app:title='@{@string/need_pay +"："}'
-                        app:value="@{StringUtils.formatAmountStrOfStr(vm.orderDetail.realPrice)}" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:background="@drawable/shape_sffffff_r8"
-                    android:orientation="vertical"
-                    android:padding="12dp"
-                    android:visibility="@{vm.formScan?View.GONE:View.VISIBLE}"
-                    app:divider="@drawable/divide_size8"
-                    app:showDividers="middle">
-
-                    <include
-                        android:id="@+id/include_order_detail_time"
-                        layout="@layout/item_title_value"
-                        app:title='@{@string/order_time +"："}'
-                        app:value="@{vm.orderDetail.createTime}" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:layout_marginHorizontal="12dp"
+                    app:order="@{vm.orderDetail}" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginHorizontal="12dp"
                     android:background="@drawable/shape_sffffff_r8"
                     android:padding="12dp"
                     android:visibility="@{50 == vm.orderDetail.state?View.VISIBLE:View.GONE}">
@@ -258,7 +241,8 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
                 android:text="@string/device_repairs"
-                android:visibility="@{vm.orderDetail.canSubmitFix?View.VISIBLE:View.GONE}" />
+                android:visibility="@{vm.orderDetail.canSubmitFix?View.VISIBLE:View.GONE}"
+                tools:visibility="gone" />
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_contact"
@@ -269,7 +253,8 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
                 android:text="@string/contact_shop"
-                android:visibility="@{vm.showContactShop?View.VISIBLE:View.GONE}" />
+                android:visibility="@{vm.showContactShop?View.VISIBLE:View.GONE}"
+                tools:visibility="gone" />
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_coerce_device"
@@ -281,7 +266,8 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
                 android:text="@string/coerce_device"
-                app:visibility="@{vm.showCoerceDevice &amp;&amp; 3 > vm.coerceDeviceCount}" />
+                app:visibility="@{vm.showCoerceDevice &amp;&amp; 3 > vm.coerceDeviceCount}"
+                tools:visibility="gone" />
 
             <!--            <com.lsy.framelib.ui.weight.SingleTapTextView-->
             <!--                android:id="@+id/tv_order_detail_finish_order"-->
@@ -304,7 +290,8 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
                 android:text="@string/cancel_order"
-                android:visibility="@{vm.showCancelOrder?View.VISIBLE:View.GONE}" />
+                android:visibility="@{vm.showCancelOrder?View.VISIBLE:View.GONE}"
+                tools:visibility="gone" />
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_delete"
@@ -315,7 +302,8 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
                 android:text="@string/delete_order"
-                android:visibility="@{vm.showDeleteOrder?View.VISIBLE:View.GONE}" />
+                android:visibility="@{vm.showDeleteOrder?View.VISIBLE:View.GONE}"
+                tools:visibility="gone" />
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_pay"
@@ -327,6 +315,17 @@
                 android:paddingVertical="8dp"
                 android:text="@string/pay_now"
                 android:visibility="@{vm.showPayOrder?View.VISIBLE:View.GONE}" />
+
+            <com.lsy.framelib.ui.weight.SingleTapTextView
+                android:id="@+id/tv_order_detail_evaluate"
+                style="@style/Font_14_02d5f1_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_stroke02d5f1_r18"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@{vm.evaluateStatus.canFeedback?@string/evaluate:@string/see_evaluate}"
+                app:visibility="@{vm.evaluateStatus.canFeedback || vm.evaluateStatus.hasFeedback}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

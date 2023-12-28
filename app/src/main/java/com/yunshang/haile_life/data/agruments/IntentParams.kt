@@ -546,4 +546,65 @@ object IntentParams {
         fun parseAutoWebTitle(intent: Intent): Boolean = intent.getBooleanExtra(AutoWebTitle, true)
         fun parseNoCache(intent: Intent): Boolean = intent.getBooleanExtra(NoCache, false)
     }
+
+
+    object OrderIssueEvaluateParams {
+        private const val OrderId = "orderId"
+        private const val GoodId = "goodId"
+        private const val BuyerId = "buyerId"
+        private const val SellerId = "sellerId"
+        private const val OrderNo = "orderNo"
+
+        /**
+         * 包装参数
+         */
+        fun pack(
+            orderId: Int?,
+            orderNo: String?,
+            goodId: Int?,
+            buyerId: Int?,
+            sellerId: Int?
+        ): Bundle =
+            Bundle().apply {
+                orderId?.let {
+                    putInt(OrderId, orderId)
+                }
+                goodId?.let {
+                    putInt(GoodId, goodId)
+                }
+                buyerId?.let {
+                    putInt(BuyerId, buyerId)
+                }
+                sellerId?.let {
+                    putInt(SellerId, sellerId)
+                }
+                orderNo?.let {
+                    putString(OrderNo, orderNo)
+                }
+            }
+
+        fun parseOrderId(intent: Intent): Int = intent.getIntExtra(OrderId, -1)
+        fun parseGoodId(intent: Intent): Int = intent.getIntExtra(GoodId, -1)
+        fun parseBuyerId(intent: Intent): Int = intent.getIntExtra(BuyerId, -1)
+        fun parseSellerId(intent: Intent): Int = intent.getIntExtra(SellerId, -1)
+        fun parseOrderNo(intent: Intent): String? = intent.getStringExtra(OrderNo)
+    }
+
+    object OrderEvaluateDetailsParams {
+        private const val OrderId = "orderId"
+
+        /**
+         * 包装参数
+         */
+        fun pack(
+            orderId: Int?,
+        ): Bundle =
+            Bundle().apply {
+                orderId?.let {
+                    putInt(OrderId, orderId)
+                }
+            }
+
+        fun parseOrderId(intent: Intent): Int = intent.getIntExtra(OrderId, -1)
+    }
 }

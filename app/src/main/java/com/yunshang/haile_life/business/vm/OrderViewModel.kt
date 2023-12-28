@@ -39,6 +39,10 @@ class OrderViewModel : BaseViewModel() {
         )
     )
 
+    val replayNum: MutableLiveData<Int> by lazy {
+        MutableLiveData()
+    }
+
     fun requestReplyNum() {
         launch({
             requestReplyNumAsync()
@@ -50,7 +54,9 @@ class OrderViewModel : BaseViewModel() {
             mOrderRepo.requestReplayNum(
                 ApiRepository.createRequestBody(hashMapOf())
             )
-        )
+        )?.let {
+            replayNum.postValue(it)
+        }
     }
 
     fun requestOrderList(

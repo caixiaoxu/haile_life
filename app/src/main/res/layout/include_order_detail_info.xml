@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.yunshang.haile_life.utils.string.StringUtils" />
+
+        <variable
+            name="order"
+            type="com.yunshang.haile_life.data.entities.OrderEntity" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_sffffff_r8"
+        android:orientation="vertical"
+        app:divider="@drawable/divder_efefef"
+        app:dividerPadding="12dp"
+        app:showDividers="middle">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:divider="@drawable/divide_size8"
+            app:showDividers="middle">
+
+            <include
+                layout="@layout/include_order_info_item"
+                app:content='@{order.getOrderPositionName}'
+                app:title='@{@string/outlet + "："}' />
+
+            <include
+                layout="@layout/include_order_info_item"
+                app:content='@{order.getOrderDeviceName}'
+                app:title='@{@string/device + "："}' />
+
+            <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                android:id="@+id/ll_order_info_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:divider="@drawable/divide_size8"
+                app:itemLayout="@layout/include_order_info_item"
+                app:showDividers="middle" />
+
+            <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                android:id="@+id/ll_order_info_promotions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:divider="@drawable/divide_size8"
+                app:itemLayout="@layout/include_order_info_item"
+                app:showDividers="middle" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:divider="@drawable/divide_size8"
+            app:showDividers="middle">
+
+            <include
+                layout="@layout/include_order_info_item"
+                app:content='@{StringUtils.formatAmountStrOfStr(order.originPrice)}'
+                app:title='@{@string/total_price + "："}' />
+
+            <include
+                layout="@layout/include_order_info_item"
+                android:visibility="@{0 == order.getOrderDiscountTotalPrice().length()?View.GONE:View.VISIBLE}"
+                app:content='@{order.getOrderDiscountTotalPrice}'
+                app:title='@{@string/discount_price + "："}' />
+
+            <include
+                layout="@layout/include_order_info_item"
+                app:content='@{StringUtils.formatAmountStrOfStr(order.realPrice)}'
+                app:title='@{@string/need_pay + "："}' />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include
+            layout="@layout/include_order_info_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:content='@{order.createTime}'
+            app:title='@{@string/order_time + "："}' />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

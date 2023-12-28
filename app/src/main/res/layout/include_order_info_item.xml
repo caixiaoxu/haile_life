@@ -46,6 +46,7 @@
             tools:text="NOWNR124823840293849023" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_info_item_tail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:visibility="@{null != tail &amp;&amp; tail.length() > 0}"

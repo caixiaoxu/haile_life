@@ -8,10 +8,8 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.utils.DimensionUtils
@@ -23,18 +21,20 @@ import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderDetailViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.entities.OrderItem
-import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.PromotionParticipation
-import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
-import com.yunshang.haile_life.databinding.*
+import com.yunshang.haile_life.data.extend.toRemove0Str
+import com.yunshang.haile_life.databinding.ActivityOrderDetailBinding
+import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
+import com.yunshang.haile_life.databinding.PopupPromptBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.TranslucencePopupWindow
+import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
-import com.yunshang.haile_life.utils.DialogUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 
 
@@ -75,16 +75,31 @@ class OrderDetailActivity :
     override fun initEvent() {
         super.initEvent()
 
-        if (true != mViewModel.formScan.value) {
-            mViewModel.orderDetail.observe(this) {
-                it?.let { detail ->
-                    mBinding.llOrderDetailDiscount.buildChild<ItemTitleValueLrBinding, PromotionParticipation>(
-                        detail.promotionParticipationList
-                    ) { _, childBinding, data ->
-                        childBinding.title = data.promotionProductName
-                        childBinding.value =
-                            "-${StringUtils.formatAmountStrOfStr(data.discountPrice)}"
-                    }
+        mViewModel.orderDetail.observe(this) { detail ->
+            detail?.let {
+                mBinding.includeOrderDetailInfo.llOrderInfoItems.buildChild<IncludeOrderInfoItemBinding, OrderItem>(
+                    detail.orderItemList
+                ) { index, childBinding, data ->
+                    childBinding.title =
+                        if (0 == index) com.lsy.framelib.utils.StringUtils.getString(R.string.service) + "：" else ""
+                    childBinding.content =
+                        "${data.goodsItemName} ${data.unit.toRemove0Str()}${data.unitValue}"
+                    childBinding.tail =
+                        StringUtils.formatAmountStrOfStr(data.originPrice)
+                }
+                mBinding.includeOrderDetailInfo.llOrderInfoPromotions.buildChild<IncludeOrderInfoItemBinding, PromotionParticipation>(
+                    detail.promotionParticipationList
+                ) { index, childBinding, data ->
+                    childBinding.title =
+                        if (0 == index) com.lsy.framelib.utils.StringUtils.getString(R.string.discounts) + "：" else ""
+                    childBinding.content = data.promotionProductName
+                    childBinding.tvOrderInfoItemTail.setTextColor(
+                        ContextCompat.getColor(
+                            this@OrderDetailActivity,
+                            R.color.color_black_85
+                        )
+                    )
+                    childBinding.tail = data.getOrderDeviceDiscountPrice()
                 }
             }
         }
@@ -108,60 +123,6 @@ class OrderDetailActivity :
                     ), 0, content.length
                 )
             } ?: SpannableString("订单待付款")
-        }
-
-        mViewModel.orderDetail.observe(this) {
-            it?.let {
-//                mViewModel.getOrderStatusVal(it)
-                // 是否只有一个sku
-                val isSingle = 1 == it.orderItemList.size
-                // sku 列表
-                val items = it.orderItemList.filter { item ->
-                    !DeviceCategory.isDispenser(item.categoryCode)
-                }
-                mBinding.llOrderDetailSkus.buildChild<ItemOrderDetailSkuBinding, OrderItem>(items) { _, childBinding, data ->
-                    childBinding.item = data
-                    childBinding.isSingle = isSingle
-                    childBinding.state = it.state
-                }
-                // 投放器的sku
-                val dispenserList =
-                    it.orderItemList.filter { item -> DeviceCategory.isDispenser(item.categoryCode) }
-                if (dispenserList.isNotEmpty()) {
-                    val dispenserBinding =
-                        DataBindingUtil.inflate<ItemOrderDetailSkuDispenserBinding>(
-                            LayoutInflater.from(this@OrderDetailActivity),
-                            R.layout.item_order_detail_sku_dispenser,
-                            null,
-                            false
-                        )
-                    dispenserBinding.llItemOrderSkuDispenser.buildChild<ItemOrderDetailSkuGoodBinding, OrderItem>(
-                        dispenserList
-                    ) { _, childBinding, data ->
-                        childBinding.type = 1
-                        childBinding.title = data.goodsItemName
-                        childBinding.num = data.num + "ml"
-                        childBinding.price = StringUtils.formatAmountStrOfStr(data.originPrice)
-                    }
-                    try {
-                        var discountVal = 0.0
-                        dispenserList.forEach { item ->
-                            discountVal += item.discountPrice.toDouble()
-                        }
-                        dispenserBinding.discount = StringUtils.formatAmountStr(-discountVal)
-                        dispenserBinding.includeItemOrderDetailSkuGood.root.visibility =
-                            View.VISIBLE
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        dispenserBinding.includeItemOrderDetailSkuGood.root.visibility = View.GONE
-                    }
-                    mBinding.llOrderDetailSkus.addView(
-                        dispenserBinding.root,
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                }
-            }
         }
 
         LiveDataBus.with(BusEvents.PAY_OVERTIME_STATUS)?.observe(this) {
@@ -232,8 +193,10 @@ class OrderDetailActivity :
                         object : CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
                             override fun onValue(data: SearchSelectParam?) {
                                 CommonDialog.Builder("是否拨打电话").apply {
-                                    title = com.lsy.framelib.utils.StringUtils.getString(R.string.tip)
-                                    negativeTxt = com.lsy.framelib.utils.StringUtils.getString(R.string.cancel)
+                                    title =
+                                        com.lsy.framelib.utils.StringUtils.getString(R.string.tip)
+                                    negativeTxt =
+                                        com.lsy.framelib.utils.StringUtils.getString(R.string.cancel)
                                     setPositiveButton(com.lsy.framelib.utils.StringUtils.getString(R.string.sure)) {
                                         callPhone = data?.name
                                         requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
@@ -258,6 +221,30 @@ class OrderDetailActivity :
                         )
                     )
                 })
+            }
+        }
+
+        mBinding.tvOrderDetailEvaluateGo.setOnClickListener {
+            goEvaluate()
+        }
+
+        mBinding.tvOrderDetailEvaluate.setOnClickListener {
+            if (true == mViewModel.evaluateStatus.value?.canFeedback) {
+                goEvaluate()
+            } else {
+                startActivity(
+                    Intent(
+                        this@OrderDetailActivity,
+                        EvaluateDetailsActivity::class.java
+                    ).apply {
+                        mViewModel.orderDetail.value?.let { details ->
+                            putExtras(
+                                IntentParams.OrderEvaluateDetailsParams.pack(
+                                    details.id,
+                                )
+                            )
+                        }
+                    })
             }
         }
 
@@ -297,6 +284,27 @@ class OrderDetailActivity :
                 finish()
             }
         }
+    }
+
+    private fun goEvaluate() {
+        startActivity(
+            Intent(
+                this@OrderDetailActivity,
+                IssueEvaluateActivity::class.java
+            ).apply {
+                mViewModel.orderDetail.value?.let { details ->
+                    putExtras(
+                        IntentParams.OrderIssueEvaluateParams.pack(
+                            details.id,
+                            details.orderNo,
+                            details.orderItemList.filter { item -> !DeviceCategory.isDispenser(item.categoryCode) }
+                                .firstOrNull()?.goodsId,
+                            details.buyerId,
+                            details.sellerId,
+                        )
+                    )
+                }
+            })
     }
 
     override fun initData() {

@@ -106,4 +106,6 @@ interface OrderService {
     suspend fun startSelfClean(@Body body: RequestBody): ResponseWrapper<Any>
     @POST("/feedback/getFeedbackOrderReplayTotal")
     suspend fun requestReplayNum(@Body body: RequestBody): ResponseWrapper<Int>
+    @GET("/feedback/getFeedbackStatusByOrderNo")
+    suspend fun requestEvaluateStatus(@Query("orderNo") orderNo: String): ResponseWrapper<EvaluateStatusEntity>
 }

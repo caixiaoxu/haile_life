@@ -38,14 +38,17 @@
             android:id="@+id/tv_order_list_reply_prompt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Font_14_02d5f1_bold"
-            android:paddingVertical="12dp"/>
+            android:textColorHighlight="@color/transparent"
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            style="@style/Font_14_black_85"/>
 
         <com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
             android:id="@+id/rv_mine_order_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingHorizontal="12dp"
+            android:layout_marginTop="12dp"
             app:emptyImgRes="@mipmap/icon_list_order_empty"
             app:emptyTxtRes="@string/empty_order"
             app:enableEmptyStatus="true" />

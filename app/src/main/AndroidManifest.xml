@@ -38,6 +38,15 @@
         android:theme="@style/Theme.HaileLife"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.order.IssueEvaluateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.order.EvaluateDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.order.IssueEvaluateSuccessActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.common.PicBrowseActivity"
             android:exported="false" />
         <activity

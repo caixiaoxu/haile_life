@@ -2,6 +2,13 @@ package com.yunshang.haile_life.ui.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
@@ -17,15 +24,20 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderViewModel
+import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderEntity
+import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.databinding.FragmentOrderBinding
 import com.yunshang.haile_life.databinding.ItemMineOrderBinding
 import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
+import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
+import com.yunshang.haile_life.utils.string.StringUtils
+import com.yunshang.haile_life.web.WebViewActivity
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
@@ -49,10 +61,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
     private val mAdapter by lazy {
         CommonRecyclerAdapter<ItemMineOrderBinding, OrderEntity>(
             R.layout.item_mine_order, BR.item
-        ) { mItemBinding, pos, item ->
-            (mItemBinding?.root?.layoutParams as? MarginLayoutParams)?.let {
-                it.topMargin = if (0 == pos) DimensionUtils.dip2px(requireContext(), 12f) else 0
-            }
+        ) { mItemBinding, _, item ->
 
             mItemBinding?.root?.setOnClickListener {
                 mViewModel.requestOrderDetail(item.orderNo) { order ->
@@ -97,6 +106,38 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
         super.initEvent()
         mViewModel.curOrderStatus.observe(this) {
             mBinding.rvMineOrderList.requestRefresh()
+        }
+
+        mViewModel.replayNum.observe(this) {
+            mBinding.tvOrderListReplyPrompt.text =
+                if (it.isGreaterThan0()) {
+                    val content = com.lsy.framelib.utils.StringUtils.getString(
+                        R.string.order_evaluate_prompt,
+                        it
+                    )
+                    StringUtils.formatMultiStyleStr(
+                        content,
+                        arrayOf(
+                            ForegroundColorSpan(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.color_02d5f1
+                                )
+                            ),
+                            StyleSpan(Typeface.BOLD),
+                            object : ClickableSpan() {
+                                override fun onClick(view: View) {
+                                }
+
+                                override fun updateDrawState(ds: TextPaint) {
+                                    //去掉下划线
+                                    ds.isUnderlineText = false
+                                }
+                            },
+                        ), content.length - 2, content.length
+                    )
+                } else ""
+            mBinding.tvOrderListReplyPrompt.visibility(it.isGreaterThan0())
         }
 
         mViewModel.orderStatus.observe(this) { list ->
@@ -193,6 +234,8 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
             activity?.finish()
         }
 
+        mBinding.tvOrderListReplyPrompt.movementMethod = LinkMovementMethod.getInstance()
+
         mBinding.rvMineOrderList.layoutManager = LinearLayoutManager(requireContext())
         mBinding.rvMineOrderList.adapter = mAdapter
         mBinding.rvMineOrderList.requestData =
@@ -215,7 +258,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if (!hidden){
+        if (!hidden) {
             mViewModel.requestReplyNum()
         }
     }

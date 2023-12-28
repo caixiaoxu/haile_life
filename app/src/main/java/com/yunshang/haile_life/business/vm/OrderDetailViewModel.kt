@@ -15,6 +15,7 @@ import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
+import com.yunshang.haile_life.data.entities.EvaluateStatusEntity
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -39,12 +40,16 @@ class OrderDetailViewModel : BaseViewModel() {
 
     var orderNo: String? = null
 
-
+    // 0 正常 1饮水淋浴 2充值
     val formScan: MutableLiveData<Boolean> by lazy {
         MutableLiveData()
     }
 
     val orderDetail: MutableLiveData<OrderEntity> by lazy {
+        MutableLiveData()
+    }
+
+    val evaluateStatus: MutableLiveData<EvaluateStatusEntity> by lazy {
         MutableLiveData()
     }
 
@@ -61,17 +66,6 @@ class OrderDetailViewModel : BaseViewModel() {
     }
 
     val showCoerceDevice: LiveData<Boolean> = orderDetail.map {
-        it?.let { detail ->
-            if (true == formScan.value)
-                false
-            else
-                (DeviceCategory.isWashingOrShoes(detail.orderItemList.firstOrNull()?.categoryCode)
-                        || DeviceCategory.isDryer(detail.orderItemList.firstOrNull()?.categoryCode))
-                        && 500 == detail.state
-        } ?: false
-    }
-
-    val showFinishOrder: LiveData<Boolean> = orderDetail.map {
         it?.let { detail ->
             if (true == formScan.value)
                 false
@@ -133,7 +127,15 @@ class OrderDetailViewModel : BaseViewModel() {
     fun requestOrderDetailAsync(showLoading: Boolean = true) {
         if (orderNo.isNullOrEmpty()) return
         timer?.cancel()
-        launch({ requestOrderDetail() }, showLoading = showLoading)
+        launch({
+            requestOrderDetail()
+
+            ApiRepository.dealApiResult(
+                mOrderRepo.requestEvaluateStatus(orderNo!!)
+            )?.let {
+                evaluateStatus.postValue(it)
+            }
+        }, showLoading = showLoading)
     }
 
     private suspend fun requestOrderDetail() {
@@ -188,30 +190,6 @@ class OrderDetailViewModel : BaseViewModel() {
             withContext(Dispatchers.Main) {
                 callBack()
             }
-        })
-    }
-
-    /**
-     * 使用预约时间
-     */
-    fun useAppointOrder(v: View) {
-        if (orderNo.isNullOrEmpty()) return
-
-        launch({
-            ApiRepository.dealApiResult(
-                mOrderRepo.useAppointOrder(
-                    ApiRepository.createRequestBody(
-                        hashMapOf(
-                            "orderNo" to orderNo
-                        )
-                    )
-                )
-            )
-            LiveDataBus.post(BusEvents.APPOINT_ORDER_USE_STATUS, true)
-            formScan.postValue(false)
-
-            delay(2_000)
-            requestOrderDetail()
         })
     }
 
@@ -358,27 +336,5 @@ class OrderDetailViewModel : BaseViewModel() {
             context,
             "强启设备间隔时间还需要${minute}分" + if (second > 0) "${second}秒" else "钟"
         )
-    }
-
-    /**
-     * 结束订单
-     */
-    fun finishOrder(v: View) {
-        orderDetail.value?.let { detail ->
-            launch({
-                ApiRepository.dealApiResult(
-                    mOrderRepo.finishByOrder(
-                        ApiRepository.createRequestBody(
-                            hashMapOf(
-                                "orderNo" to detail.orderNo
-                            )
-                        )
-                    )
-                )
-                Handler(Looper.getMainLooper()).postDelayed({
-                    requestOrderDetailAsync(false)
-                }, 1000)
-            })
-        }
     }
 }
