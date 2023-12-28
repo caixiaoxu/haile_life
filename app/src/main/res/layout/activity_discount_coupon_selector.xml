@@ -44,6 +44,7 @@
             android:layout_height="98dp"
             android:background="@drawable/shape_top_stroke_dividing"
             android:paddingHorizontal="16dp"
+            app:visibility="@{1 == vm.selectCouponIndicator}"
             android:paddingTop="10dp">
 
             <androidx.appcompat.widget.AppCompatTextView

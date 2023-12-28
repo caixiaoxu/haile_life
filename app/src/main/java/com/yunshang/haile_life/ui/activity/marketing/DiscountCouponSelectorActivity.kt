@@ -35,6 +35,10 @@ class DiscountCouponSelectorActivity :
         CommonRecyclerAdapter<ItemDiscountCouponBinding, TradePreviewParticipate>(
             R.layout.item_discount_coupon, BR.item
         ) { mItemBinding, pos, item ->
+            mViewModel.selectCouponIndicator.observe(this) {
+                mItemBinding?.canUse = 1 == it
+            }
+
             (mItemBinding?.root?.layoutParams as? ViewGroup.MarginLayoutParams)?.let {
                 it.topMargin = if (0 == pos) DimensionUtils.dip2px(
                     this@DiscountCouponSelectorActivity,
@@ -43,13 +47,15 @@ class DiscountCouponSelectorActivity :
             }
 
             mItemBinding?.root?.setOnClickListener {
-                item.isCheck = !item.isCheck
-                // 移除之前旧数据
-                mViewModel.selectParticipate?.clear()
-                if (item.isCheck) {
-                    mViewModel.selectParticipate?.add(item)
+                if (1 == mViewModel.selectCouponIndicator.value){
+                    item.isCheck = !item.isCheck
+                    // 移除之前旧数据
+                    mViewModel.selectParticipate?.clear()
+                    if (item.isCheck) {
+                        mViewModel.selectParticipate?.add(item)
+                    }
+                    mViewModel.requestData()
                 }
-                mViewModel.requestData()
             }
         }
     }
@@ -93,7 +99,7 @@ class DiscountCouponSelectorActivity :
                                 status[index].run {
                                     text = title + if (num > 0) "（${num}张）" else ""
                                     setOnClickListener {
-                                        mViewModel.selectCouponIndicator = value
+                                        mViewModel.selectCouponIndicator.value = value
                                         notifyPromotionList()
                                         onPageSelected(index)
                                         notifyDataSetChanged()
@@ -149,7 +155,7 @@ class DiscountCouponSelectorActivity :
         mViewModel.tradePreview.value?.promotionList?.find { item -> mViewModel.promotionProduct == item.promotionProduct }
             ?.let { promotion ->
                 val list =
-                    promotion.options?.filter { it.available == (1 == mViewModel.selectCouponIndicator) }
+                    promotion.options?.filter { it.available == (1 == mViewModel.selectCouponIndicator.value) }
                 if (list.isNullOrEmpty()) {
                     mBinding.rvDiscountCouponSelectorList.changeStatusView(true)
                 } else {

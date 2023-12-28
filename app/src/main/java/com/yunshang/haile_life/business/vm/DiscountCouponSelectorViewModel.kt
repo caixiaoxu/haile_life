@@ -55,7 +55,7 @@ class DiscountCouponSelectorViewModel : BaseViewModel() {
         )
     }
 
-    var selectCouponIndicator: Int = 1
+    var selectCouponIndicator: MutableLiveData<Int> = MutableLiveData(1)
 
     fun requestData() {
         if (orderNo.isNullOrEmpty()) return
