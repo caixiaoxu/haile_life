@@ -281,6 +281,7 @@
     <string name="order_evaluate_prompt">您的%1$d条评价被商家回复了哦 查看</string>
     <string name="evaluate">评价</string>
     <string name="go_evaluate">去评价</string>
+    <string name="issue_evaluate">发表评价</string>
     <string name="see_evaluate">查看评价</string>
     <string name="go_evaluate_prompt">HI～订单已经完成了哦，快来给我一点鼓励吧！</string>
 

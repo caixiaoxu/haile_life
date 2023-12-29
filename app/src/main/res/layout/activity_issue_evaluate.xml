@@ -9,10 +9,24 @@
             type="com.yunshang.haile_life.business.vm.IssueEvaluateViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.activity.order.IssueEvaluateActivity">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_issue_evaluate_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            app:title="@string/issue_evaluate"
+            android:background="@drawable/shape_bottom_stroke_dividing_efefef"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </layout>
