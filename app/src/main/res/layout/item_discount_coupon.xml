@@ -103,17 +103,17 @@
         <View
             style="@style/DividingStyle2"
             android:layout_marginHorizontal="16dp"
-            app:visibility="@{!canUse}" />
+            app:visibility="@{!canUse &amp;&amp; item.unavailableDTOSVal().length() > 0}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_discount_no_can_use_reason"
+            style="@style/Font_12_black_25"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="8dp"
             android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
             android:text="@{item.unavailableDTOSVal}"
-            style="@style/Font_12_black_25"
-            tools:text="不满足条件原因显示字段信息区域"
-            app:visibility="@{!canUse}" />
+            app:visibility="@{!canUse &amp;&amp; item.unavailableDTOSVal().length() > 0}"
+            tools:text="不满足条件原因显示字段信息区域" />
     </LinearLayout>
 </layout>

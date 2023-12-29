@@ -142,14 +142,10 @@ data class UnavailableDTOS(
     val unavailableReason: String? = null
 ) {
     fun unavailableCodeVal(): String = when (unavailableCode) {
-        in 10000 until 20000 -> "下单品类不适用"
-        20000 -> "日期不可使用"
-        20002 -> "每周可用日不适用"
-        20003 -> "每月可用日不适用"
+        in 10000 until 20000 -> "当前设备不可使用"
         in 20000 until 30000 -> "当前时间不可使用"
-        30001->"当前商户不可使用"
         in 30000 until 40000 -> "当前门店不可使用"
-        in 40000 until 50000 -> "当前商户不可使用"
+        in 40000 until 50000 -> "当前金额不可使用"
         in 60000 until 70000 -> "超出每周（日）使用张数限制"
         in 70000 until 80000 -> "不允许在当前客户端使用"
         else -> ""
