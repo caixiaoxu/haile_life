@@ -284,6 +284,10 @@
     <string name="issue_evaluate">发表评价</string>
     <string name="see_evaluate">查看评价</string>
     <string name="go_evaluate_prompt">HI～订单已经完成了哦，快来给我一点鼓励吧！</string>
+    <string name="good">不错</string>
+    <string name="ordinary">一般</string>
+    <string name="bad">很差</string>
+    <string name="evaluate_content_hint">欢迎畅所欲言，您的鼓励与批评是我们前进的动力！</string>
 
     <string name="self_cleaning_run">自清洁中</string>
     <string name="self_cleaning_end">已清洁</string>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.IssueEvaluateViewModel" />
@@ -19,14 +20,118 @@
             android:id="@+id/bar_issue_evaluate_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
-            app:title="@string/issue_evaluate"
-            android:background="@drawable/shape_bottom_stroke_dividing_efefef"/>
+            android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+            app:title="@string/issue_evaluate" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="24dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_18_black_85_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text='@{@string/order_no1 + ":"}'
+                    tools:text="订单号：" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_18_black_85_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{vm.issueEvaluateParams.orderNo}"
+                    tools:text="1912898080890829038409809" />
+
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_issue_evaluate_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="32dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:divider="@drawable/divide_size12"
+                    app:itemLayout="@layout/item_issue_evaluate_score"
+                    app:showDividers="middle"
+                    tools:visibility="visible">
+
+                    <include
+                        layout="@layout/item_issue_evaluate_score"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        layout="@layout/item_issue_evaluate_score"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        layout="@layout/item_issue_evaluate_score"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.yunshang.haile_life.ui.view.CustomChildListLinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_issue_evaluate_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <androidx.constraintlayout.helper.widget.Flow
+                        android:id="@+id/flow_issue_evaluate_tag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        app:flow_horizontalBias="0"
+                        app:flow_horizontalGap="8dp"
+                        app:flow_horizontalStyle="packed"
+                        app:flow_verticalGap="8dp"
+                        app:flow_wrapMode="chain"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/Font_16_black_85_25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:gravity="top"
+                    android:text="@={vm.issueEvaluateParams.replyVal}"
+                    android:hint="@string/evaluate_content_hint"
+                    android:minHeight="148dp" />
+
+                <GridLayout
+                    android:id="@+id/gl_recharge_starfish_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="4" />
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp">
+
+            <com.lsy.framelib.ui.weight.SingleTapButton
+                android:id="@+id/btn_issue_evaluate_submit"
+                style="@style/CommonMatchBtnStyle1"
+                android:text="@string/submit" />
+
+        </FrameLayout>
     </LinearLayout>
 </layout>

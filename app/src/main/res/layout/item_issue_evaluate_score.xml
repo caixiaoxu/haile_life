@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.yunshang.haile_life.business.vm.IssueEvaluateViewModel" />
+
+        <import type="com.yunshang.haile_life.R" />
+
+        <variable
+            name="child"
+            type="com.yunshang.haile_life.data.entities.FeedbackTemplateProjectDto" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{child.name}"
+            tools:text="环境" />
+
+        <com.lsy.framelib.ui.weight.SingleTapImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@color/transparent"
+            android:minHeight="0dp"
+            android:onClickListener="@{(v)->vm.changeScore(child,1)}"
+            app:imgRes="@{child.scoreVal > 0?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            tools:src="@mipmap/icon_evaluate_score_check" />
+
+        <com.lsy.framelib.ui.weight.SingleTapImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:background="@color/transparent"
+            android:minHeight="0dp"
+            android:onClickListener="@{(v)->vm.changeScore(child,2)}"
+            app:imgRes="@{child.scoreVal > 1?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            tools:src="@mipmap/icon_evaluate_score_uncheck" />
+
+        <com.lsy.framelib.ui.weight.SingleTapImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:background="@color/transparent"
+            android:minHeight="0dp"
+            android:onClickListener="@{(v)->vm.changeScore(child,3)}"
+            app:imgRes="@{child.scoreVal > 2?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            tools:src="@mipmap/icon_evaluate_score_uncheck" />
+
+        <com.lsy.framelib.ui.weight.SingleTapImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:background="@color/transparent"
+            android:minHeight="0dp"
+            android:onClickListener="@{(v)->vm.changeScore(child,4)}"
+            app:imgRes="@{child.scoreVal > 3?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            tools:src="@mipmap/icon_evaluate_score_uncheck" />
+
+        <com.lsy.framelib.ui.weight.SingleTapImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:background="@color/transparent"
+            android:minHeight="0dp"
+            android:onClickListener="@{(v)->vm.changeScore(child,5)}"
+            app:imgRes="@{child.scoreVal > 4?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            tools:src="@mipmap/icon_evaluate_score_uncheck" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="4dp"
+            android:text="@{3 > child.scoreVal?@string/bad:child.scoreVal > 3?@string/good:@string/ordinary}"
+            app:drawStart="@{3 > child.scoreVal?R.mipmap.icon_evaluate_score_bad:child.scoreVal > 3?R.mipmap.icon_evaluate_score_good:R.mipmap.icon_evaluate_score_ordinary}"
+            app:visibility="@{null != child &amp;&amp; child.scoreVal > 0}"
+            tools:drawableStart="@mipmap/icon_evaluate_score_ordinary"
+            tools:text="不错" />
+    </LinearLayout>
+</layout>

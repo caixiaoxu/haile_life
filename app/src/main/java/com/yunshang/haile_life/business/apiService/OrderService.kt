@@ -108,4 +108,8 @@ interface OrderService {
     suspend fun requestReplayNum(@Body body: RequestBody): ResponseWrapper<Int>
     @GET("/feedback/getFeedbackStatusByOrderNo")
     suspend fun requestEvaluateStatus(@Query("orderNo") orderNo: String): ResponseWrapper<EvaluateStatusEntity>
+    @POST("/feedback/getFeedbackTemplate")
+    suspend fun requestEvaluateScoreTemplate(@Body body: RequestBody): ResponseWrapper<EvaluateScoreTemplate>
+    @POST("/feedback/getFeedbackTagList")
+    suspend fun requestEvaluateTagTemplate(@Body body: RequestBody): ResponseWrapper<MutableList<EvaluateTagTemplate>>
 }

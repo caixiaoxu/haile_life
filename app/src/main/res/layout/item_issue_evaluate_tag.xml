@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="child"
+            type="com.yunshang.haile_life.data.entities.EvaluateTagTemplate" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@{child.selectVal?@drawable/shape_s2602d5f1_r4:@drawable/shape_sf5f5f5_r4}"
+        android:button="@null"
+        android:checked="@={child.selectVal}"
+        android:gravity="center"
+        android:minHeight="0dp"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="2dp"
+        android:text="@{child.name}"
+        android:textColor="@{child.selectVal?@color/color_02d5f1:@color/color_black_65}"
+        android:textSize="12sp"
+        tools:background="@drawable/shape_s2602d5f1_r4"
+        tools:text="环境整洁"
+        tools:textColor="@color/color_02d5f1" />
+</layout>
