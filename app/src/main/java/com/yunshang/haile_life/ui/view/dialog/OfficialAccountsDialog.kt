@@ -74,7 +74,7 @@ class OfficialAccountsDialog(private val officialAccounts: OfficialAccountsEntit
                 DialogUtils.checkPermissionDialog(
                     requireContext(),
                     childFragmentManager,
-                    SystemPermissionHelper.callPhonePermissions(),
+                    SystemPermissionHelper.readWritePermissions(),
                     "需要读写权限来保存二维码"
                 ) {
                     requestPermissions.launch(SystemPermissionHelper.readWritePermissions())

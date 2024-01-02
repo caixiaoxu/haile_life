@@ -26,4 +26,11 @@ data class EvaluateTagTemplate(
             field = value
             notifyPropertyChanged(BR.selectVal)
         }
+
+    override fun equals(other: Any?): Boolean {
+        if (other === this) return true
+        if (other !is EvaluateTagTemplate) return false
+        if (other.id == id) return true
+        return super.equals(other)
+    }
 }

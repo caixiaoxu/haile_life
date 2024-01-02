@@ -288,6 +288,10 @@
     <string name="ordinary">一般</string>
     <string name="bad">很差</string>
     <string name="evaluate_content_hint">欢迎畅所欲言，您的鼓励与批评是我们前进的动力！</string>
+    <string name="issue_evaluate_sure_title_prompt">使用时遇到问题了吗？</string>
+    <string name="issue_evaluate_sure_prompt">联系客服帮您快速解决</string>
+    <string name="contact_service">联系客服</string>
+    <string name="still_evaluate">仍要评价</string>
 
     <string name="self_cleaning_run">自清洁中</string>
     <string name="self_cleaning_end">已清洁</string>

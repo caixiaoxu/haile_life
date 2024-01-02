@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
-            name="isAdd"
+            name="showDel"
             type="java.lang.Boolean" />
     </data>
 
@@ -13,25 +14,24 @@
         android:layout_height="match_parent">
 
         <com.yunshang.haile_life.ui.view.RoundImageView
-            android:id="@+id/iv_fault_repairs_pic"
+            android:id="@+id/iv_issue_evaluate_pic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:background="@color/transparent"
             android:src="@mipmap/icon_fault_add_pic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:radius="8dp" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_fault_repairs_pic_del"
+            android:id="@+id/iv_issue_evaluate_pic_del"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            app:visibility="@{!isAdd}"
             android:backgroundTint="@color/transparent"
             android:src="@mipmap/icon_fault_repairs_pic_del"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibility="@{showDel}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

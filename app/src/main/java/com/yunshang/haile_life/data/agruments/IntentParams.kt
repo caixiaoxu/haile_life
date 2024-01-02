@@ -554,6 +554,7 @@ object IntentParams {
         private const val BuyerId = "buyerId"
         private const val SellerId = "sellerId"
         private const val OrderNo = "orderNo"
+        private const val OrderShopPhone = "orderShopPhone"
 
         /**
          * 包装参数
@@ -563,7 +564,8 @@ object IntentParams {
             orderNo: String?,
             goodId: Int?,
             buyerId: Int?,
-            sellerId: Int?
+            sellerId: Int?,
+            orderShopPhone: String?
         ): Bundle =
             Bundle().apply {
                 orderId?.let {
@@ -581,6 +583,9 @@ object IntentParams {
                 orderNo?.let {
                     putString(OrderNo, orderNo)
                 }
+                orderShopPhone?.let {
+                    putString(OrderShopPhone, orderNo)
+                }
             }
 
         fun parseOrderId(intent: Intent): Int = intent.getIntExtra(OrderId, -1)
@@ -588,6 +593,7 @@ object IntentParams {
         fun parseBuyerId(intent: Intent): Int = intent.getIntExtra(BuyerId, -1)
         fun parseSellerId(intent: Intent): Int = intent.getIntExtra(SellerId, -1)
         fun parseOrderNo(intent: Intent): String? = intent.getStringExtra(OrderNo)
+        fun parseOrderShopPhone(intent: Intent): String? = intent.getStringExtra(OrderShopPhone)
     }
 
     object OrderEvaluateDetailsParams {

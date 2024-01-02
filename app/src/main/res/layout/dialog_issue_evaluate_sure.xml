@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="16dp"
+        android:src="@mipmap/icon_close_x"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_issue_evaluate_sure_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_issue_evaluate_sure_main"
+        android:layout_marginTop="45dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_issue_evaluate_sure_title_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Font_18_black_85_bold"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="26dp"
+        android:gravity="center"
+        android:text="@string/issue_evaluate_sure_title_prompt"
+        app:layout_constraintTop_toBottomOf="@id/iv_issue_evaluate_sure_main"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_issue_evaluate_sure_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Font_14_black_65"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/issue_evaluate_sure_prompt"
+        app:layout_constraintTop_toBottomOf="@id/tv_issue_evaluate_sure_title_prompt"/>
+
+    <com.lsy.framelib.ui.weight.SingleTapButton
+        android:id="@+id/btn_issue_evaluate_sure_contact_service"
+        style="@style/CommonMatchBtnStyle1"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/contact_service"
+        app:layout_constraintTop_toBottomOf="@id/tv_issue_evaluate_sure_prompt"
+        tools:ignore="MissingConstraints" />
+
+    <com.lsy.framelib.ui.weight.SingleTapButton
+        android:id="@+id/btn_issue_evaluate_sure_issue"
+        style="@style/CommonMatchBtnStyle"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/color_black_65"
+        android:text="@string/still_evaluate"
+        app:layout_constraintTop_toBottomOf="@id/btn_issue_evaluate_sure_contact_service"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,8 +24,8 @@ import com.yunshang.haile_life.data.extend.toRemove0Str
 import com.yunshang.haile_life.databinding.FragmentOrderExecuteBinding
 import com.yunshang.haile_life.databinding.IncludeOrderInfoItemBinding
 import com.yunshang.haile_life.ui.activity.MainActivity
-import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.setVisibility
 import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
+import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
@@ -92,7 +92,7 @@ class OrderExecuteFragment :
                     childBinding.tail = data.getOrderDeviceDiscountPrice()
                 }
 
-                mBinding.tvOrderExecutePrompt.setVisibility(!DeviceCategory.isHair(detail.orderItemList.firstOrNull()?.categoryCode))
+                mBinding.tvOrderExecutePrompt.visibility(!DeviceCategory.isHair(detail.orderItemList.firstOrNull()?.categoryCode))
             }
         }
 

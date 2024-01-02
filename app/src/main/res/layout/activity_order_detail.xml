@@ -75,7 +75,7 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginVertical="8dp"
                     android:orientation="horizontal"
-                    app:visibility="@{vm.evaluateStatus.canFeedback}">
+                    app:visibility="@{!vm.evaluateStatus.hasFeedback &amp;&amp; vm.evaluateStatus.canFeedback}">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_order_evaluate_main"
@@ -324,7 +324,7 @@
                 android:background="@drawable/shape_stroke02d5f1_r18"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="@{vm.evaluateStatus.canFeedback?@string/evaluate:@string/see_evaluate}"
+                android:text="@{vm.evaluateStatus.hasFeedback?@string/see_evaluate:@string/evaluate}"
                 app:visibility="@{vm.evaluateStatus.canFeedback || vm.evaluateStatus.hasFeedback}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>

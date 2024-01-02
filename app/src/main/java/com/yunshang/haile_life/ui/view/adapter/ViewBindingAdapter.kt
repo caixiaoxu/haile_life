@@ -28,6 +28,9 @@ import kotlin.math.abs
  */
 object ViewBindingAdapter {
 
+    /**
+     * 显示控件
+     */
     @BindingAdapter("visibility")
     @JvmStatic
     fun View.visibility(show: Boolean?) {
@@ -52,15 +55,6 @@ object ViewBindingAdapter {
     @JvmStatic
     fun CommonTitleActionBar.setTitle(title: String?) {
         getTitle().text = title ?: ""
-    }
-
-    /**
-     * 显示控件
-     */
-    @BindingAdapter("visibility")
-    @JvmStatic
-    fun View.setVisibility(isShow: Boolean?) {
-        visibility = if (true == isShow) View.VISIBLE else View.GONE
     }
 
     /**

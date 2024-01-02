@@ -112,4 +112,6 @@ interface OrderService {
     suspend fun requestEvaluateScoreTemplate(@Body body: RequestBody): ResponseWrapper<EvaluateScoreTemplate>
     @POST("/feedback/getFeedbackTagList")
     suspend fun requestEvaluateTagTemplate(@Body body: RequestBody): ResponseWrapper<MutableList<EvaluateTagTemplate>>
+    @POST("/feedback/add")
+    suspend fun submitEvaluate(@Body body: RequestBody): ResponseWrapper<Any>
 }

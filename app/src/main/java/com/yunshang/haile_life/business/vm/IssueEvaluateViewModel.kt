@@ -1,7 +1,11 @@
 package com.yunshang.haile_life.business.vm
 
+import android.content.Context
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.lsy.framelib.ui.base.BaseViewModel
+import com.lsy.framelib.utils.SToast
+import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.business.apiService.CommonService
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.data.agruments.IssueEvaluateParams
@@ -24,6 +28,8 @@ class IssueEvaluateViewModel : BaseViewModel() {
     private val mCommonRepo = ApiRepository.apiClient(CommonService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
 
+    var orderShopPhone: String? = null
+
     val issueEvaluateParams: MutableLiveData<IssueEvaluateParams> =
         MutableLiveData(IssueEvaluateParams())
 
@@ -31,7 +37,7 @@ class IssueEvaluateViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    var evaluateTagTemplates: List<EvaluateTagTemplate> = mutableListOf()
+    var evaluateTagTemplates: MutableMap<Int, MutableList<EvaluateTagTemplate>> = mutableMapOf()
 
     val showEvaluateTagTemplates: MutableLiveData<List<EvaluateTagTemplate>> by lazy {
         MutableLiveData()
@@ -41,7 +47,6 @@ class IssueEvaluateViewModel : BaseViewModel() {
 
     fun requestData() {
         launch({
-            val tagList = mutableListOf<EvaluateTagTemplate>()
             for (i in 1..3) {
                 ApiRepository.dealApiResult(
                     mOrderRepo.requestEvaluateTagTemplate(
@@ -52,10 +57,9 @@ class IssueEvaluateViewModel : BaseViewModel() {
                         )
                     )
                 )?.let {
-                    tagList.addAll(it)
+                    evaluateTagTemplates.put(i, it)
                 }
             }
-            evaluateTagTemplates = tagList
 
             ApiRepository.dealApiResult(
                 mOrderRepo.requestEvaluateScoreTemplate(
@@ -72,29 +76,37 @@ class IssueEvaluateViewModel : BaseViewModel() {
         })
     }
 
+    fun calculateScoreTotal(): Int =
+        evaluateScoreTemplates.value?.let { scoreList ->
+            var scoreTotal = 0.0
+            scoreList.forEach {
+                scoreTotal += it.scoreVal
+            }
+            scoreTotal /= scoreList.size
+            //差评：[1-2.5)；中评：[2.5-3.5]；好评：(3.5-5]
+            if (scoreTotal <= 2.5) 3 else if (scoreTotal > 3.5) 1 else 2
+        } ?: 0
+
     fun changeScore(scoreTemp: FeedbackTemplateProjectDto, score: Int) {
         scoreTemp.scoreVal = score
 
         launch({
-            evaluateScoreTemplates.value?.let { scoreList ->
-                var scoreTotal = 0.0
-                scoreList.forEach {
-                    scoreTotal += it.scoreVal
+            val level = calculateScoreTotal()
+            // 保留已选择的
+            val list =
+                showEvaluateTagTemplates.value?.filter { item -> item.selectVal }
+                    ?.toMutableList()
+                    ?: mutableListOf()
+            val levelTagList = evaluateTagTemplates[level]
+            levelTagList?.let {
+                levelTagList.forEach { levelTag ->
+                    levelTag.selectVal = list.contains(levelTag)
                 }
-                scoreTotal /= scoreList.size
-                //差评：[1-2.5)；中评：[2.5-3.5]；好评：(3.5-5]
-                val level = if (scoreTotal <= 2.5) 3 else if (scoreTotal > 3.5) 1 else 2
-                // 保留已选择的
-                val list =
-                    showEvaluateTagTemplates.value?.filter { item -> item.selectVal }
-                        ?.toMutableList()
-                        ?: mutableListOf()
-                val levelTagList = evaluateTagTemplates.filter { item -> item.type == level }
                 list.removeAll(levelTagList)
                 // 加上当前返回的
                 list.addAll(levelTagList)
-                showEvaluateTagTemplates.postValue(list)
             }
+            showEvaluateTagTemplates.postValue(list)
         }, showLoading = false)
     }
 
@@ -122,6 +134,29 @@ class IssueEvaluateViewModel : BaseViewModel() {
             }
 
             evaluatePics.postValue(list)
+        })
+    }
+
+    fun submit(context: Context) {
+        if (null == issueEvaluateParams.value) return
+
+
+        issueEvaluateParams.value?.feedbackProjectListDtos = evaluateScoreTemplates.value
+        issueEvaluateParams.value?.feedbackTagDtos =
+            showEvaluateTagTemplates.value?.filter { item -> item.selectVal }
+        issueEvaluateParams.value?.pictures = evaluatePics.value
+
+        launch({
+            ApiRepository.dealApiResult(
+                mOrderRepo.submitEvaluate(
+                    ApiRepository.createRequestBody(
+                        GsonUtils.any2Json(issueEvaluateParams.value)
+                    )
+                )
+            )
+
+            SToast.showToast(context, "评价成功")
+            jump.postValue(0)
         })
     }
 }

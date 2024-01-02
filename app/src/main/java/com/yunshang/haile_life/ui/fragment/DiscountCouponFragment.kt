@@ -20,7 +20,7 @@ import com.yunshang.haile_life.databinding.FragmentCouponBinding
 import com.yunshang.haile_life.databinding.ItemDiscountCouponListBinding
 import com.yunshang.haile_life.ui.activity.shop.NearByShopActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
-import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.setVisibility
+import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -141,10 +141,10 @@ class DiscountCouponFragment :
 
     override fun initView() {
         val showTitle = arguments?.getBoolean(ShowTitleTag,false)
-        mBinding.barDiscountCouponTitle.setVisibility(showTitle)
-        mBinding.viewOrderPadding.setVisibility(showTitle)
+        mBinding.barDiscountCouponTitle.visibility(showTitle)
+        mBinding.viewOrderPadding.visibility(showTitle)
         if (true == showTitle){
-            mBinding.barDiscountCouponTitle.getBackBtn().setVisibility(false)
+            mBinding.barDiscountCouponTitle.getBackBtn().visibility(false)
             (mBinding.viewOrderPadding.layoutParams as ViewGroup.LayoutParams).height =
                 StatusBarUtils.getStatusBarHeight()
         }

@@ -181,7 +181,7 @@ class FaultRepairsActivity :
                         permissions,
                         "需要媒体读取权限来读取文件"
                     ) {
-                        requestFilePermission.launch(filePermissions)
+                        requestFilePermission.launch(permissions)
                     }
                 }
                 faultBinding.root.id = it.size + 1

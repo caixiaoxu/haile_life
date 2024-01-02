@@ -108,9 +108,10 @@
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
                     android:gravity="top"
-                    android:text="@={vm.issueEvaluateParams.replyVal}"
                     android:hint="@string/evaluate_content_hint"
-                    android:minHeight="148dp" />
+                    android:maxLength="200"
+                    android:minHeight="148dp"
+                    android:text="@={vm.issueEvaluateParams.replyVal}" />
 
                 <GridLayout
                     android:id="@+id/gl_recharge_starfish_list"

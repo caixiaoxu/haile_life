@@ -301,6 +301,7 @@ class OrderDetailActivity :
                                 .firstOrNull()?.goodsId,
                             details.buyerId,
                             details.sellerId,
+                            mViewModel.orderDetail.value?.serviceTelephone?.split(",")?.first()
                         )
                     )
                 }
