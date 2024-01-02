@@ -20,8 +20,7 @@
             android:id="@+id/bar_issue_evaluate_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_action_bar_h"
-            android:background="@drawable/shape_bottom_stroke_dividing_efefef"
-            app:title="@string/issue_evaluate" />
+            android:background="@drawable/shape_bottom_stroke_dividing_efefef" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -114,7 +113,7 @@
                     android:text="@={vm.issueEvaluateParams.replyVal}" />
 
                 <GridLayout
-                    android:id="@+id/gl_recharge_starfish_list"
+                    android:id="@+id/gl_issue_evaluate_pic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:columnCount="4" />

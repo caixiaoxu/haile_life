@@ -15,9 +15,10 @@ import com.yunshang.haile_life.BR
  * 作者姓名 修改时间 版本号 描述
  */
 data class EvaluateTagTemplate(
-    val id: Int,
-    val name: String,
-    val type: Int,
+    val id: Int? = null,
+    val name: String? = null,
+    val type: Int? = null,
+    val tagId: Int? = null,
 ) : BaseObservable() {
     @Transient
     @get:Bindable

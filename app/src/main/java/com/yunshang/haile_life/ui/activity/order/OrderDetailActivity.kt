@@ -229,9 +229,7 @@ class OrderDetailActivity :
         }
 
         mBinding.tvOrderDetailEvaluate.setOnClickListener {
-            if (true == mViewModel.evaluateStatus.value?.canFeedback) {
-                goEvaluate()
-            } else {
+            if (true == mViewModel.evaluateStatus.value?.hasFeedback) {
                 startActivity(
                     Intent(
                         this@OrderDetailActivity,
@@ -245,6 +243,8 @@ class OrderDetailActivity :
                             )
                         }
                     })
+            } else {
+                goEvaluate()
             }
         }
 
@@ -297,11 +297,14 @@ class OrderDetailActivity :
                         IntentParams.OrderIssueEvaluateParams.pack(
                             details.id,
                             details.orderNo,
-                            details.orderItemList.filter { item -> !DeviceCategory.isDispenser(item.categoryCode) }
-                                .firstOrNull()?.goodsId,
                             details.buyerId,
                             details.sellerId,
-                            mViewModel.orderDetail.value?.serviceTelephone?.split(",")?.first()
+                            mViewModel.orderDetail.value?.serviceTelephone?.split(",")?.first(),
+                            details.orderItemList.firstOrNull { item ->
+                                !DeviceCategory.isDispenser(
+                                    item.categoryCode
+                                )
+                            }?.goodsId,
                         )
                     )
                 }

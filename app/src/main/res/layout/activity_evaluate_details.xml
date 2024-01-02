@@ -4,15 +4,117 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.yunshang.haile_life.business.vm.EvaluateDetailsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.activity.order.IssueEvaluateActivity">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.yunshang.haile_life.ui.view.CommonTitleActionBar
+            android:id="@+id/bar_evaluate_details_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_action_bar_h"
+            android:background="@drawable/shape_bottom_stroke_dividing_efefef"
+            app:title="@string/see_evaluate" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_18_black_85_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mine_evaluate" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_14_black_45"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@{vm.evaluateDetails.createTime}"
+                    tools:text="5月23日 12:24:32" />
+
+                <com.yunshang.haile_life.ui.view.CustomChildListLinearLayout
+                    android:id="@+id/ll_evaluate_details_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:itemLayout="@layout/item_evaluate_details_score"
+                    android:orientation="vertical" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_evaluate_details_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <androidx.constraintlayout.helper.widget.Flow
+                        android:id="@+id/flow_evaluate_details_tag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        app:flow_horizontalBias="0"
+                        app:flow_horizontalGap="8dp"
+                        app:flow_horizontalStyle="packed"
+                        app:flow_verticalGap="8dp"
+                        app:flow_wrapMode="chain"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_14_black_85"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{vm.evaluateDetails.reply}"
+                    tools:text="洗衣机烂的要死，上面盖子的铁锈沾水了往下滴我新买的羽绒服上面都沾上了还洗不掉！垃圾！" />
+
+                <GridLayout
+                    android:id="@+id/gl_evaluate_pic_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:useDefaultMargins="false"
+                    android:columnCount="4" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_evaluate_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp">
+
+            <com.lsy.framelib.ui.weight.SingleTapButton
+                android:id="@+id/btn_evaluate_detail_add"
+                style="@style/CommonMatchBtnStyle1"
+                android:text="@string/add_evaluate" />
+        </FrameLayout>
+    </LinearLayout>
 </layout>

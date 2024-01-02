@@ -555,6 +555,9 @@ object IntentParams {
         private const val SellerId = "sellerId"
         private const val OrderNo = "orderNo"
         private const val OrderShopPhone = "orderShopPhone"
+        private const val ScoreList = "scoreList"
+        private const val TagList = "tagList"
+        private const val IsAdd = "isAdd"
 
         /**
          * 包装参数
@@ -562,12 +565,16 @@ object IntentParams {
         fun pack(
             orderId: Int?,
             orderNo: String?,
-            goodId: Int?,
             buyerId: Int?,
             sellerId: Int?,
-            orderShopPhone: String?
+            orderShopPhone: String?,
+            goodId: Int? = null,
+            isAdd:Boolean = false,
+            scoreList: List<FeedbackTemplateProjectDto>? = null,
+            tagList: List<FeedbackOrderTagModel>? = null,
         ): Bundle =
             Bundle().apply {
+                putBoolean(IsAdd,isAdd)
                 orderId?.let {
                     putInt(OrderId, orderId)
                 }
@@ -586,14 +593,32 @@ object IntentParams {
                 orderShopPhone?.let {
                     putString(OrderShopPhone, orderNo)
                 }
+                scoreList?.let {
+                    putString(ScoreList, GsonUtils.any2Json(scoreList))
+                }
+                tagList?.let {
+                    putString(TagList, GsonUtils.any2Json(tagList))
+                }
+
             }
 
+        fun parseIsAdd(intent: Intent): Boolean = intent.getBooleanExtra(IsAdd, false)
         fun parseOrderId(intent: Intent): Int = intent.getIntExtra(OrderId, -1)
         fun parseGoodId(intent: Intent): Int = intent.getIntExtra(GoodId, -1)
         fun parseBuyerId(intent: Intent): Int = intent.getIntExtra(BuyerId, -1)
         fun parseSellerId(intent: Intent): Int = intent.getIntExtra(SellerId, -1)
         fun parseOrderNo(intent: Intent): String? = intent.getStringExtra(OrderNo)
         fun parseOrderShopPhone(intent: Intent): String? = intent.getStringExtra(OrderShopPhone)
+        fun parseScoreList(intent: Intent): List<FeedbackTemplateProjectDto>? =
+            GsonUtils.json2List(
+                intent.getStringExtra(ScoreList),
+                FeedbackTemplateProjectDto::class.java
+            )
+        fun parseTagList(intent: Intent): List<FeedbackOrderTagModel>? =
+            GsonUtils.json2List(
+                intent.getStringExtra(TagList),
+                FeedbackOrderTagModel::class.java
+            )
     }
 
     object OrderEvaluateDetailsParams {

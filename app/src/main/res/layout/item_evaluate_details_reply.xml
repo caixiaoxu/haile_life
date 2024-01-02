@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.FeedbackOrderReplayDtos" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        tools:padding="12dp"
+        tools:background="@drawable/shape_sf7f8fb_r4"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_999999"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{item.replyTitle}"
+            tools:text="追评：(2023年5月26日 12:21:32）" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{item.reply}"
+            tools:text="给了一张券让我改成了好评" />
+
+        <GridLayout
+            android:id="@+id/gl_evaluate_reply_pic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:columnCount="4"
+            android:useDefaultMargins="false" />
+    </LinearLayout>
+</layout>

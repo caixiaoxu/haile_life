@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.lsy.framelib.ui.weight.SingleTapImageButton
+        android:id="@+id/ib_issue_evaluate_sure_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/transparent"

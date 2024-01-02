@@ -46,11 +46,18 @@ class IssueEvaluateSureDialog private constructor(private val builder: Builder) 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mBinding.ibIssueEvaluateSureClose.setOnClickListener {
+            dismiss()
+        }
+
         mBinding.btnIssueEvaluateSureContactService.setOnClickListener {
+            dismiss()
             builder.positiveClickListener()
         }
 
         mBinding.btnIssueEvaluateSureIssue.setOnClickListener {
+            dismiss()
             builder.negativeClickListener()
         }
     }

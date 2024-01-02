@@ -292,6 +292,8 @@
     <string name="issue_evaluate_sure_prompt">联系客服帮您快速解决</string>
     <string name="contact_service">联系客服</string>
     <string name="still_evaluate">仍要评价</string>
+    <string name="add_evaluate">追加评价</string>
+    <string name="mine_evaluate">我的评价</string>
 
     <string name="self_cleaning_run">自清洁中</string>
     <string name="self_cleaning_end">已清洁</string>

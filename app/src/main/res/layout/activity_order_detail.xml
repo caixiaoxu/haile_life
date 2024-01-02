@@ -166,6 +166,53 @@
                     android:layout_marginHorizontal="12dp"
                     app:order="@{vm.orderDetail}" />
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginHorizontal="12dp"
+                    android:background="@drawable/shape_sffffff_r8"
+                    android:orientation="horizontal"
+                    app:divider="@drawable/divder_v_efefef"
+                    app:showDividers="middle"
+                    app:dividerPadding="16dp"
+                    app:visibility="@{vm.showContactShop || vm.orderDetail.canSubmitFix}">
+
+                    <FrameLayout
+                        android:id="@+id/tv_order_detail_contact"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:visibility="@{vm.showContactShop}">
+
+                        <com.lsy.framelib.ui.weight.SingleTapTextView
+                            style="@style/Font_14_black_85"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@mipmap/icon_order_contact_shop"
+                            android:drawablePadding="8dp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:text="@string/contact_shop" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/tv_order_detail_repairs"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:visibility="@{vm.orderDetail.canSubmitFix}">
+
+                        <com.lsy.framelib.ui.weight.SingleTapTextView
+                            style="@style/Font_14_black_85"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:drawableStart="@mipmap/icon_order_device_repairs"
+                            android:drawablePadding="8dp"
+                            android:text="@string/device_repairs" />
+                    </FrameLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -231,30 +278,6 @@
             android:visibility="@{vm.showBottom?View.VISIBLE:View.GONE}"
             app:divider="@drawable/divide_size8"
             app:showDividers="middle">
-
-            <com.lsy.framelib.ui.weight.SingleTapTextView
-                android:id="@+id/tv_order_detail_repairs"
-                style="@style/Font_14_black_85"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_s979797_r23"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:text="@string/device_repairs"
-                android:visibility="@{vm.orderDetail.canSubmitFix?View.VISIBLE:View.GONE}"
-                tools:visibility="gone" />
-
-            <com.lsy.framelib.ui.weight.SingleTapTextView
-                android:id="@+id/tv_order_detail_contact"
-                style="@style/Font_14_black_85"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_s979797_r23"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
-                android:text="@string/contact_shop"
-                android:visibility="@{vm.showContactShop?View.VISIBLE:View.GONE}"
-                tools:visibility="gone" />
 
             <com.lsy.framelib.ui.weight.SingleTapTextView
                 android:id="@+id/tv_order_detail_coerce_device"

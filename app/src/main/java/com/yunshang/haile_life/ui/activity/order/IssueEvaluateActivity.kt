@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.GridLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.databinding.DataBindingUtil
@@ -81,18 +82,25 @@ class IssueEvaluateActivity :
     override fun initIntent() {
         super.initIntent()
 
+        mViewModel.isAdd = IntentParams.OrderIssueEvaluateParams.parseIsAdd(intent)
         mViewModel.issueEvaluateParams.value?.orderId =
             IntentParams.OrderIssueEvaluateParams.parseOrderId(intent)
         mViewModel.issueEvaluateParams.value?.orderNo =
             IntentParams.OrderIssueEvaluateParams.parseOrderNo(intent)
-        mViewModel.issueEvaluateParams.value?.goodsId =
-            IntentParams.OrderIssueEvaluateParams.parseGoodId(intent)
-        mViewModel.issueEvaluateParams.value?.buyerId =
-            IntentParams.OrderIssueEvaluateParams.parseBuyerId(intent)
-        mViewModel.issueEvaluateParams.value?.sellerId =
-            IntentParams.OrderIssueEvaluateParams.parseSellerId(intent)
+        if (!mViewModel.isAdd) {
+            mViewModel.issueEvaluateParams.value?.goodsId =
+                IntentParams.OrderIssueEvaluateParams.parseGoodId(intent)
+            mViewModel.issueEvaluateParams.value?.buyerId =
+                IntentParams.OrderIssueEvaluateParams.parseBuyerId(intent)
+            mViewModel.issueEvaluateParams.value?.sellerId =
+                IntentParams.OrderIssueEvaluateParams.parseSellerId(intent)
+        }
 
-        mViewModel.orderShopPhone = IntentParams.OrderIssueEvaluateParams.parseOrderShopPhone(intent)
+        mViewModel.orderShopPhone =
+            IntentParams.OrderIssueEvaluateParams.parseOrderShopPhone(intent)
+
+        mViewModel.originScoreList = IntentParams.OrderIssueEvaluateParams.parseScoreList(intent)
+        mViewModel.originTagList = IntentParams.OrderIssueEvaluateParams.parseTagList(intent)
     }
 
     override fun initEvent() {
@@ -106,47 +114,51 @@ class IssueEvaluateActivity :
                 childBinding.vm = mViewModel
                 childBinding.child = data
             }
+            mViewModel.refreshTagList()
         }
 
         // 标签
         mViewModel.showEvaluateTagTemplates.observe(this) {
-            val childCount = mBinding.clIssueEvaluateTag.childCount
-            if (childCount > 1) {
-                mBinding.clIssueEvaluateTag.removeViews(1, childCount - 1)
-            }
-
-            if (it.isNullOrEmpty()) {
-                mBinding.clIssueEvaluateTag.visibility(false)
-            } else {
-                it.forEachIndexed { index, item ->
-                    mBinding.clIssueEvaluateTag.addView(
-                        DataBindingUtil.inflate<ItemIssueEvaluateTagBinding>(
-                            LayoutInflater.from(this@IssueEvaluateActivity),
-                            R.layout.item_issue_evaluate_tag,
-                            null,
-                            false
-                        ).apply {
-                            child = item
-                            root.id = index + 1
-                        }.root, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT
-                    )
+            if (0 < mViewModel.calculateScoreTotal()){
+                val childCount = mBinding.clIssueEvaluateTag.childCount
+                if (childCount > 1) {
+                    mBinding.clIssueEvaluateTag.removeViews(1, childCount - 1)
                 }
-                mBinding.flowIssueEvaluateTag.referencedIds = IntArray(it.size) { item -> item + 1 }
-                mBinding.clIssueEvaluateTag.visibility(true)
+
+                if (it.isNullOrEmpty()) {
+                    mBinding.clIssueEvaluateTag.visibility(false)
+                } else {
+                    it.forEachIndexed { index, item ->
+                        mBinding.clIssueEvaluateTag.addView(
+                            DataBindingUtil.inflate<ItemIssueEvaluateTagBinding>(
+                                LayoutInflater.from(this@IssueEvaluateActivity),
+                                R.layout.item_issue_evaluate_tag,
+                                null,
+                                false
+                            ).apply {
+                                child = item
+                                root.id = index + 1
+                            }.root, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT
+                        )
+                    }
+                    mBinding.flowIssueEvaluateTag.referencedIds = IntArray(it.size) { item -> item + 1 }
+                    mBinding.clIssueEvaluateTag.visibility(true)
+                }
             }
         }
 
         // 图片
         mViewModel.evaluatePics.observe(this) {
-            mBinding.glRechargeStarfishList.removeAllViews()
+            mBinding.glIssueEvaluatePic.removeAllViews()
             val pS = DimensionUtils.dip2px(this@IssueEvaluateActivity, 4f)
             val picItemWH = (ScreenUtils.screenWidth - DimensionUtils.dip2px(
                 this@IssueEvaluateActivity,
                 16f
             ) * 2 - pS * 3) / 4
             val inflater = LayoutInflater.from(this@IssueEvaluateActivity)
+            val columnCount = mBinding.glIssueEvaluatePic.columnCount
             it.forEachIndexed { index, url ->
-                mBinding.glRechargeStarfishList.addView(
+                mBinding.glIssueEvaluatePic.addView(
                     DataBindingUtil.inflate<ItemIssueEvaluatePicBinding>(
                         inflater,
                         R.layout.item_issue_evaluate_pic,
@@ -154,13 +166,6 @@ class IssueEvaluateActivity :
                         false
                     ).apply {
                         showDel = true
-
-                        root.setPadding(
-                            if (0 != index % mBinding.glRechargeStarfishList.columnCount) pS else 0,
-                            if (index >= mBinding.glRechargeStarfishList.columnCount) pS else 0,
-                            0,
-                            0
-                        )
 
                         ivIssueEvaluatePic.loadImage(imgHeadUrl = url)
                         ivIssueEvaluatePicDel.setOnClickListener {
@@ -178,12 +183,21 @@ class IssueEvaluateActivity :
                                     putExtras(IntentParams.PicParams.pack(url))
                                 })
                         }
-                    }.root, picItemWH, picItemWH
+                    }.root, GridLayout.LayoutParams().apply {
+                        width = picItemWH
+                        height = picItemWH
+                        setMargins(
+                            if (0 != (index % columnCount)) pS else 0,
+                            if ((index / columnCount) > 0) pS else 0,
+                            0,
+                            0
+                        )
+                    }
                 )
             }
 
             if (it.size < 5) {
-                mBinding.glRechargeStarfishList.addView(
+                mBinding.glIssueEvaluatePic.addView(
                     DataBindingUtil.inflate<ItemIssueEvaluatePicBinding>(
                         inflater,
                         R.layout.item_issue_evaluate_pic,
@@ -191,12 +205,6 @@ class IssueEvaluateActivity :
                         false
                     ).apply {
                         showDel = false
-                        root.setPadding(
-                            if (0 != (it.size) % mBinding.glRechargeStarfishList.columnCount) pS else 0,
-                            if (it.size >= mBinding.glRechargeStarfishList.columnCount) pS else 0,
-                            0,
-                            0
-                        )
                         root.setOnClickListener {
                             DialogUtils.checkPermissionDialog(
                                 this@IssueEvaluateActivity,
@@ -207,18 +215,37 @@ class IssueEvaluateActivity :
                                 requestFilePermission.launch(permissions)
                             }
                         }
-                    }.root, picItemWH, picItemWH
+                    }.root, GridLayout.LayoutParams().apply {
+                        width = picItemWH
+                        height = picItemWH
+                        setMargins(
+                            if (0 != (it.size % columnCount)) pS else 0,
+                            if ((it.size / columnCount) > 0) pS else 0,
+                            0,
+                            0
+                        )
+                    }
                 )
             }
         }
 
         mViewModel.jump.observe(this) {
+            if (1 == it){
+                startActivity(
+                    Intent(
+                        this@IssueEvaluateActivity,
+                        IssueEvaluateSuccessActivity::class.java
+                    )
+                )
+            }
             finish()
         }
     }
 
     override fun initView() {
         window.statusBarColor = Color.WHITE
+
+        mBinding.barIssueEvaluateTitle.setTitle(if (mViewModel.isAdd) R.string.add_evaluate else R.string.issue_evaluate)
 
         mBinding.btnIssueEvaluateSubmit.setOnClickListener {
             if (!mViewModel.evaluateScoreTemplates.value.isNullOrEmpty() && mViewModel.evaluateScoreTemplates.value!!.any { item -> 0 == item.scoreVal }) {
@@ -227,7 +254,7 @@ class IssueEvaluateActivity :
             }
 
             // 差评
-            if (!mViewModel.evaluateScoreTemplates.value.isNullOrEmpty() && mViewModel.calculateScoreTotal() < 3) {
+            if (!mViewModel.evaluateScoreTemplates.value.isNullOrEmpty() && mViewModel.calculateScoreTotal() == 3) {
                 IssueEvaluateSureDialog.Builder(
                     negativeClickListener = {
                         mViewModel.submit(this)

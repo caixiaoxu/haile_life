@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.yunshang.haile_life.R"/>
+        <variable
+            name="child"
+            type="com.yunshang.haile_life.data.entities.FeedbackTemplateProjectDto" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:visibility="@{null != child}"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{child.name}"
+            tools:text="环境" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            app:imgRes="@{child.scoreVal > 0?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            android:src="@mipmap/icon_evaluate_score_check" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            app:imgRes="@{child.scoreVal > 1?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            android:src="@mipmap/icon_evaluate_score_check" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            app:imgRes="@{child.scoreVal > 2?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            android:src="@mipmap/icon_evaluate_score_check" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:imgRes="@{child.scoreVal > 3?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            android:layout_marginStart="4dp"
+            android:src="@mipmap/icon_evaluate_score_uncheck" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            app:imgRes="@{child.scoreVal > 4?R.mipmap.icon_evaluate_score_check:R.mipmap.icon_evaluate_score_uncheck}"
+            android:src="@mipmap/icon_evaluate_score_uncheck" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_12_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@{3 > child.scoreVal?@string/bad:child.scoreVal > 3?@string/good:@string/ordinary}"
+            tools:text="一般" />
+    </LinearLayout>
+</layout>
