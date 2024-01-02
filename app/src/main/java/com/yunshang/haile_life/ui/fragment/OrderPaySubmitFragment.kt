@@ -181,7 +181,7 @@ class OrderPaySubmitFragment :
                     if (mBinding.includeOrderPaySubmitSpecs.llOrderGoodDiscounts.childCount > 0) {
                         mBinding.includeOrderPaySubmitSpecs.llOrderGoodDiscounts.removeAllViews()
                     }
-                    for (promotion in trade.promotionList.filter { item -> item.available }) {
+                    for (promotion in trade.promotionList.filter { item -> item.available && item.used }) {
                         val childBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodItemBinding>(
                             inflater,
                             R.layout.item_order_submit_good_item,
