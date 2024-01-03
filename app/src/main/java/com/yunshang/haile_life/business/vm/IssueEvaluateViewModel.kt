@@ -168,6 +168,11 @@ class IssueEvaluateViewModel : BaseViewModel() {
 
     fun submit(context: Context) {
         if (null == issueEvaluateParams.value) return
+        
+        if (isAdd && issueEvaluateParams.value?.reply.isNullOrEmpty()){
+            SToast.showToast(context, "请输入追评内容")
+            return
+        }
 
         issueEvaluateParams.value?.feedbackProjectListDtos = evaluateScoreTemplates.value
         issueEvaluateParams.value?.feedbackTagDtos =

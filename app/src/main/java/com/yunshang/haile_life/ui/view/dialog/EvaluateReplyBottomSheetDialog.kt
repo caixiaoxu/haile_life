@@ -65,16 +65,17 @@ class EvaluateReplyBottomSheetDialog(private val refresh: () -> Unit) :
             BR.item
         ) { mItemBinding, _, item ->
             mItemBinding?.tvEvaluateReplyDetails?.setOnClickListener {
-                Intent(
-                    requireContext(),
-                    EvaluateDetailsActivity::class.java
-                ).apply {
-                    putExtras(
-                        IntentParams.OrderEvaluateDetailsParams.pack(
-                            item.id,
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        EvaluateDetailsActivity::class.java
+                    ).apply {
+                        putExtras(
+                            IntentParams.OrderEvaluateDetailsParams.pack(
+                                item.orderId,
+                            )
                         )
-                    )
-                }
+                    })
             }
             // 图片
             mItemBinding?.glEvaluateReplyPic?.let {

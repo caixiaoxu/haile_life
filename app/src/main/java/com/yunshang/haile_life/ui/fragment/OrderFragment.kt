@@ -26,6 +26,7 @@ import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.databinding.FragmentOrderBinding
 import com.yunshang.haile_life.databinding.ItemMineOrderBinding
+import com.yunshang.haile_life.ui.activity.order.IssueEvaluateSuccessActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
 import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
@@ -122,7 +123,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
                             StyleSpan(Typeface.BOLD),
                             object : ClickableSpan() {
                                 override fun onClick(view: View) {
-                                    EvaluateReplyBottomSheetDialog(){
+                                    EvaluateReplyBottomSheetDialog() {
                                         mViewModel.requestReplyNum()
                                     }.show(childFragmentManager)
                                 }
