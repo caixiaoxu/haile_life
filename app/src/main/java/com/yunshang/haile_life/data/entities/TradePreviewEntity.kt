@@ -232,7 +232,7 @@ data class TradePreviewPromotionDetail(
             else -> ""
         }
 
-    fun dealLineDateStr(): String = DateTimeUtils.formatDateTimeForStr(endAt, "yyyy/MM/dd") + "到期"
+    fun dealLineDateStr(): String = "本单限1张，" + DateTimeUtils.formatDateTimeForStr(endAt, "yyyy/MM/dd") + "到期"
 }
 
 data class SelfCleanInfo(
