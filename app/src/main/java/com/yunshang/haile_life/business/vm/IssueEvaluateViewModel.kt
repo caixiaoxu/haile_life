@@ -92,12 +92,20 @@ class IssueEvaluateViewModel : BaseViewModel() {
     fun calculateScoreTotal(): Int =
         evaluateScoreTemplates.value?.let { scoreList ->
             var scoreTotal = 0.0
+            var scoreNum = 0
             scoreList.forEach {
-                scoreTotal += it.scoreVal
+                if (it.scoreVal > 0) {
+                    scoreNum++
+                    scoreTotal += it.scoreVal
+                }
             }
-            scoreTotal /= scoreList.size
-            //差评：[1-2.5)；中评：[2.5-3.5]；好评：(3.5-5]
-            if (0.0 == scoreTotal) 0 else if (scoreTotal <= 2.5) 3 else if (scoreTotal > 3.5) 1 else 2
+            if (0.0 == scoreTotal) {
+                0
+            } else {
+                scoreTotal /= scoreNum
+                //差评：[1-2.5)；中评：[2.5-3.5]；好评：(3.5-5]
+                if (scoreTotal <= 2.5) 3 else if (scoreTotal > 3.5) 1 else 2
+            }
         } ?: 0
 
     fun changeScore(scoreTemp: FeedbackTemplateProjectDto, score: Int) {
