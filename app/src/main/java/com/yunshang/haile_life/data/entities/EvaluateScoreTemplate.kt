@@ -24,8 +24,8 @@ data class FeedbackTemplateProjectDto(
     val templateId: Int? = null,
     val scoreType: Int? = null,
     var score: Int? = null,
-    val id: Int? = null,
-    val templateProjectId:Int? = null
+    var id: Int? = null,
+    var templateProjectId:Int? = null
 ) : BaseObservable() {
 
     @get:Bindable

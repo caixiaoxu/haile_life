@@ -2,11 +2,13 @@ package com.yunshang.haile_life.business.vm
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.SToast
 import com.lsy.framelib.utils.gson.GsonUtils
 import com.yunshang.haile_life.business.apiService.CommonService
 import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.IssueEvaluateParams
 import com.yunshang.haile_life.data.entities.EvaluateTagTemplate
 import com.yunshang.haile_life.data.entities.FeedbackOrderTagModel
@@ -68,26 +70,21 @@ class IssueEvaluateViewModel : BaseViewModel() {
                 }
             }
 
-            ApiRepository.dealApiResult(
-                mOrderRepo.requestEvaluateScoreTemplate(
-                    ApiRepository.createRequestBody(
-                        hashMapOf(
-                            "sceneId" to 1,//1.校园洗
-                            "type" to 1,//1.订单
+            if (originScoreList.isNullOrEmpty()) {
+                ApiRepository.dealApiResult(
+                    mOrderRepo.requestEvaluateScoreTemplate(
+                        ApiRepository.createRequestBody(
+                            hashMapOf(
+                                "sceneId" to 1,//1.校园洗
+                                "type" to 1,//1.订单
+                            )
                         )
                     )
-                )
-            )?.let {
-                val list = it.feedbackTemplateProjectDtos?.filter { item -> 1 == item.scoreType }
-                list?.let {
-                    originScoreList?.forEach { originScore ->
-                        list.find { item -> null != item.id && item.id == originScore.templateProjectId }
-                            ?.let { score ->
-                                score.score = originScore.scoreVal
-                            }
-                    }
+                )?.let {
+                    evaluateScoreTemplates.postValue(it.feedbackTemplateProjectDtos?.filter { item -> 1 == item.scoreType })
                 }
-                evaluateScoreTemplates.postValue(list)
+            } else {
+                evaluateScoreTemplates.postValue(originScoreList)
             }
         })
     }
@@ -189,6 +186,7 @@ class IssueEvaluateViewModel : BaseViewModel() {
             withContext(Dispatchers.Main) {
                 SToast.showToast(context, "评价成功")
             }
+            LiveDataBus.post(BusEvents.EVALUATE_SUCCESS_STATUS, true)
             jump.postValue(if (isAdd) 0 else 1)
         })
     }

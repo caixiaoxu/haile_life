@@ -11,33 +11,28 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.network.response.ResponseList
-import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.StatusBarUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.OrderViewModel
-import com.yunshang.haile_life.data.Constants
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.OrderEntity
 import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.databinding.FragmentOrderBinding
 import com.yunshang.haile_life.databinding.ItemMineOrderBinding
-import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.activity.order.OrderDetailActivity
+import com.yunshang.haile_life.ui.activity.order.OrderStatusActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
+import com.yunshang.haile_life.ui.view.dialog.EvaluateReplyBottomSheetDialog
 import com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
 import com.yunshang.haile_life.utils.string.StringUtils
-import com.yunshang.haile_life.web.WebViewActivity
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
@@ -127,6 +122,9 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
                             StyleSpan(Typeface.BOLD),
                             object : ClickableSpan() {
                                 override fun onClick(view: View) {
+                                    EvaluateReplyBottomSheetDialog(){
+                                        mViewModel.requestReplyNum()
+                                    }.show(childFragmentManager)
                                 }
 
                                 override fun updateDrawState(ds: TextPaint) {
@@ -215,6 +213,10 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
             mBinding.rvMineOrderList.requestRefresh()
         }
 
+        LiveDataBus.with(BusEvents.EVALUATE_REPLY_STATUS)?.observe(this) {
+            mViewModel.requestReplyNum()
+        }
+
         LiveDataBus.with(BusEvents.ORDER_DELETE_STATUS, String::class.java)?.observe(this) {
             mAdapter.deleteItem { item -> item.orderNo == it }
         }
@@ -235,6 +237,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
         }
 
         mBinding.tvOrderListReplyPrompt.movementMethod = LinkMovementMethod.getInstance()
+        mBinding.tvOrderListReplyPrompt.highlightColor = Color.TRANSPARENT
 
         mBinding.rvMineOrderList.layoutManager = LinearLayoutManager(requireContext())
         mBinding.rvMineOrderList.adapter = mAdapter

@@ -129,6 +129,10 @@ class OrderDetailActivity :
             mViewModel.requestOrderDetailAsync()
         }
 
+        LiveDataBus.with(BusEvents.EVALUATE_SUCCESS_STATUS)?.observe(this) {
+            mViewModel.requestOrderDetailAsync()
+        }
+
         LiveDataBus.with(BusEvents.PAY_SUCCESS_STATUS)?.observe(this) {
             if ("300" == mViewModel.orderDetail.value?.orderType || 106 == mViewModel.orderDetail.value?.orderSubType) {
                 finish()

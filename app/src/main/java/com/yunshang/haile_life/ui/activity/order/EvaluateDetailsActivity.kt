@@ -9,10 +9,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.utils.DimensionUtils
 import com.lsy.framelib.utils.ScreenUtils
 import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.EvaluateDetailsViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
@@ -127,6 +129,10 @@ class EvaluateDetailsActivity :
 
             // 回复
             mAdapter.refreshList(it.feedbackOrderReplayDtos?.toMutableList())
+        }
+
+        LiveDataBus.with(BusEvents.EVALUATE_SUCCESS_STATUS)?.observe(this) {
+            mViewModel.requestData()
         }
     }
 

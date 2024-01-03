@@ -48,4 +48,10 @@ object BusEvents {
     const val SCAN_CHANGE_STATUS = "scan_change_status"
 
     const val PROMPT_POPUP = "PROMPT_POPUP"
+
+    // 评价成功
+    const val EVALUATE_SUCCESS_STATUS = "evaluate_success_status"
+
+    // 评价回复
+    const val EVALUATE_REPLY_STATUS = "evaluate_reply_status"
 }

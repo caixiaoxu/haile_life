@@ -1,8 +1,10 @@
 package com.yunshang.haile_life.business.vm
 
 import androidx.lifecycle.MutableLiveData
+import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.entities.EvaluateDetailsEntity
 import com.yunshang.haile_life.data.extend.hasVal
 import com.yunshang.haile_life.data.model.ApiRepository
@@ -39,6 +41,17 @@ class EvaluateDetailsViewModel : BaseViewModel() {
                 )
             )?.let {
                 evaluateDetails.postValue(it)
+
+                ApiRepository.dealApiResult(
+                    mOrderRepo.submitEvaluateViewReply(
+                        ApiRepository.createRequestBody(
+                            hashMapOf(
+                                "id" to it.id
+                            )
+                        )
+                    )
+                )
+                LiveDataBus.post(BusEvents.EVALUATE_REPLY_STATUS, true)
             }
         })
     }

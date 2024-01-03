@@ -94,28 +94,49 @@ interface OrderService {
 
     @POST("/trade/fulfillment/start")
     suspend fun startAppointOrderDevice(@Body body: RequestBody): ResponseWrapper<Any>
+
     @POST("/trade/check/reSendCode")
     suspend fun sendDeviceVerifyCode(@Body body: RequestBody): ResponseWrapper<Any>
+
     @POST("/trade/check/verify")
     suspend fun verifyDeviceVerifyCode(@Body body: RequestBody): ResponseWrapper<Any>
+
     @POST("/trade/underway/stateList")
     suspend fun requestOrderStateList(): ResponseWrapper<OrderStateListEntity>
+
     @POST("/device/selfClean/refresh")
     suspend fun requestSelfCleanRefresh(@Body body: RequestBody): ResponseWrapper<SelfCleanRefreshEntity>
+
     @POST("/device/selfClean/start")
     suspend fun startSelfClean(@Body body: RequestBody): ResponseWrapper<Any>
+
     @POST("/feedback/getFeedbackOrderReplayTotal")
     suspend fun requestReplayNum(@Body body: RequestBody): ResponseWrapper<Int>
+
     @GET("/feedback/getFeedbackStatusByOrderNo")
     suspend fun requestEvaluateStatus(@Query("orderNo") orderNo: String): ResponseWrapper<EvaluateStatusEntity>
+
     @POST("/feedback/getFeedbackTemplate")
     suspend fun requestEvaluateScoreTemplate(@Body body: RequestBody): ResponseWrapper<EvaluateScoreTemplate>
+
     @POST("/feedback/getFeedbackTagList")
     suspend fun requestEvaluateTagTemplate(@Body body: RequestBody): ResponseWrapper<MutableList<EvaluateTagTemplate>>
+
     @POST("/feedback/add")
     suspend fun submitEvaluate(@Body body: RequestBody): ResponseWrapper<Any>
+
     @POST("/feedback/addFeedbackOrderReplay")
     suspend fun submitAddEvaluate(@Body body: RequestBody): ResponseWrapper<Any>
+
     @POST("/feedback/detail")
     suspend fun requestEvaluateDetails(@Body body: RequestBody): ResponseWrapper<EvaluateDetailsEntity>
+
+    @POST("/feedback/getFeedbackOrderReplayList")
+    suspend fun requestEvaluateReplyList(@Body body: RequestBody): ResponseWrapper<ResponseList<EvaluateReplyEntity>>
+
+    @POST("/feedback/viewReply")
+    suspend fun submitEvaluateViewReply(@Body body: RequestBody): ResponseWrapper<Any>
+
+    @POST("/feedback/viewReplyAll")
+    suspend fun submitEvaluateViewAllReply(@Body body: RequestBody): ResponseWrapper<Any>
 }

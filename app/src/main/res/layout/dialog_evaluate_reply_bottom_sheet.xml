@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_sffffff_rt8"
+    android:minHeight="623dp"
+    android:orientation="vertical"
+    android:paddingBottom="34dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_evaluate_reply_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_evaluate_reply_dialog_title"
+            style="@style/Font_16_black_85"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ib_evaluate_reply_clear"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="标题" />
+
+        <com.lsy.framelib.ui.weight.SingleTapImageButton
+            android:id="@+id/ib_evaluate_reply_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="@color/transparent"
+            android:src="@mipmap/icon_evaluate_reply_clear"
+            app:layout_constraintBottom_toBottomOf="@id/tv_evaluate_reply_dialog_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_evaluate_reply_dialog_title"
+            app:layout_constraintTop_toTopOf="@id/tv_evaluate_reply_dialog_title" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/tv_evaluate_reply_dialog_close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:paddingHorizontal="16dp"
+            android:src="@mipmap/icon_close_x"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View style="@style/DividingStyle" />
+
+    <com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
+        android:id="@+id/rv_evaluate_reply_dialog_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp" />
+</LinearLayout>

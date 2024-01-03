@@ -55,6 +55,7 @@
     <string name="close">关闭</string>
     <string name="agree">同意</string>
     <string name="reject">拒绝</string>
+    <string name="details">详情</string>
 
     <string name="agreement_hint">根据国家法律法规的要求，我们更新了《隐私政策》，帮助您了解我们收集、使用、存储和共享个人信息的情况，特别是我们所采集的个人信息类型及用途，同时您还可以了解到您所共享的相关权利和实现途径，以及我们为了保护好您的个人信息安全所采取的相关策略。</string>
     <string name="login_title">登录海乐生活</string>

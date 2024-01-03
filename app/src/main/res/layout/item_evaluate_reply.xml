@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.yunshang.haile_life.data.entities.EvaluateReplyEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="16dp"
+        android:background="@drawable/shape_bottom_stroke_dividing_efefef">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_evaluate_reply_position_name"
+            style="@style/Font_14_black_85_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="205dp"
+            android:maxLines="1"
+            android:text="@{item.tradeOrder.positionName}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="某某学校门店名称超过长度用dsfsdfdsfsdfdsfdsfssdf" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Font_14_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@{item.tradeOrder.createTime}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_evaluate_reply_position_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_evaluate_reply_position_name"
+            tools:text="2023-12-08" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_evaluate_reply_model"
+            style="@style/Font_14_black_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@{item.getOrderDeviceName}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_evaluate_reply_position_name"
+            tools:text="标准" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:padding="12dp"
+            android:background="@drawable/shape_sf7f8fb_r4"
+            app:layout_constraintTop_toBottomOf="@id/tv_evaluate_reply_model"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Font_14_999999"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@{item.replyTitle}"
+                    tools:text="追评：(2023年5月26日 12:21:32）" />
+
+                <com.lsy.framelib.ui.weight.SingleTapTextView
+                    android:id="@+id/tv_evaluate_reply_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Font_14_02d5f1"
+                    android:text="@string/details"/>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Font_14_black_85"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{item.reply}"
+                tools:text="给了一张券让我改成了好评" />
+
+            <GridLayout
+                android:id="@+id/gl_evaluate_reply_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:columnCount="4"
+                android:visibility="gone"
+                android:useDefaultMargins="false" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
