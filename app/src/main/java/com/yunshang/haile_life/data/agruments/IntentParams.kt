@@ -591,7 +591,7 @@ object IntentParams {
                     putString(OrderNo, orderNo)
                 }
                 orderShopPhone?.let {
-                    putString(OrderShopPhone, orderNo)
+                    putString(OrderShopPhone, orderShopPhone)
                 }
                 scoreList?.let {
                     putString(ScoreList, GsonUtils.any2Json(scoreList))

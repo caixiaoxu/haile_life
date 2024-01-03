@@ -260,44 +260,46 @@ class IssueEvaluateActivity :
             }
 
             // 差评
-            if (!mViewModel.evaluateScoreTemplates.value.isNullOrEmpty() && mViewModel.calculateScoreTotal() == 3) {
+            if (!mViewModel.isAdd && !mViewModel.evaluateScoreTemplates.value.isNullOrEmpty() && mViewModel.calculateScoreTotal() == 3) {
                 IssueEvaluateSureDialog.Builder(
                     negativeClickListener = {
                         mViewModel.submit(this)
                     }, positiveClickListener = {
-                        mViewModel.orderShopPhone?.split(",")
-                            ?.mapIndexed { index, phone -> SearchSelectParam(index, phone) }
-                            ?.let { phoneList ->
-                                CommonBottomSheetDialog.Builder("", phoneList).apply {
-                                    selectModel = 1
-                                    onValueSureListener =
-                                        object :
-                                            CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
-                                            override fun onValue(data: SearchSelectParam?) {
-                                                CommonDialog.Builder("是否拨打电话").apply {
-                                                    title =
-                                                        com.lsy.framelib.utils.StringUtils.getString(
-                                                            R.string.tip
-                                                        )
-                                                    negativeTxt =
-                                                        com.lsy.framelib.utils.StringUtils.getString(
-                                                            R.string.cancel
-                                                        )
-                                                    setPositiveButton(
-                                                        com.lsy.framelib.utils.StringUtils.getString(
-                                                            R.string.sure
-                                                        )
-                                                    ) {
-                                                        callPhone = data?.name
-                                                        requestPermission.launch(
-                                                            SystemPermissionHelper.callPhonePermissions()
-                                                        )
-                                                    }
-                                                }.build().show(supportFragmentManager)
+                        if (!mViewModel.orderShopPhone.isNullOrEmpty()) {
+                            mViewModel.orderShopPhone?.split(",")
+                                ?.mapIndexed { index, phone -> SearchSelectParam(index, phone) }
+                                ?.let { phoneList ->
+                                    CommonBottomSheetDialog.Builder("", phoneList).apply {
+                                        selectModel = 1
+                                        onValueSureListener =
+                                            object :
+                                                CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
+                                                override fun onValue(data: SearchSelectParam?) {
+                                                    CommonDialog.Builder("是否拨打电话").apply {
+                                                        title =
+                                                            com.lsy.framelib.utils.StringUtils.getString(
+                                                                R.string.tip
+                                                            )
+                                                        negativeTxt =
+                                                            com.lsy.framelib.utils.StringUtils.getString(
+                                                                R.string.cancel
+                                                            )
+                                                        setPositiveButton(
+                                                            com.lsy.framelib.utils.StringUtils.getString(
+                                                                R.string.sure
+                                                            )
+                                                        ) {
+                                                            callPhone = data?.name
+                                                            requestPermission.launch(
+                                                                SystemPermissionHelper.callPhonePermissions()
+                                                            )
+                                                        }
+                                                    }.build().show(supportFragmentManager)
+                                                }
                                             }
-                                        }
-                                }.build().show(supportFragmentManager)
-                            }
+                                    }.build().show(supportFragmentManager)
+                                }
+                        }
                     }
                 ).build().show(supportFragmentManager)
             } else {
