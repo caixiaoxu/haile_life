@@ -303,7 +303,7 @@ class OrderDetailActivity :
                             details.orderNo,
                             details.buyerId,
                             details.sellerId,
-                            mViewModel.orderDetail.value?.serviceTelephone?.split(",")?.first(),
+                            mViewModel.orderDetail.value?.serviceTelephone,
                             details.orderItemList.firstOrNull { item ->
                                 !DeviceCategory.isDispenser(
                                     item.categoryCode

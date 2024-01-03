@@ -201,7 +201,7 @@ class EvaluateDetailsActivity :
                                 details.orderNo,
                                 details.buyerId,
                                 details.sellerId,
-                                details.serviceTelephone?.split(",")?.first(),
+                                details.serviceTelephone,
                                 isAdd = true,
                                 scoreList = details.feedbackProjectListDtos,
                                 tagList = details.feedbackOrderTagModels

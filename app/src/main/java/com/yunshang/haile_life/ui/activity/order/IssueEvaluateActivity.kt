@@ -17,6 +17,7 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.vm.IssueEvaluateViewModel
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.FeedbackTemplateProjectDto
 import com.yunshang.haile_life.databinding.ActivityIssueEvaluateBinding
 import com.yunshang.haile_life.databinding.ItemIssueEvaluatePicBinding
@@ -26,6 +27,8 @@ import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.common.PicBrowseActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.loadImage
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
+import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
+import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.IssueEvaluateSureDialog
 import com.yunshang.haile_life.utils.DialogUtils
 
@@ -33,6 +36,8 @@ class IssueEvaluateActivity :
     BaseBusinessActivity<ActivityIssueEvaluateBinding, IssueEvaluateViewModel>(
         IssueEvaluateViewModel::class.java, BR.vm
     ) {
+
+    private var callPhone: String? = ""
 
     private val filePermissions = SystemPermissionHelper.readWritePermissions()
 
@@ -66,8 +71,8 @@ class IssueEvaluateActivity :
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             if (result.values.any { it }) {
                 // 授权权限成功
-                mViewModel.orderShopPhone?.let {
-                    startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$it")))
+                if (!callPhone.isNullOrEmpty()) {
+                    startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$callPhone")))
                 }
             } else {
                 // 授权失败
@@ -119,7 +124,7 @@ class IssueEvaluateActivity :
 
         // 标签
         mViewModel.showEvaluateTagTemplates.observe(this) {
-            if (0 < mViewModel.calculateScoreTotal()){
+            if (0 < mViewModel.calculateScoreTotal()) {
                 val childCount = mBinding.clIssueEvaluateTag.childCount
                 if (childCount > 1) {
                     mBinding.clIssueEvaluateTag.removeViews(1, childCount - 1)
@@ -141,7 +146,8 @@ class IssueEvaluateActivity :
                             }.root, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT
                         )
                     }
-                    mBinding.flowIssueEvaluateTag.referencedIds = IntArray(it.size) { item -> item + 1 }
+                    mBinding.flowIssueEvaluateTag.referencedIds =
+                        IntArray(it.size) { item -> item + 1 }
                     mBinding.clIssueEvaluateTag.visibility(true)
                 }
             }
@@ -230,7 +236,7 @@ class IssueEvaluateActivity :
         }
 
         mViewModel.jump.observe(this) {
-            if (1 == it){
+            if (1 == it) {
                 startActivity(
                     Intent(
                         this@IssueEvaluateActivity,
@@ -259,14 +265,39 @@ class IssueEvaluateActivity :
                     negativeClickListener = {
                         mViewModel.submit(this)
                     }, positiveClickListener = {
-                        DialogUtils.checkPermissionDialog(
-                            this,
-                            supportFragmentManager,
-                            SystemPermissionHelper.callPhonePermissions(),
-                            "需要权限来拨打电话"
-                        ) {
-                            requestPermission.launch(SystemPermissionHelper.callPhonePermissions())
-                        }
+                        mViewModel.orderShopPhone?.split(",")
+                            ?.mapIndexed { index, phone -> SearchSelectParam(index, phone) }
+                            ?.let { phoneList ->
+                                CommonBottomSheetDialog.Builder("", phoneList).apply {
+                                    selectModel = 1
+                                    onValueSureListener =
+                                        object :
+                                            CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
+                                            override fun onValue(data: SearchSelectParam?) {
+                                                CommonDialog.Builder("是否拨打电话").apply {
+                                                    title =
+                                                        com.lsy.framelib.utils.StringUtils.getString(
+                                                            R.string.tip
+                                                        )
+                                                    negativeTxt =
+                                                        com.lsy.framelib.utils.StringUtils.getString(
+                                                            R.string.cancel
+                                                        )
+                                                    setPositiveButton(
+                                                        com.lsy.framelib.utils.StringUtils.getString(
+                                                            R.string.sure
+                                                        )
+                                                    ) {
+                                                        callPhone = data?.name
+                                                        requestPermission.launch(
+                                                            SystemPermissionHelper.callPhonePermissions()
+                                                        )
+                                                    }
+                                                }.build().show(supportFragmentManager)
+                                            }
+                                        }
+                                }.build().show(supportFragmentManager)
+                            }
                     }
                 ).build().show(supportFragmentManager)
             } else {
