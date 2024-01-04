@@ -154,7 +154,6 @@ dependencies {
     // 微信二维码扫码功能（可选）
     implementation ThirdLibs.wechat_qrcode_scanning
 
-
     def composeBom = platform('androidx.compose:compose-bom:2023.01.00')
     implementation composeBom
     androidTestImplementation composeBom

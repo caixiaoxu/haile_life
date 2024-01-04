@@ -16,16 +16,11 @@ import com.yunshang.haile_life.BR
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.EvaluateDetailsViewModel
-import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.entities.EvaluateTagTemplate
 import com.yunshang.haile_life.data.entities.FeedbackOrderReplayDtos
 import com.yunshang.haile_life.data.entities.FeedbackTemplateProjectDto
-import com.yunshang.haile_life.databinding.ActivityEvaluateDetailsBinding
-import com.yunshang.haile_life.databinding.ItemEvaluateDetailsPicBinding
-import com.yunshang.haile_life.databinding.ItemEvaluateDetailsReplyBinding
-import com.yunshang.haile_life.databinding.ItemEvaluateDetailsScoreBinding
-import com.yunshang.haile_life.databinding.ItemIssueEvaluateTagBinding
+import com.yunshang.haile_life.databinding.*
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.common.PicBrowseActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
