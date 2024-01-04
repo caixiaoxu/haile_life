@@ -123,7 +123,7 @@ class EvaluateDetailsActivity :
             buildImageView(mBinding.glEvaluatePicList, it?.pictures, itemWH, space)
 
             // 回复
-            mAdapter.refreshList(it.feedbackOrderReplayDtos?.toMutableList())
+            mAdapter.refreshList(it.feedbackOrderReplayDtos?.toMutableList(), true)
         }
 
         LiveDataBus.with(BusEvents.EVALUATE_SUCCESS_STATUS)?.observe(this) {
