@@ -385,4 +385,29 @@ class OrderStatusViewModel : BaseViewModel() {
     }
 
     /** ------------------------------预约支付------------------------------**/
+    /** ------------------------------订单执行------------------------------**/
+
+    val orderError: MutableLiveData<OrderEntity> by lazy { MutableLiveData() }
+
+    var isRefreshError = false
+    fun timerRefreshOrderDetails() {
+        if (orderNo.isNullOrEmpty()) return
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if ((orderDetails.value?.state ?: 0) < 1000) {
+                isRefreshError = true
+                launch({
+                    ApiRepository.dealApiResult(
+                        mOrderRepo.requestOrderError(orderNo!!)
+                    )?.let {
+                        orderError.postValue(it)
+                        timerRefreshOrderDetails()
+                    }
+                }, showLoading = false)
+            } else {
+                isRefreshError = false
+            }
+        }, 10000)
+    }
+    /** ------------------------------订单执行------------------------------**/
 }

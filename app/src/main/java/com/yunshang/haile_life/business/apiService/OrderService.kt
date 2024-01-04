@@ -43,6 +43,8 @@ interface OrderService {
 
     @GET("/trade/detail")
     suspend fun requestOrderDetail(@Query("orderNo") orderNo: String): ResponseWrapper<OrderEntity>
+    @GET("/trade/deviceError")
+    suspend fun requestOrderError(@Query("orderNo") orderNo: String): ResponseWrapper<OrderEntity>
 
     @GET("/trade/detail/simple")
     suspend fun requestOrderDetailSimple(@Query("orderNo") orderNo: String): ResponseWrapper<OrderEntity>

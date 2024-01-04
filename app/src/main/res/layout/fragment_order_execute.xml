@@ -54,7 +54,8 @@
                             android:layout_height="70dp"
                             android:background="@drawable/shape_sffe7da_rt12"
                             android:paddingHorizontal="12dp"
-                            android:paddingTop="8dp">
+                            android:paddingTop="8dp"
+                            app:visibility="@{null != avm.orderError.errorDesc &amp;&amp; avm.orderError.errorDesc.length() > 0}">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="wrap_content"
@@ -68,8 +69,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:gravity="center"
-                                android:text="@{avm.orderDetails.errorDesc + @string/order_error_prompt}"
-                                app:visibility="@{null != avm.orderDetails.errorDesc &amp;&amp; avm.orderDetails.errorDesc.length() > 0}"
+                                android:text="@{avm.orderError.errorDesc + @string/order_error_prompt}"
                                 tools:text="XX故障，请联系商家处理。若运行正常请忽略本条提醒。" />
                         </LinearLayout>
 
@@ -79,6 +79,7 @@
                             android:layout_marginTop="56dp"
                             android:background="@drawable/shape_sffffff_r12"
                             android:paddingHorizontal="42dp"
+                            android:paddingTop="58dp"
                             android:paddingBottom="28dp">
 
                             <com.yunshang.haile_life.ui.view.RingCountDown
