@@ -44,6 +44,7 @@
     <string name="device_run">设备运行</string>
     <string name="device_running">设备运行中</string>
     <string name="check_reason">查看原因</string>
+    <string name="order_error_prompt">故障，请联系商家处理。若运行正常请忽略本条提醒。</string>
     <string name="appointment_success">预约成功</string>
     <string name="page_time_prefix">待支付，剩余</string>
     <string name="verify_time_prefix">待验证，剩余</string>

@@ -45,113 +45,142 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/shape_sffffff_r8"
-                        android:paddingHorizontal="42dp"
-                        android:paddingTop="58dp"
-                        android:paddingBottom="28dp">
+                        android:layout_height="wrap_content">
 
-                        <com.yunshang.haile_life.ui.view.RingCountDown
-                            android:id="@+id/cd_order_execute_time"
-                            android:layout_width="144dp"
-                            android:layout_height="144dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:background="@drawable/shape_sffe7da_rt12"
+                            android:paddingHorizontal="12dp"
+                            android:paddingTop="8dp">
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_order_execute_time"
-                            style="@style/Font_52_black_85"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:fontFamily="@font/money"
-                            android:gravity="center"
-                            android:text="@{vm.remainingTimeVal}"
-                            app:layout_constraintBottom_toBottomOf="@id/cd_order_execute_time"
-                            app:layout_constraintEnd_toEndOf="@id/cd_order_execute_time"
-                            app:layout_constraintStart_toStartOf="@id/cd_order_execute_time"
-                            app:layout_constraintTop_toTopOf="@id/cd_order_execute_time" />
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:src="@mipmap/icon_warning_tip" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_order_execute_time_prompt"
-                            style="@style/Font_20_black_85_bold"
-                            android:layout_width="wrap_content"
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/Font_14_ff630e"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:gravity="center"
+                                android:text="@{avm.orderDetails.errorDesc + @string/order_error_prompt}"
+                                app:visibility="@{null != avm.orderDetails.errorDesc &amp;&amp; avm.orderDetails.errorDesc.length() > 0}"
+                                tools:text="XX故障，请联系商家处理。若运行正常请忽略本条提醒。" />
+                        </LinearLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="42dp"
-                            android:text="@string/order_execute_time_prompt"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/cd_order_execute_time" />
+                            android:layout_marginTop="56dp"
+                            android:background="@drawable/shape_sffffff_r12"
+                            android:paddingHorizontal="42dp"
+                            android:paddingBottom="28dp">
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_order_execute_prompt"
-                            style="@style/Font_14_black_45"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="42dp"
-                            android:gravity="center"
-                            android:text="@string/order_execute_prompt"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_order_execute_time_prompt" />
+                            <com.yunshang.haile_life.ui.view.RingCountDown
+                                android:id="@+id/cd_order_execute_time"
+                                android:layout_width="144dp"
+                                android:layout_height="144dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.lsy.framelib.ui.weight.SingleTapTextView
-                            android:id="@+id/tv_order_execute_coerce_device"
-                            style="@style/font_14_04D1E5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="@{2 > vm.coerceDeviceCount &amp;&amp; 0L == vm.coerceDeviceTime}"
-                            android:paddingHorizontal="19dp"
-                            android:text="@string/coerce_device"
-                            app:layout_constraintEnd_toStartOf="@id/tv_order_execute_device_repairs"
-                            app:layout_constraintHorizontal_chainStyle="packed"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_order_execute_time"
+                                style="@style/Font_52_black_85"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:fontFamily="@font/money"
+                                android:gravity="center"
+                                android:text="@{vm.remainingTimeVal}"
+                                app:layout_constraintBottom_toBottomOf="@id/cd_order_execute_time"
+                                app:layout_constraintEnd_toEndOf="@id/cd_order_execute_time"
+                                app:layout_constraintStart_toStartOf="@id/cd_order_execute_time"
+                                app:layout_constraintTop_toTopOf="@id/cd_order_execute_time" />
 
-                        <com.lsy.framelib.ui.weight.SingleTapTextView
-                            android:id="@+id/tv_order_execute_device_repairs"
-                            style="@style/font_14_04D1E5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="19dp"
-                            android:text="@string/device_repairs"
-                            app:layout_constraintEnd_toStartOf="@id/tv_order_execute_contact_shop"
-                            app:layout_constraintStart_toEndOf="@id/tv_order_execute_coerce_device"
-                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop"
-                            app:visibility="@{avm.orderDetails.canSubmitFix}" />
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_order_execute_time_prompt"
+                                style="@style/Font_20_black_85_bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="42dp"
+                                android:text="@string/order_execute_time_prompt"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/cd_order_execute_time" />
 
-                        <com.lsy.framelib.ui.weight.SingleTapTextView
-                            android:id="@+id/tv_order_execute_contact_shop"
-                            style="@style/font_14_04D1E5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="45dp"
-                            android:paddingHorizontal="19dp"
-                            android:text="@string/contact_shop"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tv_order_execute_device_repairs"
-                            app:layout_constraintTop_toBottomOf="@id/tv_order_execute_prompt"/>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_order_execute_prompt"
+                                style="@style/Font_14_black_45"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="42dp"
+                                android:gravity="center"
+                                android:text="@string/order_execute_prompt"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/tv_order_execute_time_prompt" />
 
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="0dp"
-                            android:background="@color/color_cccccc"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
-                            app:layout_constraintStart_toStartOf="@id/tv_order_execute_device_repairs"
-                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop"
-                            app:visibility="@{avm.orderDetails.canSubmitFix}" />
+                            <com.lsy.framelib.ui.weight.SingleTapTextView
+                                android:id="@+id/tv_order_execute_coerce_device"
+                                style="@style/font_14_04D1E5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="@{2 > vm.coerceDeviceCount &amp;&amp; 0L == vm.coerceDeviceTime}"
+                                android:paddingHorizontal="19dp"
+                                android:text="@string/coerce_device"
+                                app:layout_constraintEnd_toStartOf="@id/tv_order_execute_device_repairs"
+                                app:layout_constraintHorizontal_chainStyle="packed"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
 
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="0dp"
-                            android:background="@color/color_cccccc"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
-                            app:layout_constraintStart_toStartOf="@id/tv_order_execute_contact_shop"
-                            app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
+                            <com.lsy.framelib.ui.weight.SingleTapTextView
+                                android:id="@+id/tv_order_execute_device_repairs"
+                                style="@style/font_14_04D1E5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="19dp"
+                                android:text="@string/device_repairs"
+                                app:layout_constraintEnd_toStartOf="@id/tv_order_execute_contact_shop"
+                                app:layout_constraintStart_toEndOf="@id/tv_order_execute_coerce_device"
+                                app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop"
+                                app:visibility="@{avm.orderDetails.canSubmitFix}" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <com.lsy.framelib.ui.weight.SingleTapTextView
+                                android:id="@+id/tv_order_execute_contact_shop"
+                                style="@style/font_14_04D1E5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="45dp"
+                                android:paddingHorizontal="19dp"
+                                android:text="@string/contact_shop"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/tv_order_execute_device_repairs"
+                                app:layout_constraintTop_toBottomOf="@id/tv_order_execute_prompt" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="0dp"
+                                android:background="@color/color_cccccc"
+                                app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
+                                app:layout_constraintStart_toStartOf="@id/tv_order_execute_device_repairs"
+                                app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop"
+                                app:visibility="@{avm.orderDetails.canSubmitFix}" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="0dp"
+                                android:background="@color/color_cccccc"
+                                app:layout_constraintBottom_toBottomOf="@id/tv_order_execute_contact_shop"
+                                app:layout_constraintStart_toStartOf="@id/tv_order_execute_contact_shop"
+                                app:layout_constraintTop_toTopOf="@id/tv_order_execute_contact_shop" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </FrameLayout>
 
                     <include
                         android:id="@+id/include_order_info"
@@ -160,8 +189,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         app:order="@{avm.orderDetails}"
-                        app:showState="@{true}"
-                        app:showCancel="@{true}" />
+                        app:showCancel="@{true}"
+                        app:showState="@{true}" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
