@@ -24,7 +24,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/Font_14_black_85"
-            android:layout_width="wrap_content"
+            android:layout_width="32dp"
             android:layout_height="wrap_content"
             android:text="@{child.name}"
             tools:text="环境" />

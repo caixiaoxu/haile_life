@@ -174,7 +174,7 @@ class EvaluateReplyBottomSheetDialog(private val refresh: () -> Unit) :
 
         mViewModel.replayNum.observe(viewLifecycleOwner) {
             mBinding.tvEvaluateReplyDialogTitle.text =
-                "商家回复${if (it.isGreaterThan0()) "·$it" else ""}"
+                "评价回复${if (it.isGreaterThan0()) "·$it" else ""}"
         }
 
         LiveDataBus.with(BusEvents.EVALUATE_REPLY_STATUS)?.observe(this) {

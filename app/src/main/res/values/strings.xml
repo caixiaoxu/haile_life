@@ -280,7 +280,7 @@
     <string name="appoint_order_use_prompt">请开启舱门，放入衣物</string>
     <string name="appoint_order_use_start_prompt">已放入衣物，启动设备</string>
 
-    <string name="order_evaluate_prompt">您的%1$d条评价被商家回复了哦 查看</string>
+    <string name="order_evaluate_prompt">您的%1$d条评价被回复了哦 查看</string>
     <string name="evaluate">评价</string>
     <string name="go_evaluate">去评价</string>
     <string name="issue_evaluate">发表评价</string>
