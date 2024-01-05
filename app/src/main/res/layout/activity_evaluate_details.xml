@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@{vm.evaluateDetails.reply}"
+                    android:text="@{vm.evaluateDetails.comment}"
                     tools:text="洗衣机烂的要死，上面盖子的铁锈沾水了往下滴我新买的羽绒服上面都沾上了还洗不掉！垃圾！" />
 
                 <GridLayout
