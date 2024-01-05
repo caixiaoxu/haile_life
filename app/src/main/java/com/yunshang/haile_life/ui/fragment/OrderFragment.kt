@@ -135,7 +135,7 @@ class OrderFragment : BaseBusinessFragment<FragmentOrderBinding, OrderViewModel>
                         ), content.length - 2, content.length
                     )
                 } else ""
-            mBinding.tvOrderListReplyPrompt.visibility(it.isGreaterThan0())
+            mBinding.tvOrderListReplyPrompt.visibility(it.isGreaterThan0() && mViewModel.curOrderStatus.value == 3)
         }
 
         mViewModel.orderStatus.observe(this) { list ->

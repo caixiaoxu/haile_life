@@ -41,6 +41,7 @@
             android:textColorHighlight="@color/transparent"
             android:gravity="center"
             android:layout_marginTop="12dp"
+            android:visibility="gone"
             style="@style/Font_14_black_85"/>
 
         <com.yunshang.haile_life.ui.view.refresh.CommonRefreshRecyclerView
