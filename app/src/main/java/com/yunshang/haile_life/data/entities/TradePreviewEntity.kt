@@ -84,7 +84,7 @@ data class TradePreviewGoodItem(
 data class TradePreviewPromotion(
     val available: Boolean,
     val discountPrice: String,
-    val options: List<TradePreviewParticipate>,
+    val options: List<TradePreviewParticipate>?,
     val originPrice: String,
     val participateList: List<TradePreviewParticipate>,
     val promotionProduct: Int,//1-限时特惠，2-商家优惠券，3-折扣卡，4-平台优惠券，5-海星折扣
@@ -120,15 +120,35 @@ data class TradePreviewParticipate(
     val realAmount: String,
     val used: Boolean,
     val forceUse: Boolean,//是否强制使用
-    val promotionDetail: TradePreviewPromotionDetail
+    val promotionDetail: TradePreviewPromotionDetail,
+    val unavailableDTOS: List<UnavailableDTOS>? = null
 ) {
     var isCheck = false
+
+    fun unavailableDTOSVal(): String = unavailableDTOS?.mapNotNull {
+        it.unavailableCodeVal().ifEmpty { null }
+    }?.joinToString("\n") ?: ""
 
     override fun equals(other: Any?): Boolean {
         if (other === this) return true
         if (other !is TradePreviewParticipate) return false
         if (other.promotionId == promotionId && other.assetId == assetId && other.shopId == shopId) return true
         return super.equals(other)
+    }
+}
+
+data class UnavailableDTOS(
+    val unavailableCode: Int? = null,
+    val unavailableReason: String? = null
+) {
+    fun unavailableCodeVal(): String = when (unavailableCode) {
+        in 10000 until 20000 -> "当前设备不可使用"
+        in 20000 until 30000 -> "当前时间不可使用"
+        in 30000 until 40000 -> "当前门店不可使用"
+        in 40000 until 50000 -> "当前金额不可使用"
+        in 60000 until 70000 -> "超出每周（日）使用张数限制"
+        in 70000 until 80000 -> "不允许在当前客户端使用"
+        else -> ""
     }
 }
 
@@ -212,7 +232,7 @@ data class TradePreviewPromotionDetail(
             else -> ""
         }
 
-    fun dealLineDateStr(): String = DateTimeUtils.formatDateTimeForStr(endAt, "yyyy/MM/dd") + "到期"
+    fun dealLineDateStr(): String = "本单限1张，" + DateTimeUtils.formatDateTimeForStr(endAt, "yyyy/MM/dd") + "到期"
 }
 
 data class SelfCleanInfo(

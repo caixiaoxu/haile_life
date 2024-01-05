@@ -15,6 +15,7 @@ import com.yunshang.haile_life.data.rule.ICommonBottomItemEntity
 data class SearchSelectParam(
     val id: Int,
     val name: String,
+    val origin: String? = null,
 ) : ICommonBottomItemEntity {
     override fun getTitle(): String = name
 }

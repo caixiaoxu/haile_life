@@ -1,9 +1,11 @@
 package com.yunshang.haile_life.ui.activity.marketing
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +19,12 @@ import com.yunshang.haile_life.databinding.ActivityDiscountCouponSelectorBinding
 import com.yunshang.haile_life.databinding.ItemDiscountCouponBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.adapter.CommonRecyclerAdapter
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 
 class DiscountCouponSelectorActivity :
     BaseBusinessActivity<ActivityDiscountCouponSelectorBinding, DiscountCouponSelectorViewModel>(
@@ -27,18 +35,27 @@ class DiscountCouponSelectorActivity :
         CommonRecyclerAdapter<ItemDiscountCouponBinding, TradePreviewParticipate>(
             R.layout.item_discount_coupon, BR.item
         ) { mItemBinding, pos, item ->
+            mViewModel.selectCouponIndicator.observe(this) {
+                mItemBinding?.canUse = 1 == it
+            }
+
             (mItemBinding?.root?.layoutParams as? ViewGroup.MarginLayoutParams)?.let {
-                it.topMargin = if (0 == pos) DimensionUtils.dip2px(this@DiscountCouponSelectorActivity, 12f) else 0
+                it.topMargin = if (0 == pos) DimensionUtils.dip2px(
+                    this@DiscountCouponSelectorActivity,
+                    12f
+                ) else 0
             }
 
             mItemBinding?.root?.setOnClickListener {
-                item.isCheck = !item.isCheck
-                // 移除之前旧数据
-                mViewModel.selectParticipate?.clear()
-                if (item.isCheck) {
-                    mViewModel.selectParticipate?.add(item)
+                if (1 == mViewModel.selectCouponIndicator.value){
+                    item.isCheck = !item.isCheck
+                    // 移除之前旧数据
+                    mViewModel.selectParticipate?.clear()
+                    if (item.isCheck) {
+                        mViewModel.selectParticipate?.add(item)
+                    }
+                    mViewModel.requestData()
                 }
-                mViewModel.requestData()
             }
         }
     }
@@ -49,7 +66,7 @@ class DiscountCouponSelectorActivity :
 
     override fun initIntent() {
         super.initIntent()
-        mViewModel.goods = IntentParams.OrderSubmitParams.parseGoods(intent) ?: mutableListOf()
+        mViewModel.orderNo = IntentParams.DiscountCouponSelectorParams.parseOrderNo(intent)
         mViewModel.promotionProduct =
             IntentParams.DiscountCouponSelectorParams.parsePromotionProduct(intent)
         mViewModel.selectParticipate =
@@ -60,6 +77,59 @@ class DiscountCouponSelectorActivity :
 
     override fun initEvent() {
         super.initEvent()
+        mViewModel.mCouponIndicators.observe(this) { status ->
+            mBinding.indicatorDiscountCouponStatus.navigator =
+                CommonNavigator(this@DiscountCouponSelectorActivity).apply {
+                    isAdjustMode = true
+                    adapter = object : CommonNavigatorAdapter() {
+                        override fun getCount(): Int = status.size
+
+                        override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
+                            return SimplePagerTitleView(context).apply {
+                                normalColor =
+                                    ContextCompat.getColor(
+                                        this@DiscountCouponSelectorActivity,
+                                        R.color.color_black_65
+                                    )
+                                selectedColor =
+                                    ContextCompat.getColor(
+                                        this@DiscountCouponSelectorActivity,
+                                        R.color.color_black_85
+                                    )
+                                status[index].run {
+                                    text = title + if (num > 0) "（${num}张）" else ""
+                                    setOnClickListener {
+                                        mViewModel.selectCouponIndicator.value = value
+                                        notifyPromotionList()
+                                        onPageSelected(index)
+                                        notifyDataSetChanged()
+                                    }
+                                }
+                            }
+                        }
+
+                        override fun getIndicator(context: Context?): IPagerIndicator {
+                            return LinePagerIndicator(context).apply {
+                                mode = LinePagerIndicator.MODE_EXACTLY
+                                lineWidth =
+                                    DimensionUtils.dip2px(this@DiscountCouponSelectorActivity, 45f)
+                                        .toFloat()
+                                setColors(
+                                    ContextCompat.getColor(
+                                        this@DiscountCouponSelectorActivity,
+                                        R.color.colorPrimary
+                                    )
+                                )
+                            }
+                        }
+
+                        override fun getTitleWeight(context: Context?, index: Int): Float {
+                            return 1f
+                        }
+                    }
+                }
+        }
+
         mViewModel.tradePreview.observe(this) {
             it?.let { trade ->
                 // 已选优惠
@@ -72,29 +142,47 @@ class DiscountCouponSelectorActivity :
                                     addAll(promotion.participateList)
                                 }
                             }
-                        if (promotion.options.isNotEmpty()) {
-                            mAdapter.refreshList(promotion.options.filter { item -> item.available }
-                                .also { list ->
-                                    val idList = promotion.participateList.map { item ->
-                                        "${item.promotionId}-${item.assetId}-${item.shopId}"
-                                    }
-                                    list.forEach { item ->
-                                        item.isCheck =
-                                            "${item.promotionId}-${item.assetId}-${item.shopId}" in idList
-                                    }
-                                }.toMutableList(), true)
-                        }
+                        notifyPromotionList()
                     }
             }
         }
     }
 
+    /**
+     * 刷新优惠券数据
+     */
+    private fun notifyPromotionList() {
+        mViewModel.tradePreview.value?.promotionList?.find { item -> mViewModel.promotionProduct == item.promotionProduct }
+            ?.let { promotion ->
+                val list =
+                    promotion.options?.filter { it.available == (1 == mViewModel.selectCouponIndicator.value) }
+                if (list.isNullOrEmpty()) {
+                    mBinding.rvDiscountCouponSelectorList.changeStatusView(true)
+                } else {
+                    mBinding.rvDiscountCouponSelectorList.changeStatusView(false)
+                    mAdapter.refreshList(list.also {
+                        val idList = promotion.participateList.map { item ->
+                            "${item.promotionId}-${item.assetId}-${item.shopId}"
+                        }
+                        list.forEach { item ->
+                            item.isCheck =
+                                "${item.promotionId}-${item.assetId}-${item.shopId}" in idList
+                        }
+                    }.toMutableList(), true)
+                }
+            }
+    }
+
     override fun initView() {
         window.statusBarColor = Color.WHITE
 
-        mBinding.rvDiscountCouponSelectorList.layoutManager = LinearLayoutManager(this)
+        mBinding.rvDiscountCouponSelectorList.recyclerView.layoutManager = LinearLayoutManager(this)
+        mBinding.rvDiscountCouponSelectorList.setListStatus(
+            R.mipmap.icon_list_coupon_empty,
+            R.string.empty_coupon
+        )
         ResourcesCompat.getDrawable(resources, R.drawable.divide_size8, null)?.let {
-            mBinding.rvDiscountCouponSelectorList.addItemDecoration(
+            mBinding.rvDiscountCouponSelectorList.recyclerView.addItemDecoration(
                 DividerItemDecoration(
                     this,
                     DividerItemDecoration.VERTICAL
@@ -102,7 +190,7 @@ class DiscountCouponSelectorActivity :
                     setDrawable(it)
                 })
         }
-        mBinding.rvDiscountCouponSelectorList.adapter = mAdapter
+        mBinding.rvDiscountCouponSelectorList.recyclerView.adapter = mAdapter
 
         mBinding.btnDiscountCouponSelectorSure.setOnClickListener {
             setResult(RESULT_OK, Intent().apply {

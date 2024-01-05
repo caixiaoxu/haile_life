@@ -18,6 +18,8 @@ import com.yunshang.haile_life.data.entities.UserInfoEntity
 object SPRepository {
     private const val SP_NAME: String = "default_name"
 
+    private const val SP_SELECT_ENV: String = "select_env"
+
     private const val SP_SCAN_ORDER_CONFIG_NO_PROMPT = "sp_scan_order_config_no_prompt"
 //    private const val SP_SCAN_APPOINT_ORDER_CONFIG_NO_PROMPT = "sp_scan_appoint_order_config_no_prompt"
 
@@ -30,6 +32,13 @@ object SPRepository {
     private const val SP_CHECK_UPDATE_TIME = "sp_check_update_time"
 
     private val sp: SPUtils by lazy { SPUtils.getInstance(SP_NAME) }
+
+    /**
+     * 选择的环境
+     */
+    var selectEnv: String?
+        get() = sp.getString(SP_SELECT_ENV)
+        set(value) = sp.put(SP_SELECT_ENV, value)
 
     /**
      * 判断是否同意了隐私协议

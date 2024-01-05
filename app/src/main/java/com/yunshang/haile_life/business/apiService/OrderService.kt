@@ -89,6 +89,9 @@ interface OrderService {
     @POST("/trade/underway/preview")
     suspend fun requestUnderWayOrderPreview(@Body body: RequestBody): ResponseWrapper<TradePreviewEntity>
 
+    @POST("trade/underway/preview/V2")
+    suspend fun requestUnderWayOrderPreviewV2(@Body body: RequestBody): ResponseWrapper<TradePreviewEntity>
+
     @POST("/trade/underway/create")
     suspend fun createUnderWayOrder(@Body body: RequestBody): ResponseWrapper<OrderSubmitResultEntity>
 

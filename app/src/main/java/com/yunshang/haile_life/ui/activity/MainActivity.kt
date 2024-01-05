@@ -2,23 +2,24 @@ package com.yunshang.haile_life.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.databinding.DataBindingUtil
 import com.github.penfeizhou.animation.apng.APNGDrawable
 import com.github.penfeizhou.animation.loader.AssetStreamLoader
 import com.king.camera.scan.CameraScan
 import com.king.wechat.qrcode.WeChatQRCodeDetector
 import com.lsy.framelib.async.LiveDataBus
-import com.lsy.framelib.utils.ActivityUtils
-import com.lsy.framelib.utils.AppPackageUtils
-import com.lsy.framelib.utils.SToast
-import com.lsy.framelib.utils.SystemPermissionHelper
+import com.lsy.framelib.utils.*
 import com.tencent.map.geolocation.TencentLocationManager
 import com.yunshang.haile_life.BR
+import com.yunshang.haile_life.BuildConfig
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.business.vm.MainViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
+import com.yunshang.haile_life.data.agruments.SearchSelectParam
 import com.yunshang.haile_life.data.entities.AppVersionEntity
 import com.yunshang.haile_life.data.model.OnDownloadProgressListener
 import com.yunshang.haile_life.data.model.SPRepository
@@ -31,6 +32,8 @@ import com.yunshang.haile_life.ui.activity.order.DrinkingScanOrderActivity
 import com.yunshang.haile_life.ui.activity.order.ScanOrderActivity
 import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.activity.shop.StarfishRefundListActivity
+import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
+import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.Hint3SecondDialog
 import com.yunshang.haile_life.ui.view.dialog.UpdateAppDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
@@ -263,6 +266,31 @@ class MainActivity :
     }
 
     override fun initView() {
+        if (BuildConfig.DEBUG) {
+            mBinding.ibChangeEnv.visibility(true)
+            mBinding.ibChangeEnv.setOnClickListener {
+                val envList = listOf(
+                    SearchSelectParam(0, "120", "http://192.168.5.120:9081"),
+                    SearchSelectParam(1, "130", "http://192.168.5.130:9081"),
+                    SearchSelectParam(2, "140", "http://192.168.5.140:9081"),
+                    SearchSelectParam(3, "20", "http://192.168.5.20:9081"),
+                    SearchSelectParam(4, "预发", "https://pre-user.haier-ioc.com"),
+                )
+                CommonBottomSheetDialog.Builder(
+                    title = "切换环境", list = envList
+                ).apply {
+                    selectModel = 1
+                    onValueSureListener =
+                        object : CommonBottomSheetDialog.OnValueSureListener<SearchSelectParam> {
+                            override fun onValue(data: SearchSelectParam?) {
+                                SPRepository.selectEnv = data?.origin
+                                AppManager.finishAllActivity()
+                            }
+                        }
+                }.build().show(supportFragmentManager)
+            }
+        }
+
         // 从asset file中加载
         val assetLoader = AssetStreamLoader(this, "icon_main_scan_anim.png")
         // 创建APNG Drawable

@@ -231,7 +231,7 @@ class OrderStatusViewModel : BaseViewModel() {
 
     private suspend fun requestPreviewSync() {
         ApiRepository.dealApiResult(
-            mOrderRepo.requestUnderWayOrderPreview(
+            mOrderRepo.requestUnderWayOrderPreviewV2(
                 ApiRepository.createRequestBody(getCommonParams(true))
             )
         )?.let {

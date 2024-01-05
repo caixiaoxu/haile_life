@@ -181,7 +181,7 @@ class OrderPaySubmitFragment :
                     if (mBinding.includeOrderPaySubmitSpecs.llOrderGoodDiscounts.childCount > 0) {
                         mBinding.includeOrderPaySubmitSpecs.llOrderGoodDiscounts.removeAllViews()
                     }
-                    for (promotion in trade.promotionList.filter { item -> item.available }) {
+                    for (promotion in trade.promotionList.filter { item -> item.available && item.used }) {
                         val childBinding = DataBindingUtil.inflate<ItemOrderSubmitGoodItemBinding>(
                             inflater,
                             R.layout.item_order_submit_good_item,
@@ -208,7 +208,7 @@ class OrderPaySubmitFragment :
                                 }
                                 childBinding.value = StringUtils.getString(
                                     R.string.available_coupon_num,
-                                    promotion.options.filter { item -> item.available }.size
+                                    promotion.options?.filter { item -> item.available }?.size ?: 0
                                 )
                             } else {
                                 childBinding.endDraw = R.mipmap.icon_small_arrow_right
@@ -239,7 +239,8 @@ class OrderPaySubmitFragment :
                                                     trade.promotionList.filter { item -> promotion.promotionProduct != item.promotionProduct }
                                                         .flatMap { item ->
                                                             item.participateList
-                                                        }
+                                                        },
+                                                    mActivityViewModel.orderNo
                                                 )
                                             )
                                         }
@@ -259,7 +260,7 @@ class OrderPaySubmitFragment :
 
                                     mActivityViewModel.selectParticipate?.removeAll { item -> 5 == item.promotionProduct }
                                 } else {
-                                    if (promotion.options.isNotEmpty()) {
+                                    if (!promotion.options.isNullOrEmpty()) {
                                         mActivityViewModel.selectParticipate?.addAll(promotion.options)
                                     }
                                 }

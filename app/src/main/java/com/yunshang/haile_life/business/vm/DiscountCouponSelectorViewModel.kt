@@ -1,6 +1,8 @@
 package com.yunshang.haile_life.business.vm
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
@@ -9,9 +11,9 @@ import com.yunshang.haile_life.data.entities.TradePreviewEntity
 import com.yunshang.haile_life.data.entities.TradePreviewParticipate
 import com.yunshang.haile_life.data.entities.TradePreviewPromotion
 import com.yunshang.haile_life.data.model.ApiRepository
+import com.yunshang.haile_life.data.rule.IndicatorEntity
 import com.yunshang.haile_life.utils.DateTimeUtils
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * Title :
@@ -28,13 +30,14 @@ class DiscountCouponSelectorViewModel : BaseViewModel() {
 
     var goods: MutableList<IntentParams.OrderSubmitParams.OrderSubmitGood> = mutableListOf()
 
-    var appointmentTime: Long = -1L
+    var orderNo: String? = null
 
     var promotionProduct: Int = -1
 
     val promotion: MutableLiveData<TradePreviewPromotion> by lazy {
         MutableLiveData()
     }
+
     var selectParticipate: MutableList<TradePreviewParticipate>? = null
     var otherSelectParticipate: MutableList<TradePreviewParticipate>? = null
 
@@ -42,23 +45,27 @@ class DiscountCouponSelectorViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    fun requestData() {
-        if (goods.isEmpty()) return
+    val mCouponIndicators: LiveData<List<IndicatorEntity<Int>>> = tradePreview.map { trade ->
+        val num =
+            trade.promotionList.find { item -> promotionProduct == item.promotionProduct }?.options?.count { item -> item.available }
+                ?: 0
+        arrayListOf(
+            IndicatorEntity("可用优惠", num, 1),
+            IndicatorEntity("不可用", 0, 2),
+        )
+    }
 
-        val params = hashMapOf(
-            "autoSelectPromotion" to false,
-            "purchaseList" to goods.map {
-                hashMapOf(
-                    "goodsId" to it.goodId,
-                    "goodsItemId" to it.goodItmId,
-                    "soldType" to if (DeviceCategory.isDryerOrHairOrDispenser(it.categoryCode)) 2 else 1,
-                    "num" to it.num,
-                )
-            },
+    var selectCouponIndicator: MutableLiveData<Int> = MutableLiveData(1)
+
+    fun requestData() {
+        if (orderNo.isNullOrEmpty()) return
+
+        val params = hashMapOf<String, Any?>(
+            "orderNo" to orderNo,
+            "autoSelectPromotion" to false
         )
 
         if (null != selectParticipate) {
-
             val list = mutableListOf<TradePreviewParticipate>()
             otherSelectParticipate?.let {
                 list.addAll(it)
@@ -66,7 +73,6 @@ class DiscountCouponSelectorViewModel : BaseViewModel() {
             selectParticipate?.let {
                 list.addAll(it)
             }
-
             params["promotionList"] = list.map {
                 hashMapOf(
                     "promotionId" to it.promotionId,
@@ -77,18 +83,9 @@ class DiscountCouponSelectorViewModel : BaseViewModel() {
             }
         }
 
-        if (-1L != appointmentTime) {
-            val appoint = hashMapOf(
-                "reserveTime" to DateTimeUtils.formatDateTime(Date(appointmentTime))
-            )
-            params["optionalInfo"] = hashMapOf(
-                "reserveInfo" to appoint
-            )
-        }
-
         launch({
             ApiRepository.dealApiResult(
-                mOrderRepo.requestTradePreview(
+                mOrderRepo.requestUnderWayOrderPreviewV2(
                     ApiRepository.createRequestBody(params)
                 )
             )?.let {
