@@ -16,8 +16,8 @@ import com.yunshang.haile_life.business.vm.OrderExecuteViewModel
 import com.yunshang.haile_life.business.vm.OrderStatusViewModel
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
-import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.agruments.SearchSelectParam
+import com.yunshang.haile_life.data.entities.GoodsScanEntity
 import com.yunshang.haile_life.data.entities.OrderItem
 import com.yunshang.haile_life.data.entities.PromotionParticipation
 import com.yunshang.haile_life.data.extend.toRemove0Str
@@ -231,5 +231,8 @@ class OrderExecuteFragment :
     }
 
     override fun initData() {
+        if (!mActivityViewModel.isRefreshError) {
+            mActivityViewModel.timerRefreshOrderDetails()
+        }
     }
 }

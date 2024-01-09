@@ -9,7 +9,7 @@
  * 作者姓名 修改时间 版本号 描述
  */
 object EnvConfig {
-    const val HTTP_BASE_DEBUG = "\"http://192.168.5.150:9081\""
+    const val HTTP_BASE_DEBUG = "\"http://192.168.5.20:9081\""
     const val HTTP_BASE_PRE = "\"https://pre-user.haier-ioc.com\""
     const val HTTP_BASE_RELEASE = "\"https://yshz-user.haier-ioc.com\""
 }
