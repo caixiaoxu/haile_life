@@ -122,7 +122,8 @@ class ShopPositionDetailActivity :
                                     dialogBgResource = R.drawable.shape_dialog_bg
                                 }.build().show(supportFragmentManager)
                                 return@requestAppointmentInfo
-                            } else if (!(2 == detail.deviceState && true == detail.enableReserve
+                            } else if (!(((1 == detail.deviceState && true != detail.enableReserve)
+                                        || (true == detail.enableReserve && (1 == detail.deviceState || 1 == detail.reserveState)))
                                         && (DeviceCategory.isWashingOrShoes(detail.categoryCode) || DeviceCategory.isDryer(
                                     detail.categoryCode
                                 )))
@@ -335,7 +336,6 @@ class ShopPositionDetailActivity :
     override fun initIntent() {
         super.initIntent()
         mViewModel.positionId = IntentParams.IdParams.parseId(intent)
-
     }
 
     override fun initView() {
