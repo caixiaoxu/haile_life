@@ -1,6 +1,7 @@
 package com.yunshang.haile_life.ui.activity.order
 
 import android.content.Intent
+import android.net.Uri
 import android.text.style.AbsoluteSizeSpan
 import android.view.View
 import com.lsy.framelib.async.LiveDataBus
@@ -19,6 +20,7 @@ import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.utils.string.StringUtils
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
+
 
 class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayViewModel>(
     OrderPayViewModel::class.java, BR.vm
@@ -79,7 +81,7 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
             SToast.showToast(this@OrderPayActivity, R.string.pay_success)
 
             if (mViewModel.isAppoint) {
-                mViewModel.orderNo?.let {orderNo->
+                mViewModel.orderNo?.let { orderNo ->
                     startActivity(
                         Intent(
                             this@OrderPayActivity,
@@ -133,13 +135,29 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
                         mViewModel.requestPrePay(this)
                     }.show(supportFragmentManager)
                 }
-            } else mViewModel.requestPrePay(this){
-                // pages/pay/cashier?orderNo=1020240109144516781487
-                WeChatHelper.openWeChatMiniProgram(
-                    "pages/pay/cashier?orderNo=$it",
-                    null,
-                    "gh_102c08f8d7a4"
-                )
+            } else mViewModel.requestPrePay(this) { orderNo, payMethod ->
+                val page = "pages/pay/cashier?orderNo=$orderNo"
+                if (103 == payMethod) {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("alipays://platformapi/startapp?appId=2021003183687122&page=$page")
+                    )
+                    startActivity(intent)
+                } else {
+                    // pages/pay/cashier?orderNo=1020240109144516781487
+                    WeChatHelper.openWeChatMiniProgram(
+                        page,
+                        null,
+                        "gh_102c08f8d7a4"
+                    )
+                }
+
+                // 开始轮询
+                orderNo?.let {
+                    mViewModel.eachRefreshPayStatus(it, true) {
+                        finish()
+                    }
+                }
             }
         }
     }

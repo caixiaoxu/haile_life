@@ -2,6 +2,7 @@ package com.yunshang.haile_life.ui.activity.order
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -308,10 +309,10 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                         this@OrderSubmitActivity,
                         OrderPaySuccessActivity::class.java
                     ).apply {
-                        if (mViewModel.orderNo.isNotEmpty()) {
+                        if (!mViewModel.orderNo.isNullOrEmpty()) {
                             putExtras(
                                 IntentParams.OrderParams.pack(
-                                    mViewModel.orderNo,
+                                    mViewModel.orderNo!!,
                                     !(mViewModel.reserveTime.value.isNullOrEmpty())
                                 )
                             )
@@ -329,7 +330,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
     override fun initView() {
         window.statusBarColor = Color.WHITE
 
-        mBinding.includeOrderSubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, checkedId ->
+        mBinding.includeOrderSubmitPayWay.rgOrderSubmitPayWay.setOnCheckedChangeListener { _, _ ->
             changePayWay()
         }
         mBinding.btnOrderSubmitPay.setOnClickListener {
@@ -358,13 +359,27 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                         mViewModel.requestPrePay(this)
                     }.show(supportFragmentManager)
                 }
-            } else mViewModel.requestPrePay(this) {
-                // pages/pay/cashier?orderNo=1020240109144516781487
-                WeChatHelper.openWeChatMiniProgram(
-                    "pages/pay/cashier?orderNo=$it",
-                    null,
-                    "gh_102c08f8d7a4"
-                )
+            } else mViewModel.requestPrePay(this) { orderNo, payMethod ->
+                val page = "pages/pay/cashier?orderNo=$orderNo"
+                if (103 == payMethod) {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("alipays://platformapi/startapp?appId=2021003183687122&page=$page")
+                    )
+                    startActivity(intent)
+                } else {
+                    // pages/pay/cashier?orderNo=1020240109144516781487
+                    WeChatHelper.openWeChatMiniProgram(
+                        page,
+                        null,
+                        "gh_102c08f8d7a4"
+                    )
+                }
+                orderNo?.let {
+                    mViewModel.eachRefreshPayStatus(it, true) {
+                        goOrderDetail()
+                    }
+                }
             }
         }
     }
@@ -389,7 +404,7 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
 
         Handler(Looper.getMainLooper()).postDelayed({
             // 如果是未支付完成，并且订单不为空
-            if (!mViewModel.isPayFinish && mViewModel.orderNo.isNotEmpty()) {
+            if (!mViewModel.isPayFinish && !mViewModel.orderNo.isNullOrEmpty()) {
                 goOrderDetail()
             }
         }, 300)
@@ -401,12 +416,14 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                 this@OrderSubmitActivity,
                 OrderDetailActivity::class.java
             ).apply {
-                putExtras(
-                    IntentParams.OrderParams.pack(
-                        mViewModel.orderNo,
-                        !(mViewModel.reserveTime.value.isNullOrEmpty())
+                if (!mViewModel.orderNo.isNullOrEmpty()) {
+                    putExtras(
+                        IntentParams.OrderParams.pack(
+                            mViewModel.orderNo!!,
+                            !(mViewModel.reserveTime.value.isNullOrEmpty())
+                        )
                     )
-                )
+                }
             })
         AppManager.finishAllActivityForTag(ActivityTag.TAG_ORDER_PAY)
     }

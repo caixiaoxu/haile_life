@@ -2,6 +2,7 @@ package com.yunshang.haile_life.ui.fragment
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -442,13 +443,27 @@ class OrderPaySubmitFragment :
                     mActivityViewModel.requestPrePay(requireContext())
                 }.show(childFragmentManager)
             }
-        } else mActivityViewModel.requestPrePay(requireContext()){
-            // pages/pay/cashier?orderNo=1020240109144516781487
-            WeChatHelper.openWeChatMiniProgram(
-                "pages/pay/cashier?orderNo=$it",
-                null,
-                "gh_102c08f8d7a4"
-            )
+        } else mActivityViewModel.requestPrePay(requireContext()) { orderNo, payMethod ->
+            val page = "pages/pay/cashier?orderNo=$orderNo"
+            if (103 == payMethod) {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("alipays://platformapi/startapp?appId=2021003183687122&page=$page")
+                )
+                startActivity(intent)
+            } else {
+                // pages/pay/cashier?orderNo=1020240109144516781487
+                WeChatHelper.openWeChatMiniProgram(
+                    page,
+                    null,
+                    "gh_102c08f8d7a4"
+                )
+            }
+            orderNo?.let {
+                mViewModel.eachRefreshPayStatus(it, true) {
+                    mActivityViewModel.requestData(true)
+                }
+            }
         }
     }
 

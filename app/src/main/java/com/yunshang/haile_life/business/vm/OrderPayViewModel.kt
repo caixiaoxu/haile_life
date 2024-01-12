@@ -2,6 +2,8 @@ package com.yunshang.haile_life.business.vm
 
 import android.app.Activity
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -122,7 +124,10 @@ class OrderPayViewModel : BaseViewModel() {
         }, showLoading = false)
     }
 
-    fun requestPrePay(context: Context, callBack: ((orderNo: String?) -> Unit)? = null) {
+    fun requestPrePay(
+        context: Context,
+        callBack: ((orderNo: String?, payMethod: Int) -> Unit)? = null
+    ) {
         if (-1 == payMethod) return
         if (orderNo.isNullOrEmpty()) return
 
@@ -133,7 +138,7 @@ class OrderPayViewModel : BaseViewModel() {
                 }
             }
 
-            callBack?.invoke(orderNo) ?:run {
+            callBack?.invoke(orderNo, payMethod) ?: run {
                 ApiRepository.dealApiResult(
                     mOrderRepo.prePay(
                         ApiRepository.createRequestBody(
@@ -233,5 +238,40 @@ class OrderPayViewModel : BaseViewModel() {
             }
             false
         } else true
+    }
+
+
+    private var isEachPayStatus = false
+    fun eachRefreshPayStatus(orderNo: String, reStart: Boolean = false, callBack: () -> Unit) {
+        if (isEachPayStatus == reStart) return
+
+        if (!isEachPayStatus) {
+            isEachPayStatus = true
+        }
+
+        launch({
+            ApiRepository.dealApiResult(mOrderRepo.requestOrderDetailSimple(orderNo))
+                ?.let {
+                    if (isEachPayStatus) {
+                        if (it.state != 100) {
+                            isEachPayStatus = false
+                            withContext(Dispatchers.Main) {
+                                callBack()
+                            }
+                        } else {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                if (isEachPayStatus) {
+                                    eachRefreshPayStatus(orderNo, false, callBack)
+                                }
+                            }, 3000)
+                        }
+                    }
+                }
+        })
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        isEachPayStatus = false
     }
 }

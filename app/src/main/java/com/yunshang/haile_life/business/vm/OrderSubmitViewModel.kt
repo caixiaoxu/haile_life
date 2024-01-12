@@ -3,6 +3,8 @@ package com.yunshang.haile_life.business.vm
 import android.app.Activity
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
@@ -137,7 +139,8 @@ class OrderSubmitViewModel : BaseViewModel() {
     //支付方式 1001-余额 103--支付宝app支付 203--微信app支付
     var payMethod: Int = -1
 
-    var orderNo: String = ""
+    var orderNo: String? = ""
+    var hasPayOrderNo: Boolean = false
     val prepayParam: MutableLiveData<String> by lazy {
         MutableLiveData()
     }
@@ -200,7 +203,10 @@ class OrderSubmitViewModel : BaseViewModel() {
         })
     }
 
-    fun requestPrePay(context: Context, callBack: ((orderNo: String) -> Unit)? = null) {
+    fun requestPrePay(
+        context: Context,
+        callBack: ((orderNo: String?, payMethod: Int) -> Unit)? = null
+    ) {
         if (goods.value.isNullOrEmpty()) return
 
         launch({
@@ -212,22 +218,25 @@ class OrderSubmitViewModel : BaseViewModel() {
             }
 //            }
 
-            ApiRepository.dealApiResult(
+            (if (hasPayOrderNo) orderNo else ApiRepository.dealApiResult(
                 mOrderRepo.createTrade(
                     ApiRepository.createRequestBody(
                         getCommonParams(false)
                     )
                 )
             )?.let {
-                orderNo = it.orderNo
+                hasPayOrderNo = true
+                it.orderNo
+            })?.let { no ->
+                orderNo = no
                 LiveDataBus.post(BusEvents.ORDER_SUBMIT_STATUS, true)
 
-                callBack?.invoke(it.orderNo) ?: run {
+                callBack?.invoke(orderNo, payMethod) ?: run {
                     ApiRepository.dealApiResult(
                         mOrderRepo.prePay(
                             ApiRepository.createRequestBody(
                                 hashMapOf(
-                                    "orderNo" to it.orderNo,
+                                    "orderNo" to orderNo,
                                     "payMethod" to payMethod
                                 )
                             )
@@ -271,7 +280,7 @@ class OrderSubmitViewModel : BaseViewModel() {
                 return@launch
             }
 
-            if (orderNo.isEmpty() || -1 == payMethod) {
+            if (orderNo.isNullOrEmpty() || -1 == payMethod) {
                 return@launch
             }
 
@@ -280,7 +289,7 @@ class OrderSubmitViewModel : BaseViewModel() {
     }
 
     fun requestAsyncPayAsync() {
-        if (orderNo.isEmpty() || -1 == payMethod) {
+        if (orderNo.isNullOrEmpty() || -1 == payMethod) {
             return
         }
         launch({
@@ -324,5 +333,39 @@ class OrderSubmitViewModel : BaseViewModel() {
             }
             false
         } else true
+    }
+
+    private var isEachPayStatus = false
+    fun eachRefreshPayStatus(orderNo: String, reStart: Boolean = false, callBack: () -> Unit) {
+        if (isEachPayStatus == reStart) return
+
+        if (!isEachPayStatus) {
+            isEachPayStatus = true
+        }
+
+        launch({
+            ApiRepository.dealApiResult(mOrderRepo.requestOrderDetailSimple(orderNo))
+                ?.let {
+                    if (isEachPayStatus) {
+                        if (it.state != 100) {
+                            isEachPayStatus = false
+                            withContext(Dispatchers.Main) {
+                                callBack()
+                            }
+                        } else {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                if (isEachPayStatus) {
+                                    eachRefreshPayStatus(orderNo, false, callBack)
+                                }
+                            }, 3000)
+                        }
+                    }
+                }
+        })
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        isEachPayStatus = false
     }
 }

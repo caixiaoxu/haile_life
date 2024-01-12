@@ -1,5 +1,7 @@
 package com.yunshang.haile_life.business.vm
 
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
@@ -10,9 +12,14 @@ import com.lsy.framelib.data.constants.Constants
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.R
+import com.yunshang.haile_life.business.apiService.OrderService
 import com.yunshang.haile_life.data.extend.isGreaterThan0
+import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.string.StringUtils
-import java.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.util.Timer
+import java.util.TimerTask
 
 /**
  * Title :
@@ -25,6 +32,7 @@ import java.util.*
  * 作者姓名 修改时间 版本号 描述
  */
 class OrderPaySubmitViewModel : BaseViewModel() {
+    private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
     val isDryer: MutableLiveData<Boolean> by lazy { MutableLiveData() }
 
     val inValidOrder: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -76,8 +84,38 @@ class OrderPaySubmitViewModel : BaseViewModel() {
         }, 0, 1000)
     }
 
+    private var isEachPayStatus = false
+    fun eachRefreshPayStatus(orderNo: String, reStart: Boolean = false, callBack: () -> Unit) {
+        if (isEachPayStatus == reStart) return
+
+        if (!isEachPayStatus) {
+            isEachPayStatus = true
+        }
+
+        launch({
+            ApiRepository.dealApiResult(mOrderRepo.requestOrderDetailSimple(orderNo))
+                ?.let {
+                    if (isEachPayStatus) {
+                        if (it.state != 100) {
+                            isEachPayStatus = false
+                            withContext(Dispatchers.Main) {
+                                callBack()
+                            }
+                        } else {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                if (isEachPayStatus) {
+                                    eachRefreshPayStatus(orderNo, false, callBack)
+                                }
+                            }, 3000)
+                        }
+                    }
+                }
+        })
+    }
+
     override fun onCleared() {
         super.onCleared()
+        isEachPayStatus = false
         timer?.cancel()
         timer = null
     }

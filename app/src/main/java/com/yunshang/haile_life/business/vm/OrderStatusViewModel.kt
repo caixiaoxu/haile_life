@@ -36,6 +36,7 @@ class OrderStatusViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
 
     var orderNo: String? = null
+    var hasPayOrderNo: Boolean = false
 
     val orderDetails: MutableLiveData<OrderEntity> by lazy { MutableLiveData() }
 
@@ -264,7 +265,10 @@ class OrderStatusViewModel : BaseViewModel() {
 
     var isPayFinish: Int = -1
 
-    fun requestPrePay(context: Context, callBack: ((orderNo: String?) -> Unit)? = null) {
+    fun requestPrePay(
+        context: Context,
+        callBack: ((orderNo: String?, payMethod: Int) -> Unit)? = null
+    ) {
         launch({
 //            if ("300" != orderDetails.value?.orderType) {
             orderDetails.value?.orderItemList?.firstOrNull()?.let { item ->
@@ -274,15 +278,18 @@ class OrderStatusViewModel : BaseViewModel() {
             }
 //            }
 
-            ApiRepository.dealApiResult(
+            (if (hasPayOrderNo) orderNo else ApiRepository.dealApiResult(
                 mOrderRepo.createUnderWayOrder(
                     ApiRepository.createRequestBody(
                         getCommonParams(false)
                     )
                 )
             )?.let {
-                orderNo = it.orderNo
-                callBack?.invoke(it.orderNo) ?: run {
+                hasPayOrderNo = true
+                it.orderNo
+            })?.let { no ->
+                orderNo = no
+                callBack?.invoke(orderNo, payMethod) ?: run {
                     ApiRepository.dealApiResult(
                         mOrderRepo.prePay(
                             ApiRepository.createRequestBody(
