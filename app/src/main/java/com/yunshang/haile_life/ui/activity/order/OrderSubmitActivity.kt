@@ -358,7 +358,14 @@ class OrderSubmitActivity : BaseBusinessActivity<ActivityOrderSubmitBinding, Ord
                         mViewModel.requestPrePay(this)
                     }.show(supportFragmentManager)
                 }
-            } else mViewModel.requestPrePay(this)
+            } else mViewModel.requestPrePay(this) {
+                // pages/pay/cashier?orderNo=1020240109144516781487
+                WeChatHelper.openWeChatMiniProgram(
+                    "pages/pay/cashier?orderNo=$it",
+                    null,
+                    "gh_102c08f8d7a4"
+                )
+            }
         }
     }
 

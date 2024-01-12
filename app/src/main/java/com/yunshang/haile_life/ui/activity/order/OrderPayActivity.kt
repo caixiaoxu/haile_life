@@ -125,7 +125,6 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
                     return@setOnClickListener
                 }
 
-
                 if (null != mViewModel.balance.value) {
                     BalancePaySureDialog(
                         mViewModel.balance.value!!.amount,
@@ -134,7 +133,14 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
                         mViewModel.requestPrePay(this)
                     }.show(supportFragmentManager)
                 }
-            } else mViewModel.requestPrePay(this)
+            } else mViewModel.requestPrePay(this){
+                // pages/pay/cashier?orderNo=1020240109144516781487
+                WeChatHelper.openWeChatMiniProgram(
+                    "pages/pay/cashier?orderNo=$it",
+                    null,
+                    "gh_102c08f8d7a4"
+                )
+            }
         }
     }
 

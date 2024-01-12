@@ -200,17 +200,17 @@ class OrderSubmitViewModel : BaseViewModel() {
         })
     }
 
-    fun requestPrePay(context: Context) {
+    fun requestPrePay(context: Context, callBack: ((orderNo: String) -> Unit)? = null) {
         if (goods.value.isNullOrEmpty()) return
 
         launch({
-            if (!isAppoint) {
-                goods.value!!.forEach {
-                    if (!verifyGoods(context, it)) {
-                        return@launch
-                    }
+//            if (!isAppoint) {
+            goods.value!!.forEach {
+                if (!verifyGoods(context, it)) {
+                    return@launch
                 }
             }
+//            }
 
             ApiRepository.dealApiResult(
                 mOrderRepo.createTrade(
@@ -221,30 +221,33 @@ class OrderSubmitViewModel : BaseViewModel() {
             )?.let {
                 orderNo = it.orderNo
                 LiveDataBus.post(BusEvents.ORDER_SUBMIT_STATUS, true)
-                ApiRepository.dealApiResult(
-                    mOrderRepo.prePay(
-                        ApiRepository.createRequestBody(
-                            hashMapOf(
-                                "orderNo" to it.orderNo,
-                                "payMethod" to payMethod
-                            )
-                        )
-                    )
-                )?.let { prePay ->
-                    if (1001 == payMethod) {
-                        ApiRepository.dealApiResult(
-                            mOrderRepo.balancePay(
-                                ApiRepository.createRequestBody(
-                                    hashMapOf(
-                                        "prepayParam" to prePay.prepayParam
-                                    )
+
+                callBack?.invoke(it.orderNo) ?: run {
+                    ApiRepository.dealApiResult(
+                        mOrderRepo.prePay(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "orderNo" to it.orderNo,
+                                    "payMethod" to payMethod
                                 )
                             )
-                        )?.let {
-                            requestAsyncPay()
+                        )
+                    )?.let { prePay ->
+                        if (1001 == payMethod) {
+                            ApiRepository.dealApiResult(
+                                mOrderRepo.balancePay(
+                                    ApiRepository.createRequestBody(
+                                        hashMapOf(
+                                            "prepayParam" to prePay.prepayParam
+                                        )
+                                    )
+                                )
+                            )?.let {
+                                requestAsyncPay()
+                            }
+                        } else {
+                            prepayParam.postValue(prePay.prepayParam)
                         }
-                    } else {
-                        prepayParam.postValue(prePay.prepayParam)
                     }
                 }
             }

@@ -106,12 +106,14 @@ class OrderStatusViewModel : BaseViewModel() {
                         //跳转到验证界面
                         requestData()
                     }
+
                     1 -> {
                         // 同一状态循环
                         Handler(Looper.getMainLooper()).postDelayed({
                             checkLineUp()
                         }, 3000)
                     }
+
                     else -> {
                         jump.postValue(1)
                     }
@@ -262,7 +264,7 @@ class OrderStatusViewModel : BaseViewModel() {
 
     var isPayFinish: Int = -1
 
-    fun requestPrePay(context: Context) {
+    fun requestPrePay(context: Context, callBack: ((orderNo: String?) -> Unit)? = null) {
         launch({
 //            if ("300" != orderDetails.value?.orderType) {
             orderDetails.value?.orderItemList?.firstOrNull()?.let { item ->
@@ -280,31 +282,33 @@ class OrderStatusViewModel : BaseViewModel() {
                 )
             )?.let {
                 orderNo = it.orderNo
-                ApiRepository.dealApiResult(
-                    mOrderRepo.prePay(
-                        ApiRepository.createRequestBody(
-                            hashMapOf(
-                                "orderNo" to orderNo,
-                                "payMethod" to payMethod
-                            )
-                        )
-                    )
-                )?.let { prePay ->
-                    isPayFinish = 1
-                    if (1001 == payMethod) {
-                        ApiRepository.dealApiResult(
-                            mOrderRepo.balancePay(
-                                ApiRepository.createRequestBody(
-                                    hashMapOf(
-                                        "prepayParam" to prePay.prepayParam
-                                    )
+                callBack?.invoke(it.orderNo) ?: run {
+                    ApiRepository.dealApiResult(
+                        mOrderRepo.prePay(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "orderNo" to orderNo,
+                                    "payMethod" to payMethod
                                 )
                             )
-                        )?.let {
-                            requestAsyncPay()
+                        )
+                    )?.let { prePay ->
+                        isPayFinish = 1
+                        if (1001 == payMethod) {
+                            ApiRepository.dealApiResult(
+                                mOrderRepo.balancePay(
+                                    ApiRepository.createRequestBody(
+                                        hashMapOf(
+                                            "prepayParam" to prePay.prepayParam
+                                        )
+                                    )
+                                )
+                            )?.let {
+                                requestAsyncPay()
+                            }
+                        } else {
+                            prepayParam.postValue(prePay.prepayParam)
                         }
-                    } else {
-                        prepayParam.postValue(prePay.prepayParam)
                     }
                 }
             }

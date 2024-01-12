@@ -122,7 +122,7 @@ class OrderPayViewModel : BaseViewModel() {
         }, showLoading = false)
     }
 
-    fun requestPrePay(context: Context) {
+    fun requestPrePay(context: Context, callBack: ((orderNo: String?) -> Unit)? = null) {
         if (-1 == payMethod) return
         if (orderNo.isNullOrEmpty()) return
 
@@ -133,30 +133,32 @@ class OrderPayViewModel : BaseViewModel() {
                 }
             }
 
-            ApiRepository.dealApiResult(
-                mOrderRepo.prePay(
-                    ApiRepository.createRequestBody(
-                        hashMapOf(
-                            "orderNo" to orderNo,
-                            "payMethod" to payMethod
-                        )
-                    )
-                )
-            )?.let { prePay ->
-                if (1001 == payMethod) {
-                    ApiRepository.dealApiResult(
-                        mOrderRepo.balancePay(
-                            ApiRepository.createRequestBody(
-                                hashMapOf(
-                                    "prepayParam" to prePay.prepayParam
-                                )
+            callBack?.invoke(orderNo) ?:run {
+                ApiRepository.dealApiResult(
+                    mOrderRepo.prePay(
+                        ApiRepository.createRequestBody(
+                            hashMapOf(
+                                "orderNo" to orderNo,
+                                "payMethod" to payMethod
                             )
                         )
-                    )?.let {
-                        requestAsyncPay()
+                    )
+                )?.let { prePay ->
+                    if (1001 == payMethod) {
+                        ApiRepository.dealApiResult(
+                            mOrderRepo.balancePay(
+                                ApiRepository.createRequestBody(
+                                    hashMapOf(
+                                        "prepayParam" to prePay.prepayParam
+                                    )
+                                )
+                            )
+                        )?.let {
+                            requestAsyncPay()
+                        }
+                    } else {
+                        prepayParam.postValue(prePay.prepayParam)
                     }
-                } else {
-                    prepayParam.postValue(prePay.prepayParam)
                 }
             }
         })

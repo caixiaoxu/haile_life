@@ -32,6 +32,7 @@ import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
+import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 class OrderPaySubmitFragment :
     BaseBusinessFragment<FragmentOrderPaySubmitBinding, OrderPaySubmitViewModel>(
@@ -441,7 +442,14 @@ class OrderPaySubmitFragment :
                     mActivityViewModel.requestPrePay(requireContext())
                 }.show(childFragmentManager)
             }
-        } else mActivityViewModel.requestPrePay(requireContext())
+        } else mActivityViewModel.requestPrePay(requireContext()){
+            // pages/pay/cashier?orderNo=1020240109144516781487
+            WeChatHelper.openWeChatMiniProgram(
+                "pages/pay/cashier?orderNo=$it",
+                null,
+                "gh_102c08f8d7a4"
+            )
+        }
     }
 
     /**
