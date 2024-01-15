@@ -263,6 +263,7 @@
     <string name="discount_price">已优惠</string>
     <string name="need_pay">需支付</string>
     <string name="order_time">下单时间</string>
+    <string name="reason_of_cancel">取消原因</string>
     <string name="other_attach">其他附加</string>
     <string name="other_attach_value">先筒自洁再洗衣</string>
     <string name="pay_now">立即支付</string>

@@ -76,7 +76,8 @@ data class OrderEntity(
     val redirectWorking: Boolean? = false,
     val fulfillInfo: FulfillInfo? = null,
     val canSubmitFix: Boolean = false,
-    val errorDesc: String? = null
+    val errorDesc: String? = null,
+    val cancelDesc: String?,
 ) : BaseObservable(), IMultiTypeEntity {
 
     fun showDiscount(): Boolean = orderItemList.size > 1 &&
@@ -310,6 +311,7 @@ data class OrderEntity(
     val hasRefundCoupon: Boolean
         get() = refundTag?.split(",")?.contains("2") ?: false
 
+    fun hasCancelDesc(): Boolean = !cancelDesc.isNullOrEmpty()
 }
 
 data class OrderItem(

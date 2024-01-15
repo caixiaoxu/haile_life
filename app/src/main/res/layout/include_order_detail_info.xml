@@ -84,12 +84,28 @@
                 app:title='@{@string/need_pay + "："}' />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <include
-            layout="@layout/include_order_info_item"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:content='@{order.createTime}'
-            app:title='@{@string/order_time + "："}' />
+            android:orientation="vertical"
+            app:divider="@drawable/divide_size8"
+            app:showDividers="middle">
+
+            <include
+                layout="@layout/include_order_info_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:content='@{order.createTime}'
+                app:title='@{@string/order_time + "："}' />
+
+            <include
+                layout="@layout/include_order_info_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:content='@{order.cancelDesc}'
+                app:title='@{@string/reason_of_cancel + "："}'
+                app:visibility="@{order.hasCancelDesc}" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
