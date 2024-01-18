@@ -38,12 +38,17 @@ class OrderSelectorViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
     var deviceId: Int = -1
+    var activityHashKey: String? = null
 
     val isHideDeviceInfo: MutableLiveData<Boolean> = MutableLiveData(true)
     val deviceDetail: MutableLiveData<DeviceDetailEntity> by lazy { MutableLiveData() }
     val stateList: MutableLiveData<List<DeviceStateEntity>?> by lazy { MutableLiveData() }
 
     val shopNotice: MutableLiveData<MutableList<ShopNoticeEntity>> by lazy {
+        MutableLiveData()
+    }
+
+    val shopActivity: MutableLiveData<ShopActivityEntity> by lazy {
         MutableLiveData()
     }
 
@@ -205,6 +210,23 @@ class OrderSelectorViewModel : BaseViewModel() {
                         )
                     )?.let {
                         shopNotice.postValue(it)
+                    }
+                }
+
+                // 是否有活动
+                if (null == shopActivity.value && !activityHashKey.isNullOrEmpty()) {
+                    ApiRepository.dealApiResult(
+                        mShopRepo.requestShopActivity(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "hashKey" to activityHashKey,
+                                    "activityExecuteNodeId" to 100,
+                                    "ifCollectCoupon" to false
+                                )
+                            )
+                        )
+                    )?.let {
+                        shopActivity.postValue(it)
                     }
                 }
             }

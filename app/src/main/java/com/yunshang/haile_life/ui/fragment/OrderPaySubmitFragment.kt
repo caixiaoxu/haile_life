@@ -33,6 +33,7 @@ import com.yunshang.haile_life.ui.activity.shop.RechargeStarfishActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
 import com.yunshang.haile_life.ui.view.dialog.ScanOrderConfirmDialog
+import com.yunshang.haile_life.ui.view.dialog.ShopActivitiesDialog
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 class OrderPaySubmitFragment :
@@ -484,5 +485,6 @@ class OrderPaySubmitFragment :
 
     override fun initData() {
         mActivityViewModel.requestPreview()
+        mViewModel.requestShopActivity(mActivityViewModel.orderNo)
     }
 }

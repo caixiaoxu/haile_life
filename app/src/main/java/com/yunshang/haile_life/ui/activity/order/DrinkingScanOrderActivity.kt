@@ -16,6 +16,8 @@ import com.yunshang.haile_life.databinding.ActivityDrinkingScanOrderBinding
 import com.yunshang.haile_life.databinding.ItemDrinkingScanOrderBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
+import com.yunshang.haile_life.ui.view.dialog.ShopActivitiesDialog
+import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 
 class DrinkingScanOrderActivity :
     BaseBusinessActivity<ActivityDrinkingScanOrderBinding, DrinkingScanOrderViewModel>(
@@ -78,6 +80,22 @@ class DrinkingScanOrderActivity :
                     childBinding.item = data
                     childBinding.isShower = false == mViewModel.isDrinking.value
                 }
+            }
+        }
+
+
+        // 店铺公告
+        mViewModel.shopNotice.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                ShopNoticeDialog(it).show(supportFragmentManager)
+            }
+        }
+
+        // 是否有活动
+        mViewModel.shopActivity.observe(this) {
+            it?.let {
+                ShopActivitiesDialog.Builder(it, 100, mViewModel.goodsScan.value?.activityHashKey)
+                    .build().show(supportFragmentManager)
             }
         }
     }

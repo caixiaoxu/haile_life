@@ -13,6 +13,8 @@ import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.business.apiService.ShopService
+import com.yunshang.haile_life.data.entities.ShopActivityEntity
 import com.yunshang.haile_life.data.extend.isGreaterThan0
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.string.StringUtils
@@ -33,6 +35,7 @@ import java.util.TimerTask
  */
 class OrderPaySubmitViewModel : BaseViewModel() {
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
+    private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     val isDryer: MutableLiveData<Boolean> by lazy { MutableLiveData() }
 
     val inValidOrder: MutableLiveData<Boolean> = MutableLiveData(false)

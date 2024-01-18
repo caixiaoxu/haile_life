@@ -18,4 +18,5 @@ data class GoodsScanEntity(
     val shopId: Int? = null,
     val shopType: Int? = null,
     val deviceId: Int? = null,
+    val activityHashKey: String? = null
 )

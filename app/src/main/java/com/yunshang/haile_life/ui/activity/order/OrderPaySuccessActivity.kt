@@ -9,11 +9,13 @@ import com.lsy.framelib.utils.DimensionUtils
 import com.yunshang.haile_life.R
 import com.yunshang.haile_life.business.apiService.LoginUserService
 import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.agruments.IntentParams
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.databinding.ActivityOrderPaySuccessBinding
 import com.yunshang.haile_life.ui.view.dialog.OfficialAccountsDialog
+import com.yunshang.haile_life.ui.view.dialog.ShopActivitiesDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +25,7 @@ import java.util.*
 class OrderPaySuccessActivity : BaseBindingActivity<ActivityOrderPaySuccessBinding>() {
     private val mUserRepo = ApiRepository.apiClient(LoginUserService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
+    private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
 
     override fun layoutId(): Int = R.layout.activity_order_pay_success
 
@@ -98,16 +101,35 @@ class OrderPaySuccessActivity : BaseBindingActivity<ActivityOrderPaySuccessBindi
             }
             finish()
         }
-        requestOfficialAccounts()
+        requestData(orderNo)
     }
 
-    private fun requestOfficialAccounts() {
+    private fun requestData(orderNo: String?) {
         launch({
             ApiRepository.dealApiResult(
                 mUserRepo.requestOfficialAccounts()
             )?.let {
                 if (!it.flag) {
-                    OfficialAccountsDialog(it).show(supportFragmentManager, "OfficialAccounts")
+                    withContext(Dispatchers.Main) {
+                        OfficialAccountsDialog(it).show(supportFragmentManager, "OfficialAccounts")
+                    }
+                }
+            }
+            // 是否有活动
+            ApiRepository.dealApiResult(
+                mShopRepo.requestShopActivity(
+                    ApiRepository.createRequestBody(
+                        hashMapOf(
+                            "orderNo" to orderNo,
+                            "activityExecuteNodeId" to 300,
+                            "ifCollectCoupon" to false
+                        )
+                    )
+                )
+            )?.let {
+                withContext(Dispatchers.Main) {
+                    ShopActivitiesDialog.Builder(it, 300, orderNo = orderNo).build()
+                        .show(supportFragmentManager)
                 }
             }
         })

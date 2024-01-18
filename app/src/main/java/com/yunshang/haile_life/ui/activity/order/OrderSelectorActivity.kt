@@ -30,6 +30,7 @@ import com.yunshang.haile_life.databinding.ItemScanOrderModelItemBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.adapter.ViewBindingAdapter.visibility
+import com.yunshang.haile_life.ui.view.dialog.ShopActivitiesDialog
 import com.yunshang.haile_life.ui.view.dialog.ShopNoticeDialog
 import com.yunshang.haile_life.web.WebViewActivity
 
@@ -46,7 +47,7 @@ class OrderSelectorActivity :
 
     override fun initIntent() {
         super.initIntent()
-        mViewModel.deviceId = IntentParams.DeviceParams.parseDeviceId(intent)
+        mViewModel.deviceId = IntentParams.OrderSelectorParams.parseDeviceId(intent)
     }
 
     override fun initEvent() {
@@ -154,6 +155,14 @@ class OrderSelectorActivity :
         mViewModel.shopNotice.observe(this) {
             if (!it.isNullOrEmpty()) {
                 ShopNoticeDialog(it).show(supportFragmentManager)
+            }
+        }
+
+        // 是否有活动
+        mViewModel.shopActivity.observe(this) {
+            it?.let {
+                ShopActivitiesDialog.Builder(it, 100, mViewModel.activityHashKey).build()
+                    .show(supportFragmentManager)
             }
         }
 

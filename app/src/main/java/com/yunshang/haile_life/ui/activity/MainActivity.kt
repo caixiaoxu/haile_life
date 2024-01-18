@@ -134,9 +134,10 @@ class MainActivity :
                             OrderSelectorActivity::class.java
                         ).apply {
                             putExtras(
-                                IntentParams.DeviceParams.pack(
+                                IntentParams.OrderSelectorParams.pack(
                                     detail.categoryCode,
-                                    detail.id
+                                    detail.id,
+                                    scan.activityHashKey
                                 )
                             )
                         })
@@ -162,9 +163,10 @@ class MainActivity :
                                 OrderSelectorActivity::class.java
                             ).apply {
                                 putExtras(
-                                    IntentParams.DeviceParams.pack(
+                                    IntentParams.OrderSelectorParams.pack(
                                         detail.categoryCode,
-                                        detail.id
+                                        detail.id,
+                                        scan.activityHashKey
                                     )
                                 )
                             }

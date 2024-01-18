@@ -324,6 +324,27 @@ object IntentParams {
         fun parseDeviceId(intent: Intent): Int = intent.getIntExtra(DeviceId, -1)
     }
 
+    object OrderSelectorParams {
+        private const val HashKey = "hashKey"
+
+        /**
+         * 包装参数
+         */
+        fun pack(
+            categoryCode: String? = null,
+            deviceId: Int? = null,
+            hashKey: String? = null
+        ): Bundle =
+            Bundle().apply {
+                putAll(DeviceParams.pack(categoryCode, deviceId))
+                putString(HashKey, hashKey)
+            }
+
+        fun parseCategoryCode(intent: Intent): String? = DeviceParams.parseCategoryCode(intent)
+        fun parseDeviceId(intent: Intent): Int = DeviceParams.parseDeviceId(intent)
+        fun parseHashKey(intent: Intent): String? = intent.getStringExtra(HashKey)
+    }
+
     object DiscountCouponSelectorParams {
         private const val OrderNo = "OrderNo"
         private const val SelectCoupon = "SelectCoupon"
@@ -576,12 +597,12 @@ object IntentParams {
             sellerId: Int?,
             orderShopPhone: String?,
             goodId: Int? = null,
-            isAdd:Boolean = false,
+            isAdd: Boolean = false,
             scoreList: List<FeedbackTemplateProjectDto>? = null,
             tagList: List<FeedbackOrderTagModel>? = null,
         ): Bundle =
             Bundle().apply {
-                putBoolean(IsAdd,isAdd)
+                putBoolean(IsAdd, isAdd)
                 orderId?.let {
                     putInt(OrderId, orderId)
                 }
@@ -621,6 +642,7 @@ object IntentParams {
                 intent.getStringExtra(ScoreList),
                 FeedbackTemplateProjectDto::class.java
             )
+
         fun parseTagList(intent: Intent): List<FeedbackOrderTagModel>? =
             GsonUtils.json2List(
                 intent.getStringExtra(TagList),

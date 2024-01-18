@@ -14,10 +14,12 @@ import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.business.apiService.CapitalService
 import com.yunshang.haile_life.business.apiService.DeviceService
 import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.BalanceEntity
 import com.yunshang.haile_life.data.entities.OrderItem
+import com.yunshang.haile_life.data.entities.ShopActivityEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.thrid.AlipayHelper
@@ -40,6 +42,7 @@ class OrderPayViewModel : BaseViewModel() {
     private val mCapitalRepo = ApiRepository.apiClient(CapitalService::class.java)
     private val mDeviceRepo = ApiRepository.apiClient(DeviceService::class.java)
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
+    private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
     var orderNo: String? = null
     var isAppoint: Boolean = false
 
@@ -74,6 +77,10 @@ class OrderPayViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
+    val shopActivity: MutableLiveData<ShopActivityEntity> by lazy {
+        MutableLiveData()
+    }
+
     //支付方式 1001-余额 103--支付宝app支付 203--微信app支付
     var payMethod: Int = -1
 
@@ -89,6 +96,23 @@ class OrderPayViewModel : BaseViewModel() {
                 )
             )?.let {
                 balance.postValue(it)
+            }
+
+            // 是否有活动
+            if (null == shopActivity.value && !orderNo.isNullOrEmpty()) {
+                ApiRepository.dealApiResult(
+                    mShopRepo.requestShopActivity(
+                        ApiRepository.createRequestBody(
+                            hashMapOf(
+                                "orderNo" to orderNo,
+                                "activityExecuteNodeId" to 200,
+                                "ifCollectCoupon" to false
+                            )
+                        )
+                    )
+                )?.let {
+                    shopActivity.postValue(it)
+                }
             }
         })
     }

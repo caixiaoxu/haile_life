@@ -10,6 +10,8 @@ import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.DeviceDetailEntity
 import com.yunshang.haile_life.data.entities.GoodsScanEntity
+import com.yunshang.haile_life.data.entities.ShopActivityEntity
+import com.yunshang.haile_life.data.entities.ShopNoticeEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.string.StringUtils
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +46,15 @@ class DrinkingScanOrderViewModel : BaseViewModel() {
         MutableLiveData()
     }
 
-    val isDrinking:LiveData<Boolean> = deviceDetail.map {
+    val shopNotice: MutableLiveData<MutableList<ShopNoticeEntity>> by lazy {
+        MutableLiveData()
+    }
+
+    val shopActivity: MutableLiveData<ShopActivityEntity> by lazy {
+        MutableLiveData()
+    }
+
+    val isDrinking: LiveData<Boolean> = deviceDetail.map {
         DeviceCategory.isDrinking(it.categoryCode)
     }
 
@@ -76,10 +86,43 @@ class DrinkingScanOrderViewModel : BaseViewModel() {
                         deviceDetail.postValue(it)
                     }
                 }
+
                 ApiRepository.dealApiResult(
                     mShopRepo.requestShopDetail(scan.shopId!!)
                 )?.let {
                     shopName.postValue(it.name)
+                }
+
+                // 是否有公告
+                if (null == shopNotice.value) {
+                    ApiRepository.dealApiResult(
+                        mShopRepo.requestShopNotice(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "shopId" to scan.goodsId
+                                )
+                            )
+                        )
+                    )?.let {
+                        shopNotice.postValue(it)
+                    }
+                }
+
+                // 是否有活动
+                if (null == shopActivity.value && !scan.activityHashKey.isNullOrEmpty()) {
+                    ApiRepository.dealApiResult(
+                        mShopRepo.requestShopActivity(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "hashKey" to scan.activityHashKey,
+                                    "activityExecuteNodeId" to 100,
+                                    "ifCollectCoupon" to false
+                                )
+                            )
+                        )
+                    )?.let {
+                        shopActivity.postValue(it)
+                    }
                 }
             }
         })

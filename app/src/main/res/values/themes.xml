@@ -369,6 +369,15 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Font_17_e84a2b">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/color_e84a2b</item>
+    </style>
+
+    <style name="Font_17_e84a2b_bold" parent="Font_17_e84a2b">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Font_18_04cee5">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorPrimary</item>

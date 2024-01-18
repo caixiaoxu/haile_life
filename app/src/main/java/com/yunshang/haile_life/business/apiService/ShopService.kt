@@ -77,4 +77,10 @@ interface ShopService {
 
     @GET("/position/floorCodeList")
     suspend fun requestPositionDeviceFloorList(@Query("positionId") positionId: Int): ResponseWrapper<MutableList<String>>
+
+    @POST("/activity/queryAndExecute")
+    suspend fun requestShopActivity(@Body body: RequestBody): ResponseWrapper<ShopActivityEntity>
+
+    @POST("/activity/queryAndExecute")
+    suspend fun executeShopActivity(@Body body: RequestBody): ResponseWrapper<Any>
 }

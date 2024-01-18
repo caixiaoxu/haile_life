@@ -314,6 +314,9 @@
     <string name="refund_coupon">已返券</string>
     <string name="refund_money">已退款</string>
 
+    <string name="get_now">立即领取</string>
+    <string name="get_success">优惠券已发放到您的账户</string>
+
     <string name="shop_detail">营业点详情</string>
     <string name="business_time">营业时间</string>
     <string name="starfish_recharge">海星充值</string>

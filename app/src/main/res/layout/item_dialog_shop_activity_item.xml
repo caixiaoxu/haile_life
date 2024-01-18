@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="265dp"
+        android:layout_height="87dp"
+        android:background="@mipmap/icon_shop_activity_dialog_item_bg"
+        android:padding="6dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_shop_activity_item"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="96dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_activity_item_money"
+            style="@style/Font_16_ff630e"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:fontFamily="@font/money"
+            android:gravity="center_horizontal|bottom"
+            app:layout_constraintBottom_toTopOf="@id/tv_shop_activity_item_indate"
+            app:layout_constraintEnd_toEndOf="@id/gl_shop_activity_item"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="¥5" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_activity_item_indate"
+            style="@style/Font_10_FF630E"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_s19ff630e_r4"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_shop_activity_item_money"
+            app:layout_constraintStart_toStartOf="@id/tv_shop_activity_item_money"
+            app:layout_constraintTop_toBottomOf="@id/tv_shop_activity_item_money"
+            tools:text="3天后到期" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_activity_item_type"
+            style="@style/Font_14_black_65_bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_shop_activity_item_limit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl_shop_activity_item"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="满减券" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_shop_activity_item_limit"
+            style="@style/Font_12_black_45"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_shop_activity_item_type"
+            app:layout_constraintStart_toStartOf="@id/tv_shop_activity_item_type"
+            app:layout_constraintTop_toBottomOf="@id/tv_shop_activity_item_type"
+            tools:text="满1.00可用" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_shop_activity_item_num"
+        android:layout_width="38dp"
+        android:layout_height="22dp"
+        android:layout_gravity="end"
+        android:padding="4dp"
+        style="@style/Font_10_white"
+        android:paddingStart="8dp"
+        android:gravity="center"
+        android:paddingEnd="4dp"
+        android:paddingVertical="4dp"
+        tools:text="x1"
+        android:background="@mipmap/icon_shop_activity_dialog_item_tag"/>
+</FrameLayout>

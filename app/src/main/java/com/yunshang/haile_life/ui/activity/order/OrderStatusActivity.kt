@@ -18,6 +18,7 @@ import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.activity.MainActivity
 import com.yunshang.haile_life.ui.fragment.*
 import com.yunshang.haile_life.ui.view.dialog.OfficialAccountsDialog
+import com.yunshang.haile_life.ui.view.dialog.ShopActivitiesDialog
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
 class OrderStatusActivity :
@@ -55,11 +56,12 @@ class OrderStatusActivity :
                     } else {
                         // 待执行
                         showAppointmentPage(OrderExecuteFragment())
+                        if (1 != mViewModel.statusType) {
+                            requestOfficialAccounts()
+                            requestShopActivity(300)
+                        }
+                        mViewModel.statusType = 1
                     }
-                    if (1 != mViewModel.statusType) {
-                        requestOfficialAccounts()
-                    }
-                    mViewModel.statusType = 1
                 } else if ((301 == detail.orderSubType && 500 == detail.state && 1 == detail.appointmentState)// 先付费
                     || (303 == detail.orderSubType && 50 == detail.state && 1 == detail.appointmentState)// 后付费
                 ) {
@@ -86,6 +88,9 @@ class OrderStatusActivity :
                 ) {
                     // 待支付
                     showAppointmentPage(OrderPaySubmitFragment())
+                    if (4 != mViewModel.statusType) {
+                        requestShopActivity(200)
+                    }
                     mViewModel.statusType = 4
                 } else goToNormalOrderPage(detail.orderNo)
             }
@@ -135,6 +140,14 @@ class OrderStatusActivity :
             if (!it.flag) {
                 OfficialAccountsDialog(it).show(supportFragmentManager, "OfficialAccounts")
             }
+        }
+    }
+
+    private fun requestShopActivity(activityExecuteNodeId: Int) {
+        // 是否有活动
+        mViewModel.requestShopActivity(activityExecuteNodeId) {
+            ShopActivitiesDialog.Builder(it, 200, orderNo = mViewModel.orderNo).build()
+                .show(supportFragmentManager)
         }
     }
 

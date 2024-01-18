@@ -65,6 +65,27 @@ class OrderStatusViewModel : BaseViewModel() {
         }, showLoading = false)
     }
 
+    fun requestShopActivity(activityExecuteNodeId: Int,callBack: (shopActivity: ShopActivityEntity) -> Unit) {
+        launch({
+            // 是否有活动
+            if (!orderNo.isNullOrEmpty()) {
+                ApiRepository.dealApiResult(
+                    mShopRepo.requestShopActivity(
+                        ApiRepository.createRequestBody(
+                            hashMapOf(
+                                "orderNo" to orderNo,
+                                "activityExecuteNodeId" to 200,
+                                "ifCollectCoupon" to false
+                            )
+                        )
+                    )
+                )?.let {
+                    callBack(it)
+                }
+            }
+        })
+    }
+
     /**
      * 取消订单
      */

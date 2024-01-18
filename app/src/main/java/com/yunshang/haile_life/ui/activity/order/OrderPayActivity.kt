@@ -18,6 +18,7 @@ import com.yunshang.haile_life.data.entities.WxPrePayEntity
 import com.yunshang.haile_life.databinding.ActivityOrderPayBinding
 import com.yunshang.haile_life.ui.activity.BaseBusinessActivity
 import com.yunshang.haile_life.ui.view.dialog.BalancePaySureDialog
+import com.yunshang.haile_life.ui.view.dialog.ShopActivitiesDialog
 import com.yunshang.haile_life.utils.string.StringUtils
 import com.yunshang.haile_life.utils.thrid.WeChatHelper
 
@@ -51,6 +52,14 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+        }
+
+        // 是否有活动
+        mViewModel.shopActivity.observe(this) {
+            it?.let {
+                ShopActivitiesDialog.Builder(it, 200, orderNo = mViewModel.orderNo).build()
+                    .show(supportFragmentManager)
             }
         }
 
