@@ -485,6 +485,5 @@ class OrderPaySubmitFragment :
 
     override fun initData() {
         mActivityViewModel.requestPreview()
-        mViewModel.requestShopActivity(mActivityViewModel.orderNo)
     }
 }
