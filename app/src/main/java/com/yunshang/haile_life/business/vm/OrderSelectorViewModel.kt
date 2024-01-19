@@ -226,7 +226,7 @@ class OrderSelectorViewModel : BaseViewModel() {
                             )
                         )
                     )?.let {
-                        shopActivity.postValue(it)
+                        shopActivity.postValue(it.firstOrNull())
                     }
                 }
             }

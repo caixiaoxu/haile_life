@@ -127,9 +127,11 @@ class OrderPaySuccessActivity : BaseBindingActivity<ActivityOrderPaySuccessBindi
                     )
                 )
             )?.let {
-                withContext(Dispatchers.Main) {
-                    ShopActivitiesDialog.Builder(it, 300, orderNo = orderNo).build()
-                        .show(supportFragmentManager)
+                it.firstOrNull()?.let {activity->
+                    withContext(Dispatchers.Main) {
+                        ShopActivitiesDialog.Builder(activity, 300, orderNo = orderNo).build()
+                            .show(supportFragmentManager)
+                    }
                 }
             }
         })

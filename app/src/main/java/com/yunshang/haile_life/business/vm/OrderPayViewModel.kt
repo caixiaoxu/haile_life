@@ -111,7 +111,7 @@ class OrderPayViewModel : BaseViewModel() {
                         )
                     )
                 )?.let {
-                    shopActivity.postValue(it)
+                    shopActivity.postValue(it.firstOrNull())
                 }
             }
         })

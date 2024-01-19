@@ -48,6 +48,7 @@ class OrderSelectorActivity :
     override fun initIntent() {
         super.initIntent()
         mViewModel.deviceId = IntentParams.OrderSelectorParams.parseDeviceId(intent)
+        mViewModel.activityHashKey = IntentParams.OrderSelectorParams.parseHashKey(intent)
     }
 
     override fun initEvent() {
@@ -418,6 +419,7 @@ class OrderSelectorActivity :
                                 OrderStatusActivity::class.java
                             ).apply {
                                 putExtras(IntentParams.OrderParams.pack(orderNo))
+                                putExtras(IntentParams.OrderSelectorParams.pack(hashKey = mViewModel.activityHashKey))
                             }
                         )
                         finish()

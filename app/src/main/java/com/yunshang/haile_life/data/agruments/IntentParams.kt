@@ -331,16 +331,14 @@ object IntentParams {
          * 包装参数
          */
         fun pack(
-            categoryCode: String? = null,
             deviceId: Int? = null,
             hashKey: String? = null
         ): Bundle =
             Bundle().apply {
-                putAll(DeviceParams.pack(categoryCode, deviceId))
+                putAll(DeviceParams.pack(deviceId=deviceId))
                 putString(HashKey, hashKey)
             }
 
-        fun parseCategoryCode(intent: Intent): String? = DeviceParams.parseCategoryCode(intent)
         fun parseDeviceId(intent: Intent): Int = DeviceParams.parseDeviceId(intent)
         fun parseHashKey(intent: Intent): String? = intent.getStringExtra(HashKey)
     }
@@ -491,7 +489,11 @@ object IntentParams {
         /**
          * 包装参数
          */
-        fun pack(orderNo: String, isAppoint: Boolean = false, formScan: Int = 0): Bundle =
+        fun pack(
+            orderNo: String,
+            isAppoint: Boolean = false,
+            formScan: Int = 0,
+        ): Bundle =
             Bundle().apply {
                 putString(OrderNo, orderNo)
                 putBoolean(IsAppoint, isAppoint)
@@ -501,6 +503,7 @@ object IntentParams {
         fun parseOrderNo(intent: Intent): String? = intent.getStringExtra(OrderNo)
 
         fun parseIsAppoint(intent: Intent): Boolean = intent.getBooleanExtra(IsAppoint, false)
+
         fun parseFormScan(intent: Intent): Int = intent.getIntExtra(FormScan, 0)
     }
 

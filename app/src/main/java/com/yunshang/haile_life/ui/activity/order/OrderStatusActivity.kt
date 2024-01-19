@@ -42,6 +42,7 @@ class OrderStatusActivity :
     override fun initIntent() {
         super.initIntent()
         mViewModel.orderNo = IntentParams.OrderParams.parseOrderNo(intent)
+        mViewModel.activityHashKey = IntentParams.OrderSelectorParams.parseHashKey(intent)
     }
 
     override fun initEvent() {
@@ -146,8 +147,10 @@ class OrderStatusActivity :
     private fun requestShopActivity(activityExecuteNodeId: Int) {
         // 是否有活动
         mViewModel.requestShopActivity(activityExecuteNodeId) {
-            ShopActivitiesDialog.Builder(it, 200, orderNo = mViewModel.orderNo).build()
-                .show(supportFragmentManager)
+            it?.let {
+                ShopActivitiesDialog.Builder(it, 200, orderNo = mViewModel.orderNo).build()
+                    .show(supportFragmentManager)
+            }
         }
     }
 

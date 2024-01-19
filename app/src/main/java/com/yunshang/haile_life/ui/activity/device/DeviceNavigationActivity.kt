@@ -138,7 +138,6 @@ class DeviceNavigationActivity :
                                         ).apply {
                                             putExtras(
                                                 IntentParams.OrderSelectorParams.pack(
-                                                    detail.categoryCode,
                                                     detail.id,
                                                     scan.activityHashKey
                                                 )

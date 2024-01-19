@@ -42,6 +42,7 @@ data class DiscountCouponEntity(
             val num = (endDate.time - System.currentTimeMillis()) / 1000 / 3600 / 24
             StringUtils.getString(R.string.cutoff_prompt, if (num < 1) 1 else num)
         } ?: ""
+
         30 -> StringUtils.getString(R.string.used)
         else -> StringUtils.getString(R.string.expired)
     }
@@ -50,6 +51,7 @@ data class DiscountCouponEntity(
         1 -> DateTimeUtils.formatDateFromString(endAt)?.let { endDate ->
             ((endDate.time - System.currentTimeMillis()) / 1000 / 3600 / 24) <= 7
         } ?: false
+
         30 -> true
         else -> true
     }
@@ -92,19 +94,19 @@ data class Promotion(
     val endAt: String,
     val feeShareDetails: List<FeeShareDetail>,
     val feeShareType: Int,
-    val goodsCategoryIds: List<Any>,
-    val goodsCategoryNames: List<Any>,
+    val goodsCategoryIds: List<Int>,
+    val goodsCategoryNames: List<String>,
     val hourMinuteEndTime: String,
     val hourMinuteStartTime: String,
     val isCalculateTimeFromActivation: Boolean,
     val isFree: Boolean,
     val isFreeItem: Boolean,
     val lastEditor: String,
-    val limitedChannelIds: List<Any>,
+    val limitedChannelIds: List<Int>,
     val maxDiscountPrice: String,
     val needPay: String,
     val needPayItem: Int,
-    val operatorIds: List<Any>,
+    val operatorIds: List<Int>,
     val operatorVOs: List<OperatorVO>,
     val orderReachPrice: String,
     val organizationType: Int,
@@ -112,8 +114,8 @@ data class Promotion(
     val promotionId: Int,
     val reduce: String,
     val reduceItem: Int,
-    val shopIds: List<Any>,
-    val shopNames: List<Any>,
+    val shopIds: List<Int>,
+    val shopNames: List<String>,
     val shopVOs: List<ShopVO>,
     val specifiedPrice: Double,
     val startAt: String,
@@ -133,8 +135,18 @@ data class Promotion(
                 it.length
             )
         } else "¥$specifiedPrice".let { formatValue(it, 1, it.length) }
+
         else -> SpannableString("")
     }
+
+    fun cutOffVal(): String = DateTimeUtils.formatDateFromString(endAt)?.let { endDate ->
+        val num = (endDate.time - System.currentTimeMillis()) / 1000 / 3600 / 24
+        if (num < 0) {
+            "已过期"
+        } else {
+            StringUtils.getString(R.string.cutoff_prompt, if (num < 1) 1 else num)
+        }
+    } ?: ""
 
     private fun formatValue(content: String, start: Int, end: Int): SpannableString {
         val index = content.indexOf(".")
@@ -164,7 +176,11 @@ data class Promotion(
     fun useRuleVal(): String = "1.可用时段：${hourMinuteStartTime}-${hourMinuteEndTime}\n2${
         if (organizationType == 1) "适用于全部店铺" else "适用店铺：${shopNames.joinToString(" ")}"
     }\n3.${
-        if (goodsCategoryNames.isEmpty()) "不限设备" else "适用于：${goodsCategoryNames.joinToString(" ")}"
+        if (goodsCategoryNames.isEmpty()) "不限设备" else "适用于：${
+            goodsCategoryNames.joinToString(
+                " "
+            )
+        }"
     }"
 }
 

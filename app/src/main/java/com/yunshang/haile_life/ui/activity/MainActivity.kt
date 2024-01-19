@@ -135,7 +135,6 @@ class MainActivity :
                         ).apply {
                             putExtras(
                                 IntentParams.OrderSelectorParams.pack(
-                                    detail.categoryCode,
                                     detail.id,
                                     scan.activityHashKey
                                 )
@@ -164,7 +163,6 @@ class MainActivity :
                             ).apply {
                                 putExtras(
                                     IntentParams.OrderSelectorParams.pack(
-                                        detail.categoryCode,
                                         detail.id,
                                         scan.activityHashKey
                                     )
