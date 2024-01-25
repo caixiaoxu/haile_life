@@ -76,6 +76,9 @@ class ShopActivitiesDialog private constructor(private val builder: Builder) :
         }
         refreshBottomBtns()
         mBinding.btnDialogShopActivityClose.setOnClickListener {
+            if (2 == builder.shopActivity.activitySubTypeId || 2 == builder.shopActivity.status) {
+                builder.refreshPage?.invoke()
+            }
             dismiss()
         }
     }
@@ -122,7 +125,7 @@ class ShopActivitiesDialog private constructor(private val builder: Builder) :
      */
     fun show(manager: FragmentManager) {
         //不可取消
-        isCancelable = true
+        isCancelable = false
         show(manager, SHOP_ACTIVITY_TAG)
     }
 
@@ -131,6 +134,7 @@ class ShopActivitiesDialog private constructor(private val builder: Builder) :
         val activityExecuteNodeId: Int,
         val activityHashKey: String? = null,
         val orderNo: String? = null,
+        val refreshPage: (() -> Unit)? = null
     ) {
 
         /**

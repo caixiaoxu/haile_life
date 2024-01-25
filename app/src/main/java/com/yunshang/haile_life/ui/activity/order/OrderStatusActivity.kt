@@ -148,7 +148,11 @@ class OrderStatusActivity :
         // 是否有活动
         mViewModel.requestShopActivity(activityExecuteNodeId) {
             it?.let {
-                ShopActivitiesDialog.Builder(it, 200, orderNo = mViewModel.orderNo).build()
+                ShopActivitiesDialog.Builder(it, 200, orderNo = mViewModel.orderNo) {
+                    if (200 == activityExecuteNodeId) {
+                        mViewModel.requestPreviewASync()
+                    }
+                }.build()
                     .show(supportFragmentManager)
             }
         }

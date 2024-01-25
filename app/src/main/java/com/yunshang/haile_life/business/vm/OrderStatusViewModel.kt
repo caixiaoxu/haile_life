@@ -258,10 +258,21 @@ class OrderStatusViewModel : BaseViewModel() {
         })
     }
 
-    private suspend fun requestPreviewSync() {
+    fun requestPreviewASync() {
+        launch({
+            requestPreviewSync(
+                hashMapOf(
+                    "orderNo" to orderNo,
+                    "autoSelectPromotion" to true
+                )
+            )
+        })
+    }
+
+    private suspend fun requestPreviewSync(params: HashMap<String, Any?>? = null) {
         ApiRepository.dealApiResult(
             mOrderRepo.requestUnderWayOrderPreviewV2(
-                ApiRepository.createRequestBody(getCommonParams(true))
+                ApiRepository.createRequestBody(params ?: getCommonParams(true))
             )
         )?.let {
             tradePreview.postValue(it)
