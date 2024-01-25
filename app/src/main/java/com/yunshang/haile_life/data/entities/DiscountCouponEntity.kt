@@ -139,7 +139,10 @@ data class Promotion(
         else -> SpannableString("")
     }
 
-    fun cutOffVal(): String = DateTimeUtils.formatDateFromString(endAt)?.let { endDate ->
+    fun cutOffVal(): String = if (isCalculateTimeFromActivation) StringUtils.getString(
+        R.string.cutoff_prompt,
+        activateTime
+    ) else DateTimeUtils.formatDateFromString(endAt)?.let { endDate ->
         val num = (endDate.time - System.currentTimeMillis()) / 1000 / 3600 / 24
         if (num < 0) {
             "已过期"
