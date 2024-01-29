@@ -152,21 +152,22 @@ class OrderDetailViewModel : BaseViewModel() {
             startStateTime(it)
 
             // 是否有活动，饮水沐浴设备，在待支付状态时，判断是否有活动
-            if (null == shopActivity.value && 100 == it.state
-                && it.orderItemList.any { item -> DeviceCategory.isDrinkingOrShower(item.categoryCode)}) {
-                ApiRepository.dealApiResult(
-                    mShopRepo.requestShopActivity(
-                        ApiRepository.createRequestBody(
-                            hashMapOf(
-                                "orderNo" to orderNo,
-                                "activityExecuteNodeId" to 200,
-                                "ifCollectCoupon" to false
+            if (null == shopActivity.value && (100 == it.state || 1000 == it.state)
+                && it.orderItemList.any { item -> DeviceCategory.isDrinkingOrShower(item.categoryCode) }
+            ) {
+                shopActivity.postValue(
+                    ApiRepository.dealApiResult(
+                        mShopRepo.requestShopActivity(
+                            ApiRepository.createRequestBody(
+                                hashMapOf(
+                                    "orderNo" to orderNo,
+                                    "activityExecuteNodeId" to if (100 == it.state) 200 else 300,
+                                    "ifCollectCoupon" to false
+                                )
                             )
                         )
-                    )
-                )?.let {
-                    shopActivity.postValue(it.firstOrNull())
-                }
+                    )?.firstOrNull()
+                )
             }
         }
     }
