@@ -42,7 +42,6 @@ class OrderStatusActivity :
     override fun initIntent() {
         super.initIntent()
         mViewModel.orderNo = IntentParams.OrderParams.parseOrderNo(intent)
-        mViewModel.activityHashKey = IntentParams.OrderSelectorParams.parseHashKey(intent)
     }
 
     override fun initEvent() {

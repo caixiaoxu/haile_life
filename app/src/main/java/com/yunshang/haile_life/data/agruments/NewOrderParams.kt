@@ -13,7 +13,9 @@ package com.yunshang.haile_life.data.agruments
 data class NewOrderParams(
     val purchaseList: List<Purchase> = arrayListOf(),
     var reserveMethod: Int? = null
-)
+) {
+    var hashKey: String? = null
+}
 
 data class Purchase(
     val goodsId: Int? = null,

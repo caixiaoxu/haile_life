@@ -135,7 +135,8 @@ class DrinkingScanOrderViewModel : BaseViewModel() {
                 mOrderRepo.createLaterTrade(
                     ApiRepository.createRequestBody(
                         hashMapOf(
-                            "goodsId" to goodsScan.value?.goodsId
+                            "goodsId" to goodsScan.value?.goodsId,
+                            "hashKey" to goodsScan.value?.activityHashKey
                         )
                     )
                 )

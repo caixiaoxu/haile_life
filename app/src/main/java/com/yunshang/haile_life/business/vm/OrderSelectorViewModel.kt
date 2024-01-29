@@ -238,12 +238,25 @@ class OrderSelectorViewModel : BaseViewModel() {
         callback: (success: Boolean, result: OrderSubmitResultEntity?) -> Unit
     ) {
         launch({
-            val body = ApiRepository.createRequestBody(GsonUtils.any2Json(params))
             ApiRepository.dealApiResult(
                 if (null == params.reserveMethod) {
-                    mOrderRepo.scanOrderCreate(body)
+                    mOrderRepo.scanOrderCreate(
+                        ApiRepository.createRequestBody(
+                            GsonUtils.any2Json(
+                                params.apply {
+                                    hashKey = activityHashKey
+                                }
+                            )
+                        )
+                    )
                 } else {
-                    mOrderRepo.reserveCreate(body)
+                    mOrderRepo.reserveCreate(
+                        ApiRepository.createRequestBody(
+                            GsonUtils.any2Json(
+                                params
+                            )
+                        )
+                    )
                 }
             )?.let {
                 LiveDataBus.post(BusEvents.ORDER_SUBMIT_STATUS, true)

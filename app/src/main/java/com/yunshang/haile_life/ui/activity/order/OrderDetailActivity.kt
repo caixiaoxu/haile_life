@@ -34,6 +34,7 @@ import com.yunshang.haile_life.ui.activity.personal.FaultRepairsActivity
 import com.yunshang.haile_life.ui.view.TranslucencePopupWindow
 import com.yunshang.haile_life.ui.view.dialog.CommonBottomSheetDialog
 import com.yunshang.haile_life.ui.view.dialog.CommonDialog
+import com.yunshang.haile_life.ui.view.dialog.ShopActivitiesDialog
 import com.yunshang.haile_life.utils.DateTimeUtils
 import com.yunshang.haile_life.utils.string.StringUtils
 
@@ -165,6 +166,15 @@ class OrderDetailActivity :
                 )
             } else {
                 popupWindow?.dismiss()
+            }
+        }
+
+
+        // 是否有活动
+        mViewModel.shopActivity.observe(this) {
+            it?.let {
+                ShopActivitiesDialog.Builder(it, 200, orderNo = mViewModel.orderNo).build()
+                    .show(supportFragmentManager)
             }
         }
     }

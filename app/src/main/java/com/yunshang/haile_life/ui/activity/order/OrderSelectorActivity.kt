@@ -419,7 +419,6 @@ class OrderSelectorActivity :
                                 OrderStatusActivity::class.java
                             ).apply {
                                 putExtras(IntentParams.OrderParams.pack(orderNo))
-                                putExtras(IntentParams.OrderSelectorParams.pack(hashKey = mViewModel.activityHashKey))
                             }
                         )
                         finish()

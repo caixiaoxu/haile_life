@@ -36,7 +36,6 @@ class OrderStatusViewModel : BaseViewModel() {
     private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
 
     var orderNo: String? = null
-    var activityHashKey: String? = null
     var hasPayOrderNo: Boolean = false
 
     val orderDetails: MutableLiveData<OrderEntity> by lazy { MutableLiveData() }
@@ -77,7 +76,6 @@ class OrderStatusViewModel : BaseViewModel() {
                     mShopRepo.requestShopActivity(
                         ApiRepository.createRequestBody(
                             hashMapOf(
-                                "hashKey" to activityHashKey,
                                 "orderNo" to orderNo,
                                 "activityExecuteNodeId" to activityExecuteNodeId,
                                 "ifCollectCoupon" to false

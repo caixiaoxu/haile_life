@@ -13,10 +13,12 @@ import com.lsy.framelib.async.LiveDataBus
 import com.lsy.framelib.ui.base.BaseViewModel
 import com.lsy.framelib.utils.SToast
 import com.yunshang.haile_life.business.apiService.OrderService
+import com.yunshang.haile_life.business.apiService.ShopService
 import com.yunshang.haile_life.business.event.BusEvents
 import com.yunshang.haile_life.data.agruments.DeviceCategory
 import com.yunshang.haile_life.data.entities.EvaluateStatusEntity
 import com.yunshang.haile_life.data.entities.OrderEntity
+import com.yunshang.haile_life.data.entities.ShopActivityEntity
 import com.yunshang.haile_life.data.model.ApiRepository
 import com.yunshang.haile_life.utils.DateTimeUtils
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +39,7 @@ import java.util.*
  */
 class OrderDetailViewModel : BaseViewModel() {
     private val mOrderRepo = ApiRepository.apiClient(OrderService::class.java)
+    private val mShopRepo = ApiRepository.apiClient(ShopService::class.java)
 
     var orderNo: String? = null
 
@@ -124,6 +127,10 @@ class OrderDetailViewModel : BaseViewModel() {
     private fun checkShowAnyBtn() =
         (((true == showContactShop.value || true == showCancelOrder.value || true == showPayOrder.value) && true != formScan.value))
 
+    val shopActivity: MutableLiveData<ShopActivityEntity> by lazy {
+        MutableLiveData()
+    }
+
     fun requestOrderDetailAsync(showLoading: Boolean = true) {
         if (orderNo.isNullOrEmpty()) return
         timer?.cancel()
@@ -143,6 +150,24 @@ class OrderDetailViewModel : BaseViewModel() {
             orderDetail.postValue(it)
             getOrderStatusVal(it)
             startStateTime(it)
+
+            // 是否有活动，饮水沐浴设备，在待支付状态时，判断是否有活动
+            if (null == shopActivity.value && 100 == it.state
+                && it.orderItemList.any { item -> DeviceCategory.isDrinkingOrShower(item.categoryCode)}) {
+                ApiRepository.dealApiResult(
+                    mShopRepo.requestShopActivity(
+                        ApiRepository.createRequestBody(
+                            hashMapOf(
+                                "orderNo" to orderNo,
+                                "activityExecuteNodeId" to 200,
+                                "ifCollectCoupon" to false
+                            )
+                        )
+                    )
+                )?.let {
+                    shopActivity.postValue(it.firstOrNull())
+                }
+            }
         }
     }
 
