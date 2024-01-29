@@ -76,10 +76,10 @@ class OrderPayViewModel : BaseViewModel() {
     val balance: MutableLiveData<BalanceEntity> by lazy {
         MutableLiveData()
     }
-
-    val shopActivity: MutableLiveData<ShopActivityEntity> by lazy {
-        MutableLiveData()
-    }
+//
+//    val shopActivity: MutableLiveData<ShopActivityEntity> by lazy {
+//        MutableLiveData()
+//    }
 
     //支付方式 1001-余额 103--支付宝app支付 203--微信app支付
     var payMethod: Int = -1
@@ -98,22 +98,22 @@ class OrderPayViewModel : BaseViewModel() {
                 balance.postValue(it)
             }
 
-            // 是否有活动
-            if (null == shopActivity.value && !orderNo.isNullOrEmpty()) {
-                ApiRepository.dealApiResult(
-                    mShopRepo.requestShopActivity(
-                        ApiRepository.createRequestBody(
-                            hashMapOf(
-                                "orderNo" to orderNo,
-                                "activityExecuteNodeId" to 200,
-                                "ifCollectCoupon" to false
-                            )
-                        )
-                    )
-                )?.let {
-                    shopActivity.postValue(it.firstOrNull())
-                }
-            }
+//            // 是否有活动
+//            if (null == shopActivity.value && !orderNo.isNullOrEmpty()) {
+//                ApiRepository.dealApiResult(
+//                    mShopRepo.requestShopActivity(
+//                        ApiRepository.createRequestBody(
+//                            hashMapOf(
+//                                "orderNo" to orderNo,
+//                                "activityExecuteNodeId" to 200,
+//                                "ifCollectCoupon" to false
+//                            )
+//                        )
+//                    )
+//                )?.let {
+//                    shopActivity.postValue(it.firstOrNull())
+//                }
+//            }
         })
     }
 

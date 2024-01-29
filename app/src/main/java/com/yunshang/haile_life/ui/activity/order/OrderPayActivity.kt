@@ -54,14 +54,14 @@ class OrderPayActivity : BaseBusinessActivity<ActivityOrderPayBinding, OrderPayV
                 e.printStackTrace()
             }
         }
-
-        // 是否有活动
-        mViewModel.shopActivity.observe(this) {
-            it?.let {
-                ShopActivitiesDialog.Builder(it, 200, orderNo = mViewModel.orderNo).build()
-                    .show(supportFragmentManager)
-            }
-        }
+//
+//        // 是否有活动
+//        mViewModel.shopActivity.observe(this) {
+//            it?.let {
+//                ShopActivitiesDialog.Builder(it, 200, orderNo = mViewModel.orderNo).build()
+//                    .show(supportFragmentManager)
+//            }
+//        }
 
         mViewModel.prepayParam.observe(this) {
             it?.let {
